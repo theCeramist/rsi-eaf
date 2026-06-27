@@ -21,7 +21,10 @@ from observability.economic_ledger import ledger
 from observability.ledger_hygiene import supersede_unverified_revenue
 from observability.trace_logger import trace_logger
 from observability.treasury_monitor import poll_treasury_payments
-from revenue_engines.content_operator import ContentOperator
+from revenue_engines.registry import run_revenue_engines
+from tools.distribution_tools import featured_links_for_index, write_sitemap
+from tools.publish_tools import build_index_html
+from revenue_engines.base_engine import resolve_treasury
 from tools.xrpl_tools import load_factory_wallet, get_account_xrp_balance
 
 REQUIRE_LIVE_URL = os.getenv("REQUIRE_LIVE_URL", "false").lower() in {"1", "true", "yes"}
@@ -60,26 +63,41 @@ class CycleRunner:
         # === 1. EXECUTE ===
         print("[Cycle] Phase 1: Execute revenue engines + maintenance...")
         t0 = time.time()
-        content_op = ContentOperator()
-        engine_result = content_op.run(cycle_id=cycle_id)
-        trace_logger.log_cycle_trace(cycle_id, "execute", engine_result, (time.time() - t0) * 1000)
+        engine_bundle = run_revenue_engines(cycle_id=cycle_id)
+        if engine_bundle.get("errors"):
+            print(f"[Cycle] Engine errors: {engine_bundle['errors']}")
+        treasury = resolve_treasury()
+        featured = featured_links_for_index(cycle_id)
+        build_index_html(treasury_address=treasury, featured=featured)
+        write_sitemap(live_urls=engine_bundle.get("live_urls"))
+        engine_result = engine_bundle.get("primary") or {}
+        trace_logger.log_cycle_trace(
+            cycle_id,
+            "execute",
+            {**engine_bundle, "featured": featured},
+            (time.time() - t0) * 1000,
+        )
 
         print("[Cycle] Phase 1b: Treasury monitor + verified revenue ingest...")
         treasury_result = poll_treasury_payments(cycle_id=cycle_id, factory_state=self.state)
         verified_revenue = treasury_result.get("ingested", [])
 
         execution_result = {
-            "revenue_engines_run": [engine_result["source"]],
-            "xrpl_payments_made": 1 if engine_result.get("xrpl_tx_hash") else 0,
-            "published_asset": engine_result.get("published_path"),
-            "live_url": engine_result.get("live_url"),
-            "live_verified": engine_result.get("live_verified", False),
-            "xrpl_tx_hash": engine_result.get("xrpl_tx_hash"),
-            "explorer_url": engine_result.get("explorer_url"),
+            "revenue_engines_run": engine_bundle.get("engines_run", []),
+            "xrpl_payments_made": engine_bundle.get("xrpl_payments_made", 0),
+            "published_asset": engine_bundle.get("published_asset"),
+            "published_assets": engine_bundle.get("published_assets", []),
+            "live_url": engine_bundle.get("live_url"),
+            "live_urls": engine_bundle.get("live_urls", []),
+            "live_verified": engine_bundle.get("live_verified", False),
+            "xrpl_tx_hash": engine_bundle.get("xrpl_tx_hash"),
+            "explorer_url": engine_bundle.get("explorer_url"),
             "revenue_usd_est": sum(e.get("amount_usd_est", 0) for e in verified_revenue),
             "verified_revenue_events": len(verified_revenue),
             "treasury_ws_observed": treasury_result.get("ws_observed", 0),
             "treasury_address": treasury_result.get("treasury_address"),
+            "engine_errors": engine_bundle.get("errors", []),
+            "featured_surfaces": featured,
         }
 
         # === 2. INSTRUMENT ===

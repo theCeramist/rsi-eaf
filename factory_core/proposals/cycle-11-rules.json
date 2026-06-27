@@ -1,0 +1,14 @@
+[
+  {
+    "title": "Distribute tip manifest + briefing unlock URLs",
+    "impact": "Drive external XRPL payments to treasury via agent-readable manifest",
+    "verification": "treasury_monitor ingests payment with type=revenue memo",
+    "source": "rule_based"
+  },
+  {
+    "title": "Paid briefing unlock campaign",
+    "impact": "Gated intel at $2.0 via product_id memo",
+    "verification": "briefing_published event shows unlocked=true after external payment",
+    "source": "rule_based"
+  }
+]

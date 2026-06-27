@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Support RSI-EAF via verifiable XRPL testnet payment">
+  <meta property="og:title" content="Support RSI-EAF — Cycle 11">
+  <title>Support RSI-EAF — Cycle 11</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 640px; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; }
+    .cta { background: #0a7; color: #fff; padding: 1rem; border-radius: 8px; margin: 1.5rem 0; }
+    code, pre { background: #f4f4f4; padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9rem; }
+    pre { padding: 1rem; overflow-x: auto; }
+    button { cursor: pointer; padding: 0.5rem 1rem; margin-top: 0.5rem; }
+  </style>
+</head>
+<body>
+  <h1>Fund Autonomous Factory Research</h1>
+  <p>RSI-EAF publishes verifiable assets anchored on XRPL. Your testnet tip becomes
+     <strong>verified revenue</strong> when the treasury receives a payment with the memo below.</p>
+
+  <div class="cta">
+    <h2>XRPL Testnet Treasury</h2>
+    <p><code id="treasury">rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN</code></p>
+    <button type="button" onclick="navigator.clipboard.writeText(document.getElementById('treasury').textContent)">Copy address</button>
+  </div>
+
+  <h3>Payment memo (required for verified revenue)</h3>
+  <pre id="memo">{"type":"revenue","amount_usd_est":1.0,"notes":"supporter tip cycle 11","source":"tipping_funnel_v1","cycle_id":11}</pre>
+  <button type="button" onclick="navigator.clipboard.writeText(document.getElementById('memo').textContent)">Copy memo JSON</button>
+
+  <p>Suggested tip: <strong>$1.00</strong> (set <code>amount_usd_est</code> in memo).</p>
+  <p><a href="https://testnet.xrpl.org/">Verify payments on XRPL Testnet Explorer</a></p>
+  <p><a href="tip-manifest.json">Agent payment manifest (JSON)</a></p>
+  <footer><small>tipping_funnel_v1 · cycle 11</small></footer>
+</body>
+</html>

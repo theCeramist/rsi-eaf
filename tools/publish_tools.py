@@ -21,7 +21,10 @@ def _html_files() -> List[Path]:
     return sorted(PUBLISHED_DIR.glob("*.html"))
 
 
-def build_index_html(treasury_address: str = "") -> Path:
+def build_index_html(
+    treasury_address: str = "",
+    featured: Optional[Dict[str, str]] = None,
+) -> Path:
     """Regenerate published/index.html listing all assets."""
     PUBLISHED_DIR.mkdir(parents=True, exist_ok=True)
     files = _html_files()
@@ -30,6 +33,22 @@ def build_index_html(treasury_address: str = "") -> Path:
         for f in files
         if f.name != "index.html"
     )
+    featured = featured or {}
+    featured_block = ""
+    if featured:
+        items = "\n".join(
+            f'    <li><a href="{url}">{label}</a></li>'
+            for label, url in featured.items()
+            if url
+        )
+        featured_block = f"""
+  <section id="featured">
+    <h2>Revenue Surfaces (highest impact)</h2>
+    <ul>
+{items}
+    </ul>
+  </section>
+"""
     tip_block = ""
     if treasury_address:
         tip_block = f"""
@@ -39,6 +58,7 @@ def build_index_html(treasury_address: str = "") -> Path:
     <pre>{{"type":"revenue","amount_usd_est":1.0,"notes":"supporter tip"}}</pre>
     <p><strong>Treasury:</strong> <code>{treasury_address}</code></p>
     <p><a href="https://testnet.xrpl.org/">Verify on XRPL Testnet Explorer</a></p>
+    <p><a href="tip-manifest.json">Agent tip manifest (JSON)</a></p>
   </section>
 """
     html = f"""<!DOCTYPE html>
@@ -51,6 +71,7 @@ def build_index_html(treasury_address: str = "") -> Path:
 <body>
   <h1>RSI-EAF Published Assets</h1>
   <p>Verifiable factory output — each asset anchored on XRPL testnet.</p>
+{featured_block}
   <ul>
 {links}
   </ul>

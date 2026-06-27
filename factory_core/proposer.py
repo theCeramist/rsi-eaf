@@ -19,9 +19,15 @@ def _rule_based_proposals(analysis: Dict[str, Any]) -> List[Dict[str, Any]]:
     proposals = []
     if "no_verified_revenue" in analysis.get("bottlenecks", []):
         proposals.append({
-            "title": "XRPL supporter tipping funnel",
-            "impact": "Convert published page visitors into verified treasury inflows",
-            "verification": "External testnet payment with revenue memo ingested by treasury_monitor",
+            "title": "Distribute tip manifest + briefing unlock URLs",
+            "impact": "Drive external XRPL payments to treasury via agent-readable manifest",
+            "verification": "treasury_monitor ingests payment with type=revenue memo",
+            "source": "rule_based",
+        })
+        proposals.append({
+            "title": "Paid briefing unlock campaign",
+            "impact": f"Gated intel at ${os.getenv('BRIEFING_UNLOCK_USD', '2.0')} via product_id memo",
+            "verification": "briefing_published event shows unlocked=true after external payment",
             "source": "rule_based",
         })
     if not analysis.get("live_url"):

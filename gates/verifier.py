@@ -42,13 +42,15 @@ def run_cycle_gates(
     """Run all mandatory gates for a completed cycle."""
     gates: List[Dict[str, Any]] = []
 
-    published = execution_result.get("published_asset")
-    published_exists = bool(published and Path(published).exists())
+    published_list = execution_result.get("published_assets") or []
+    if not published_list and execution_result.get("published_asset"):
+        published_list = [execution_result["published_asset"]]
+    published_exists = any(p and Path(p).exists() for p in published_list)
     gates.append(
         _gate(
             "published_asset_exists",
             published_exists,
-            f"path={published}",
+            f"count={len(published_list)} paths={published_list[:3]}",
         )
     )
 

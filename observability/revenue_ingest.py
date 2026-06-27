@@ -105,10 +105,12 @@ def ingest_verified_xrpl_revenue(
 
         amount_usd_est = 0.0
         memo_notes = None
+        product_id = None
         for memo in payment["memos"]:
             if memo.get("type") == "revenue" and memo.get("amount_usd_est"):
                 amount_usd_est = float(memo["amount_usd_est"])
                 memo_notes = memo.get("notes")
+                product_id = memo.get("product_id")
                 break
 
         if amount_usd_est <= 0:
@@ -134,6 +136,7 @@ def ingest_verified_xrpl_revenue(
                 "treasury_address": address,
                 "xrp_received": xrp_amount,
                 "notes": memo_notes,
+                "product_id": product_id,
                 "memos": payment["memos"],
             },
         )
