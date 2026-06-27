@@ -1,17 +1,38 @@
 {
-  "schema": "rsi_eaf_tip_manifest_v1",
-  "updated_at": "2026-06-27T04:32:04.751711+00:00",
-  "cycle_id": 11,
+  "schema": "rsi_eaf_tip_manifest_v2",
+  "updated_at": "2026-06-27T15:56:36.933125+00:00",
+  "cycle_id": 90,
   "network": "xrpl_testnet",
   "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+  "human_easy_path": {
+    "step_1": "Send XRP to rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+    "step_2": "Set Destination Tag to 1",
+    "step_3": "Leave memo blank (optional)",
+    "destination_tag": 1,
+    "credited_usd": 1.0
+  },
+  "destination_tags": {
+    "tip": {
+      "tag": 1,
+      "credited_usd": 1.0
+    },
+    "briefing_unlock": {
+      "tag": 2,
+      "credited_usd": 2.0,
+      "product_id": "briefing-cycle-90"
+    }
+  },
+  "plain_memo_aliases": {
+    "plain_memo_tip": "tip",
+    "plain_memo_briefing": "briefing"
+  },
   "payment_memo_template": {
     "type": "revenue",
     "amount_usd_est": 1.0,
     "notes": "supporter tip",
     "source": "tip_manifest"
   },
-  "suggested_amounts_usd": [0.5, 1.0, 2.5, 5.0],
   "explorer": "https://testnet.xrpl.org/",
-  "live_tip_page": "https://published-zeta.vercel.app/tip-cycle-11-20260627T043141Z.html",
-  "verification": "Payment ingested when memo includes type=revenue and amount_usd_est > 0"
+  "live_tip_page": "https://published-zeta.vercel.app/tip-cycle-90-20260627T155623Z.html",
+  "verification": "Tag 1, memo 'tip', or flat external payment → verified tip"
 }
