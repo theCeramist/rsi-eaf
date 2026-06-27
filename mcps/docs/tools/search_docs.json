@@ -1,0 +1,23 @@
+{
+  "name": "search_docs",
+  "description": "Search across all xAI documentation pages for a keyword or phrase. Returns matching page slugs with relevant excerpts.",
+  "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string",
+        "description": "The search keyword or phrase"
+      },
+      "max_results": {
+        "description": "Maximum number of results to return (default: 5)",
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 20
+      }
+    },
+    "required": [
+      "query"
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "list_doc_pages",
+  "description": "List all available documentation page slugs. Returns an array of slug paths that can be used with get_doc_page.",
+  "inputSchema": {
+    "type": "object",
+    "properties": {}
+  }
+}

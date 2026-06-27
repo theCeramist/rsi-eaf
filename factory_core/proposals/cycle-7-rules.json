@@ -1,0 +1,14 @@
+[
+  {
+    "title": "XRPL supporter tipping funnel",
+    "impact": "Convert published page visitors into verified treasury inflows",
+    "verification": "External testnet payment with revenue memo ingested by treasury_monitor",
+    "source": "rule_based"
+  },
+  {
+    "title": "Reliable Vercel publish pipeline",
+    "impact": "Every asset gets a queryable HTTPS URL in ledger metadata",
+    "verification": "gate live_url_reachable passes on next cycle",
+    "source": "rule_based"
+  }
+]

@@ -1,0 +1,8 @@
+{
+  "name": "get_llms_txt",
+  "description": "Get the full llms.txt content — all xAI documentation pages concatenated into a single text file. This is a large payload; prefer get_doc_page for specific pages.",
+  "inputSchema": {
+    "type": "object",
+    "properties": {}
+  }
+}
