@@ -1,0 +1,8 @@
+[
+  {
+    "title": "XRPL supporter tipping funnel",
+    "impact": "Convert published page visitors into verified treasury inflows",
+    "verification": "External testnet payment with revenue memo ingested by treasury_monitor",
+    "source": "rule_based"
+  }
+]
