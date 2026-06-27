@@ -1,0 +1,18 @@
+---
+pid: 13296
+cwd: "C:\Users\pdmar\rsi-eaf"
+command: "vercel login 2>&1"
+started_at: 2026-06-27T04:04:29.975Z
+running_for_ms: 90007    
+---
+> 
+  Visit https://vercel.com/oauth/device?user_code=VLRM-FFZX
+
+Waiting for authentication...
+
+  Congratulations! You are now signed in.
+
+  To deploy something, run `vercel`.
+
+  💡 To deploy every commit automatically,
+  connect a Git Repository (vercel.link/git (https://vercel.link/git)).

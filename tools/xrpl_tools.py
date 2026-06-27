@@ -27,7 +27,11 @@ from xrpl.ledger import get_latest_validated_ledger_sequence
 
 # Default Testnet
 XRPL_TESTNET_URL = os.getenv("XRPL_TESTNET_URL", "https://s.altnet.rippletest.net:51234")
+XRPL_TESTNET_WS_URL = os.getenv(
+    "XRPL_TESTNET_WS_URL", "wss://s.altnet.rippletest.net:51233"
+)
 XRPL_MAINNET_URL = os.getenv("XRPL_MAINNET_URL", "https://xrplcluster.com/")  # or reliable public node
+XRPL_MAINNET_WS_URL = os.getenv("XRPL_MAINNET_WS_URL", "wss://xrplcluster.com/")
 
 # Factory XRPL account (set via .env; never hardcode)
 FACTORY_XRPL_SEED = os.getenv("FACTORY_XRPL_SEED")  # e.g. sEd... or hex
@@ -203,8 +207,7 @@ def monitor_incoming_payments(
         print("Revenue received!", tx)
         # Log to economic_ledger, trigger cycle, etc.
     """
-    url = XRPL_TESTNET_URL if testnet else XRPL_MAINNET_URL
-    # Note: For production-grade, consider xrpl-py WebsocketClient or raw websockets + subscription
+    url = XRPL_TESTNET_WS_URL if testnet else XRPL_MAINNET_WS_URL
     print(f"[XRPL] Starting WebSocket monitor for incoming payments to {address}...")
 
     # Simplified robust pattern (production would use proper async + reconnection)

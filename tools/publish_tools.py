@@ -14,6 +14,7 @@ import httpx
 PUBLISHED_DIR = Path(os.getenv("PUBLISHED_DIR", "published"))
 FACTORY_PUBLIC_BASE_URL = os.getenv("FACTORY_PUBLIC_BASE_URL", "").rstrip("/")
 VERCEL_DEPLOY = os.getenv("VERCEL_DEPLOY", "true").lower() in {"1", "true", "yes"}
+VERCEL_TOKEN = os.getenv("VERCEL_TOKEN")
 
 
 def _html_files() -> List[Path]:
@@ -79,15 +80,17 @@ def deploy_to_vercel(published_dir: Optional[Path] = None) -> Dict[str, Any]:
     if not VERCEL_DEPLOY:
         return {"success": False, "skipped": True, "reason": "VERCEL_DEPLOY disabled"}
 
-    vercel_bin = shutil.which("vercel") or shutil.which("npx")
+    vercel_bin = shutil.which("vercel")
     if not vercel_bin:
         return {"success": False, "skipped": True, "reason": "vercel CLI not found"}
 
-    cmd = (
-        ["npx", "vercel", str(published_dir), "--yes", "--prod"]
-        if vercel_bin.endswith("npx") or vercel_bin == "npx"
-        else ["vercel", str(published_dir), "--yes", "--prod"]
-    )
+    cmd = [vercel_bin, "--yes", "--prod"]
+    if VERCEL_TOKEN:
+        cmd.extend(["--token", VERCEL_TOKEN])
+
+    env = os.environ.copy()
+    if VERCEL_TOKEN:
+        env["VERCEL_TOKEN"] = VERCEL_TOKEN
 
     try:
         result = subprocess.run(
@@ -95,15 +98,25 @@ def deploy_to_vercel(published_dir: Optional[Path] = None) -> Dict[str, Any]:
             capture_output=True,
             text=True,
             timeout=180,
-            cwd=str(published_dir.parent),
+            cwd=str(published_dir.resolve()),
             check=False,
+            shell=os.name == "nt",
+            env=env,
         )
         output = (result.stdout or "") + (result.stderr or "")
         url = None
         for line in output.splitlines():
             line = line.strip()
-            if line.startswith("https://"):
-                url = line.rstrip("/")
+            if line.startswith("Aliased:"):
+                url = line.split("Aliased:", 1)[1].strip().split()[0].rstrip("/")
+                break
+            if line.startswith("Production:"):
+                url = line.split("Production:", 1)[1].strip().split()[0].rstrip("/")
+        if not url:
+            for line in output.splitlines():
+                line = line.strip()
+                if line.startswith("https://"):
+                    url = line.rstrip("/")
         return {
             "success": result.returncode == 0,
             "deploy_url": url or FACTORY_PUBLIC_BASE_URL or None,
