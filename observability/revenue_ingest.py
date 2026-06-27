@@ -7,7 +7,10 @@ to the factory treasury. Internal operational transfers are excluded.
 
 import json
 import os
-from typing import Any, Dict, List, Optional, Set
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Set
+
+if TYPE_CHECKING:
+    from factory_core.state import FactoryState
 
 from observability.economic_ledger import ledger
 from xrpl.utils import drops_to_xrp
@@ -67,6 +70,7 @@ def _is_internal_transfer(sender: Optional[str]) -> bool:
 def ingest_verified_xrpl_revenue(
     cycle_id: int,
     treasury_address: Optional[str] = None,
+    factory_state: Optional["FactoryState"] = None,
 ) -> List[Dict[str, Any]]:
     """
     Scan treasury for external incoming payments not yet in the ledger.

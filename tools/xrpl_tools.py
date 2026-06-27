@@ -19,6 +19,8 @@ load_dotenv()   # Load .env file so FACTORY_XRPL_SEED etc. are available
 
 from xrpl.clients import JsonRpcClient, WebsocketClient
 from xrpl.wallet import Wallet, generate_faucet_wallet
+from xrpl.models.requests import Subscribe
+from xrpl.models.requests.subscribe import StreamParameter
 from xrpl.models.transactions import Payment, Memo
 from xrpl.transaction import submit_and_wait
 from xrpl.utils import xrp_to_drops, drops_to_xrp
@@ -191,56 +193,86 @@ def get_account_xrp_balance(address: str, testnet: bool = True) -> Decimal:
     return drops_to_xrp(str(balance_drops))
 
 
+def parse_ws_payment_message(
+    msg: Dict[str, Any],
+    watch_address: str,
+    testnet: bool = True,
+) -> Optional[Dict[str, Any]]:
+    """
+    Extract inbound Payment fields from an XRPL WebSocket transaction message.
+    Handles both legacy ``transaction`` and newer ``tx_json`` payload shapes.
+    """
+    if msg.get("type") != "transaction":
+        return None
+
+    engine_result = msg.get("engine_result") or msg.get("meta", {}).get("TransactionResult")
+    if engine_result and engine_result != "tesSUCCESS":
+        return None
+    if msg.get("validated") is False:
+        return None
+
+    tx = msg.get("transaction") or msg.get("tx_json") or {}
+    if tx.get("TransactionType") != "Payment":
+        return None
+    if tx.get("Destination") != watch_address:
+        return None
+
+    tx_hash = (
+        msg.get("tx_hash")
+        or tx.get("hash")
+        or msg.get("hash")
+    )
+    return {
+        "tx_hash": tx_hash,
+        "from": tx.get("Account"),
+        "amount_drops": tx.get("Amount"),
+        "memo": tx.get("Memos"),
+        "ledger_index": msg.get("ledger_index") or tx.get("ledger_index"),
+        "timestamp": time.time(),
+        "explorer_url": (
+            f"https://{'testnet.' if testnet else ''}xrpl.org/transactions/{tx_hash}"
+            if tx_hash else None
+        ),
+    }
+
+
 def monitor_incoming_payments(
     address: str,
     callback: Callable[[Dict[str, Any]], None],
     testnet: bool = True,
     timeout_seconds: Optional[int] = None,
-) -> None:
+) -> int:
     """
     Real-time WebSocket monitor for incoming Payments to a specific address.
     Calls callback(dict) for each relevant transaction.
-    This powers live economic event ingestion into the ledger.
-
-    Example callback:
-    def on_payment(tx):
-        print("Revenue received!", tx)
-        # Log to economic_ledger, trigger cycle, etc.
+    Returns count of payments observed during the poll window.
     """
     url = XRPL_TESTNET_WS_URL if testnet else XRPL_MAINNET_WS_URL
+    poll_timeout = float(timeout_seconds or 3)
     print(f"[XRPL] Starting WebSocket monitor for incoming payments to {address}...")
 
-    # Simplified robust pattern (production would use proper async + reconnection)
+    observed = 0
     try:
-        with WebsocketClient(url) as ws:
+        with WebsocketClient(url, timeout=poll_timeout) as ws:
             ws.send(
-                {
-                    "command": "subscribe",
-                    "accounts": [address],
-                    "streams": ["transactions"],
-                }
+                Subscribe(
+                    accounts=[address],
+                    streams=[StreamParameter.TRANSACTIONS],
+                )
             )
-            print("[XRPL] Subscribed to transactions for factory address.")
+            print(f"[XRPL] Subscribed to transactions (poll {poll_timeout:.0f}s).")
 
-            start = time.time()
-            while True:
-                msg = ws.recv()
-                if msg.get("type") == "transaction" and msg.get("transaction", {}).get("TransactionType") == "Payment":
-                    tx = msg["transaction"]
-                    if tx.get("Destination") == address:
-                        callback({
-                            "tx_hash": tx.get("hash"),
-                            "from": tx.get("Account"),
-                            "amount_drops": tx.get("Amount"),
-                            "memo": tx.get("Memos"),
-                            "ledger_index": tx.get("ledger_index"),
-                            "timestamp": time.time(),
-                            "explorer_url": f"https://{'testnet.' if testnet else ''}xrpl.org/transactions/{tx.get('hash')}",
-                        })
-                if timeout_seconds and (time.time() - start > timeout_seconds):
-                    break
+            for msg in ws:
+                payment = parse_ws_payment_message(msg, address, testnet=testnet)
+                if not payment:
+                    continue
+                callback(payment)
+                observed += 1
+
+        print(f"[XRPL] Monitor poll complete ({observed} payment(s) observed).")
     except Exception as e:
-        print(f"[XRPL] Monitor error: {e}. Implement reconnection in production.")
+        print(f"[XRPL] Monitor error: {e}")
+    return observed
 
 
 def query_recent_transactions(address: str, limit: int = 10, testnet: bool = True) -> list:

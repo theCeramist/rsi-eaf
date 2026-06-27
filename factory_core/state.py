@@ -55,5 +55,22 @@ class FactoryState:
         self._data["grok_usage_watermark"] = watermark
         self._save()
 
+    def get_treasury_watermark(self) -> Dict[str, Any]:
+        return dict(self._data.get("treasury_watermark", {}))
+
+    def set_treasury_watermark(
+        self,
+        last_ingested_tx_hash: Optional[str] = None,
+        last_poll_at: Optional[int] = None,
+    ) -> None:
+        wm = self.get_treasury_watermark()
+        if last_ingested_tx_hash:
+            wm["last_ingested_tx_hash"] = last_ingested_tx_hash
+        if last_poll_at is not None:
+            wm["last_poll_cycle"] = last_poll_at
+        wm["updated_at"] = datetime.now(timezone.utc).isoformat()
+        self._data["treasury_watermark"] = wm
+        self._save()
+
     def snapshot(self) -> Dict[str, Any]:
         return dict(self._data)

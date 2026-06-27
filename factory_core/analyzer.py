@@ -28,6 +28,12 @@ def analyze_cycle(
         recommendations.append(f"Revenue/cost ratio {revenue/max(costs,0.01):.2f} — prioritize monetization before scaling cycles.")
     if not execution_result.get("live_url"):
         recommendations.append("Configure VERCEL_DEPLOY or FACTORY_PUBLIC_BASE_URL for live asset URLs.")
+    elif not execution_result.get("live_verified"):
+        recommendations.append("Live URL configured but unreachable — verify Vercel deploy and FACTORY_PUBLIC_BASE_URL.")
+    if execution_result.get("treasury_ws_observed", 0) == 0 and revenue <= 0:
+        recommendations.append(
+            "No treasury inflows yet — share live asset URL and treasury address for testnet revenue memos."
+        )
     if not gate_result.get("all_passed"):
         failed = [g["gate"] for g in gate_result.get("gates", []) if not g.get("passed")]
         recommendations.append(f"Fix failing gates: {', '.join(failed)}")

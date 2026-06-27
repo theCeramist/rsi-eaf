@@ -65,7 +65,8 @@ class CycleRunner:
         trace_logger.log_cycle_trace(cycle_id, "execute", engine_result, (time.time() - t0) * 1000)
 
         print("[Cycle] Phase 1b: Treasury monitor + verified revenue ingest...")
-        verified_revenue = poll_treasury_payments(cycle_id=cycle_id)
+        treasury_result = poll_treasury_payments(cycle_id=cycle_id, factory_state=self.state)
+        verified_revenue = treasury_result.get("ingested", [])
 
         execution_result = {
             "revenue_engines_run": [engine_result["source"]],
@@ -77,6 +78,8 @@ class CycleRunner:
             "explorer_url": engine_result.get("explorer_url"),
             "revenue_usd_est": sum(e.get("amount_usd_est", 0) for e in verified_revenue),
             "verified_revenue_events": len(verified_revenue),
+            "treasury_ws_observed": treasury_result.get("ws_observed", 0),
+            "treasury_address": treasury_result.get("treasury_address"),
         }
 
         # === 2. INSTRUMENT ===
