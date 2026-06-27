@@ -2,6 +2,14 @@
   "current_cycle": 11,
   "cycles_completed": 10,
   "last_cycle_at": "2026-06-27T04:31:21.567697+00:00",
+  "github_distribution": {
+    "github_repo": "https://github.com/theCeramist/rsi-eaf",
+    "github_revenue_doc": "https://github.com/theCeramist/rsi-eaf/blob/main/docs/REVENUE_SURFACES.md",
+    "github_tip_manifest": "https://github.com/theCeramist/rsi-eaf/blob/main/docs/tip-manifest.json",
+    "github_issue": "https://github.com/theCeramist/rsi-eaf/issues/1",
+    "cross_post_issue": "https://github.com/theCeramist/rsi-mas-v3/issues/2",
+    "updated_at": "2026-06-27T04:45:00+00:00"
+  },
   "grok_usage_watermark": {
     "session_id": "019f0700-9ffd-7900-8f7a-fa4621fc4751",
     "context_tokens_used": 54849,

@@ -58,6 +58,16 @@ class FactoryState:
     def get_treasury_watermark(self) -> Dict[str, Any]:
         return dict(self._data.get("treasury_watermark", {}))
 
+    def set_github_distribution(self, urls: Dict[str, Any]) -> None:
+        self._data["github_distribution"] = {
+            **urls,
+            "updated_at": datetime.now(timezone.utc).isoformat(),
+        }
+        self._save()
+
+    def get_github_distribution(self) -> Dict[str, Any]:
+        return dict(self._data.get("github_distribution", {}))
+
     def set_treasury_watermark(
         self,
         last_ingested_tx_hash: Optional[str] = None,

@@ -19,7 +19,8 @@ def analyze_cycle(
 
     costs = sum(float(e.get("amount_usd_est", 0)) for e in events if e.get("event_type") == "cost")
     revenue = sum(float(e.get("amount_usd_est", 0)) for e in events if e.get("event_type") == "revenue")
-    assets = sum(1 for e in events if e.get("event_type") == "asset_published")
+    publish_types = {"asset_published", "tip_funnel_published", "briefing_published"}
+    assets = sum(1 for e in events if e.get("event_type") in publish_types)
 
     recommendations: List[str] = []
     if revenue <= 0:

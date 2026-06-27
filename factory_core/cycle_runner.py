@@ -23,6 +23,7 @@ from observability.trace_logger import trace_logger
 from observability.treasury_monitor import poll_treasury_payments
 from revenue_engines.registry import run_revenue_engines
 from tools.distribution_tools import featured_links_for_index, write_sitemap
+from tools.github_distribution import write_local_distribution_artifacts
 from tools.publish_tools import build_index_html
 from revenue_engines.base_engine import resolve_treasury
 from tools.xrpl_tools import load_factory_wallet, get_account_xrp_balance
@@ -70,6 +71,7 @@ class CycleRunner:
         featured = featured_links_for_index(cycle_id)
         build_index_html(treasury_address=treasury, featured=featured)
         write_sitemap(live_urls=engine_bundle.get("live_urls"))
+        write_local_distribution_artifacts(cycle_id, featured, treasury)
         engine_result = engine_bundle.get("primary") or {}
         trace_logger.log_cycle_trace(
             cycle_id,

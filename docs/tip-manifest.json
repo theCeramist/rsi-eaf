@@ -1,0 +1,22 @@
+{
+  "schema": "rsi_eaf_tip_manifest_v1",
+  "updated_at": "2026-06-27T04:32:04.751711+00:00",
+  "cycle_id": 11,
+  "network": "xrpl_testnet",
+  "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+  "payment_memo_template": {
+    "type": "revenue",
+    "amount_usd_est": 1.0,
+    "notes": "supporter tip",
+    "source": "tip_manifest"
+  },
+  "suggested_amounts_usd": [
+    0.5,
+    1.0,
+    2.5,
+    5.0
+  ],
+  "explorer": "https://testnet.xrpl.org/",
+  "live_tip_page": "https://published-zeta.vercel.app/tip-cycle-11-20260627T043141Z.html",
+  "verification": "Payment ingested when memo includes type=revenue and amount_usd_est > 0"
+}

@@ -118,3 +118,15 @@ This scaffold is intentionally lean and surgical. Every component is designed to
 **Let's make the factory real — on-chain, verifiable, and self-sustaining.**
 
 Run the first Grok Build plan command above and report the tx hash + explorer link when successful. Then we iterate surgically.
+
+## Revenue Surfaces
+
+Public factory outputs and XRPL payment endpoints (cycle 11):
+
+- **Live index:** https://published-zeta.vercel.app/
+- **Tip page:** https://published-zeta.vercel.app/tip-cycle-11-20260627T043141Z.html
+- **Tip manifest (agents):** https://published-zeta.vercel.app/tip-manifest.json
+- **Paid briefing:** https://published-zeta.vercel.app/briefing-cycle-11-20260627T043211Z.html
+- **Docs:** [docs/REVENUE_SURFACES.md](docs/REVENUE_SURFACES.md)
+
+Send XRPL testnet payments to the factory treasury with a `revenue` memo — see docs for templates.
