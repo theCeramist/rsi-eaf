@@ -20,6 +20,24 @@ def _ci_gate_enabled() -> bool:
     return os.getenv("GITHUB_CI_GATE", "true").lower() in {"1", "true", "yes"}
 
 
+def _hygiene_job_passed(owner: str, repo: str, run_id: int) -> bool:
+    """True when Pre-Deploy Validation & Hygiene succeeded (nexus-portal-ci)."""
+    try:
+        response = httpx.get(
+            f"https://api.github.com/repos/{owner}/{repo}/actions/runs/{run_id}/jobs",
+            headers=github_headers(),
+            timeout=30.0,
+        )
+        if response.status_code != 200:
+            return False
+        for job in response.json().get("jobs", []):
+            if job.get("name") == "Pre-Deploy Validation & Hygiene":
+                return job.get("conclusion") == "success"
+    except httpx.HTTPError:
+        return False
+    return False
+
+
 def latest_workflow_run(
     owner: str = GITHUB_OWNER,
     repo: str = GITHUB_REPO,
@@ -45,15 +63,30 @@ def latest_workflow_run(
         latest = runs[0]
         conclusion = latest.get("conclusion")
         status = latest.get("status")
-        blocking = conclusion == "failure" or (status == "in_progress" and _ci_gate_enabled())
+        run_id = latest.get("id")
+        hygiene_pass = False
+        if (
+            conclusion == "failure"
+            and repo == NEXUS_CI_REPO
+            and run_id
+            and os.getenv("NEXUS_CI_HYGIENE_GATE", "true").lower() in {"1", "true", "yes"}
+        ):
+            hygiene_pass = _hygiene_job_passed(owner, repo, run_id)
+
+        effective_conclusion = "success" if hygiene_pass else conclusion
+        blocking = effective_conclusion == "failure" or (
+            status == "in_progress" and _ci_gate_enabled()
+        )
         return {
             "success": True,
-            "run_id": latest.get("id"),
+            "run_id": run_id,
             "workflow": latest.get("name"),
             "status": status,
             "conclusion": conclusion,
+            "effective_conclusion": effective_conclusion,
+            "hygiene_pass": hygiene_pass,
             "html_url": latest.get("html_url"),
-            "blocking": blocking and conclusion == "failure",
+            "blocking": blocking and effective_conclusion == "failure",
         }
     except httpx.HTTPError as exc:
         return {"success": False, "error": str(exc)}

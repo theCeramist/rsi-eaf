@@ -148,6 +148,19 @@ def test_runner_preflight_structure(monkeypatch):
     assert len(result["top3_revenue"]) == 3
 
 
+def test_jarvis_ci_workflow_yaml_valid():
+    """Workflow must not embed unindented heredocs (breaks GHA YAML parser)."""
+    from tools.jarvis_swarm_ci_repair import _WORKFLOW
+
+    assert "python3 scripts/jarvis_hygiene_scan.py" in _WORKFLOW
+    assert "name: Nexus Portal CI/CD" in _WORKFLOW
+    assert "${{ secrets.VERCEL_TOKEN }}" in _WORKFLOW
+    assert "${{{{" not in _WORKFLOW
+    for line in _WORKFLOW.splitlines():
+        if line.startswith("import ") or line.startswith("from "):
+            raise AssertionError(f"unindented python in workflow YAML: {line!r}")
+
+
 def test_tipping_funnel_html_includes_treasury(tmp_path, monkeypatch):
     monkeypatch.setenv("PUBLISHED_DIR", str(tmp_path))
     import revenue_engines.tipping_funnel as tf
