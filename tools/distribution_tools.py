@@ -112,7 +112,7 @@ def canonical_tip_url(cycle_id: Optional[int] = None) -> Optional[str]:
             url = f"{base}/{path.name}"
             if verify_live_url(url):
                 return url
-            return url
+            # Current-cycle tip not deployed yet — fall through to older live tips
 
     candidates = sorted(
         PUBLISHED_DIR.glob("tip-cycle-*.html"),

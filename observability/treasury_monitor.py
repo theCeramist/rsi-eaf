@@ -91,8 +91,11 @@ def poll_treasury_payments(
     unmatched = ingest_result.get("unmatched", [])
 
     if factory_state is not None:
+        verified_hash = None
+        if ingested:
+            verified_hash = ingested[-1].get("xrpl_tx_hash")
         factory_state.set_treasury_watermark(
-            last_ingested_tx_hash=ingested[-1].get("xrpl_tx_hash") if ingested else None,
+            last_ingested_tx_hash=verified_hash,
             last_poll_at=cycle_id,
         )
 

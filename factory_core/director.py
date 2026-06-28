@@ -63,6 +63,9 @@ class CyclePlan:
         os.environ["DIRECTOR_ALLOW_GROK_EVOLUTION"] = (
             "true" if self.allow_grok_evolution else "false"
         )
+        os.environ["GROK_EVOLUTION_ENABLED"] = (
+            "true" if self.allow_grok_evolution else "false"
+        )
         os.environ["DIRECTOR_EVOLUTION_PRIORITIES"] = ",".join(self.evolution_priorities)
 
 
@@ -187,7 +190,7 @@ class FactoryDirector:
             focus=focus,
             stale=stale,
             execution=execution,
-            gates_passed=gates.get("all_passed", False),
+            gates_passed=gates.get("gates_evolution_allowed", gates.get("all_passed", False)),
             factory_state=factory_state,
         )
         force_github = (
@@ -196,14 +199,19 @@ class FactoryDirector:
             or float(net.get("net_usd_est", 0)) <= -max_cumulative_net_loss_usd()
         )
         force_nexus = force_github or focus == "revenue" or continuous
-        budget_ok = float(os.getenv("GROK_EVOLUTION_BUDGET_USD", "0.75")) > 0
+        try:
+            from observability.cost_tracker import grok_budget_ok
+
+            budget_ok = grok_budget_ok(float(os.getenv("GROK_EVOLUTION_BUDGET_USD", "0.75")))
+        except Exception:
+            budget_ok = float(os.getenv("GROK_EVOLUTION_BUDGET_USD", "0.75")) > 0
         revenue_friction = (
             focus == "revenue"
             and "no_verified_revenue" in analysis.get("bottlenecks", [])
         )
         unmatched = int(execution.get("treasury_unmatched_inflows", 0) or 0) > 0
         allow_grok = (
-            gates.get("all_passed")
+            gates.get("gates_core_passed", gates.get("all_passed"))
             and budget_ok
             and (
                 focus in ("tools", "rsi")
@@ -265,6 +273,11 @@ class FactoryDirector:
             return []
 
         priorities: List[str] = []
+        if int(execution.get("verified_revenue_events", 0) or 0) == 0:
+            if "batch_vercel_deploy" not in priorities:
+                priorities.append("batch_vercel_deploy")
+            if "refresh_tip_surfaces" not in priorities:
+                priorities.append("refresh_tip_surfaces")
         stale_normalized = [s.lower() for s in stale]
 
         for title in stale:

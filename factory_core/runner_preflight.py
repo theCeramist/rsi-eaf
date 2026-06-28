@@ -14,6 +14,58 @@ from observability.economic_ledger import ledger
 from tools.github_ci_gate import latest_workflow_run
 
 
+def _maybe_run_revenue_smoke_test() -> Dict[str, Any]:
+    """Optional E2E treasury ingest proof when supporter wallet is configured."""
+    enabled = os.getenv("REVENUE_INGEST_SMOKE_TEST", "false").lower() in {"1", "true", "yes"}
+    if not enabled:
+        return {"skipped": True, "reason": "REVENUE_INGEST_SMOKE_TEST disabled"}
+
+    supporter_seed = os.getenv("TEST_SUPPORTER_SEED", "").strip()
+    if not supporter_seed:
+        return {"skipped": True, "reason": "TEST_SUPPORTER_SEED not set"}
+
+    from gates.verifier import count_verified_revenue_events
+
+    if count_verified_revenue_events() > 0:
+        return {"skipped": True, "reason": "verified_revenue_already_present"}
+
+    try:
+        from xrpl.wallet import Wallet
+
+        from tools.xrpl_tools import get_revenue_destination, load_factory_wallet, send_xrp_payment
+
+        factory = load_factory_wallet(testnet=True)
+        treasury = os.getenv("FACTORY_TREASURY_ADDRESS") or get_revenue_destination(factory)
+        if treasury == factory.classic_address:
+            return {"skipped": True, "reason": "treasury_same_as_factory"}
+
+        supporter = Wallet.from_seed(supporter_seed)
+        amount_usd = float(os.getenv("REVENUE_SMOKE_AMOUNT_USD", "1.0"))
+        amount_xrp = float(os.getenv("REVENUE_SMOKE_AMOUNT_XRP", "0.01"))
+        memo = {
+            "type": "revenue",
+            "amount_usd_est": amount_usd,
+            "notes": "preflight revenue ingest smoke test",
+            "source": "preflight_smoke_test",
+        }
+        result = send_xrp_payment(
+            wallet=supporter,
+            destination=treasury,
+            amount_xrp=amount_xrp,
+            memo_data=memo,
+            destination_tag=1,
+            verbose=False,
+        )
+        return {
+            "executed": bool(result.get("success")),
+            "tx_hash": result.get("tx_hash"),
+            "explorer_url": result.get("explorer_url"),
+            "amount_usd_est": amount_usd,
+        }
+    except Exception as exc:
+        return {"executed": False, "error": str(exc)}
+
+
 def run_preflight() -> Dict[str, Any]:
     """Checks factory readiness; returns blockers and warnings."""
     blockers: List[str] = []
@@ -39,6 +91,13 @@ def run_preflight() -> Dict[str, Any]:
     checks["ledger_net"] = net
     if float(net.get("organic_revenue_usd_est", 0)) <= 0:
         warnings.append("organic_revenue_zero — revenue sprint expected")
+
+    smoke = _maybe_run_revenue_smoke_test()
+    checks["revenue_smoke_test"] = smoke
+    if smoke.get("executed"):
+        warnings.append(f"revenue_smoke_test_sent tx={smoke.get('tx_hash')}")
+    elif smoke.get("error"):
+        warnings.append(f"revenue_smoke_test_failed: {smoke['error']}")
 
     fitness = evaluate_revenue_models()
     checks["revenue_fitness"] = fitness

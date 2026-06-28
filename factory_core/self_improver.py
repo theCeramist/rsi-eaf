@@ -62,18 +62,36 @@ def load_proposal_history(limit: int = 30) -> List[Dict[str, Any]]:
 
 
 def analyze_gate_trends(limit_cycles: int = 20) -> Dict[str, Any]:
-    """Scan recent cycle completion milestones for gate pass/fail patterns."""
-    events = ledger.get_recent_events(limit=500)
-    completions = [
-        e for e in events
-        if e.get("source") == "cycle_runner"
-        and e.get("metadata", {}).get("phase") == "complete"
-    ][-limit_cycles:]
+    """Scan recent gate traces (preferred) or completion milestones for pass/fail patterns."""
+    trace_path = Path(os.getenv("CYCLE_TRACES_FILE", "observability/cycle_traces.jsonl"))
+    gate_rows: List[Dict[str, Any]] = []
+    if trace_path.exists():
+        try:
+            for line in trace_path.read_text(encoding="utf-8").splitlines():
+                if not line.strip():
+                    continue
+                row = json.loads(line)
+                if row.get("phase") == "gates":
+                    gate_rows.append(row.get("data") or {})
+        except (json.JSONDecodeError, OSError):
+            gate_rows = []
+    gate_rows = gate_rows[-limit_cycles:]
+
+    if not gate_rows:
+        events = ledger.get_recent_events(limit=500)
+        completions = [
+            e for e in events
+            if e.get("source") == "cycle_runner"
+            and e.get("metadata", {}).get("phase") == "complete"
+        ][-limit_cycles:]
+        for event in completions:
+            gates = event.get("metadata", {}).get("gates", {})
+            if gates.get("gates"):
+                gate_rows.append(gates)
 
     pass_count = 0
     fail_gates: Counter = Counter()
-    for event in completions:
-        gates = event.get("metadata", {}).get("gates", {})
+    for gates in gate_rows:
         if gates.get("all_passed"):
             pass_count += 1
         else:
@@ -81,7 +99,7 @@ def analyze_gate_trends(limit_cycles: int = 20) -> Dict[str, Any]:
                 if not g.get("passed"):
                     fail_gates[g.get("gate", "unknown")] += 1
 
-    total = len(completions)
+    total = len(gate_rows)
     return {
         "cycles_sampled": total,
         "pass_rate": round(pass_count / total, 3) if total else 0.0,
@@ -297,7 +315,9 @@ def evolve_self(
     meta: Dict[str, Any],
 ) -> Dict[str, Any]:
     """Record RSI evolution intent when gates pass."""
-    if not gate_result.get("all_passed"):
+    from gates.verifier import gates_evolution_allowed
+
+    if not gates_evolution_allowed(gate_result):
         return {"rsi_evolved": False, "reason": "gates_failed", "focus": meta.get("focus")}
 
     rsi_proposals = [p for p in proposals if p.get("source") == "self_improvement"]

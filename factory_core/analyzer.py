@@ -84,9 +84,10 @@ def analyze_cycle(
         "live_url": execution_result.get("live_url"),
         "bottlenecks": [
             b for b in [
-                "no_verified_revenue" if revenue <= 0 else None,
+                "no_verified_revenue" if execution_result.get("verified_revenue_events", 0) <= 0 else None,
                 "negative_unit_economics" if costs > revenue else None,
                 "gates_failed" if not gate_result.get("all_passed") else None,
+                "live_surface_unreachable" if "live_url_reachable" in (gate_result.get("failed_gates") or []) else None,
             ]
             if b
         ],

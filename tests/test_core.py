@@ -854,7 +854,91 @@ def test_canonical_tip_prefers_current_cycle(tmp_path, monkeypatch):
 
     monkeypatch.setattr("tools.publish_tools.verify_live_url", fake_verify)
     url = dt.canonical_tip_url(200)
-    assert url == "https://example.com/tip-cycle-200-new.html"
+    assert url == "https://example.com/tip-cycle-99-old.html"
+
+
+def test_canonical_tip_falls_through_to_live_tip(tmp_path, monkeypatch):
+    from tools import distribution_tools as dt
+
+    monkeypatch.setattr(dt, "PUBLISHED_DIR", tmp_path)
+    monkeypatch.setattr(dt, "FACTORY_PUBLIC_BASE_URL", "https://example.com")
+    (tmp_path / "tip-cycle-50-dead.html").write_text("<html></html>")
+    (tmp_path / "tip-cycle-99-live.html").write_text("<html></html>")
+
+    def fake_verify(url):
+        return "tip-cycle-99-live" in url
+
+    monkeypatch.setattr("tools.publish_tools.verify_live_url", fake_verify)
+    url = dt.canonical_tip_url(50)
+    assert url == "https://example.com/tip-cycle-99-live.html"
+
+
+def test_gates_evolution_allowed_on_live_url_only_fail():
+    from gates.verifier import gates_evolution_allowed
+
+    gate_result = {
+        "gates": [
+            {"gate": "tool_pytest_passed", "passed": True},
+            {"gate": "live_url_reachable", "passed": False},
+            {"gate": "verified_revenue_pipeline", "passed": False},
+        ]
+    }
+    assert gates_evolution_allowed(gate_result) is True
+
+
+def test_resolve_live_url_fallback_chain(monkeypatch):
+    from gates import verifier as gv
+
+    calls = []
+
+    def fake_verify(url):
+        calls.append(url)
+        return url.endswith("/tip-manifest.json")
+
+    monkeypatch.setattr("tools.publish_tools.verify_live_url", fake_verify)
+    ok, detail = gv.resolve_live_url_reachable(
+        {
+            "live_url": "https://published-zeta.vercel.app/cycle-1.html",
+            "featured_surfaces": {"tip_page": "https://published-zeta.vercel.app/tip-dead.html"},
+            "live_urls": ["https://published-zeta.vercel.app/other.html"],
+        }
+    )
+    assert ok is True
+    assert "fallback" in detail or "tip-manifest" in detail
+
+
+def test_format_agents_for_cli_map_shape():
+    from factory_core.grok_cli import format_agents_for_cli
+
+    payload = format_agents_for_cli(
+        [{"name": "scout", "type": "explore", "prompt": "find revenue"}]
+    )
+    assert "scout" in payload
+    assert payload["scout"]["type"] == "explore"
+    assert isinstance(payload, dict)
+
+
+def test_grok_budget_ok_respects_spend(monkeypatch):
+    from observability import cost_tracker as ct
+
+    monkeypatch.setattr(ct, "grok_spend_usd_recent", lambda *a, **k: 0.5)
+    assert ct.grok_budget_ok(0.75) is True
+    monkeypatch.setattr(ct, "grok_spend_usd_recent", lambda *a, **k: 1.0)
+    assert ct.grok_budget_ok(0.75) is False
+
+
+def test_treasury_daemon_atomic_drain(tmp_path, monkeypatch):
+    from observability import treasury_daemon as td
+
+    inbox = tmp_path / "inbox.jsonl"
+    monkeypatch.setattr(td, "INBOX_FILE", inbox)
+    monkeypatch.setattr(td, "DEDUPE_FILE", tmp_path / "dedupe.json")
+    td._append_inbox({"tx_hash": "A1", "from": "rExt"})
+    td._append_inbox({"tx_hash": "A2", "from": "rExt"})
+    drained = td.drain_inbox()
+    assert len(drained) == 2
+    assert td.drain_inbox() == []
+    assert inbox.read_text(encoding="utf-8") == ""
 
 
 def test_github_ci_gate_disabled(monkeypatch):

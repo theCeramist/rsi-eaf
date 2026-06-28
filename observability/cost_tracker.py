@@ -152,3 +152,24 @@ def auto_log_grok_session_costs(
         f"from {len(snapshot.turns_new)} turn(s)."
     )
     return costs
+
+
+def grok_spend_usd_recent(limit_events: int = 500) -> float:
+    """Sum logged Grok-related costs from the economic ledger."""
+    total = 0.0
+    for event in ledger.get_recent_events(limit=limit_events):
+        if event.get("event_type") != "cost":
+            continue
+        meta = event.get("metadata") or {}
+        basis = str(meta.get("basis", ""))
+        source = str(event.get("source", ""))
+        if "grok" in basis.lower() or "grok" in source.lower():
+            total += float(event.get("amount_usd_est", 0))
+    return round(total, 4)
+
+
+def grok_budget_ok(budget_usd: float, window_events: int = 500) -> bool:
+    """True when cumulative Grok spend is below the configured evolution budget."""
+    if budget_usd <= 0:
+        return False
+    return grok_spend_usd_recent(window_events) < budget_usd

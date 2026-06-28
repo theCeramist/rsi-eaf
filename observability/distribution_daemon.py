@@ -16,6 +16,7 @@ INTEL_FILE = Path(os.getenv("DISTRIBUTION_DAEMON_LOG", "observability/distributi
 _stop = threading.Event()
 _thread: Optional[threading.Thread] = None
 _last_cycle = 0
+_tip_dead_ticks = 0
 
 
 def _interval_sec() -> float:
@@ -47,6 +48,23 @@ def run_distribution_tick(cycle_id: Optional[int] = None, force: bool = False) -
     tip_url = outreach.get("tip_url") or canonical_tip_url(cycle_id)
     tip_live = verify_live_url(tip_url) if tip_url else False
 
+    global _tip_dead_ticks
+    deploy_result: Dict[str, Any] = {}
+    force_deploy_threshold = int(os.getenv("DISTRIBUTION_FORCE_DEPLOY_TICKS", "2"))
+    if not tip_live:
+        _tip_dead_ticks += 1
+        if _tip_dead_ticks >= force_deploy_threshold or force:
+            from tools.publish_tools import deploy_to_vercel, reset_cycle_deploy_flag
+
+            reset_cycle_deploy_flag()
+            deploy_result = deploy_to_vercel(force=force or _tip_dead_ticks >= force_deploy_threshold)
+            if deploy_result.get("success"):
+                tip_url = canonical_tip_url(cycle_id) or tip_url
+                tip_live = verify_live_url(tip_url) if tip_url else False
+                _tip_dead_ticks = 0
+    else:
+        _tip_dead_ticks = 0
+
     issue = refresh_support_issue(cycle_id, featured, treasury)
     dist = maybe_push_distribution(
         cycle_id=cycle_id,
@@ -63,6 +81,7 @@ def run_distribution_tick(cycle_id: Optional[int] = None, force: bool = False) -
         "issue_updated": issue.get("issue_updated"),
         "distribution_pushed": dist.get("pushed"),
         "force": force,
+        "vercel_deploy": deploy_result or None,
     }
     INTEL_FILE.parent.mkdir(parents=True, exist_ok=True)
     with INTEL_FILE.open("a", encoding="utf-8") as fh:

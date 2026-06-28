@@ -18,6 +18,15 @@ DEFAULT_TIMEOUT = int(os.getenv("GROK_CLI_TIMEOUT_SEC", "120"))
 GrokMode = Literal["plan", "execute", "verify", "analyze"]
 
 
+def format_agents_for_cli(agents: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """Grok CLI --agents expects a map, not a list."""
+    payload: Dict[str, Any] = {}
+    for idx, agent in enumerate(agents):
+        name = str(agent.get("name") or f"agent_{idx}")
+        payload[name] = {k: v for k, v in agent.items() if k != "name"}
+    return payload
+
+
 def _parse_json_output(output: str) -> Dict[str, Any]:
     """Extract JSON object from grok --output-format json stdout."""
     text = output.strip()
@@ -92,7 +101,7 @@ def run_headless(
         cmd.extend(["--cwd", cwd])
 
     if agents and mode == "analyze":
-        cmd.extend(["--agents", json.dumps(agents)])
+        cmd.extend(["--agents", json.dumps(format_agents_for_cli(agents))])
 
     if mode == "verify":
         cmd.extend(["--disallowed-tools", "Write,search_replace"])

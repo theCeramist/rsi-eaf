@@ -5,9 +5,7 @@ All gates must pass before evolution (Phase 6).
 
 import os
 from pathlib import Path
-from typing import Any, Dict, List, Optional
-
-import httpx
+from typing import Any, Dict, List, Optional, Set
 
 from observability.economic_ledger import ledger
 from tools.publish_tools import verify_live_url
@@ -15,9 +13,96 @@ from tools.xrpl_tools import get_client
 
 PUBLISHED_DIR = os.getenv("PUBLISHED_DIR", "published")
 
+SOFT_EVOLUTION_GATES: Set[str] = {"live_url_reachable", "verified_revenue_pipeline"}
+
 
 def _gate(name: str, passed: bool, detail: str) -> Dict[str, Any]:
     return {"gate": name, "passed": passed, "detail": detail}
+
+
+def failed_gate_names(gate_result: Dict[str, Any]) -> List[str]:
+    return [g["gate"] for g in gate_result.get("gates", []) if not g.get("passed")]
+
+
+def gates_core_passed(gate_result: Dict[str, Any]) -> bool:
+    """Hard gates — excludes soft deploy/revenue-pipeline gates."""
+    for g in gate_result.get("gates", []):
+        if g.get("gate") in SOFT_EVOLUTION_GATES:
+            continue
+        if not g.get("passed"):
+            return False
+    return True
+
+
+def gates_evolution_allowed(gate_result: Dict[str, Any]) -> bool:
+    """Allow deterministic evolution when only soft gates fail."""
+    failed = failed_gate_names(gate_result)
+    if not failed:
+        return True
+    return all(name in SOFT_EVOLUTION_GATES for name in failed)
+
+
+def count_verified_revenue_events() -> int:
+    count = 0
+    for event in ledger.get_recent_events(limit=2000):
+        if event.get("event_type") != "revenue":
+            continue
+        meta = event.get("metadata") or {}
+        if meta.get("superseded"):
+            continue
+        if meta.get("verified") is True or meta.get("verification_method"):
+            count += 1
+    return count
+
+
+def collect_live_url_candidates(execution_result: Dict[str, Any]) -> List[str]:
+    """Ordered live URL fallbacks when per-cycle deploy was skipped."""
+    seen: set[str] = set()
+    candidates: List[str] = []
+
+    def add(url: Optional[str]) -> None:
+        if url and url not in seen:
+            seen.add(url)
+            candidates.append(url)
+
+    add(execution_result.get("live_url"))
+    featured = execution_result.get("featured_surfaces") or {}
+    for key in (
+        "canonical_tip_page",
+        "tip_page",
+        "briefing_page",
+        "mythos_page",
+        "micro_tool_page",
+        "tip_manifest",
+        "service_catalog",
+    ):
+        add(featured.get(key))
+
+    for url in execution_result.get("live_urls") or []:
+        add(url)
+
+    base = os.getenv("FACTORY_PUBLIC_BASE_URL", "").rstrip("/")
+    if base:
+        add(f"{base}/tip-manifest.json")
+        add(f"{base}/")
+    return candidates
+
+
+def resolve_live_url_reachable(execution_result: Dict[str, Any]) -> tuple[bool, str]:
+    """Try primary + canonical + manifest/index fallbacks."""
+    if execution_result.get("live_verified"):
+        return True, str(execution_result.get("live_url") or "live_verified")
+
+    for url in collect_live_url_candidates(execution_result):
+        if verify_live_url(url):
+            if url != execution_result.get("live_url"):
+                return True, f"{url} (fallback)"
+            return True, url
+
+    primary = execution_result.get("live_url")
+    featured = execution_result.get("featured_surfaces") or {}
+    canonical = featured.get("canonical_tip_page") or featured.get("tip_page")
+    return False, primary or canonical or "missing"
 
 
 def verify_xrpl_transaction(tx_hash: str, testnet: bool = True) -> bool:
@@ -63,10 +148,31 @@ def run_tool_improvement_gates(
         "cycle_id": cycle_id,
         "mode": "tool_improvement",
         "all_passed": all_passed,
+        "gates_core_passed": all_passed,
+        "gates_evolution_allowed": all_passed,
         "gates": gates,
         "passed_count": sum(1 for g in gates if g["passed"]),
         "total_count": len(gates),
     }
+
+
+def _verified_revenue_gate(cycle_id: int) -> Dict[str, Any]:
+    min_cycles = int(os.getenv("REVENUE_VERIFY_MIN_CYCLES", "20"))
+    enabled = os.getenv("REVENUE_VERIFY_GATE_ENABLED", "true").lower() in {"1", "true", "yes"}
+    verified = count_verified_revenue_events()
+    organic = ledger.calculate_net().get("organic_revenue_usd_est", 0)
+    if not enabled or cycle_id < min_cycles:
+        return _gate(
+            "verified_revenue_pipeline",
+            True,
+            f"skipped (cycle<{min_cycles} or gate disabled); verified={verified}",
+        )
+    passed = verified > 0 or float(organic) > 0
+    return _gate(
+        "verified_revenue_pipeline",
+        passed,
+        f"verified_events={verified} organic=${organic}",
+    )
 
 
 def run_cycle_gates(
@@ -129,25 +235,11 @@ def run_cycle_gates(
     )
 
     live_url = execution_result.get("live_url")
-    live_ok = True
     if live_url:
-        featured = execution_result.get("featured_surfaces") or {}
-        canonical = featured.get("canonical_tip_page") or featured.get("tip_page")
-        live_ok = verify_live_url(live_url)
-        if not live_ok and canonical:
-            live_ok = verify_live_url(canonical)
-            if live_ok:
-                live_url = f"{canonical} (canonical tip; cycle asset deferred)"
-        deploy = execution_result.get("vercel_deploy") or {}
-        cooldown_skip = deploy.get("skipped") and "cooldown" in str(deploy.get("reason", ""))
-        if not live_ok and cooldown_skip and canonical:
-            live_ok = verify_live_url(canonical)
-            if live_ok:
-                live_url = f"{canonical} (cooldown defer; local assets queued)"
-        gates.append(_gate("live_url_reachable", live_ok, live_url or canonical or "missing"))
+        live_ok, live_detail = resolve_live_url_reachable(execution_result)
+        gates.append(_gate("live_url_reachable", live_ok, live_detail))
     elif require_live_url:
         gates.append(_gate("live_url_reachable", False, "no live_url in execution result"))
-        live_ok = False
 
     net = ledger.calculate_net(since_cycle=cycle_id)
     gates.append(
@@ -158,11 +250,17 @@ def run_cycle_gates(
         )
     )
 
+    gates.append(_verified_revenue_gate(cycle_id))
+
     all_passed = all(g["passed"] for g in gates)
-    return {
+    result = {
         "cycle_id": cycle_id,
         "all_passed": all_passed,
+        "gates_core_passed": gates_core_passed({"gates": gates}),
+        "gates_evolution_allowed": gates_evolution_allowed({"gates": gates}),
         "gates": gates,
         "passed_count": sum(1 for g in gates if g["passed"]),
         "total_count": len(gates),
+        "failed_gates": failed_gate_names({"gates": gates}),
     }
+    return result

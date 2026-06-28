@@ -75,7 +75,19 @@ def run_worktree_verifier(
     if os.getenv("WORKTREE_VERIFIER_ENABLED", "true").lower() not in {"1", "true", "yes"}:
         return {"skipped": True, "reason": "disabled"}
 
-    pytest_result = _run_pytest_subset()
+    from factory_core.pytest_cache import get_pytest_result
+
+    code_changed = bool(evolution_result.get("executor", {}).get("executed"))
+    cached = get_pytest_result(cycle_id)
+    if cached and cached.get("passed") and not code_changed:
+        pytest_result = {
+            "passed": True,
+            "exit_code": 0,
+            "cached": True,
+            "duration_ms": cached.get("duration_ms"),
+        }
+    else:
+        pytest_result = _run_pytest_subset()
     xrpl_checks = _verify_xrpl_anchors(cycle_id)
     live_checks = _verify_live_surfaces(featured)
 

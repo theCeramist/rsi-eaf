@@ -29,6 +29,13 @@ def start_all_parallel_infrastructure(treasury_address: Optional[str] = None) ->
         start_fn = getattr(mod, fn_name)
         results.append(register_daemon(name, start_fn))
 
+    try:
+        from observability.daemon_supervisor import start_daemon_watchdog
+
+        start_daemon_watchdog()
+    except Exception:
+        pass
+
     return results
 
 

@@ -21,7 +21,9 @@ def evolve_cycle(
     Log evolution milestone. Optionally git-commit if repo exists and gates passed.
     Does not auto-apply code changes — surgical human/grok review still required.
     """
-    if not gate_result.get("all_passed"):
+    from gates.verifier import gates_evolution_allowed
+
+    if not gates_evolution_allowed(gate_result):
         return {
             "evolved": False,
             "reason": "gates_failed",

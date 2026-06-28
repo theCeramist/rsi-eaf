@@ -142,7 +142,9 @@ def run_autonomous(
             except Exception as exc:
                 print(f"[AutonomousRunner] Cycle error (continuing): {exc}")
                 cycles_run += 1
-                time.sleep(int(interval_minutes * 60))
+                sleep_sec = int((next_plan.sleep_minutes if next_plan else interval_minutes) * 60)
+                print(f"[Director] Error backoff sleeping {sleep_sec}s...")
+                time.sleep(sleep_sec)
                 continue
 
             cycles_run += 1
@@ -218,9 +220,9 @@ def run_autonomous(
             shutdown_runner_acp(acp_boot.get("client"))
             print("[AutonomousRunner] ACP session closed")
         try:
-            from observability.treasury_daemon import stop_treasury_daemon
+            from observability.daemon_supervisor import stop_all_factory_daemons
 
-            stop_treasury_daemon()
+            stop_all_factory_daemons()
         except Exception:
             pass
 

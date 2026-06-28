@@ -108,7 +108,10 @@ def run_tool_improvement_cycle(cycle_id: int) -> Dict[str, Any]:
     print("[ToolImprover] Running tool improvement cycle...")
     t0 = time.time()
 
+    from factory_core.pytest_cache import set_pytest_result
+
     pytest_result = run_pytest()
+    set_pytest_result(cycle_id, pytest_result)
     xrpl_result = check_xrpl_connectivity()
     opportunities = analyze_tool_bottlenecks()
 
@@ -153,7 +156,9 @@ def run_tool_improvement_cycle(cycle_id: int) -> Dict[str, Any]:
 
 def evolve_tools(cycle_id: int, proposals: List[Dict[str, Any]], gate_result: Dict[str, Any]) -> Dict[str, Any]:
     """Record tool evolution intent; surgical patches applied in-repo by agent cycles."""
-    if not gate_result.get("all_passed"):
+    from gates.verifier import gates_evolution_allowed
+
+    if not gates_evolution_allowed(gate_result):
         return {"evolved": False, "reason": "tool_gates_failed"}
 
     focus = [p for p in proposals if p.get("source") == "tool_improvement"]

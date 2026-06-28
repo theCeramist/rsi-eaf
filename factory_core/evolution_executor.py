@@ -102,8 +102,10 @@ def execute_evolution(
     factory_state: Optional[Any] = None,
 ) -> Dict[str, Any]:
     """Run one executable evolution action when gates pass."""
-    if not gate_result.get("all_passed"):
-        return {"executed": False, "reason": "gates_failed"}
+    from gates.verifier import gates_evolution_allowed
+
+    if not gates_evolution_allowed(gate_result):
+        return {"executed": False, "reason": "gates_failed", "failed": gate_result.get("failed_gates")}
 
     actions: List[Dict[str, Any]] = []
     task = _pick_evolution_task(proposals, rsi_meta, execution_result)

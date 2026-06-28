@@ -377,7 +377,11 @@ class CycleRunner:
         try:
             from factory_core.parallel_lanes import run_post_evolve_lanes
 
-            allow_grok_evo = os.getenv("GROK_EVOLUTION_ENABLED", "false").lower() in {"1", "true", "yes"}
+            allow_grok_evo = os.getenv("DIRECTOR_ALLOW_GROK_EVOLUTION", os.getenv("GROK_EVOLUTION_ENABLED", "false")).lower() in {
+                "1",
+                "true",
+                "yes",
+            }
             evolve_lanes = run_post_evolve_lanes(
                 cycle_id,
                 evolution,

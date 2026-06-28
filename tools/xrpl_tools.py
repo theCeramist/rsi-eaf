@@ -39,6 +39,12 @@ XRPL_MAINNET_WS_URL = os.getenv("XRPL_MAINNET_WS_URL", "wss://xrplcluster.com/")
 # Factory XRPL account (set via .env; never hardcode)
 FACTORY_XRPL_SEED = os.getenv("FACTORY_XRPL_SEED")  # e.g. sEd... or hex
 FACTORY_XRPL_ADDRESS = os.getenv("FACTORY_XRPL_ADDRESS")  # classic address for quick reference
+XRPL_WS_QUIET = os.getenv("XRPL_WS_QUIET", "true").lower() in {"1", "true", "yes"}
+
+
+def _xrpl_log(message: str, *, force: bool = False) -> None:
+    if force or not XRPL_WS_QUIET:
+        print(message)
 
 
 def get_client(testnet: bool = True) -> JsonRpcClient:
@@ -121,6 +127,7 @@ def send_xrp_payment(
     amount_xrp: float | str | Decimal,
     memo_data: Optional[Dict[str, Any]] = None,
     memo_type: str = "rsi_eaf_economic_event",
+    destination_tag: Optional[int] = None,
     testnet: bool = True,
     verbose: bool = True,
 ) -> Dict[str, Any]:
@@ -154,12 +161,15 @@ def send_xrp_payment(
             )
         )
 
-    payment = Payment(
-        account=wallet.classic_address,
-        destination=destination,
-        amount=amount_drops,
-        memos=memos if memos else None,
-    )
+    payment_kwargs: Dict[str, Any] = {
+        "account": wallet.classic_address,
+        "destination": destination,
+        "amount": amount_drops,
+        "memos": memos if memos else None,
+    }
+    if destination_tag is not None:
+        payment_kwargs["destination_tag"] = int(destination_tag)
+    payment = Payment(**payment_kwargs)
 
     if verbose:
         print(f"[XRPL] Preparing Payment: {amount_xrp} XRP to {destination}")
@@ -250,7 +260,7 @@ def monitor_incoming_payments(
     """
     url = XRPL_TESTNET_WS_URL if testnet else XRPL_MAINNET_WS_URL
     poll_timeout = float(timeout_seconds or 3)
-    print(f"[XRPL] Starting WebSocket monitor for incoming payments to {address}...")
+    _xrpl_log(f"[XRPL] Starting WebSocket monitor for incoming payments to {address}...")
 
     state: Dict[str, Any] = {"observed": 0}
 
@@ -263,7 +273,7 @@ def monitor_incoming_payments(
                         streams=[StreamParameter.TRANSACTIONS],
                     )
                 )
-                print(f"[XRPL] Subscribed to transactions (poll {poll_timeout:.0f}s).")
+                _xrpl_log(f"[XRPL] Subscribed to transactions (poll {poll_timeout:.0f}s).")
                 deadline = time.monotonic() + poll_timeout
                 for msg in ws:
                     if time.monotonic() >= deadline:
@@ -273,16 +283,23 @@ def monitor_incoming_payments(
                         continue
                     callback(payment)
                     state["observed"] += 1
-            print(f"[XRPL] Monitor poll complete ({state['observed']} payment(s) observed).")
+            if state["observed"]:
+                _xrpl_log(
+                    f"[XRPL] Monitor poll complete ({state['observed']} payment(s) observed).",
+                    force=True,
+                )
         except Exception as exc:
-            print(f"[XRPL] Monitor error: {exc}")
+            _xrpl_log(f"[XRPL] Monitor error: {exc}", force=True)
             state["error"] = str(exc)
 
     worker = threading.Thread(target=_poll_loop, name="xrpl-ws-poll", daemon=True)
     worker.start()
     worker.join(timeout=poll_timeout + 3.0)
     if worker.is_alive():
-        print(f"[XRPL] Monitor hard-timeout after {poll_timeout:.0f}s — continuing cycle")
+        _xrpl_log(
+            f"[XRPL] Monitor hard-timeout after {poll_timeout:.0f}s — continuing cycle",
+            force=True,
+        )
     return int(state["observed"])
 
 
