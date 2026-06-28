@@ -505,10 +505,20 @@ def test_calculate_net_organic_split(tmp_path):
     assert net["factory_adjacent_revenue_usd_est"] == 1.0
 
 
-def test_analyze_improvement_history_reads_tool_log():
-    from factory_core.self_improver import analyze_improvement_history
+def test_analyze_improvement_history_reads_tool_log(tmp_path, monkeypatch):
+    from factory_core import self_improver as si
 
-    result = analyze_improvement_history()
+    log = tmp_path / "tool_improvements.jsonl"
+    entry = {
+        "timestamp": "2026-06-28T00:00:00+00:00",
+        "cycle_id": 1,
+        "pytest": {"passed": True, "duration_ms": 100},
+        "xrpl": {"ok": True},
+    }
+    log.write_text(json.dumps(entry) + "\n", encoding="utf-8")
+    monkeypatch.setattr(si, "IMPROVEMENTS_LOG", log)
+
+    result = si.analyze_improvement_history()
     assert "tool_cycles_logged" in result
     assert "ledger_trends" in result
     assert result["tool_cycles_logged"] >= 1
@@ -609,6 +619,30 @@ def test_treasury_daemon_drain_roundtrip(tmp_path, monkeypatch):
     drained = td.drain_inbox()
     assert len(drained) == 1
     assert td.drain_inbox() == []
+
+
+def test_init_runner_acp_disabled(monkeypatch):
+    from factory_core import grok_acp
+
+    monkeypatch.setenv("GROK_ORCHESTRATION", "subprocess")
+    result = grok_acp.init_runner_acp()
+    assert result.get("started") is False
+
+
+def test_run_parallel_analysis_routes_acp(monkeypatch):
+    from factory_core import grok_cli
+
+    calls = []
+
+    def fake_acp(cycle_id, prompt, factory_state=None):
+        calls.append((cycle_id, prompt[:40]))
+        return {"mode": "acp", "cycle_id": cycle_id}
+
+    monkeypatch.setenv("GROK_ORCHESTRATION", "acp")
+    monkeypatch.setenv("GROK_PARALLEL_ANALYSIS", "true")
+    monkeypatch.setattr("factory_core.grok_acp.run_cycle_via_acp", fake_acp)
+    grok_cli.run_parallel_analysis(7, {"cycle_revenue_usd": 0})
+    assert calls and calls[0][0] == 7
 
 
 def test_grok_evolution_best_of_n_flag(monkeypatch):

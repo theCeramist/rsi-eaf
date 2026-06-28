@@ -202,6 +202,10 @@ def run_parallel_analysis(cycle_id: int, analysis: Dict[str, Any]) -> Dict[str, 
         "Return JSON: {\"bottleneck_insights\":[], \"revenue_hypotheses\":[], "
         "\"xrpl_verification_steps\":[]}"
     )
+    if os.getenv("GROK_ORCHESTRATION", "subprocess").lower() == "acp":
+        from factory_core.grok_acp import run_cycle_via_acp
+
+        return run_cycle_via_acp(cycle_id, prompt)
     agents = [
         {"name": "bottleneck_explorer", "type": "explore", "prompt": "Find revenue bottlenecks in analysis data."},
         {"name": "treasury_researcher", "type": "explore", "prompt": "Suggest XRPL payment UX improvements for treasury tips."},
