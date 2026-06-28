@@ -7,7 +7,7 @@ Tracks cycle counter across process restarts. Git-friendly JSON on disk.
 import json
 import os
 from datetime import datetime, timezone
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 STATE_FILE = os.getenv("FACTORY_STATE_FILE", "factory_core/factory_state.json")
 
@@ -67,6 +67,58 @@ class FactoryState:
 
     def get_github_distribution(self) -> Dict[str, Any]:
         return dict(self._data.get("github_distribution", {}))
+
+    def set_nexus_emit(self, payload: Dict[str, Any]) -> None:
+        self._data["nexus_emit"] = {
+            **payload,
+            "updated_at": datetime.now(timezone.utc).isoformat(),
+        }
+        self._save()
+
+    def get_nexus_emit(self) -> Dict[str, Any]:
+        return dict(self._data.get("nexus_emit", {}))
+
+    def set_gist_distribution(self, payload: Dict[str, Any]) -> None:
+        self._data["gist_distribution"] = {
+            **payload,
+            "updated_at": datetime.now(timezone.utc).isoformat(),
+        }
+        self._save()
+
+    def get_gist_distribution(self) -> Dict[str, Any]:
+        return dict(self._data.get("gist_distribution", {}))
+
+    def set_release(self, payload: Dict[str, Any]) -> None:
+        self._data["github_release"] = {
+            **payload,
+            "updated_at": datetime.now(timezone.utc).isoformat(),
+        }
+        self._save()
+
+    def get_release(self) -> Dict[str, Any]:
+        return dict(self._data.get("github_release", {}))
+
+    def set_acp_session(self, payload: Dict[str, Any]) -> None:
+        self._data["acp_session"] = {
+            **payload,
+            "updated_at": datetime.now(timezone.utc).isoformat(),
+        }
+        self._save()
+
+    def get_acp_session(self) -> Dict[str, Any]:
+        return dict(self._data.get("acp_session", {}))
+
+    def get_implemented_proposals(self) -> List[str]:
+        return list(self._data.get("implemented_proposals", []))
+
+    def mark_proposal_implemented(self, title: str) -> None:
+        norm = title.strip()
+        if not norm:
+            return
+        implemented = set(self._data.get("implemented_proposals", []))
+        implemented.add(norm)
+        self._data["implemented_proposals"] = sorted(implemented)
+        self._save()
 
     def set_treasury_watermark(
         self,

@@ -21,6 +21,7 @@ if TYPE_CHECKING:
 GROK_COST_PER_1K_TOKENS = float(os.getenv("GROK_BUILD_COST_PER_1K_TOKENS", "0.10"))
 DEFAULT_SESSION_COST_USD = os.getenv("CYCLE_SESSION_COST_USD")
 AUTO_GROK_USAGE = os.getenv("AUTO_GROK_USAGE", "true").lower() in {"1", "true", "yes"}
+GROK_MAX_TOKENS_PER_CYCLE = int(os.getenv("GROK_MAX_TOKENS_PER_CYCLE", "8000"))
 
 
 def estimate_grok_cost_usd(tokens_used: int) -> float:
@@ -42,9 +43,9 @@ def log_cycle_costs(
     costs: List[Dict[str, Any]] = []
     extra = metadata or {}
 
-    if session_cost_usd is not None and session_cost_usd > 0:
-        amount = session_cost_usd
-        basis = "explicit_session_cost"
+    if session_cost_usd is not None and (session_cost_usd > 0 or extra.get("tool_maintenance")):
+        amount = session_cost_usd if session_cost_usd is not None else 0.0
+        basis = extra.get("basis") or "explicit_session_cost"
     elif grok_tokens_used is not None and grok_tokens_used > 0:
         amount = estimate_grok_cost_usd(grok_tokens_used)
         basis = "grok_token_estimate"
@@ -87,6 +88,8 @@ def auto_log_grok_session_costs(
     """
     if not AUTO_GROK_USAGE:
         return []
+    if os.getenv("FACTORY_RUNNER_ACTIVE", "").lower() not in {"1", "true", "yes"}:
+        return []
 
     watermark = factory_state.get_grok_usage_watermark() if factory_state else {}
     snapshot = collect_new_usage(watermark=watermark, cwd=cwd)
@@ -109,6 +112,14 @@ def auto_log_grok_session_costs(
             factory_state.set_grok_usage_watermark(build_watermark_after_ingest(snapshot))
         return []
 
+    tokens_to_bill = snapshot.tokens_new
+    if tokens_to_bill > GROK_MAX_TOKENS_PER_CYCLE:
+        print(
+            f"[GrokUsage] Capping cycle bill {tokens_to_bill} → "
+            f"{GROK_MAX_TOKENS_PER_CYCLE} tokens (GROK_MAX_TOKENS_PER_CYCLE)."
+        )
+        tokens_to_bill = GROK_MAX_TOKENS_PER_CYCLE
+
     turn_breakdown = [
         {
             "prompt_id": t.prompt_id,
@@ -121,7 +132,7 @@ def auto_log_grok_session_costs(
 
     costs = log_cycle_costs(
         cycle_id=cycle_id,
-        grok_tokens_used=snapshot.tokens_new,
+        grok_tokens_used=tokens_to_bill,
         metadata={
             "basis": "grok_session_auto",
             "source_artifact": snapshot.session_dir,

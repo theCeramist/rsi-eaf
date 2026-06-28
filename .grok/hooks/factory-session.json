@@ -1,0 +1,25 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python -c \"import os; print('[RSI-EAF] SessionStart cycle_mode=', os.getenv('CYCLE_MODE','hybrid'))\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "search_replace|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python -m pytest tests/test_core.py -q --tb=no -x 2>nul || python -m pytest tests/test_core.py -q --tb=no -x 2>/dev/null || true"
+          }
+        ]
+      }
+    ]
+  }
+}

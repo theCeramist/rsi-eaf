@@ -6,6 +6,7 @@ import json
 import os
 import shutil
 import subprocess
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -14,7 +15,44 @@ import httpx
 PUBLISHED_DIR = Path(os.getenv("PUBLISHED_DIR", "published"))
 FACTORY_PUBLIC_BASE_URL = os.getenv("FACTORY_PUBLIC_BASE_URL", "").rstrip("/")
 VERCEL_DEPLOY = os.getenv("VERCEL_DEPLOY", "true").lower() in {"1", "true", "yes"}
+VERCEL_DEPLOY_COOLDOWN_MINUTES = int(os.getenv("VERCEL_DEPLOY_COOLDOWN_MINUTES", "35"))
 VERCEL_TOKEN = os.getenv("VERCEL_TOKEN")
+LAST_DEPLOY_FILE = PUBLISHED_DIR / ".last_vercel_deploy"
+_cycle_deploy_done = False
+
+
+def deploy_cooldown_status() -> Dict[str, Any]:
+    """Whether Vercel deploy is blocked by cooldown."""
+    if not VERCEL_DEPLOY:
+        return {"active": True, "reason": "VERCEL_DEPLOY disabled"}
+    if not LAST_DEPLOY_FILE.exists():
+        return {"active": False}
+    try:
+        last = datetime.fromisoformat(LAST_DEPLOY_FILE.read_text(encoding="utf-8").strip())
+        if last.tzinfo is None:
+            last = last.replace(tzinfo=timezone.utc)
+        elapsed_min = (datetime.now(timezone.utc) - last).total_seconds() / 60
+        if elapsed_min < VERCEL_DEPLOY_COOLDOWN_MINUTES:
+            remaining = VERCEL_DEPLOY_COOLDOWN_MINUTES - elapsed_min
+            return {
+                "active": True,
+                "reason": f"cooldown {remaining:.0f}m remaining (last deploy {last.isoformat()})",
+                "last_deploy_at": last.isoformat(),
+                "remaining_minutes": round(remaining, 1),
+            }
+    except (ValueError, OSError):
+        pass
+    return {"active": False}
+
+
+def _record_deploy_time() -> None:
+    PUBLISHED_DIR.mkdir(parents=True, exist_ok=True)
+    LAST_DEPLOY_FILE.write_text(datetime.now(timezone.utc).isoformat(), encoding="utf-8")
+
+
+def reset_cycle_deploy_flag() -> None:
+    global _cycle_deploy_done
+    _cycle_deploy_done = False
 
 
 def _html_files() -> List[Path]:
@@ -54,9 +92,8 @@ def build_index_html(
         tip_block = f"""
   <section id="support">
     <h2>Support RSI-EAF (XRPL Testnet)</h2>
-    <p>Send a testnet payment to the factory treasury with this memo JSON:</p>
-    <pre>{{"type":"revenue","amount_usd_est":1.0,"notes":"supporter tip"}}</pre>
-    <p><strong>Treasury:</strong> <code>{treasury_address}</code></p>
+    <p><strong>Easy pay:</strong> send testnet XRP to treasury with <strong>Destination Tag 1</strong> (or memo <code>tip</code>).</p>
+    <p><strong>Treasury:</strong> <code>{treasury_address}</code> · <strong>Tag:</strong> <code>1</code></p>
     <p><a href="https://testnet.xrpl.org/">Verify on XRPL Testnet Explorer</a></p>
     <p><a href="tip-manifest.json">Agent tip manifest (JSON)</a></p>
   </section>
@@ -93,13 +130,29 @@ def _write_vercel_config() -> None:
         )
 
 
-def deploy_to_vercel(published_dir: Optional[Path] = None) -> Dict[str, Any]:
+def deploy_to_vercel(
+    published_dir: Optional[Path] = None,
+    force: bool = False,
+) -> Dict[str, Any]:
     """Deploy published static site via Vercel CLI when available."""
+    global _cycle_deploy_done
     published_dir = published_dir or PUBLISHED_DIR
     _write_vercel_config()
 
     if not VERCEL_DEPLOY:
         return {"success": False, "skipped": True, "reason": "VERCEL_DEPLOY disabled"}
+
+    cooldown = deploy_cooldown_status()
+    if cooldown.get("active") and not force:
+        return {"success": False, "skipped": True, "reason": cooldown.get("reason")}
+
+    if _cycle_deploy_done and not force:
+        return {
+            "success": False,
+            "skipped": True,
+            "reason": "batch_deploy_already_ran_this_cycle",
+            "deploy_url": FACTORY_PUBLIC_BASE_URL or None,
+        }
 
     vercel_bin = shutil.which("vercel")
     if not vercel_bin:
@@ -138,8 +191,12 @@ def deploy_to_vercel(published_dir: Optional[Path] = None) -> Dict[str, Any]:
                 line = line.strip()
                 if line.startswith("https://"):
                     url = line.rstrip("/")
+        deploy_ok = result.returncode == 0
+        if deploy_ok:
+            _record_deploy_time()
+            _cycle_deploy_done = True
         return {
-            "success": result.returncode == 0,
+            "success": deploy_ok,
             "deploy_url": url or FACTORY_PUBLIC_BASE_URL or None,
             "cli_output_tail": output[-500:],
         }
@@ -168,13 +225,24 @@ def verify_live_url(url: str, timeout: float = 10.0) -> bool:
         return False
 
 
+def _skip_deploy_requested(skip_deploy: Optional[bool]) -> bool:
+    if skip_deploy is not None:
+        return skip_deploy
+    return os.getenv("SKIP_VERCEL_DEPLOY", "false").lower() in {"1", "true", "yes"}
+
+
 def publish_asset(
     published_path: Path,
     treasury_address: str = "",
+    skip_deploy: Optional[bool] = None,
 ) -> Dict[str, Any]:
     """Index, optionally deploy, and resolve live URL for an asset."""
     build_index_html(treasury_address=treasury_address)
-    deploy_result = deploy_to_vercel()
+    deploy_result = (
+        {"success": False, "skipped": True, "reason": "skip_deploy flag"}
+        if _skip_deploy_requested(skip_deploy)
+        else deploy_to_vercel()
+    )
     rel = published_path.as_posix()
     live_url = resolve_live_url(published_path.name, deploy_result)
 

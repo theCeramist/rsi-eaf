@@ -150,6 +150,8 @@ class EconomicLedger:
         """Simple net calculation for quick health checks."""
         events = self.get_recent_events(limit=1000)
         total_revenue = 0.0
+        organic_revenue = 0.0
+        factory_adjacent_revenue = 0.0
         total_cost = 0.0
         for e in events:
             if since_cycle and e.get("cycle_id", 0) < since_cycle:
@@ -162,12 +164,19 @@ class EconomicLedger:
                 if meta.get("verified") is not True and amt > 0 and not meta.get("verification_method"):
                     continue
                 total_revenue += amt
+                if meta.get("revenue_class") == "organic" or meta.get("organic") is True:
+                    organic_revenue += amt
+                elif meta.get("revenue_class") == "factory_adjacent":
+                    factory_adjacent_revenue += amt
             elif e["event_type"] == "cost":
                 total_cost += amt
         return {
             "total_revenue_usd_est": round(total_revenue, 4),
+            "organic_revenue_usd_est": round(organic_revenue, 4),
+            "factory_adjacent_revenue_usd_est": round(factory_adjacent_revenue, 4),
             "total_cost_usd_est": round(total_cost, 4),
             "net_usd_est": round(total_revenue - total_cost, 4),
+            "organic_net_usd_est": round(organic_revenue - total_cost, 4),
             "events_counted": len(events),
         }
 

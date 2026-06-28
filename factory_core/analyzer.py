@@ -2,6 +2,7 @@
 Cycle analysis — structured performance report from ledger + execution data.
 """
 
+import os
 from typing import Any, Dict, List
 
 from observability.economic_ledger import ledger
@@ -22,8 +23,31 @@ def analyze_cycle(
     publish_types = {"asset_published", "tip_funnel_published", "briefing_published"}
     assets = sum(1 for e in events if e.get("event_type") in publish_types)
 
+    cycle_mode = (execution_result.get("cycle_mode") or os.getenv("CYCLE_MODE", "revenue")).strip()
     recommendations: List[str] = []
-    if revenue <= 0:
+
+    if cycle_mode == "hybrid":
+        if revenue <= 0:
+            recommendations.append(
+                "Revenue goal: share tip page — pay with Destination Tag 1 only."
+            )
+        if not execution_result.get("live_verified"):
+            recommendations.append("Hybrid cycle: verify Vercel batched deploy succeeded.")
+        pending = [o for o in (execution_result.get("opportunities") or []) if o.get("status") != "implemented"]
+        for opp in pending[:2]:
+            recommendations.append(f"Tool: {opp.get('action')}")
+    elif cycle_mode == "tool_improvement":
+        if not execution_result.get("pytest_passed"):
+            recommendations.append("Fix failing pytest before resuming revenue cycles.")
+        if execution_result.get("vercel_cooldown", {}).get("active"):
+            recommendations.append(
+                f"Vercel cooldown active — {execution_result['vercel_cooldown'].get('reason')}"
+            )
+        opportunities = execution_result.get("opportunities") or []
+        pending = [o for o in opportunities if o.get("status") != "implemented"]
+        for opp in pending[:3]:
+            recommendations.append(f"Tool: {opp.get('tool')} — {opp.get('action')}")
+    elif revenue <= 0:
         recommendations.append("Activate supporter tipping on live published pages (treasury + revenue memo).")
     if costs > 0 and revenue < costs:
         recommendations.append(f"Revenue/cost ratio {revenue/max(costs,0.01):.2f} — prioritize monetization before scaling cycles.")
@@ -31,7 +55,12 @@ def analyze_cycle(
         recommendations.append("Configure VERCEL_DEPLOY or FACTORY_PUBLIC_BASE_URL for live asset URLs.")
     elif not execution_result.get("live_verified"):
         recommendations.append("Live URL configured but unreachable — verify Vercel deploy and FACTORY_PUBLIC_BASE_URL.")
-    if execution_result.get("treasury_ws_observed", 0) == 0 and revenue <= 0:
+    unmatched = execution_result.get("treasury_unmatched_inflows", 0)
+    if unmatched > 0:
+        recommendations.append(
+            f"{unmatched} unrecognized treasury payment(s) — use Destination Tag 1 (tip) or 2 (briefing)."
+        )
+    elif execution_result.get("treasury_ws_observed", 0) == 0 and revenue <= 0:
         recommendations.append(
             "No treasury inflows yet — share live asset URL and treasury address for testnet revenue memos."
         )
@@ -41,8 +70,11 @@ def analyze_cycle(
 
     return {
         "cycle_id": cycle_id,
+        "cycle_mode": cycle_mode,
         "net_this_cycle": net_cycle,
         "net_cumulative": net_all,
+        "organic_revenue_usd_est": net_all.get("organic_revenue_usd_est", 0),
+        "factory_adjacent_revenue_usd_est": net_all.get("factory_adjacent_revenue_usd_est", 0),
         "cycle_costs_usd": round(costs, 4),
         "cycle_revenue_usd": round(revenue, 4),
         "assets_published": assets,

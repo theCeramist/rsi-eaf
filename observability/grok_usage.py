@@ -20,6 +20,40 @@ from urllib.parse import quote
 
 GROK_HOME = Path(os.getenv("GROK_HOME", os.path.expanduser("~/.grok")))
 
+FACTORY_PREVIEW_MARKERS = (
+    "rsi-eaf",
+    "executable evolution",
+    "pytest tests",
+    "factory_core",
+    "autonomousrunner",
+    "revenue ingest",
+    "cycle ",
+)
+INTERACTIVE_PREVIEW_MARKERS = (
+    "checking in",
+    "evaluate",
+    "assist with",
+    "keep going",
+    "update.",
+    "todo list",
+    "critical evaluation",
+    "re-evaluate",
+)
+
+
+def is_billable_factory_turn(turn: TurnUsage) -> bool:
+    """Exclude interactive Cursor session turns from factory cycle costs."""
+    if turn.prompt_id.startswith("task-completed-"):
+        return True
+    preview = (turn.user_preview or "").lower()
+    if any(marker in preview for marker in INTERACTIVE_PREVIEW_MARKERS):
+        return False
+    return any(marker in preview for marker in FACTORY_PREVIEW_MARKERS)
+
+
+def runner_cost_scope_active() -> bool:
+    return os.getenv("FACTORY_RUNNER_ACTIVE", "").lower() in {"1", "true", "yes"}
+
 
 @dataclass
 class TurnUsage:
@@ -231,33 +265,39 @@ def collect_new_usage(
     in_progress_prompt = watermark.get("in_progress_prompt_id")
     in_progress_peak_billed = int(watermark.get("in_progress_peak_billed", 0) or 0)
 
+    scope_runner = runner_cost_scope_active()
     for turn in parsed["turns"]:
         if turn.prompt_id in ingested:
             continue
         if turn.completed:
+            if scope_runner and not is_billable_factory_turn(turn):
+                ingested.add(turn.prompt_id)
+                continue
             new_turns.append(turn)
             tokens_new += turn.tokens_delta
 
     if parsed["turns"]:
         last_turn = parsed["turns"][-1]
         if not last_turn.completed and last_turn.prompt_id not in ingested:
-            if in_progress_prompt == last_turn.prompt_id:
-                incremental = max(0, last_turn.peak_context_tokens - in_progress_peak_billed)
-            else:
-                incremental = last_turn.tokens_delta
+            billable = not scope_runner or is_billable_factory_turn(last_turn)
+            if billable:
+                if in_progress_prompt == last_turn.prompt_id:
+                    incremental = max(0, last_turn.peak_context_tokens - in_progress_peak_billed)
+                else:
+                    incremental = last_turn.tokens_delta
 
-            if incremental > 0:
-                in_progress = TurnUsage(
-                    prompt_id=last_turn.prompt_id,
-                    tokens_delta=incremental,
-                    peak_context_tokens=last_turn.peak_context_tokens,
-                    user_preview=last_turn.user_preview,
-                    completed=False,
-                )
-                new_turns.append(in_progress)
-                tokens_new += incremental
+                if incremental > 0:
+                    in_progress = TurnUsage(
+                        prompt_id=last_turn.prompt_id,
+                        tokens_delta=incremental,
+                        peak_context_tokens=last_turn.peak_context_tokens,
+                        user_preview=last_turn.user_preview,
+                        completed=False,
+                    )
+                    new_turns.append(in_progress)
+                    tokens_new += incremental
 
-    if tokens_new == 0 and context_used > prior_context:
+    if not scope_runner and tokens_new == 0 and context_used > prior_context:
         tokens_new = context_used - prior_context
 
     return GrokUsageSnapshot(
@@ -293,3 +333,43 @@ def build_watermark_after_ingest(snapshot: GrokUsageSnapshot) -> Dict[str, Any]:
         watermark.pop("in_progress_peak_billed", None)
 
     return watermark
+
+
+def find_session_dir(session_id: str, cwd: Optional[str] = None) -> Optional[Path]:
+    """Locate a Grok session directory by id (headless or TUI)."""
+    roots = [GROK_HOME / "sessions"]
+    if cwd:
+        roots.insert(0, GROK_HOME / "sessions" / encode_cwd(cwd))
+    for root in roots:
+        if not root.exists():
+            continue
+        direct = root / session_id
+        if direct.is_dir():
+            return direct
+        for child in root.iterdir():
+            candidate = child / session_id
+            if candidate.is_dir():
+                return candidate
+    return None
+
+
+def ingest_headless_session(session_id: str, cycle_id: int) -> Dict[str, Any]:
+    """Bill tokens from a completed headless Grok subprocess session."""
+    session_dir = find_session_dir(session_id)
+    if not session_dir:
+        return {"ingested": False, "reason": "session_not_found"}
+    parsed = parse_session_usage(session_dir)
+    tokens = sum(t.tokens_delta for t in parsed.get("turns", []) if t.completed)
+    if tokens <= 0:
+        return {"ingested": False, "reason": "no_tokens", "session_id": session_id}
+    try:
+        from observability.cost_tracker import log_cycle_costs
+
+        log_cycle_costs(
+            cycle_id=cycle_id,
+            grok_tokens_used=tokens,
+            metadata={"source": "headless_grok", "session_id": session_id},
+        )
+        return {"ingested": True, "tokens": tokens, "session_id": session_id}
+    except Exception as exc:
+        return {"ingested": False, "error": str(exc)}

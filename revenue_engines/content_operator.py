@@ -57,7 +57,7 @@ class ContentOperator:
     <h2>Support RSI-EAF</h2>
     <p>Send XRPL <strong>testnet</strong> payment to:</p>
     <p><code>{treasury_address}</code></p>
-    <p>Memo JSON: <code>{{"type":"revenue","amount_usd_est":1.0,"notes":"supporter tip cycle {content.get('cycle_id','')}"}}</code></p>
+    <p>Destination Tag: <code>1</code> (or memo <code>tip</code>)</p>
   </section>
 """
         html = f"""<!DOCTYPE html>

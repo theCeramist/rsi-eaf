@@ -8,6 +8,7 @@ import pytest
 from gates.verifier import run_cycle_gates, verify_xrpl_transaction
 from observability.economic_ledger import EconomicLedger
 from observability.grok_usage import parse_session_usage
+from observability.payment_intent import resolve_payment_intent
 from observability.revenue_ingest import _extract_payment_fields
 from tools.publish_tools import build_index_html
 from revenue_engines.registry import enabled_engines
@@ -123,13 +124,539 @@ def test_tipping_funnel_html_includes_treasury(tmp_path, monkeypatch):
         assert html_files
         html = html_files[0].read_text()
     assert "rTreasury123" in html
-    assert '"type":"revenue"' in html.replace(" ", "")
+    assert "Destination Tag" in html
 
 
 def test_format_briefing_teaser():
     text = format_briefing_teaser({"cycle_id": 5, "factory_balance_xrp": 90.0})
     assert "Cycle 5" in text
     assert "90" in text
+
+
+def test_resolve_payment_intent_destination_tag():
+    payment = {"destination_tag": 1, "memos": [], "plain_memos": []}
+    intent = resolve_payment_intent(payment, cycle_id=11)
+    assert intent is not None
+    assert intent.method == "destination_tag"
+    assert intent.amount_usd_est == 1.0
+
+
+def test_resolve_payment_intent_plain_memo():
+    payment = {"destination_tag": None, "memos": [], "plain_memos": ["tip"]}
+    intent = resolve_payment_intent(payment, cycle_id=11)
+    assert intent is not None
+    assert intent.method == "plain_memo"
+
+
+def test_resolve_payment_intent_flat_default():
+    payment = {"destination_tag": None, "memos": [], "plain_memos": []}
+    intent = resolve_payment_intent(payment, cycle_id=11)
+    assert intent is not None
+    assert intent.method == "flat_tip_default"
+
+
+def test_unmatched_inflow_without_revenue_memo(tmp_path, monkeypatch):
+    ledger_path = tmp_path / "ledger.jsonl"
+    monkeypatch.setenv("ECONOMIC_LEDGER_FILE", str(ledger_path))
+    import observability.economic_ledger as el
+    import observability.revenue_ingest as ri
+
+    monkeypatch.setattr(el, "LEDGER_FILE", str(ledger_path))
+    monkeypatch.setattr(ri, "ledger", el.EconomicLedger(str(ledger_path)))
+    monkeypatch.setenv("TREASURY_FLAT_TIP_IF_BLANK", "false")
+    monkeypatch.setattr(
+        ri,
+        "query_recent_transactions",
+        lambda address, limit=20: [
+            {
+                "validated": True,
+                "tx": {
+                    "TransactionType": "Payment",
+                    "Account": "rExternal",
+                    "Destination": "rTreasury",
+                    "Amount": "5000000",
+                    "hash": "UNMATCHED1",
+                    "DestinationTag": 999,
+                    "Memos": [],
+                },
+            }
+        ],
+    )
+    monkeypatch.setenv("FACTORY_TREASURY_ADDRESS", "rTreasury")
+    monkeypatch.setattr(ri, "reconcile_unmatched_treasury_payments", lambda cycle_id: [])
+
+    result = ri.ingest_verified_xrpl_revenue(cycle_id=99, treasury_address="rTreasury")
+    assert result["ingested"] == []
+    assert len(result["unmatched"]) == 1
+    assert result["unmatched"][0]["event_type"] == "treasury_inflow_unmatched"
+    assert result["unmatched"][0]["metadata"]["xrp_received"] == 5.0
+
+
+def test_ingest_flat_tip_without_tag_or_memo(tmp_path, monkeypatch):
+    ledger_path = tmp_path / "ledger.jsonl"
+    monkeypatch.setenv("ECONOMIC_LEDGER_FILE", str(ledger_path))
+    import observability.economic_ledger as el
+    import observability.revenue_ingest as ri
+
+    monkeypatch.setattr(el, "LEDGER_FILE", str(ledger_path))
+    monkeypatch.setattr(ri, "ledger", el.EconomicLedger(str(ledger_path)))
+    monkeypatch.setenv("TREASURY_FLAT_TIP_IF_BLANK", "true")
+    monkeypatch.setattr(ri, "reconcile_unmatched_treasury_payments", lambda cycle_id: [])
+    monkeypatch.setattr(
+        ri,
+        "query_recent_transactions",
+        lambda address, limit=20: [
+            {
+                "validated": True,
+                "tx": {
+                    "TransactionType": "Payment",
+                    "Account": "rExternal",
+                    "Destination": "rTreasury",
+                    "Amount": "5000000",
+                    "hash": "FLAT1",
+                    "Memos": [],
+                },
+            }
+        ],
+    )
+    monkeypatch.setenv("FACTORY_TREASURY_ADDRESS", "rTreasury")
+
+    result = ri.ingest_verified_xrpl_revenue(cycle_id=99, treasury_address="rTreasury")
+    assert len(result["ingested"]) == 1
+    assert result["ingested"][0]["event_type"] == "revenue"
+    assert result["ingested"][0]["amount_usd_est"] == 1.0
+
+
+def test_compute_cycle_focus_forced_rotation_every_third_cycle():
+    from factory_core.self_improver import compute_cycle_focus
+
+    meta = {"ledger_trends": {"revenue_gap_usd": 9.0}, "stale_proposals": []}
+    analysis = {"cycle_revenue_usd": 0, "bottlenecks": ["no_verified_revenue"]}
+    assert compute_cycle_focus(cycle_id=3, analysis=analysis, meta=meta) == "rsi"
+    assert compute_cycle_focus(cycle_id=1, analysis=analysis, meta=meta) == "revenue"
+    assert compute_cycle_focus(cycle_id=2, analysis=analysis, meta=meta) == "tools"
+
+
+def test_compute_cycle_focus_capped_revenue_weight():
+    from factory_core.self_improver import compute_cycle_focus
+
+    meta = {"ledger_trends": {"revenue_gap_usd": 9.0}, "stale_proposals": ["x"] * 5}
+    analysis = {"cycle_revenue_usd": 0, "bottlenecks": ["no_verified_revenue"]}
+    focus = compute_cycle_focus(cycle_id=5, analysis=analysis, meta=meta)
+    assert focus in {"revenue", "tools", "rsi"}
+
+
+def test_self_improvement_proposals_detect_stale():
+    from factory_core.self_improver import self_improvement_proposals
+
+    meta = {
+        "focus": "rsi",
+        "stale_proposals": ["Batch Vercel deploy once per cycle"],
+        "ledger_trends": {"revenue_gap_usd": 5.0},
+        "gate_trends": {"pass_rate": 1.0, "top_failures": []},
+        "avg_pytest_duration_ms": 4000,
+    }
+    proposals = self_improvement_proposals(meta, {"cycle_revenue_usd": 0}, cycle_id=79)
+    sources = {p["source"] for p in proposals}
+    assert "self_improvement" in sources
+    assert any("stale" in p["title"].lower() for p in proposals)
+
+
+def test_revenue_classification_factory_adjacent():
+    from observability.revenue_classification import classify_inbound_payment, enrich_revenue_metadata
+
+    assert classify_inbound_payment("rJ2TJZ1KCx6fsshHFVK8MrvNdD1rzyXugJ") == "factory_adjacent"
+    assert classify_inbound_payment("rUnknownExternal111") == "organic"
+    meta = enrich_revenue_metadata({}, "rUnknownExternal111")
+    assert meta["revenue_class"] == "organic"
+    assert meta["organic"] is True
+
+
+def test_economic_guards_circuit_breaker_and_adaptive_sleep(monkeypatch):
+    from factory_core.economic_guards import (
+        compute_sleep_minutes,
+        continuous_run_enabled,
+        evaluate_circuit_breakers,
+        evaluate_success_stop,
+    )
+
+    monkeypatch.delenv("MAX_CUMULATIVE_NET_LOSS_USD", raising=False)
+    monkeypatch.delenv("FACTORY_RUN_CONTINUOUS", raising=False)
+    monkeypatch.setenv("MAX_CUMULATIVE_NET_LOSS_USD", "60")
+    net = {"net_usd_est": -61.0, "total_revenue_usd_est": 2.0, "total_cost_usd_est": 63.0}
+    stop, throttle = evaluate_circuit_breakers(net, consecutive_zero_revenue=2)
+    assert stop is not None
+    assert "cumulative net" in stop
+
+    net2 = {"net_usd_est": -50.0, "total_revenue_usd_est": 10.0, "total_cost_usd_est": 60.0}
+    assert evaluate_success_stop(net2, consecutive_positive_net=3) is not None
+
+    assert compute_sleep_minutes(5, cycle_revenue_usd=0, consecutive_zero_revenue=3) >= 30
+
+    monkeypatch.setenv("FACTORY_RUN_CONTINUOUS", "true")
+    assert continuous_run_enabled()
+    stop_cont, throttle_cont = evaluate_circuit_breakers(
+        net, consecutive_zero_revenue=10, mode="hybrid"
+    )
+    assert stop_cont is None
+    assert throttle_cont is None
+
+    monkeypatch.setenv("CONTINUOUS_ADAPTIVE_MAX_MINUTES", "20")
+    assert compute_sleep_minutes(5, 0, 10) <= 20
+
+
+def test_accelerate_treasury_surfaces_writes_outreach(tmp_path, monkeypatch):
+    from tools.revenue_acceleration import write_outreach_bundle
+
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setenv("FACTORY_PUBLIC_BASE_URL", "https://example.test")
+    (tmp_path / "published").mkdir()
+    result = write_outreach_bundle(99, "rTestTreasury123", {"tip_page": "https://example.test/tip.html"})
+    assert Path(result["outreach_json"]).exists()
+    assert Path(result["outreach_md"]).exists()
+    assert "Destination Tag" in Path(result["outreach_md"]).read_text(encoding="utf-8")
+
+
+def test_factory_director_revenue_sprint_sleep(monkeypatch):
+    from factory_core.director import FactoryDirector
+
+    monkeypatch.setenv("FACTORY_RUN_CONTINUOUS", "true")
+    d = FactoryDirector()
+    plan = d.decide_after_cycle(
+        {
+            "cycle_id": 148,
+            "ledger_net": {
+                "net_usd_est": -66.0,
+                "total_revenue_usd_est": 2.0,
+                "organic_revenue_usd_est": 0.0,
+                "total_cost_usd_est": 68.0,
+            },
+            "analysis": {
+                "cycle_revenue_usd": 0,
+                "bottlenecks": ["no_verified_revenue"],
+            },
+            "execution": {},
+            "gates": {"all_passed": True},
+            "current_xrp_balance": 50.0,
+        },
+        active_mode="hybrid",
+        base_interval_minutes=5,
+        consecutive_negative=1,
+        consecutive_zero_revenue=10,
+        consecutive_positive_net=0,
+    )
+    assert plan.reasoning.get("director_override") == "revenue_gap_critical"
+    assert plan.sleep_minutes == 5
+    assert "accelerate_treasury_surfaces" in plan.evolution_priorities
+
+
+def test_factory_director_decides_mode_and_sleep(tmp_path, monkeypatch):
+    from factory_core.director import FactoryDirector
+
+    monkeypatch.setenv("FACTORY_RUN_CONTINUOUS", "true")
+    monkeypatch.setenv("CONTINUOUS_ADAPTIVE_MAX_MINUTES", "20")
+    d = FactoryDirector()
+    plan = d.decide_after_cycle(
+        {
+            "cycle_id": 10,
+            "ledger_net": {
+                "net_usd_est": -74.0,
+                "total_revenue_usd_est": 2.0,
+                "organic_revenue_usd_est": 0.0,
+                "total_cost_usd_est": 76.0,
+            },
+            "analysis": {
+                "cycle_revenue_usd": 0,
+                "cycle_focus": "revenue",
+                "bottlenecks": ["no_verified_revenue"],
+            },
+            "execution": {"github_distribution": {"pushed": False}},
+            "gates": {"all_passed": True},
+            "current_xrp_balance": 50.0,
+        },
+        active_mode="hybrid",
+        base_interval_minutes=5,
+        consecutive_negative=3,
+        consecutive_zero_revenue=4,
+        consecutive_positive_net=0,
+    )
+    assert plan.stop_reason is None
+    assert plan.mode == "hybrid"
+    assert plan.cycle_id_next == 11
+    assert plan.sleep_minutes <= 20
+    assert "treasury_ingest_github" in plan.evolution_priorities or plan.focus == "revenue"
+
+
+def test_grok_usage_factory_turn_filter():
+    from observability.grok_usage import TurnUsage, is_billable_factory_turn
+
+    assert is_billable_factory_turn(
+        TurnUsage("task-completed-abc", 100, 100, "Checking in", True)
+    )
+    assert not is_billable_factory_turn(
+        TurnUsage("user-1", 100, 100, "Checking in.", True)
+    )
+    assert is_billable_factory_turn(
+        TurnUsage("evo-1", 100, 100, "RSI-EAF cycle 99 executable evolution", True)
+    )
+
+
+def test_stale_evolution_filters_builtin_implemented():
+    from factory_core.stale_evolution import (
+        BUILTIN_IMPLEMENTED,
+        filter_stale_proposals,
+        is_proposal_implemented,
+    )
+
+    stale = list(BUILTIN_IMPLEMENTED) + ["Refresh live tip surfaces on Vercel"]
+    filtered = filter_stale_proposals(stale)
+    assert "Batch Vercel deploy once per cycle" not in filtered
+    assert "Refresh live tip surfaces on Vercel" in filtered
+    assert is_proposal_implemented("Batch Vercel deploy once per cycle")
+
+
+def test_runner_lock_prevents_duplicate_holder(tmp_path, monkeypatch):
+    from factory_core import runner_lock
+
+    lock_path = tmp_path / "runner.lock"
+    monkeypatch.setattr(runner_lock, "LOCK_FILE", lock_path)
+    lock_path.write_text("999999\n", encoding="utf-8")
+    monkeypatch.setattr(runner_lock, "_pid_alive", lambda pid: pid == 999999)
+    assert runner_lock.acquire_runner_lock() is False
+    monkeypatch.setattr(runner_lock, "_pid_alive", lambda pid: False)
+    assert runner_lock.acquire_runner_lock() is True
+
+
+def test_pytest_env_isolation_from_runner_ceiling(monkeypatch):
+    from factory_core.tool_improver import _isolated_pytest_env
+
+    monkeypatch.setenv("MAX_CUMULATIVE_NET_LOSS_USD", "100")
+    monkeypatch.setenv("FACTORY_RUN_CONTINUOUS", "true")
+    monkeypatch.setenv("CYCLE_MODE", "hybrid")
+    monkeypatch.setenv("FACTORY_RUNNER_ACTIVE", "true")
+    env = _isolated_pytest_env()
+    assert "MAX_CUMULATIVE_NET_LOSS_USD" not in env
+    assert "FACTORY_RUN_CONTINUOUS" not in env
+    assert "CYCLE_MODE" not in env
+    assert "FACTORY_RUNNER_ACTIVE" not in env
+
+
+def test_backfill_revenue_classification(tmp_path, monkeypatch):
+    from observability.ledger_hygiene import backfill_revenue_classification
+    import observability.economic_ledger as el
+    import observability.ledger_hygiene as lh
+
+    ledger_path = tmp_path / "ledger.jsonl"
+    monkeypatch.setattr(el, "LEDGER_FILE", str(ledger_path))
+    monkeypatch.setattr(lh, "ledger", el.EconomicLedger(str(ledger_path)))
+    led = el.EconomicLedger(str(ledger_path))
+    led.log_verified_revenue(
+        "xrpl_inbound_payment",
+        1.0,
+        cycle_id=11,
+        xrpl_tx_hash="BACKFILL1",
+        verification_method="test",
+        metadata={"from_address": "rJ2TJZ1KCx6fsshHFVK8MrvNdD1rzyXugJ", "verified": True},
+    )
+    updated = backfill_revenue_classification()
+    assert len(updated) == 1
+    assert updated[0]["revenue_class"] == "factory_adjacent"
+    net = led.calculate_net()
+    assert net["factory_adjacent_revenue_usd_est"] == 1.0
+
+
+def test_raised_ceiling_requires_revenue_action(monkeypatch):
+    from factory_core.economic_guards import evaluate_raised_ceiling_revenue_action
+
+    monkeypatch.setenv("MAX_CUMULATIVE_NET_LOSS_USD", "100")
+    net = {"net_usd_est": -65.0, "total_revenue_usd_est": 2.0}
+    stop = evaluate_raised_ceiling_revenue_action(net, {"skipped": True})
+    assert stop is not None
+    assert "requires" in stop
+    assert evaluate_raised_ceiling_revenue_action(net, {"pushed": True}) is None
+
+
+def test_calculate_net_organic_split(tmp_path):
+    ledger_path = tmp_path / "ledger.jsonl"
+    led = EconomicLedger(ledger_path=str(ledger_path))
+    led.log_verified_revenue(
+        "xrpl_inbound_payment",
+        1.0,
+        cycle_id=1,
+        xrpl_tx_hash="ORG1",
+        verification_method="test",
+        metadata={"revenue_class": "organic", "organic": True, "verified": True},
+    )
+    led.log_verified_revenue(
+        "xrpl_inbound_payment",
+        1.0,
+        cycle_id=2,
+        xrpl_tx_hash="ADJ1",
+        verification_method="test",
+        metadata={"revenue_class": "factory_adjacent", "verified": True},
+    )
+    led.log_event("cost", "grok", 5.0, cycle_id=1, anchor_to_xrpl=False)
+    net = led.calculate_net()
+    assert net["total_revenue_usd_est"] == 2.0
+    assert net["organic_revenue_usd_est"] == 1.0
+    assert net["factory_adjacent_revenue_usd_est"] == 1.0
+
+
+def test_analyze_improvement_history_reads_tool_log():
+    from factory_core.self_improver import analyze_improvement_history
+
+    result = analyze_improvement_history()
+    assert "tool_cycles_logged" in result
+    assert "ledger_trends" in result
+    assert result["tool_cycles_logged"] >= 1
+
+
+def test_assemble_factory_wave_structure():
+    from tools.nexus_bridge import assemble_factory_wave, merge_nexus_data, merge_control_state
+
+    cycle_result = {
+        "cycle_id": 42,
+        "success": True,
+        "execution": {
+            "cycle_mode": "hybrid",
+            "treasury_address": "rTreasury",
+            "featured_surfaces": {"tip_page": "https://example.com/tip"},
+            "github_distribution": {"pushed": False},
+            "live_url": "https://published-zeta.vercel.app/",
+            "live_verified": True,
+        },
+        "analysis": {"cycle_focus": "revenue", "cycle_revenue_usd": 0, "bottlenecks": []},
+        "gates": {"all_passed": True, "passed_count": 5, "total_count": 5},
+        "ledger_net": {"net_usd_est": -10.0, "total_revenue_usd_est": 2.0, "organic_revenue_usd_est": 0},
+        "proposals": [],
+        "evolution": {},
+        "factory_state": {"current_cycle": 42},
+    }
+    wave = assemble_factory_wave(cycle_result)
+    assert wave["rsi_eaf_factory"]["cycle_id"] == 42
+    assert "control_state_goals" in wave["rsi_eaf_factory"]
+    merged = merge_nexus_data({"version": "nexus-template-v1.0"}, wave)
+    assert merged["rsi_eaf_factory"]["cycle_id"] == 42
+    assert "rsi_eaf_last_emit" in merged
+    control = merge_control_state({"status": "running"}, wave)
+    assert control["rsi_eaf_runner"]["cycle_id"] == 42
+    assert control["rsi_eaf_runner"]["aetherforge_linked"] is True
+
+
+def test_github_client_push_files_no_token(monkeypatch):
+    from tools.github_client import push_files
+
+    monkeypatch.delenv("GITHUB_TOKEN", raising=False)
+    monkeypatch.delenv("GH_TOKEN", raising=False)
+    result = push_files("theCeramist", "rsi-eaf", [{"path": "x", "content": "y"}], "test")
+    assert result.get("skipped") is True
+
+
+def test_merge_nexus_includes_gist_url():
+    from tools.nexus_bridge import assemble_factory_wave, merge_nexus_data
+
+    wave = assemble_factory_wave({
+        "cycle_id": 1,
+        "success": True,
+        "execution": {
+            "github_distribution": {
+                "gist": {"gist_url": "https://gist.github.com/x"},
+            },
+        },
+        "analysis": {},
+        "gates": {"all_passed": True},
+        "ledger_net": {},
+        "factory_state": {},
+    })
+    merged = merge_nexus_data({}, wave)
+    assert merged["rsi_eaf_factory"]["github"]["gist_url"] == "https://gist.github.com/x"
+
+
+def test_canonical_tip_prefers_current_cycle(tmp_path, monkeypatch):
+    from tools import distribution_tools as dt
+
+    monkeypatch.setattr(dt, "PUBLISHED_DIR", tmp_path)
+    monkeypatch.setattr(dt, "FACTORY_PUBLIC_BASE_URL", "https://example.com")
+    monkeypatch.setenv("FACTORY_PUBLIC_BASE_URL", "https://example.com")
+    monkeypatch.setenv("PREFER_CURRENT_CYCLE_TIP", "true")
+    (tmp_path / "tip-cycle-99-old.html").write_text("<html></html>")
+    (tmp_path / "tip-cycle-200-new.html").write_text("<html></html>")
+
+    def fake_verify(url):
+        return "tip-cycle-99" in url
+
+    monkeypatch.setattr("tools.publish_tools.verify_live_url", fake_verify)
+    url = dt.canonical_tip_url(200)
+    assert url == "https://example.com/tip-cycle-200-new.html"
+
+
+def test_github_ci_gate_disabled(monkeypatch):
+    from tools.github_ci_gate import block_distribution_if_ci_red
+
+    monkeypatch.setenv("GITHUB_CI_GATE", "false")
+    assert block_distribution_if_ci_red() is None
+
+
+def test_treasury_daemon_drain_roundtrip(tmp_path, monkeypatch):
+    from observability import treasury_daemon as td
+
+    inbox = tmp_path / "inbox.jsonl"
+    monkeypatch.setattr(td, "INBOX_FILE", inbox)
+    td._append_inbox({"tx_hash": "ABC", "from": "rExt"})
+    drained = td.drain_inbox()
+    assert len(drained) == 1
+    assert td.drain_inbox() == []
+
+
+def test_grok_evolution_best_of_n_flag(monkeypatch):
+    from factory_core import grok_cli
+
+    calls = []
+
+    def fake_headless(*args, **kwargs):
+        calls.append(kwargs.get("extra_args") or [])
+        return {"executed": False, "skipped": True}
+
+    monkeypatch.setenv("GROK_ORCHESTRATION", "subprocess")
+    monkeypatch.setattr(grok_cli, "run_headless", fake_headless)
+    grok_cli.run_evolution_task(1, "test task", best_of_n=3)
+    assert any("--best-of-n" in str(c) for c in calls)
+
+
+def test_nexus_ci_block(monkeypatch):
+    import tools.github_ci_gate as ci_gate
+    from tools import nexus_bridge as nb
+
+    monkeypatch.setenv("NEXUS_EMIT_ENABLED", "true")
+    monkeypatch.setattr(ci_gate, "block_distribution_if_ci_red", lambda **k: "CI failed")
+    result = nb.maybe_emit_nexus({"cycle_id": 5, "execution": {}, "analysis": {}, "gates": {}})
+    assert result.get("ci_blocked") is True
+
+
+def test_triage_payment_friction_no_token(monkeypatch):
+    from tools.github_semantic_triage import triage_payment_friction
+
+    monkeypatch.delenv("GITHUB_TOKEN", raising=False)
+    monkeypatch.delenv("GH_TOKEN", raising=False)
+    result = triage_payment_friction()
+    assert "searches" in result
+
+
+def test_grok_cli_unavailable():
+    from factory_core import grok_cli
+
+    result = grok_cli.run_headless("test", mode="plan")
+    if not grok_cli.GROK_BIN or not __import__("pathlib").Path(grok_cli.GROK_BIN).exists():
+        assert result.get("skipped") or result.get("executed") is False
+
+
+def test_maybe_emit_nexus_respects_disabled(monkeypatch):
+    from tools.nexus_bridge import maybe_emit_nexus
+
+    monkeypatch.setenv("NEXUS_EMIT_ENABLED", "false")
+    result = maybe_emit_nexus({"cycle_id": 1, "execution": {}, "analysis": {}, "gates": {}})
+    assert result["skipped"] is True
+    assert result["reason"] == "NEXUS_EMIT_DISABLED"
 
 
 def test_extract_payment_fields_revenue_memo():

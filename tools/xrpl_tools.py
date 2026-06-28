@@ -275,13 +275,27 @@ def monitor_incoming_payments(
     return observed
 
 
-def query_recent_transactions(address: str, limit: int = 10, testnet: bool = True) -> list:
-    """Simple helper to fetch recent transactions for market research or verification."""
-    client = get_client(testnet)
+def query_recent_transactions(
+    address: str,
+    limit: int = 10,
+    testnet: bool = True,
+    retries: int = 3,
+) -> list:
+    """Fetch recent transactions with retries on transient network errors."""
     from xrpl.models.requests import AccountTx
-    req = AccountTx(account=address, limit=limit)
-    response = client.request(req)
-    return response.result.get("transactions", [])
+
+    last_exc: Optional[Exception] = None
+    for attempt in range(retries):
+        try:
+            client = get_client(testnet)
+            req = AccountTx(account=address, limit=limit)
+            response = client.request(req)
+            return response.result.get("transactions", [])
+        except Exception as exc:
+            last_exc = exc
+            if attempt < retries - 1:
+                time.sleep(1.5 * (attempt + 1))
+    raise last_exc  # type: ignore[misc]
 
 
 # Convenience: Quick self-test helper

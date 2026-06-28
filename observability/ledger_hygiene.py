@@ -6,6 +6,7 @@ import json
 from typing import Any, Dict, List
 
 from observability.economic_ledger import ledger
+from observability.revenue_classification import enrich_revenue_metadata
 
 
 def supersede_unverified_revenue() -> List[Dict[str, Any]]:
@@ -37,3 +38,35 @@ def supersede_unverified_revenue() -> List[Dict[str, Any]]:
         print(f"[LedgerHygiene] Superseded {len(superseded)} unverified revenue event(s).")
 
     return superseded
+
+
+def backfill_revenue_classification() -> List[Dict[str, Any]]:
+    """Tag verified inbound revenue rows with organic vs factory_adjacent."""
+    events = ledger.get_recent_events(limit=1000)
+    updated: List[Dict[str, Any]] = []
+    changed = False
+
+    for event in events:
+        if event.get("event_type") != "revenue":
+            continue
+        meta = event.get("metadata") or {}
+        if meta.get("superseded") or meta.get("verified") is not True:
+            continue
+        if meta.get("revenue_class"):
+            continue
+        from_address = meta.get("from_address")
+        event["metadata"] = enrich_revenue_metadata(meta, from_address)
+        changed = True
+        updated.append({
+            "tx_hash": event.get("xrpl_tx_hash"),
+            "revenue_class": event["metadata"].get("revenue_class"),
+            "cycle_id": event.get("cycle_id"),
+        })
+
+    if changed:
+        with open(ledger.ledger_path, "w", encoding="utf-8") as f:
+            for event in events:
+                f.write(json.dumps(event, default=str) + "\n")
+        print(f"[LedgerHygiene] Backfilled revenue_class on {len(updated)} verified row(s).")
+
+    return updated

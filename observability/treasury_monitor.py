@@ -9,7 +9,7 @@ from observability.revenue_ingest import ingest_verified_xrpl_revenue
 from tools.xrpl_tools import FACTORY_XRPL_ADDRESS, monitor_incoming_payments
 
 FACTORY_TREASURY_ADDRESS = os.getenv("FACTORY_TREASURY_ADDRESS")
-MONITOR_TIMEOUT = int(os.getenv("TREASURY_MONITOR_TIMEOUT_SEC", "3"))
+MONITOR_TIMEOUT = int(os.getenv("TREASURY_MONITOR_TIMEOUT_SEC", "15"))
 
 
 def poll_treasury_payments(
@@ -28,6 +28,15 @@ def poll_treasury_payments(
 
     captured: List[Dict[str, Any]] = []
 
+    if os.getenv("TREASURY_DAEMON_ENABLED", "true").lower() in {"1", "true", "yes"}:
+        from observability.treasury_daemon import drain_inbox, start_treasury_daemon
+
+        start_treasury_daemon(address)
+        for entry in drain_inbox():
+            payment = entry.get("payment")
+            if payment:
+                captured.append(payment)
+
     def _callback(tx: Dict[str, Any]) -> None:
         captured.append(tx)
         if on_payment:
@@ -41,15 +50,21 @@ def poll_treasury_payments(
         timeout_seconds=MONITOR_TIMEOUT,
     )
 
-    ingested = ingest_verified_xrpl_revenue(
-        cycle_id=cycle_id,
-        treasury_address=address,
-        factory_state=factory_state,
-    )
+    try:
+        ingest_result = ingest_verified_xrpl_revenue(
+            cycle_id=cycle_id,
+            treasury_address=address,
+            factory_state=factory_state,
+        )
+    except Exception as exc:
+        print(f"[TreasuryMonitor] Ingest error (non-fatal): {exc}")
+        ingest_result = {"ingested": [], "unmatched": [], "reconciled": [], "error": str(exc)}
+    ingested = ingest_result.get("ingested", [])
+    unmatched = ingest_result.get("unmatched", [])
 
-    if factory_state is not None and ingested:
+    if factory_state is not None:
         factory_state.set_treasury_watermark(
-            last_ingested_tx_hash=ingested[-1].get("xrpl_tx_hash"),
+            last_ingested_tx_hash=ingested[-1].get("xrpl_tx_hash") if ingested else None,
             last_poll_at=cycle_id,
         )
 
@@ -57,5 +72,6 @@ def poll_treasury_payments(
         "ws_observed": ws_observed,
         "ws_captured": captured,
         "ingested": ingested,
+        "unmatched": unmatched,
         "treasury_address": address,
     }
