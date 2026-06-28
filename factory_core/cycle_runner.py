@@ -27,7 +27,7 @@ from observability.trace_logger import trace_logger
 from observability.treasury_monitor import poll_treasury_payments
 from revenue_engines.registry import run_revenue_engines
 from tools.distribution_tools import featured_links_for_index, write_sitemap
-from tools.github_distribution import maybe_push_distribution, write_local_distribution_artifacts
+from tools.github_distribution import write_local_distribution_artifacts
 from tools.nexus_bridge import run_platform_sync
 from tools.publish_tools import build_index_html, deploy_cooldown_status, reset_cycle_deploy_flag
 from revenue_engines.base_engine import resolve_treasury
@@ -82,17 +82,8 @@ class CycleRunner:
         write_sitemap(live_urls=engine_bundle.get("live_urls"))
         write_local_distribution_artifacts(cycle_id, featured, treasury)
         force_distribution = requires_revenue_action(ledger.calculate_net())
-        distribution_result = maybe_push_distribution(
-            cycle_id=cycle_id,
-            featured=featured,
-            treasury_address=treasury,
-            factory_state=self.state,
-            force=force_distribution,
-        )
         if force_distribution and loss_ceiling_raised():
-            print("[Cycle] Raised loss ceiling — forced GitHub revenue distribution")
-        if distribution_result.get("pushed") or distribution_result.get("issue_updated"):
-            print(f"[Cycle] GitHub distribution: {distribution_result}")
+            print("[Cycle] Raised loss ceiling — will force platform sync distribution")
         print("[Cycle] Phase 1b: Treasury monitor + revenue ingest...")
         treasury_result = self._poll_treasury(cycle_id)
         verified_revenue = treasury_result.get("ingested", [])
@@ -119,7 +110,7 @@ class CycleRunner:
             "treasury_address": treasury_result.get("treasury_address"),
             "engine_errors": engine_bundle.get("errors", []),
             "featured_surfaces": featured,
-            "github_distribution": distribution_result,
+            "force_distribution": force_distribution,
         }
         if tool_result:
             execution_result.update({
@@ -341,6 +332,8 @@ class CycleRunner:
         print("[Cycle] Phase 6b: Platform sync (GitHub + aetherforge nexus + Vercel verify)...")
         force_github = os.getenv("DIRECTOR_FORCE_GITHUB", "").lower() in {"1", "true", "yes"}
         force_nexus = os.getenv("DIRECTOR_FORCE_NEXUS", "").lower() in {"1", "true", "yes"}
+        from observability.factory_health import persist_factory_health
+
         platform_sync = run_platform_sync(
             {
                 "cycle_id": cycle_id,
@@ -360,6 +353,12 @@ class CycleRunner:
             factory_state=self.state,
         )
         trace_logger.log_cycle_trace(cycle_id, "platform_sync", platform_sync)
+        execution_result["github_distribution"] = platform_sync.get("github", {})
+        persist_factory_health(
+            cycle_id=cycle_id,
+            featured=execution_result.get("featured_surfaces"),
+            factory_state=self.state.snapshot(),
+        )
         if platform_sync.get("nexus", {}).get("emitted"):
             print(f"[Cycle] aetherforge nexus emit: {platform_sync['nexus'].get('wave_id')}")
         elif platform_sync.get("github", {}).get("pushed"):

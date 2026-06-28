@@ -16,38 +16,28 @@ from typing import Any, Dict, List, Optional
 
 import httpx
 
+from config.integration import (
+    AETHERFORGE_URL,
+    ASI_TIER_1,
+    FACTORY_PUBLIC_BASE_URL,
+    NEXUS_BRANCH,
+    NEXUS_OWNER,
+    NEXUS_REPO,
+    THE_FOUR_CONTROL_STATE_GOALS,
+    integration_manifest,
+)
 from observability.economic_ledger import ledger
 from tools.github_distribution import distribution_urls
 from tools.publish_tools import deploy_cooldown_status, verify_live_url
-
-NEXUS_OWNER = os.getenv("NEXUS_GITHUB_OWNER", "theCeramist")
-NEXUS_REPO = os.getenv("NEXUS_GITHUB_REPO", "jarvis-swarm")
-NEXUS_BRANCH = os.getenv("NEXUS_GITHUB_BRANCH", "main")
 def _nexus_emit_enabled() -> bool:
     return os.getenv("NEXUS_EMIT_ENABLED", "true").lower() in {"1", "true", "yes"}
 
 
 def _nexus_emit_every_n() -> int:
     return int(os.getenv("NEXUS_EMIT_EVERY_N_CYCLES", "1"))
-AETHERFORGE_URL = os.getenv("AETHERFORGE_URL", "https://aetherforge.world").rstrip("/")
-FACTORY_PUBLIC_BASE_URL = os.getenv("FACTORY_PUBLIC_BASE_URL", "https://published-zeta.vercel.app").rstrip("/")
 LOCAL_NEXUS_DIR = Path(os.getenv("NEXUS_LOCAL_DIR", "observability/nexus"))
 TRACE_FILE = Path(os.getenv("FACTORY_TRACE_FILE", "observability/cycle_traces.jsonl"))
 DIRECTOR_LOG = Path(os.getenv("DIRECTOR_DECISIONS_LOG", "factory_core/director_decisions.jsonl"))
-
-THE_FOUR_CONTROL_STATE_GOALS = [
-    "Improve coordination, outcome evaluation, and learning between parallel sub-agents",
-    "Enhance observability and GitNexus persistence of autonomous subagent runs",
-    "Evolve stronger human-swarm symbiosis surface in response to recent Nexus interaction",
-    "Strengthen self-sufficiency monitoring, bottleneck detection, and autonomous pause/resume logic",
-]
-
-ASI_TIER_1 = (
-    "Real intelligence traces + mandatory external Vercel/Nexus feedback on live "
-    "aetherforge.world / theCeramist/jarvis-swarm / theCeramist/rsi-eaf. "
-    "RSI-EAF factory cycles anchored on XRPL with verifiable revenue surfaces."
-)
-
 
 def _now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
@@ -249,6 +239,7 @@ def assemble_factory_wave(cycle_result: Dict[str, Any]) -> Dict[str, Any]:
         "asi_tier_1": ASI_TIER_1,
         "factory_state_snapshot": factory_state,
         "revenue_cta": revenue_cta,
+        "integration_manifest": integration_manifest(cycle_id=cycle_id, featured=featured),
     }
 
     return {
@@ -354,6 +345,12 @@ def write_local_nexus_files(wave: Dict[str, Any]) -> Dict[str, Path]:
     control_path = LOCAL_NEXUS_DIR / "control-state.json"
     control_path.write_text(json.dumps(merged_control, indent=2), encoding="utf-8")
     paths["control_state"] = control_path
+
+    integration = wave.get("rsi_eaf_factory", {}).get("integration_manifest")
+    if integration:
+        integration_path = LOCAL_NEXUS_DIR / "rsi-eaf-integration.json"
+        integration_path.write_text(json.dumps(integration, indent=2), encoding="utf-8")
+        paths["integration"] = integration_path
     return paths
 
 
@@ -386,6 +383,13 @@ def push_nexus_wave(cycle_id: int, wave: Dict[str, Any]) -> Dict[str, Any]:
         {"path": "control-state.json", "content": local["control_state"].read_text(encoding="utf-8")},
         {"path": "rsi-eaf-factory.json", "content": local["rsi_eaf_factory"].read_text(encoding="utf-8")},
     ]
+    if local.get("integration"):
+        files.append(
+            {
+                "path": "rsi-eaf-integration.json",
+                "content": local["integration"].read_text(encoding="utf-8"),
+            }
+        )
     batch = push_files(NEXUS_OWNER, NEXUS_REPO, files, message, NEXUS_BRANCH)
     if batch.get("success"):
         results = [batch]
@@ -477,6 +481,7 @@ def run_platform_sync(
     execution = cycle_result.get("execution", {})
     featured = execution.get("featured_surfaces", {})
     treasury = execution.get("treasury_address", "")
+    force_github = force_github or bool(execution.get("force_distribution"))
 
     github_result = maybe_push_distribution(
         cycle_id=cycle_id,

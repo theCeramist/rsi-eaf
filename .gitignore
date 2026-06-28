@@ -7,6 +7,9 @@ published/.vercel/
 published/.last_vercel_deploy
 published/*.html
 published/outreach-*.json
+published/archive/
+observability/daemon_status.json
+observability/factory_health.json
 node_modules/
 terminals/
 *.sqlite

@@ -1,6 +1,7 @@
 """Core factory tests."""
 
 import json
+import os
 from pathlib import Path
 
 import pytest
@@ -146,6 +147,53 @@ def test_runner_preflight_structure(monkeypatch):
     assert "ok" in result
     assert "top3_revenue" in result
     assert len(result["top3_revenue"]) == 3
+
+
+def test_integration_manifest_compact():
+    from config.integration import integration_manifest
+
+    m = integration_manifest(cycle_id=42, featured={"tip_page": "https://example.com/tip"})
+    assert m["schema"] == "rsi_eaf_integration_v1"
+    assert "github" in m
+    assert "jarvis-swarm" in m["github"]["nexus"]["repo"]
+    assert m["revenue_engines"]["top3_enabled"] is True
+    assert "deferred" in m["revenue_engines"]
+
+
+def test_publish_hygiene_archives_stale_html(tmp_path, monkeypatch):
+    from tools import publish_hygiene as ph
+
+    monkeypatch.setattr(ph, "PUBLISHED_DIR", tmp_path)
+    monkeypatch.setattr(ph, "ARCHIVE_DIR", tmp_path / "archive")
+    (tmp_path / "tip-cycle-1-old.html").write_text("a", encoding="utf-8")
+    (tmp_path / "tip-cycle-99-new.html").write_text("b", encoding="utf-8")
+    (tmp_path / "index.html").write_text("idx", encoding="utf-8")
+    result = ph.prune_published_for_deploy(cycle_id=99, max_html=8)
+    assert result["archived_count"] >= 1
+    assert (tmp_path / "tip-cycle-99-new.html").exists()
+    assert not (tmp_path / "tip-cycle-1-old.html").exists()
+
+
+def test_director_enables_top3_engines(monkeypatch):
+    from factory_core.director import FactoryDirector, CyclePlan
+
+    monkeypatch.delenv("REVENUE_ENGINES", raising=False)
+    monkeypatch.setenv("REVENUE_TOP3_ENABLED", "true")
+    director = FactoryDirector()
+    plan = CyclePlan(cycle_id_next=1, mode="hybrid", focus="revenue", sleep_minutes=5)
+    director.configure_autonomous_env(plan)
+    engines = os.environ.get("REVENUE_ENGINES", "")
+    assert "micro_saas" in engines
+    assert "mythos_commerce" in engines
+    assert "agent_marketplace" in engines
+
+
+def test_factory_health_snapshot():
+    from observability.factory_health import build_factory_health
+
+    health = build_factory_health(cycle_id=1, featured={"tip_page": "https://x/tip"})
+    assert "integration" in health
+    assert "ledger_net" in health
 
 
 def test_jarvis_ci_workflow_yaml_valid():

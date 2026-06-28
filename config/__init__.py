@@ -1,0 +1,1 @@
+"""RSI-EAF factory configuration — single source for cross-repo integration."""

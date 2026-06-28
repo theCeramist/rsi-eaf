@@ -16,8 +16,10 @@ from observability.payment_intent import (
     simple_payment_instructions,
 )
 
+from config.integration import FACTORY_PUBLIC_BASE_URL as _DEFAULT_BASE
+
 PUBLISHED_DIR = Path(os.getenv("PUBLISHED_DIR", "published"))
-FACTORY_PUBLIC_BASE_URL = os.getenv("FACTORY_PUBLIC_BASE_URL", "").rstrip("/")
+FACTORY_PUBLIC_BASE_URL = os.getenv("FACTORY_PUBLIC_BASE_URL", _DEFAULT_BASE).rstrip("/")
 
 
 def write_tip_manifest(

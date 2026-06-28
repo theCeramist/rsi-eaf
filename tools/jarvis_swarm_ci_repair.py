@@ -7,10 +7,9 @@ from __future__ import annotations
 import os
 from typing import Any, Dict
 
+from config.integration import NEXUS_OWNER as JARVIS_OWNER
+from config.integration import NEXUS_REPO as JARVIS_REPO
 from tools.github_client import push_files
-
-JARVIS_OWNER = os.getenv("NEXUS_GITHUB_OWNER", "theCeramist")
-JARVIS_REPO = os.getenv("NEXUS_GITHUB_REPO", "jarvis-swarm")
 WORKFLOW_PATH = ".github/workflows/nexus-portal-ci.yml"
 HYGIENE_SCRIPT_PATH = "scripts/jarvis_hygiene_scan.py"
 

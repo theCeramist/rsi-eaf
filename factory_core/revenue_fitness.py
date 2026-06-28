@@ -113,4 +113,9 @@ def evaluate_revenue_models() -> Dict[str, Any]:
             "mythos_commerce": "revenue_engines.mythos_commerce",
             "agent_marketplace": "revenue_engines.agent_marketplace",
         },
+        "deferred_roadmap": {
+            "tokenized_equity": "XRPL trust lines + issued currency after mainnet proof cycles",
+            "prediction_alpha": "Paid briefing extension + sandboxed prediction markets post-regulatory review",
+            "yield_stewardship": "Treasury yield agents gated on mainnet + policy engine",
+        },
     }

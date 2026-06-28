@@ -108,17 +108,6 @@ def execute_evolution(
     actions: List[Dict[str, Any]] = []
     task = _pick_evolution_task(proposals, rsi_meta, execution_result)
 
-    if task and task.get("action") == "github_distribution":
-        from tools.github_distribution import maybe_push_distribution
-
-        push_result = maybe_push_distribution(
-            cycle_id=cycle_id,
-            featured=featured or execution_result.get("featured_surfaces", {}),
-            treasury_address=treasury_address,
-            force=True,
-        )
-        actions.append({"action": "github_distribution", **push_result})
-
     stale = filter_stale_proposals(
         rsi_meta.get("stale_proposals", []),
         factory_state=factory_state,
@@ -173,17 +162,7 @@ def execute_evolution(
 
     force_github = os.getenv("DIRECTOR_FORCE_GITHUB", "").lower() in {"1", "true", "yes"}
     if stale or focus == "revenue" or force_github:
-        from tools.github_distribution import maybe_push_distribution
-
-        if not any(a.get("action") == "github_distribution" for a in actions):
-            push_result = maybe_push_distribution(
-                cycle_id=cycle_id,
-                featured=featured or execution_result.get("featured_surfaces", {}),
-                treasury_address=treasury_address,
-                force=bool(stale) or force_github,
-            )
-            if push_result.get("pushed") or push_result.get("issue_updated"):
-                actions.append({"action": "github_distribution_stale", **push_result})
+        execution_result["force_distribution"] = True
 
     grok_task = None
     if task:

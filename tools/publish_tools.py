@@ -12,10 +12,13 @@ from typing import Any, Dict, List, Optional
 
 import httpx
 
+from config.integration import FACTORY_PUBLIC_BASE_URL as _DEFAULT_BASE_URL
+from config.integration import VERCEL_DEPLOY_COOLDOWN_MINUTES as _DEFAULT_COOLDOWN
+
 PUBLISHED_DIR = Path(os.getenv("PUBLISHED_DIR", "published"))
-FACTORY_PUBLIC_BASE_URL = os.getenv("FACTORY_PUBLIC_BASE_URL", "").rstrip("/")
+FACTORY_PUBLIC_BASE_URL = os.getenv("FACTORY_PUBLIC_BASE_URL", _DEFAULT_BASE_URL).rstrip("/")
 VERCEL_DEPLOY = os.getenv("VERCEL_DEPLOY", "true").lower() in {"1", "true", "yes"}
-VERCEL_DEPLOY_COOLDOWN_MINUTES = int(os.getenv("VERCEL_DEPLOY_COOLDOWN_MINUTES", "35"))
+VERCEL_DEPLOY_COOLDOWN_MINUTES = int(os.getenv("VERCEL_DEPLOY_COOLDOWN_MINUTES", str(_DEFAULT_COOLDOWN)))
 VERCEL_TOKEN = os.getenv("VERCEL_TOKEN")
 LAST_DEPLOY_FILE = PUBLISHED_DIR / ".last_vercel_deploy"
 _cycle_deploy_done = False
@@ -139,6 +142,13 @@ def deploy_to_vercel(
     published_dir = published_dir or PUBLISHED_DIR
     _write_vercel_config()
 
+    try:
+        from tools.publish_hygiene import prune_published_for_deploy
+
+        prune_meta = prune_published_for_deploy()
+    except Exception:
+        prune_meta = {"skipped": True}
+
     if not VERCEL_DEPLOY:
         return {"success": False, "skipped": True, "reason": "VERCEL_DEPLOY disabled"}
 
@@ -199,6 +209,7 @@ def deploy_to_vercel(
             "success": deploy_ok,
             "deploy_url": url or FACTORY_PUBLIC_BASE_URL or None,
             "cli_output_tail": output[-500:],
+            "prune": prune_meta,
         }
     except (subprocess.TimeoutExpired, OSError) as exc:
         return {"success": False, "error": str(exc)}

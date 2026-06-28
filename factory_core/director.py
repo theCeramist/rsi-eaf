@@ -317,9 +317,9 @@ class FactoryDirector:
             os.environ["REVENUE_ENGINES"] = ""
         elif plan.mode == "hybrid":
             os.environ["VERCEL_DEPLOY"] = "true"
-            os.environ.setdefault(
-                "REVENUE_ENGINES", "content_operator,tipping_funnel,paid_briefing"
-            )
+            from revenue_engines.registry import _default_engine_list
+
+            os.environ.setdefault("REVENUE_ENGINES", _default_engine_list())
             os.environ["REVENUE_PURSUIT"] = "true"
             if plan.focus == "revenue" or os.getenv("FACTORY_REQUIRE_LIVE_URL", "true").lower() in {
                 "1",
@@ -329,9 +329,9 @@ class FactoryDirector:
                 os.environ["REQUIRE_LIVE_URL"] = "true"
         else:
             os.environ["VERCEL_DEPLOY"] = "true"
-            os.environ.setdefault(
-                "REVENUE_ENGINES", "content_operator,tipping_funnel,paid_briefing"
-            )
+            from revenue_engines.registry import _default_engine_list
+
+            os.environ.setdefault("REVENUE_ENGINES", _default_engine_list())
 
 
 # Module singleton for runners

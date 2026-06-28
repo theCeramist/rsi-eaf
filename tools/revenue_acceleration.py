@@ -12,7 +12,7 @@ from observability.payment_intent import TIP_TAG, TIP_USD, simple_payment_instru
 
 DOCS_DIR = Path("docs")
 PUBLISHED_DIR = Path(os.getenv("PUBLISHED_DIR", "published"))
-FACTORY_PUBLIC_BASE_URL = os.getenv("FACTORY_PUBLIC_BASE_URL", "https://published-zeta.vercel.app").rstrip("/")
+from config.integration import AETHERFORGE_URL, FACTORY_PUBLIC_BASE_URL
 
 
 def write_outreach_bundle(
@@ -37,6 +37,10 @@ def write_outreach_bundle(
         "tip_page": tip_url,
         "briefing_page": featured.get("briefing_page"),
         "tip_manifest": featured.get("tip_manifest") or f"{FACTORY_PUBLIC_BASE_URL}/tip-manifest.json",
+        "mythos_page": featured.get("mythos_page"),
+        "micro_tool_page": featured.get("micro_tool_page"),
+        "service_catalog": featured.get("service_catalog"),
+        "aetherforge_url": AETHERFORGE_URL,
         "payment_steps": instructions["easiest"],
         "share_text": (
             f"Support RSI-EAF on XRPL testnet: send XRP to {treasury_address} "
@@ -64,6 +68,15 @@ Updated: {payload['updated_at']}
 3. Verified ${TIP_USD:.0f} tip ingested next cycle
 
 **Tip page:** {tip_url}
+
+## TOP3 revenue surfaces (cycle {cycle_id})
+
+| Surface | URL |
+|---------|-----|
+| Mythos (Tag 5) | {featured.get('mythos_page', 'n/a')} |
+| Micro-tool (Tag 3) | {featured.get('micro_tool_page', 'n/a')} |
+| Service catalog (Tag 4) | {featured.get('service_catalog', 'n/a')} |
+| aetherforge | {AETHERFORGE_URL} |
 
 ## Share
 

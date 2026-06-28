@@ -12,10 +12,19 @@ from typing import Any, Dict, List, Optional
 
 import httpx
 
+from config.integration import (
+    DISTRIBUTION_EVERY_N_CYCLES,
+    FACTORY_PUBLIC_BASE_URL,
+    GITHUB_BRANCH,
+    GITHUB_OWNER,
+    GITHUB_REPO,
+    GITHUB_REPO_URL,
+    GITHUB_SUPPORT_ISSUE,
+    revenue_surface_rows,
+)
+
 PUBLISHED_DIR = Path(os.getenv("PUBLISHED_DIR", "published"))
 DOCS_DIR = Path("docs")
-GITHUB_OWNER = os.getenv("GITHUB_DISTRIBUTION_OWNER", "theCeramist")
-GITHUB_REPO = os.getenv("GITHUB_DISTRIBUTION_REPO", "rsi-eaf")
 
 
 def _read_text(path: Path) -> str:
@@ -27,13 +36,8 @@ def build_revenue_surfaces_markdown(
     featured: Dict[str, str],
     treasury_address: str,
 ) -> str:
-    rows = [
-        ("Factory index", os.getenv("FACTORY_PUBLIC_BASE_URL", "https://published-zeta.vercel.app/")),
-        ("Tip page", featured.get("tip_page", "")),
-        ("Agent tip manifest", featured.get("tip_manifest", "")),
-        ("Paid briefing", featured.get("briefing_page", "")),
-    ]
-    table = "\n".join(f"| {label} | {url or 'n/a'} |" for label, url in rows if url or label == "Factory index")
+    rows = revenue_surface_rows(featured, cycle_id)
+    table = "\n".join(f"| {label} | {url or 'n/a'} |" for label, url in rows)
     product_id = f"briefing-cycle-{cycle_id}"
     return f"""# RSI-EAF Revenue Surfaces (Cycle {cycle_id})
 
@@ -68,10 +72,7 @@ Updated: {datetime.now(timezone.utc).isoformat()}
 External payments with `type: revenue` and `amount_usd_est > 0` become verified revenue on the next cycle.
 """
 
-GITHUB_REPO_URL = f"https://github.com/{GITHUB_OWNER}/{GITHUB_REPO}"
-GITHUB_BRANCH = os.getenv("GITHUB_DISTRIBUTION_BRANCH", "main")
-GITHUB_SUPPORT_ISSUE = int(os.getenv("GITHUB_SUPPORT_ISSUE", "1"))
-DISTRIBUTION_EVERY_N_CYCLES = int(os.getenv("DISTRIBUTION_EVERY_N_CYCLES", "3"))
+
 
 
 def _github_token() -> Optional[str]:
@@ -315,11 +316,8 @@ def distribution_urls(cycle_id: int) -> Dict[str, str]:
         "github_revenue_doc": f"{GITHUB_REPO_URL}/blob/main/docs/REVENUE_SURFACES.md",
         "github_tip_manifest": f"{GITHUB_REPO_URL}/blob/main/docs/tip-manifest.json",
         "github_issue": f"{GITHUB_REPO_URL}/issues/1",
-        "vercel_index": os.getenv("FACTORY_PUBLIC_BASE_URL", "https://published-zeta.vercel.app/"),
-        "vercel_tip_manifest": os.getenv(
-            "FACTORY_PUBLIC_BASE_URL", "https://published-zeta.vercel.app"
-        ).rstrip("/")
-        + "/tip-manifest.json",
+        "vercel_index": f"{FACTORY_PUBLIC_BASE_URL}/" if FACTORY_PUBLIC_BASE_URL else "",
+        "vercel_tip_manifest": f"{FACTORY_PUBLIC_BASE_URL}/tip-manifest.json" if FACTORY_PUBLIC_BASE_URL else "",
     }
     return urls
 
@@ -335,8 +333,8 @@ def distribution_file_bundle(cycle_id: int) -> List[Dict[str, str]]:
 
 Public factory outputs and XRPL payment endpoints (cycle {cycle_id}):
 
-- **Live index:** https://published-zeta.vercel.app/
-- **Tip manifest:** https://published-zeta.vercel.app/tip-manifest.json
+- **Live index:** {FACTORY_PUBLIC_BASE_URL}/
+- **Tip manifest:** {FACTORY_PUBLIC_BASE_URL}/tip-manifest.json
 - **Docs:** [REVENUE_SURFACES.md](docs/REVENUE_SURFACES.md)
 
 Send XRPL testnet payments to the factory treasury with a `revenue` memo — see docs for templates.
