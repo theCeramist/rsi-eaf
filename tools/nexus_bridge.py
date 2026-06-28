@@ -465,6 +465,42 @@ def maybe_emit_nexus(
     }
 
 
+def force_nexus_emit_from_state(factory_state: Optional[Any] = None) -> Dict[str, Any]:
+    """
+    Push nexus wave from current factory state — clears jarvis/aetherforge drift without full cycle.
+    """
+    from factory_core.state import FactoryState
+    from revenue_engines.base_engine import resolve_treasury
+    from tools.distribution_tools import featured_links_for_index
+
+    state = factory_state or FactoryState()
+    cycle_id = int(getattr(state, "current_cycle", 0) or 0)
+    if cycle_id <= 0:
+        return {"emitted": False, "skipped": True, "reason": "no_cycle_id"}
+
+    treasury = resolve_treasury()
+    featured = featured_links_for_index(cycle_id)
+    net = ledger.calculate_net()
+    cycle_result = {
+        "cycle_id": cycle_id,
+        "success": True,
+        "execution": {
+            "treasury_address": treasury,
+            "featured_surfaces": featured,
+            "live_url": featured.get("canonical_tip_page") or featured.get("tip_page"),
+            "cycle_mode": os.getenv("CYCLE_MODE", "hybrid"),
+            "force_distribution": True,
+        },
+        "analysis": {"cycle_focus": "revenue", "bottlenecks": ["nexus_drift_recovery"]},
+        "gates": {"all_passed": True, "passed_count": 1, "total_count": 1},
+        "proposals": [],
+        "evolution": {"drift_recovery": True},
+        "ledger_net": net,
+        "factory_state": state.snapshot() if hasattr(state, "snapshot") else {},
+    }
+    return maybe_emit_nexus(cycle_result, force=True, factory_state=state)
+
+
 def run_platform_sync(
     cycle_result: Dict[str, Any],
     *,

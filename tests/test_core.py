@@ -149,6 +149,73 @@ def test_runner_preflight_structure(monkeypatch):
     assert len(result["top3_revenue"]) == 3
 
 
+def test_treasury_monitor_skips_inline_ws_when_daemon(monkeypatch):
+    from observability import treasury_monitor as tm
+
+    monkeypatch.setattr(tm, "_daemon_active", lambda: True)
+    monkeypatch.setattr(tm, "SKIP_INLINE_WS", True)
+    monkeypatch.setattr(
+        "observability.treasury_daemon.drain_inbox",
+        lambda limit=100: [],
+    )
+    monkeypatch.setattr(
+        "observability.treasury_daemon.start_treasury_daemon",
+        lambda address=None: {"started": True},
+    )
+    monkeypatch.setenv("TREASURY_DAEMON_ENABLED", "true")
+    calls = []
+
+    def fake_monitor(*args, **kwargs):
+        calls.append(1)
+        return 0
+
+    monkeypatch.setattr("tools.xrpl_tools.monitor_incoming_payments", fake_monitor)
+    monkeypatch.setattr(
+        "observability.revenue_ingest.ingest_verified_xrpl_revenue",
+        lambda **k: {"ingested": [], "unmatched": []},
+    )
+    result = tm.poll_treasury_payments(cycle_id=7)
+    assert result["poll_mode"] == "daemon_inbox_only"
+    assert calls == []
+
+
+def test_monitor_incoming_payments_respects_timeout(monkeypatch):
+    import time as time_mod
+    from tools import xrpl_tools as xt
+
+    def slow_poll():
+        time_mod.sleep(30)
+
+    monkeypatch.setattr(xt, "WebsocketClient", lambda *a, **k: (_ for _ in ()).throw(RuntimeError("skip ws")))
+    # Direct test: worker join returns even if thread would block
+    start = time_mod.monotonic()
+    monkeypatch.setattr(xt, "parse_ws_payment_message", lambda *a, **k: None)
+
+    def fake_ws_ctx(*args, **kwargs):
+        class FakeWS:
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *a):
+                return False
+
+            def send(self, *a, **k):
+                pass
+
+            def __iter__(self):
+                while True:
+                    time_mod.sleep(1)
+                    yield {"type": "transaction"}
+
+        return FakeWS()
+
+    monkeypatch.setattr(xt, "WebsocketClient", fake_ws_ctx)
+    observed = xt.monitor_incoming_payments("rTest", lambda p: None, timeout_seconds=1)
+    elapsed = time_mod.monotonic() - start
+    assert elapsed < 8
+    assert observed == 0
+
+
 def test_parallel_lanes_manifest():
     from config.integration import integration_manifest
 

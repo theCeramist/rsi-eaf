@@ -54,8 +54,27 @@ class CycleRunner:
         return self.wallet
 
     def _poll_treasury(self, cycle_id: int) -> Dict[str, Any]:
+        from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeout
+
+        hard_timeout = float(os.getenv("TREASURY_POLL_HARD_TIMEOUT_SEC", "20"))
         try:
-            return poll_treasury_payments(cycle_id=cycle_id, factory_state=self.state)
+            with ThreadPoolExecutor(max_workers=1) as executor:
+                future = executor.submit(
+                    poll_treasury_payments,
+                    cycle_id=cycle_id,
+                    factory_state=self.state,
+                )
+                return future.result(timeout=hard_timeout)
+        except FuturesTimeout:
+            print(f"[Cycle] Treasury poll hard-timeout ({hard_timeout:.0f}s) — continuing cycle")
+            return {
+                "ws_observed": 0,
+                "ingested": [],
+                "unmatched": [],
+                "treasury_address": os.getenv("FACTORY_TREASURY_ADDRESS"),
+                "error": "poll_hard_timeout",
+                "poll_mode": "timeout",
+            }
         except Exception as exc:
             print(f"[Cycle] Treasury poll failed (non-fatal): {exc}")
             return {

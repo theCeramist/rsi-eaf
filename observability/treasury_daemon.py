@@ -80,6 +80,10 @@ def _daemon_loop(treasury_address: str) -> None:
             break
 
 
+def is_treasury_daemon_running() -> bool:
+    return _daemon_thread is not None and _daemon_thread.is_alive()
+
+
 def start_treasury_daemon(treasury_address: Optional[str] = None) -> Dict[str, Any]:
     """Start background WS listener if not already running."""
     global _daemon_thread
@@ -92,7 +96,7 @@ def start_treasury_daemon(treasury_address: Optional[str] = None) -> Dict[str, A
     if not address:
         return {"started": False, "reason": "no_treasury_address"}
 
-    if _daemon_thread and _daemon_thread.is_alive():
+    if is_treasury_daemon_running():
         return {"started": False, "reason": "already_running", "treasury_address": address}
 
     _daemon_stop.clear()

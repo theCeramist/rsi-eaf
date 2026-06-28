@@ -108,6 +108,11 @@ def dispatch_post_cycle_async(
             from observability.nexus_echo_daemon import run_echo_tick
 
             lanes["nexus_echo_tick"] = run_echo_tick(repair=True)
+            tick = lanes["nexus_echo_tick"]
+            if tick.get("needs_emit") and not tick.get("repair", {}).get("nexus_emit", {}).get("emitted"):
+                from tools.nexus_bridge import force_nexus_emit_from_state
+
+                lanes["nexus_force_emit"] = force_nexus_emit_from_state(factory_state)
         except Exception as exc:
             lanes["nexus_echo_tick"] = {"error": str(exc)}
 

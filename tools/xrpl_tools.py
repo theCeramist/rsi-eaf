@@ -10,6 +10,7 @@ Never commit seeds. Use environment variables or secure vault.
 
 import os
 import json
+import threading
 import time
 from typing import Optional, Dict, Any, Callable
 from decimal import Decimal
@@ -245,34 +246,44 @@ def monitor_incoming_payments(
     """
     Real-time WebSocket monitor for incoming Payments to a specific address.
     Calls callback(dict) for each relevant transaction.
-    Returns count of payments observed during the poll window.
+    Returns count of payments observed during the poll window (hard wall-clock cap).
     """
     url = XRPL_TESTNET_WS_URL if testnet else XRPL_MAINNET_WS_URL
     poll_timeout = float(timeout_seconds or 3)
     print(f"[XRPL] Starting WebSocket monitor for incoming payments to {address}...")
 
-    observed = 0
-    try:
-        with WebsocketClient(url, timeout=poll_timeout) as ws:
-            ws.send(
-                Subscribe(
-                    accounts=[address],
-                    streams=[StreamParameter.TRANSACTIONS],
+    state: Dict[str, Any] = {"observed": 0}
+
+    def _poll_loop() -> None:
+        try:
+            with WebsocketClient(url, timeout=min(poll_timeout, 10.0)) as ws:
+                ws.send(
+                    Subscribe(
+                        accounts=[address],
+                        streams=[StreamParameter.TRANSACTIONS],
+                    )
                 )
-            )
-            print(f"[XRPL] Subscribed to transactions (poll {poll_timeout:.0f}s).")
+                print(f"[XRPL] Subscribed to transactions (poll {poll_timeout:.0f}s).")
+                deadline = time.monotonic() + poll_timeout
+                for msg in ws:
+                    if time.monotonic() >= deadline:
+                        break
+                    payment = parse_ws_payment_message(msg, address, testnet=testnet)
+                    if not payment:
+                        continue
+                    callback(payment)
+                    state["observed"] += 1
+            print(f"[XRPL] Monitor poll complete ({state['observed']} payment(s) observed).")
+        except Exception as exc:
+            print(f"[XRPL] Monitor error: {exc}")
+            state["error"] = str(exc)
 
-            for msg in ws:
-                payment = parse_ws_payment_message(msg, address, testnet=testnet)
-                if not payment:
-                    continue
-                callback(payment)
-                observed += 1
-
-        print(f"[XRPL] Monitor poll complete ({observed} payment(s) observed).")
-    except Exception as e:
-        print(f"[XRPL] Monitor error: {e}")
-    return observed
+    worker = threading.Thread(target=_poll_loop, name="xrpl-ws-poll", daemon=True)
+    worker.start()
+    worker.join(timeout=poll_timeout + 3.0)
+    if worker.is_alive():
+        print(f"[XRPL] Monitor hard-timeout after {poll_timeout:.0f}s — continuing cycle")
+    return int(state["observed"])
 
 
 def query_recent_transactions(

@@ -57,8 +57,12 @@ def run_echo_tick(repair: bool = True) -> Dict[str, Any]:
     repair_result: Dict[str, Any] = {}
     if repair and check.get("needs_emit"):
         from tools.jarvis_swarm_ci_repair import maybe_repair_nexus_ci
+        from tools.nexus_bridge import force_nexus_emit_from_state
 
-        repair_result["ci"] = maybe_repair_nexus_ci(int(check.get("factory_cycle", 0)), force=False)
+        factory_cycle = int(check.get("factory_cycle", 0))
+        repair_result["ci"] = maybe_repair_nexus_ci(factory_cycle, force=False)
+        if os.getenv("NEXUS_ECHO_AUTO_EMIT", "true").lower() in {"1", "true", "yes"}:
+            repair_result["nexus_emit"] = force_nexus_emit_from_state()
     check["repair"] = repair_result
     return check
 
