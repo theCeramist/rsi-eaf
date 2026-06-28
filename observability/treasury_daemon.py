@@ -15,12 +15,23 @@ from typing import Any, Dict, Optional
 INBOX_FILE = Path(os.getenv("TREASURY_INBOX_FILE", "observability/treasury_inbox.jsonl"))
 DAEMON_ENABLED = os.getenv("TREASURY_DAEMON_ENABLED", "true").lower() in {"1", "true", "yes"}
 POLL_CHUNK_SEC = float(os.getenv("TREASURY_DAEMON_CHUNK_SEC", "30"))
+DEDUPE_WINDOW = int(os.getenv("TREASURY_INBOX_DEDUPE", "200"))
 
 _daemon_thread: Optional[threading.Thread] = None
 _daemon_stop = threading.Event()
 
 
+_seen_hashes: set[str] = set()
+
+
 def _append_inbox(payment: Dict[str, Any]) -> None:
+    tx_hash = payment.get("tx_hash") or payment.get("hash")
+    if tx_hash:
+        if tx_hash in _seen_hashes:
+            return
+        _seen_hashes.add(tx_hash)
+        if len(_seen_hashes) > DEDUPE_WINDOW:
+            _seen_hashes.clear()
     INBOX_FILE.parent.mkdir(parents=True, exist_ok=True)
     entry = {
         "timestamp": datetime.now(timezone.utc).isoformat(),
@@ -28,6 +39,12 @@ def _append_inbox(payment: Dict[str, Any]) -> None:
     }
     with INBOX_FILE.open("a", encoding="utf-8") as f:
         f.write(json.dumps(entry, default=str) + "\n")
+    try:
+        from observability.daemon_supervisor import heartbeat
+
+        heartbeat("treasury_ws", {"last_payment": tx_hash})
+    except Exception:
+        pass
 
 
 def drain_inbox(limit: int = 100) -> list[Dict[str, Any]]:
@@ -86,7 +103,20 @@ def start_treasury_daemon(treasury_address: Optional[str] = None) -> Dict[str, A
         daemon=True,
     )
     _daemon_thread.start()
-    return {"started": True, "treasury_address": address}
+    return {"started": True, "treasury_address": address, "chunk_sec": POLL_CHUNK_SEC}
+
+
+def daemon_health() -> Dict[str, Any]:
+    """Runtime health for treasury WS daemon."""
+    alive = _daemon_thread is not None and _daemon_thread.is_alive()
+    pending = 0
+    if INBOX_FILE.exists():
+        pending = len([ln for ln in INBOX_FILE.read_text(encoding="utf-8").splitlines() if ln.strip()])
+    return {
+        "running": alive,
+        "inbox_pending": pending,
+        "seen_hashes": len(_seen_hashes),
+    }
 
 
 def stop_treasury_daemon() -> None:

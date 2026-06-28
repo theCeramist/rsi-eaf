@@ -43,12 +43,24 @@ def run_autonomous(
     require_runner_lock()
     os.environ["FACTORY_RUNNER_ACTIVE"] = "true"
 
-    if os.getenv("TREASURY_DAEMON_ENABLED", "true").lower() in {"1", "true", "yes"}:
-        from observability.treasury_daemon import start_treasury_daemon
+    from factory_core.runner_preflight import run_preflight
 
-        daemon = start_treasury_daemon()
+    preflight = run_preflight()
+    print(f"[AutonomousRunner] Preflight ok={preflight['ok']} top3={preflight.get('top3_revenue')}")
+    for w in preflight.get("warnings", [])[:4]:
+        print(f"[AutonomousRunner] Preflight warning: {w}")
+    if not preflight.get("ok") and os.getenv("FACTORY_PREFLIGHT_BLOCK", "true").lower() in {"1", "true", "yes"}:
+        for b in preflight.get("blockers", []):
+            print(f"[AutonomousRunner] Preflight blocker: {b}")
+        raise RuntimeError("Runner preflight failed — fix blockers before restart")
+
+    from observability.daemon_supervisor import start_factory_daemons
+
+    daemon_results = start_factory_daemons()
+    for daemon in daemon_results:
         if daemon.get("started"):
-            print(f"[AutonomousRunner] Treasury WS daemon started: {daemon.get('treasury_address')}")
+            meta = daemon.get("meta", {})
+            print(f"[AutonomousRunner] Daemon {daemon.get('name')} started: {meta.get('treasury_address')}")
 
     runner = CycleRunner()
     acp_boot: dict = {"started": False}
@@ -199,6 +211,12 @@ def run_autonomous(
 
             shutdown_runner_acp(acp_boot.get("client"))
             print("[AutonomousRunner] ACP session closed")
+        try:
+            from observability.treasury_daemon import stop_treasury_daemon
+
+            stop_treasury_daemon()
+        except Exception:
+            pass
 
     print("[AutonomousRunner] Final net:", ledger.calculate_net())
 

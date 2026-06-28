@@ -424,9 +424,11 @@ def maybe_emit_nexus(
 
     from tools.github_ci_gate import block_distribution_if_ci_red
 
+    nexus_ci_owner = os.getenv("NEXUS_CI_GATE_OWNER", NEXUS_OWNER)
+    nexus_ci_repo = os.getenv("NEXUS_CI_GATE_REPO", NEXUS_REPO)
     ci_block = block_distribution_if_ci_red(
-        owner=NEXUS_OWNER,
-        repo=NEXUS_REPO,
+        owner=nexus_ci_owner,
+        repo=nexus_ci_repo,
     )
     if ci_block and not force:
         return {"emitted": False, "skipped": True, "reason": ci_block, "ci_blocked": True}
@@ -483,6 +485,14 @@ def run_platform_sync(
         force=force_github,
         factory_state=factory_state,
     )
+    jarvis_ci_repair = {}
+    try:
+        from tools.jarvis_swarm_ci_repair import maybe_repair_nexus_ci
+
+        jarvis_ci_repair = maybe_repair_nexus_ci(cycle_id, force=force_nexus)
+    except Exception as exc:
+        jarvis_ci_repair = {"error": str(exc)}
+
     nexus_result = maybe_emit_nexus(
         cycle_result,
         force=force_nexus or force_github,
@@ -496,6 +506,7 @@ def run_platform_sync(
     return {
         "cycle_id": cycle_id,
         "github": github_result,
+        "jarvis_ci_repair": jarvis_ci_repair,
         "nexus": nexus_result,
         "vercel": vercel_status,
         "surfaces": verify_external_surfaces(),

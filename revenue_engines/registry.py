@@ -7,21 +7,35 @@ from pathlib import Path
 from typing import Any, Dict, List, Type
 
 from revenue_engines.base_engine import RevenueEngine
+from revenue_engines.agent_marketplace import AgentMarketplace
 from revenue_engines.content_operator import ContentOperator
+from revenue_engines.micro_saas_factory import MicroSaasFactory
+from revenue_engines.mythos_commerce import MythosCommerce
 from revenue_engines.paid_briefing import PaidBriefing
 from revenue_engines.tipping_funnel import TippingFunnel
 
-DEFAULT_ENGINES = "content_operator,tipping_funnel,paid_briefing"
+BASE_ENGINES = "content_operator,tipping_funnel,paid_briefing"
+TOP3_ENGINES = "micro_saas,mythos_commerce,agent_marketplace"
+DEFAULT_ENGINES = BASE_ENGINES
+
+
+def _default_engine_list() -> str:
+    if os.getenv("REVENUE_TOP3_ENABLED", "true").lower() in {"1", "true", "yes"}:
+        return f"{BASE_ENGINES},{TOP3_ENGINES}"
+    return BASE_ENGINES
 
 _ENGINE_MAP: Dict[str, Type[RevenueEngine]] = {
     "content_operator": ContentOperator,
     "tipping_funnel": TippingFunnel,
     "paid_briefing": PaidBriefing,
+    "micro_saas": MicroSaasFactory,
+    "mythos_commerce": MythosCommerce,
+    "agent_marketplace": AgentMarketplace,
 }
 
 
 def enabled_engines() -> List[str]:
-    raw = os.getenv("REVENUE_ENGINES", DEFAULT_ENGINES)
+    raw = os.getenv("REVENUE_ENGINES", _default_engine_list())
     names = [n.strip() for n in raw.split(",") if n.strip()]
     return [n for n in names if n in _ENGINE_MAP]
 

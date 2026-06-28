@@ -13,6 +13,8 @@ from tools.github_client import github_headers, github_token
 
 GITHUB_OWNER = os.getenv("GITHUB_DISTRIBUTION_OWNER", "theCeramist")
 GITHUB_REPO = os.getenv("GITHUB_DISTRIBUTION_REPO", "rsi-eaf")
+NEXUS_CI_OWNER = os.getenv("NEXUS_CI_GATE_OWNER", os.getenv("NEXUS_GITHUB_OWNER", "theCeramist"))
+NEXUS_CI_REPO = os.getenv("NEXUS_CI_GATE_REPO", os.getenv("NEXUS_GITHUB_REPO", "jarvis-swarm"))
 CI_WORKFLOW_NAME = os.getenv("GITHUB_CI_WORKFLOW", "Factory CI")
 def _ci_gate_enabled() -> bool:
     return os.getenv("GITHUB_CI_GATE", "true").lower() in {"1", "true", "yes"}

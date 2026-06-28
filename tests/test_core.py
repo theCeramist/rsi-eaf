@@ -93,11 +93,59 @@ def test_parse_ws_payment_message_ignores_internal():
     assert payment["from"] == factory
 
 
-def test_enabled_revenue_engines_include_high_impact():
+def test_enabled_revenue_engines_include_high_impact(monkeypatch):
+    monkeypatch.setenv("REVENUE_TOP3_ENABLED", "true")
     names = enabled_engines()
     assert "tipping_funnel" in names
     assert "paid_briefing" in names
     assert "content_operator" in names
+    assert "micro_saas" in names
+    assert "mythos_commerce" in names
+    assert "agent_marketplace" in names
+
+
+def test_revenue_fitness_top3_order():
+    from factory_core.revenue_fitness import evaluate_revenue_models
+
+    result = evaluate_revenue_models()
+    top3 = result["top3_ids"]
+    assert top3[0] == "micro_saas"
+    assert "mythos_commerce" in top3
+    assert "agent_marketplace" in top3
+    assert result["ranked"][0]["fitness"] >= result["ranked"][-1]["fitness"]
+
+
+def test_payment_intent_mythos_and_service_tags():
+    from observability.payment_intent import resolve_payment_intent
+
+    mythos = resolve_payment_intent({"destination_tag": 5, "memos": [], "plain_memos": []}, cycle_id=9)
+    assert mythos is not None
+    assert mythos.product_id == "mythos-cycle-9"
+    service = resolve_payment_intent({"destination_tag": 4, "memos": [], "plain_memos": []}, cycle_id=9)
+    assert service is not None
+    assert "service-bundle" in (service.product_id or "")
+
+
+def test_treasury_daemon_dedupe_inbox(tmp_path, monkeypatch):
+    from observability import treasury_daemon as td
+
+    inbox = tmp_path / "inbox.jsonl"
+    monkeypatch.setattr(td, "INBOX_FILE", inbox)
+    td._seen_hashes.clear()
+    pay = {"tx_hash": "DUP1", "from": "rExt"}
+    td._append_inbox(pay)
+    td._append_inbox(pay)
+    assert len(inbox.read_text(encoding="utf-8").strip().splitlines()) == 1
+
+
+def test_runner_preflight_structure(monkeypatch):
+    from factory_core.runner_preflight import run_preflight
+
+    monkeypatch.setenv("FACTORY_PREFLIGHT_PYTEST", "false")
+    result = run_preflight()
+    assert "ok" in result
+    assert "top3_revenue" in result
+    assert len(result["top3_revenue"]) == 3
 
 
 def test_tipping_funnel_html_includes_treasury(tmp_path, monkeypatch):

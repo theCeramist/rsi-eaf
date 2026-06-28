@@ -16,8 +16,14 @@ from typing import Any, Dict, List, Optional
 
 TIP_TAG = int(os.getenv("TREASURY_TAG_TIP", "1"))
 BRIEFING_TAG = int(os.getenv("TREASURY_TAG_BRIEFING", "2"))
+TOOL_TAG = int(os.getenv("TREASURY_TAG_TOOL", "3"))
+SERVICE_TAG = int(os.getenv("TREASURY_TAG_SERVICE", "4"))
+MYTHOS_TAG = int(os.getenv("TREASURY_TAG_MYTHOS", "5"))
 TIP_USD = float(os.getenv("TIP_SUGGESTED_USD", "1.0"))
 BRIEFING_USD = float(os.getenv("BRIEFING_UNLOCK_USD", "2.0"))
+TOOL_USD = float(os.getenv("MICRO_SAAS_UNLOCK_USD", "3.0"))
+SERVICE_USD = float(os.getenv("AGENT_SERVICE_USD", "2.5"))
+MYTHOS_USD = float(os.getenv("MYTHOS_ARTIFACT_USD", "1.5"))
 FLAT_TIP_IF_BLANK = os.getenv("TREASURY_FLAT_TIP_IF_BLANK", "true").lower() in {
     "1",
     "true",
@@ -26,6 +32,9 @@ FLAT_TIP_IF_BLANK = os.getenv("TREASURY_FLAT_TIP_IF_BLANK", "true").lower() in {
 
 TIP_WORDS = {"tip", "support", "donate", "1"}
 BRIEFING_WORDS = {"briefing", "unlock", "report", "2"}
+TOOL_WORDS = {"tool", "saas", "micro", "3"}
+SERVICE_WORDS = {"service", "agent", "catalog", "4"}
+MYTHOS_WORDS = {"mythos", "artifact", "story", "5"}
 
 
 @dataclass
@@ -97,6 +106,30 @@ def resolve_payment_intent(
             product_id=f"briefing-cycle-{cycle_id}",
             destination_tag=tag,
         )
+    if tag == TOOL_TAG:
+        return PaymentIntent(
+            amount_usd_est=TOOL_USD,
+            method="destination_tag",
+            notes="micro-tool unlock via destination tag",
+            product_id=f"micro-tool-cycle-{cycle_id}",
+            destination_tag=tag,
+        )
+    if tag == SERVICE_TAG:
+        return PaymentIntent(
+            amount_usd_est=SERVICE_USD,
+            method="destination_tag",
+            notes="agent service bundle via destination tag",
+            product_id=f"service-bundle-cycle-{cycle_id}",
+            destination_tag=tag,
+        )
+    if tag == MYTHOS_TAG:
+        return PaymentIntent(
+            amount_usd_est=MYTHOS_USD,
+            method="destination_tag",
+            notes="mythos artifact via destination tag",
+            product_id=f"mythos-cycle-{cycle_id}",
+            destination_tag=tag,
+        )
 
     for memo in payment.get("memos") or []:
         if memo.get("type") == "revenue" and memo.get("amount_usd_est"):
@@ -121,6 +154,27 @@ def resolve_payment_intent(
                 method="plain_memo",
                 notes=f"briefing via memo '{text}'",
                 product_id=f"briefing-cycle-{cycle_id}",
+            )
+        if key in TOOL_WORDS:
+            return PaymentIntent(
+                amount_usd_est=TOOL_USD,
+                method="plain_memo",
+                notes=f"micro-tool via memo '{text}'",
+                product_id=f"micro-tool-cycle-{cycle_id}",
+            )
+        if key in SERVICE_WORDS:
+            return PaymentIntent(
+                amount_usd_est=SERVICE_USD,
+                method="plain_memo",
+                notes=f"agent service via memo '{text}'",
+                product_id=f"service-bundle-cycle-{cycle_id}",
+            )
+        if key in MYTHOS_WORDS:
+            return PaymentIntent(
+                amount_usd_est=MYTHOS_USD,
+                method="plain_memo",
+                notes=f"mythos via memo '{text}'",
+                product_id=f"mythos-cycle-{cycle_id}",
             )
 
     if FLAT_TIP_IF_BLANK and tag is None and not (payment.get("memos") or payment.get("plain_memos")):
