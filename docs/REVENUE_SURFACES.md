@@ -1,6 +1,6 @@
 # RSI-EAF Revenue Surfaces (Cycle 187)
 
-Updated: 2026-06-28T22:21:21.900174+00:00
+Updated: 2026-06-28T22:29:09.365000+00:00
 
 ## Live surfaces
 
@@ -9,6 +9,9 @@ Updated: 2026-06-28T22:21:21.900174+00:00
 | Factory index | https://published-zeta.vercel.app/ |
 | Tip page | https://published-zeta.vercel.app/tip-cycle-187-20260628T222057Z.html |
 | Agent tip manifest | https://published-zeta.vercel.app/tip-manifest.json |
+| Paid briefing | https://published-zeta.vercel.app/briefing-cycle-187-20260628T222119Z.html |
+| Mythos artifact (Tag 5) | https://published-zeta.vercel.app/mythos-cycle-187-20260628T222148Z.html |
+| Micro-tool (Tag 3) | https://published-zeta.vercel.app/micro-tool-cycle-187-20260628T222134Z.html |
 | Agent service catalog (Tag 4) | https://published-zeta.vercel.app/service-catalog.json |
 | aetherforge nexus | https://aetherforge.world |
 | jarvis-swarm repo | https://github.com/theCeramist/jarvis-swarm |
