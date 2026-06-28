@@ -1,5 +1,6 @@
 """
 Single-instance lock for autonomous factory runner processes.
+Supports lane-specific locks: hybrid | revenue | tools.
 """
 
 import atexit
@@ -8,7 +9,16 @@ import sys
 from pathlib import Path
 from typing import Optional
 
-LOCK_FILE = Path(os.getenv("FACTORY_RUNNER_LOCK", "factory_core/.runner.lock"))
+_LANE = os.getenv("FACTORY_RUNNER_LANE", "hybrid").strip().lower()
+_LOCK_PATH = os.getenv(
+    "FACTORY_RUNNER_LOCK",
+    f"factory_core/.runner.{_LANE}.lock" if _LANE != "hybrid" else "factory_core/.runner.lock",
+)
+LOCK_FILE = Path(_LOCK_PATH)
+
+
+def runner_lane() -> str:
+    return _LANE
 
 
 def _pid_alive(pid: int) -> bool:
@@ -49,11 +59,19 @@ def _release_lock() -> None:
         pass
 
 
-def acquire_runner_lock() -> bool:
+def acquire_runner_lock(lane: Optional[str] = None) -> bool:
     """
-    Claim the runner lock for this process.
+    Claim the runner lock for this process (lane-specific file).
     Returns False if another live runner holds the lock.
     """
+    global LOCK_FILE
+    if lane:
+        LOCK_FILE = Path(
+            os.getenv(
+                "FACTORY_RUNNER_LOCK",
+                f"factory_core/.runner.{lane}.lock" if lane != "hybrid" else "factory_core/.runner.lock",
+            )
+        )
     LOCK_FILE.parent.mkdir(parents=True, exist_ok=True)
     existing = _read_lock_pid()
     if existing and existing != os.getpid() and _pid_alive(existing):
@@ -63,12 +81,13 @@ def acquire_runner_lock() -> bool:
     return True
 
 
-def require_runner_lock() -> None:
-    if acquire_runner_lock():
+def require_runner_lock(lane: Optional[str] = None) -> None:
+    if acquire_runner_lock(lane):
         return
     holder = _read_lock_pid()
+    active_lane = lane or _LANE
     print(
-        f"[AutonomousRunner] Another runner is active (pid={holder}). "
+        f"[AutonomousRunner] Another {active_lane} runner is active (pid={holder}). "
         "Exiting to avoid duplicate cycles."
     )
     sys.exit(0)

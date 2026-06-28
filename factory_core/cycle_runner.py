@@ -159,40 +159,60 @@ class CycleRunner:
             }
             trace_logger.log_cycle_trace(cycle_id, "execute", execution_result, (time.time() - t0) * 1000)
         elif mode == "hybrid":
-            print("[Cycle] Phase 0: Tool health check...")
-            tool_result = run_tool_improvement_cycle(cycle_id=cycle_id)
-            if not tool_result.get("pytest_passed") or not tool_result.get("xrpl_ok"):
-                reason = "pytest_failed" if not tool_result.get("pytest_passed") else "xrpl_failed"
-                print(f"[Cycle] Phase 0 FAIL ({reason}) — skipping revenue engines (fail-fast)")
-                treasury_result = self._poll_treasury(cycle_id)
-                verified_revenue = treasury_result.get("ingested", [])
-                execution_result = {
-                    **tool_result,
-                    "cycle_mode": mode,
-                    "fail_fast": True,
-                    "fail_fast_reason": reason,
-                    "vercel_cooldown": cooldown,
-                    "revenue_usd_est": sum(e.get("amount_usd_est", 0) for e in verified_revenue),
-                    "verified_revenue_events": len(verified_revenue),
-                    "treasury_ws_observed": treasury_result.get("ws_observed", 0),
-                    "treasury_address": treasury_result.get("treasury_address"),
-                    "treasury_unmatched_inflows": len(treasury_result.get("unmatched", [])),
-                    "revenue_engines_run": [],
-                    "xrpl_payments_made": 0,
-                    "published_assets": [],
-                    "github_distribution": {"skipped": True, "reason": "fail_fast"},
-                }
-                trace_logger.log_cycle_trace(cycle_id, "execute", execution_result, (time.time() - t0) * 1000)
+            skip_tool = os.getenv("FACTORY_SKIP_TOOL_PHASE", "").lower() in {"1", "true", "yes"}
+            revenue_on_fail = os.getenv("FACTORY_REVENUE_ON_PYTEST_FAIL", "true").lower() in {
+                "1",
+                "true",
+                "yes",
+            }
+            engine_bundle: Dict[str, Any] = {}
+            featured: Dict[str, str] = {}
+            if skip_tool:
+                print("[Cycle] Phase 0: Skipped (FACTORY_SKIP_TOOL_PHASE) — revenue lane")
+                execution_result, engine_bundle, featured = self._run_revenue_phase(cycle_id, cooldown)
             else:
-                execution_result, engine_bundle, featured = self._run_revenue_phase(
-                    cycle_id, cooldown, tool_result=tool_result
-                )
-                trace_logger.log_cycle_trace(
-                    cycle_id,
-                    "execute",
-                    {**execution_result, "engine_bundle": engine_bundle, "featured": featured},
-                    (time.time() - t0) * 1000,
-                )
+                print("[Cycle] Phase 0: Tool health check...")
+                tool_result = run_tool_improvement_cycle(cycle_id=cycle_id)
+                tool_ok = tool_result.get("pytest_passed") and tool_result.get("xrpl_ok")
+                if tool_ok:
+                    execution_result, engine_bundle, featured = self._run_revenue_phase(
+                        cycle_id, cooldown, tool_result=tool_result
+                    )
+                else:
+                    reason = "pytest_failed" if not tool_result.get("pytest_passed") else "xrpl_failed"
+                    if revenue_on_fail:
+                        print(f"[Cycle] Phase 0 FAIL ({reason}) — running revenue engines anyway")
+                        execution_result, engine_bundle, featured = self._run_revenue_phase(
+                            cycle_id, cooldown, tool_result=tool_result
+                        )
+                        execution_result["fail_fast"] = True
+                        execution_result["fail_fast_reason"] = reason
+                    else:
+                        print(f"[Cycle] Phase 0 FAIL ({reason}) — skipping revenue engines (fail-fast)")
+                        treasury_result = self._poll_treasury(cycle_id)
+                        verified_revenue = treasury_result.get("ingested", [])
+                        execution_result = {
+                            **tool_result,
+                            "cycle_mode": mode,
+                            "fail_fast": True,
+                            "fail_fast_reason": reason,
+                            "vercel_cooldown": cooldown,
+                            "revenue_usd_est": sum(e.get("amount_usd_est", 0) for e in verified_revenue),
+                            "verified_revenue_events": len(verified_revenue),
+                            "treasury_ws_observed": treasury_result.get("ws_observed", 0),
+                            "treasury_address": treasury_result.get("treasury_address"),
+                            "treasury_unmatched_inflows": len(treasury_result.get("unmatched", [])),
+                            "revenue_engines_run": [],
+                            "xrpl_payments_made": 0,
+                            "published_assets": [],
+                            "force_distribution": False,
+                        }
+            trace_logger.log_cycle_trace(
+                cycle_id,
+                "execute",
+                {**execution_result, "engine_bundle": engine_bundle, "featured": featured},
+                (time.time() - t0) * 1000,
+            )
         else:
             execution_result, engine_bundle, featured = self._run_revenue_phase(cycle_id, cooldown)
             trace_logger.log_cycle_trace(
@@ -262,6 +282,22 @@ class CycleRunner:
                 analysis["grok_insights"] = {"error": str(exc)}
         trace_logger.log_cycle_trace(cycle_id, "analyze", analysis)
 
+        try:
+            from factory_core.parallel_lanes import run_post_analyze_lanes
+
+            zero_streak = int(os.getenv("FACTORY_CONSECUTIVE_ZERO_REVENUE", "0"))
+            analyze_lanes = run_post_analyze_lanes(
+                cycle_id,
+                analysis,
+                execution_result.get("featured_surfaces"),
+                consecutive_zero_revenue=zero_streak,
+            )
+            if analyze_lanes:
+                analysis["parallel_lanes"] = analyze_lanes
+                trace_logger.log_cycle_trace(cycle_id, "parallel_analyze", analyze_lanes)
+        except Exception as exc:
+            analysis["parallel_lanes"] = {"error": str(exc)}
+
         print("[Cycle] Phase 3b: RSI meta-analysis (balanced self-improvement)...")
         rsi_meta = run_self_improvement_meta(cycle_id, analysis, gate_result)
         analysis["rsi_meta"] = rsi_meta
@@ -318,6 +354,23 @@ class CycleRunner:
             evolution["executor"] = executor_result
             evolution["cycle_focus"] = rsi_meta.get("focus")
         trace_logger.log_cycle_trace(cycle_id, "evolve", evolution)
+
+        try:
+            from factory_core.parallel_lanes import run_post_evolve_lanes
+
+            allow_grok_evo = os.getenv("GROK_EVOLUTION_ENABLED", "false").lower() in {"1", "true", "yes"}
+            evolve_lanes = run_post_evolve_lanes(
+                cycle_id,
+                evolution,
+                gate_result,
+                execution_result.get("featured_surfaces"),
+                allow_code_evolution=allow_grok_evo,
+            )
+            evolution["parallel_lanes"] = evolve_lanes
+            evolution["worktree_verifier"] = evolve_lanes.get("worktree_verifier")
+            trace_logger.log_cycle_trace(cycle_id, "parallel_evolve", evolve_lanes)
+        except Exception as exc:
+            evolution["parallel_lanes"] = {"error": str(exc)}
 
         if gate_result.get("all_passed"):
             try:
@@ -379,6 +432,23 @@ class CycleRunner:
             },
             anchor_to_xrpl=False,
         )
+
+        try:
+            from factory_core.parallel_lanes import dispatch_post_cycle_async
+
+            async_lanes = dispatch_post_cycle_async(
+                cycle_id,
+                {
+                    "cycle_id": cycle_id,
+                    "execution": execution_result,
+                    "analysis": analysis,
+                    "ledger_net": ledger.calculate_net(),
+                },
+                factory_state=self.state,
+            )
+            trace_logger.log_cycle_trace(cycle_id, "parallel_async", async_lanes)
+        except Exception as exc:
+            trace_logger.log_cycle_trace(cycle_id, "parallel_async", {"error": str(exc)})
 
         result = {
             "cycle_id": cycle_id,

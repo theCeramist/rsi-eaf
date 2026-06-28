@@ -136,4 +136,21 @@ def integration_manifest(cycle_id: int = 0, featured: Dict[str, str] | None = No
             "github_rsi_eaf": GITHUB_REPO_URL,
             "github_jarvis_swarm": NEXUS_REPO_URL,
         },
+        "parallel_lanes": {
+            "daemons": [
+                "treasury_ws",
+                "distribution",
+                "xrpl_intel",
+                "nexus_echo",
+                "ci_babysitter",
+            ],
+            "async_grok": [
+                "revenue_sprint",
+                "worktree_verifier",
+                "acp_lane",
+                "micro_saas_scout",
+                "best_of_n_evolve",
+            ],
+            "runner_lanes": ["hybrid", "revenue", "tools"],
+        },
     }

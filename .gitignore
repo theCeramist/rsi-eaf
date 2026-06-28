@@ -10,6 +10,14 @@ published/outreach-*.json
 published/archive/
 observability/daemon_status.json
 observability/factory_health.json
+observability/distribution_daemon.jsonl
+observability/xrpl_intel.jsonl
+observability/ci_babysitter.jsonl
+observability/revenue_sprint.jsonl
+observability/acp_lane.jsonl
+observability/micro_saas_scout.jsonl
+observability/micro_saas_scout.json
+factory_core/.runner.*.lock
 node_modules/
 terminals/
 *.sqlite

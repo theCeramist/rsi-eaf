@@ -149,6 +149,84 @@ def test_runner_preflight_structure(monkeypatch):
     assert len(result["top3_revenue"]) == 3
 
 
+def test_parallel_lanes_manifest():
+    from config.integration import integration_manifest
+
+    m = integration_manifest()
+    lanes = m.get("parallel_lanes", {})
+    assert "distribution" in lanes.get("daemons", [])
+    assert "revenue_sprint" in lanes.get("async_grok", [])
+    assert "revenue" in lanes.get("runner_lanes", [])
+
+
+def test_revenue_sprint_should_run():
+    from factory_core.revenue_sprint import should_run_revenue_sprint
+
+    assert should_run_revenue_sprint(0.0, consecutive_zero=1) is True
+    assert should_run_revenue_sprint(5.0, consecutive_zero=1) is False
+
+
+def test_nexus_echo_drift_structure(monkeypatch):
+    from observability import nexus_echo_daemon as ned
+
+    monkeypatch.setattr(
+        "factory_core.state.FactoryState",
+        lambda: type("S", (), {"current_cycle": 20})(),
+    )
+    monkeypatch.setattr(
+        "tools.github_client.fetch_repo_json",
+        lambda *a, **k: {"rsi_eaf_runner": {"cycle_id": 10}},
+    )
+    monkeypatch.setattr("tools.nexus_bridge.verify_external_surfaces", lambda: {"all_ok": True})
+    monkeypatch.setattr("tools.publish_tools.verify_live_url", lambda u: True)
+    check = ned.check_nexus_drift()
+    assert check["drift_cycles"] == 10
+    assert check["needs_emit"] is True
+
+
+def test_runner_lane_lock_paths():
+    from factory_core import runner_lock
+
+    assert runner_lock.runner_lane() in {"hybrid", "revenue", "tools", ""}
+
+
+def test_micro_saas_scout_schedule():
+    from factory_core.micro_saas_scout import should_run_scout
+
+    assert should_run_scout(5) is True
+    assert should_run_scout(3) is False
+
+
+def test_distribution_daemon_tick_structure(monkeypatch, tmp_path):
+    from observability import distribution_daemon as dd
+
+    monkeypatch.setattr(dd, "INTEL_FILE", tmp_path / "dist.jsonl")
+    monkeypatch.setattr("revenue_engines.base_engine.resolve_treasury", lambda: "rTest")
+    monkeypatch.setattr(
+        "tools.distribution_tools.featured_links_for_index",
+        lambda c: {"tip_page": "https://example.com/tip"},
+    )
+    monkeypatch.setattr(
+        "tools.revenue_acceleration.write_outreach_bundle",
+        lambda cycle_id, treasury, featured=None: {
+            "tip_url": "https://example.com/tip",
+            "payload": {},
+        },
+    )
+    monkeypatch.setattr("tools.publish_tools.verify_live_url", lambda u: True)
+    monkeypatch.setattr(
+        "tools.github_distribution.refresh_support_issue",
+        lambda cycle_id, featured, treasury: {"issue_updated": True},
+    )
+    monkeypatch.setattr(
+        "tools.github_distribution.maybe_push_distribution",
+        lambda **kwargs: {"pushed": False, "skipped": True},
+    )
+    result = dd.run_distribution_tick(cycle_id=42)
+    assert result["started"] is True
+    assert result["tick"]["cycle_id"] == 42
+
+
 def test_integration_manifest_compact():
     from config.integration import integration_manifest
 

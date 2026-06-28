@@ -54,13 +54,18 @@ def run_autonomous(
             print(f"[AutonomousRunner] Preflight blocker: {b}")
         raise RuntimeError("Runner preflight failed — fix blockers before restart")
 
-    from observability.daemon_supervisor import start_factory_daemons
+    from factory_core.parallel_lanes import start_all_parallel_infrastructure
+    from factory_core.runner_lock import runner_lane
 
-    daemon_results = start_factory_daemons()
+    daemon_results = start_all_parallel_infrastructure()
+    lane = runner_lane()
     for daemon in daemon_results:
         if daemon.get("started"):
             meta = daemon.get("meta", {})
-            print(f"[AutonomousRunner] Daemon {daemon.get('name')} started: {meta.get('treasury_address')}")
+            name = daemon.get("name", "unknown")
+            detail = meta.get("treasury_address") or meta.get("interval_sec") or meta
+            print(f"[AutonomousRunner] Daemon {name} started: {detail}")
+    print(f"[AutonomousRunner] Runner lane={lane} parallel_daemons={len(daemon_results)}")
 
     runner = CycleRunner()
     acp_boot: dict = {"started": False}
@@ -124,6 +129,7 @@ def run_autonomous(
                 break
 
             director.configure_autonomous_env(next_plan)
+            os.environ["FACTORY_CONSECUTIVE_ZERO_REVENUE"] = str(consecutive_zero_revenue)
             print(
                 f"[Director] Cycle {next_plan.cycle_id_next} plan: "
                 f"mode={next_plan.mode} focus={next_plan.focus} "
