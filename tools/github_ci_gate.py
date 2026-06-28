@@ -14,7 +14,8 @@ from tools.github_client import github_headers, github_token
 GITHUB_OWNER = os.getenv("GITHUB_DISTRIBUTION_OWNER", "theCeramist")
 GITHUB_REPO = os.getenv("GITHUB_DISTRIBUTION_REPO", "rsi-eaf")
 CI_WORKFLOW_NAME = os.getenv("GITHUB_CI_WORKFLOW", "Factory CI")
-CI_GATE_ENABLED = os.getenv("GITHUB_CI_GATE", "true").lower() in {"1", "true", "yes"}
+def _ci_gate_enabled() -> bool:
+    return os.getenv("GITHUB_CI_GATE", "true").lower() in {"1", "true", "yes"}
 
 
 def latest_workflow_run(
@@ -42,7 +43,7 @@ def latest_workflow_run(
         latest = runs[0]
         conclusion = latest.get("conclusion")
         status = latest.get("status")
-        blocking = conclusion == "failure" or (status == "in_progress" and CI_GATE_ENABLED)
+        blocking = conclusion == "failure" or (status == "in_progress" and _ci_gate_enabled())
         return {
             "success": True,
             "run_id": latest.get("id"),
@@ -63,7 +64,7 @@ def block_distribution_if_ci_red(
     owner = owner or GITHUB_OWNER
     repo = repo or GITHUB_REPO
     """Return block reason if CI gate should skip distribution."""
-    if not CI_GATE_ENABLED:
+    if not _ci_gate_enabled():
         return None
     result = latest_workflow_run(owner, repo)
     if result.get("blocking"):

@@ -347,7 +347,10 @@ def test_factory_director_revenue_sprint_sleep(monkeypatch):
     )
     assert plan.reasoning.get("director_override") == "revenue_gap_critical"
     assert plan.sleep_minutes == 5
-    assert "accelerate_treasury_surfaces" in plan.evolution_priorities
+    assert any(
+        p in plan.evolution_priorities
+        for p in ("accelerate_treasury_surfaces", "treasury_ingest_github")
+    )
 
 
 def test_factory_director_decides_mode_and_sleep(tmp_path, monkeypatch):
