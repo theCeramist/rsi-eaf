@@ -1,13 +1,13 @@
 # RSI-EAF Revenue Surfaces (Cycle 223)
 
-Updated: 2026-06-29T13:32:48.564109+00:00
+Updated: 2026-06-29T13:35:23.969696+00:00
 
 ## Live surfaces
 
 | Surface | URL |
 |---------|-----|
 | Factory index | https://published-zeta.vercel.app/ |
-| Tip page | https://published-zeta.vercel.app/tip-cycle-223-20260629T132434Z.html |
+| Tip page | https://published-zeta.vercel.app/tip-manifest.json |
 | Agent pay endpoint | https://published-zeta.vercel.app/agent-pay.json |
 | Agent tip manifest | https://published-zeta.vercel.app/tip-manifest.json |
 | Paid briefing | https://published-zeta.vercel.app/briefing-cycle-223-20260629T132453Z.html |
