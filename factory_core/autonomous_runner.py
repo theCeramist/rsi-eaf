@@ -43,6 +43,21 @@ def run_autonomous(
     require_runner_lock()
     os.environ["FACTORY_RUNNER_ACTIVE"] = "true"
 
+    from datetime import datetime, timezone
+    from factory_core.state import FactoryState
+
+    boot_state = FactoryState()
+    prior = boot_state.get_operational_status()
+    if prior.get("state") == "closed_indefinitely":
+        boot_state.set_operational_status(
+            {
+                "state": "running",
+                "resumed_at": datetime.now(timezone.utc).isoformat(),
+                "prior_closure_reason": prior.get("reason"),
+            }
+        )
+        print(f"[AutonomousRunner] Resumed after closure: {prior.get('reason', 'unknown')}")
+
     from factory_core.runner_preflight import run_preflight
 
     preflight = run_preflight()

@@ -134,5 +134,15 @@ class FactoryState:
         self._data["treasury_watermark"] = wm
         self._save()
 
+    def set_operational_status(self, status: Dict[str, Any]) -> None:
+        self._data["operational_status"] = {
+            **status,
+            "updated_at": datetime.now(timezone.utc).isoformat(),
+        }
+        self._save()
+
+    def get_operational_status(self) -> Dict[str, Any]:
+        return dict(self._data.get("operational_status", {}))
+
     def snapshot(self) -> Dict[str, Any]:
         return dict(self._data)

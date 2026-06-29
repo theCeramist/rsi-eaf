@@ -1109,6 +1109,15 @@ def test_compute_cycle_focus_fitness_override(monkeypatch):
     assert focus == "revenue"
 
 
+def test_factory_operational_status_closure(tmp_path, monkeypatch):
+    from factory_core.state import FactoryState
+
+    monkeypatch.setenv("FACTORY_STATE_FILE", str(tmp_path / "state.json"))
+    state = FactoryState()
+    state.set_operational_status({"state": "closed_indefinitely", "reason": "funds"})
+    assert state.get_operational_status()["state"] == "closed_indefinitely"
+
+
 def test_service_catalog_v2_has_fulfillment_urls(tmp_path, monkeypatch):
     from observability.service_fulfillment import build_service_catalog
 
