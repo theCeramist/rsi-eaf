@@ -110,6 +110,17 @@ class CycleRunner:
         treasury_result = self._poll_treasury(cycle_id)
         verified_revenue = treasury_result.get("ingested", [])
         unmatched_inflows = treasury_result.get("unmatched", [])
+        service_fulfillment: Dict[str, Any] = {}
+        treasury_addr = treasury_result.get("treasury_address") or ""
+        if treasury_addr:
+            try:
+                from observability.service_fulfillment import fulfill_paid_services
+
+                service_fulfillment = fulfill_paid_services(
+                    cycle_id, treasury_addr, featured=featured
+                )
+            except Exception as exc:
+                service_fulfillment = {"error": str(exc)}
         mode = os.getenv("CYCLE_MODE", CYCLE_MODE).strip()
         execution_result = {
             "cycle_mode": mode,
@@ -133,6 +144,7 @@ class CycleRunner:
             "engine_errors": engine_bundle.get("errors", []),
             "featured_surfaces": featured,
             "force_distribution": force_distribution,
+            "service_fulfillment": service_fulfillment,
         }
         if tool_result:
             execution_result.update({

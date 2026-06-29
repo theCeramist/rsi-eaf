@@ -607,7 +607,7 @@ def test_factory_director_revenue_sprint_sleep(monkeypatch):
         "fitness_revenue_capture",
         "revenue_gap_critical",
     }
-    assert plan.reasoning.get("fitness_override", {}).get("focus") == "revenue"
+    assert plan.focus == "revenue"
     assert plan.sleep_minutes == 5
     assert "fitness_revenue_capture" in plan.evolution_priorities or any(
         p in plan.evolution_priorities
@@ -1107,6 +1107,17 @@ def test_compute_cycle_focus_fitness_override(monkeypatch):
     )
     focus = compute_cycle_focus(3, {"cycle_revenue_usd": 0, "bottlenecks": []}, {})
     assert focus == "revenue"
+
+
+def test_service_catalog_v2_has_fulfillment_urls(tmp_path, monkeypatch):
+    from observability.service_fulfillment import build_service_catalog
+
+    monkeypatch.chdir(tmp_path)
+    catalog = build_service_catalog(42, "rTreasury123")
+    assert catalog["schema"] == "rsi_eaf_service_catalog_v2"
+    assert len(catalog["services"]) >= 4
+    assert all(s.get("fulfillment_url") for s in catalog["services"])
+    assert catalog["how_to_pay"]["agent"]
 
 
 def test_factory_fitness_report(tmp_path, monkeypatch):

@@ -16,11 +16,16 @@ from revenue_engines.tipping_funnel import TippingFunnel
 
 BASE_ENGINES = "content_operator,tipping_funnel,paid_briefing"
 TOP3_ENGINES = "micro_saas,mythos_commerce,agent_marketplace"
+SERVICE_FIRST_ENGINES = "agent_marketplace,paid_briefing,micro_saas,content_operator,tipping_funnel,mythos_commerce"
 DEFAULT_ENGINES = BASE_ENGINES
 
 
 def _default_engine_list() -> str:
-    if os.getenv("REVENUE_TOP3_ENABLED", "true").lower() in {"1", "true", "yes"}:
+    service_first = os.getenv("REVENUE_SERVICE_FIRST", "true").lower() in {"1", "true", "yes"}
+    top3 = os.getenv("REVENUE_TOP3_ENABLED", "true").lower() in {"1", "true", "yes"}
+    if service_first and top3:
+        return SERVICE_FIRST_ENGINES
+    if top3:
         return f"{BASE_ENGINES},{TOP3_ENGINES}"
     return BASE_ENGINES
 

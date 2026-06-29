@@ -72,8 +72,8 @@ def fitness_evolution_priorities(
             priorities.extend(
                 [
                     "fitness_revenue_capture",
-                    "treasury_ingest_github",
                     "accelerate_treasury_surfaces",
+                    "treasury_ingest_github",
                 ]
             )
         if top_failures.get("live_url_reachable", 0) > 0:

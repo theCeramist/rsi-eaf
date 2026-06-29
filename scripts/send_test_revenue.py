@@ -27,12 +27,39 @@ from tools.xrpl_tools import (
 )
 
 
+def _load_or_create_supporter_wallet() -> Wallet:
+    supporter_seed = os.getenv("TEST_SUPPORTER_SEED")
+    if supporter_seed:
+        print("[TestRevenue] Using TEST_SUPPORTER_SEED from environment.")
+        return Wallet.from_seed(supporter_seed)
+
+    try:
+        print("[TestRevenue] Creating ephemeral supporter wallet via faucet...")
+        return create_factory_wallet(testnet=True, debug=False)
+    except RuntimeError:
+        print("[TestRevenue] Faucet unavailable — funding local supporter from factory wallet...")
+        supporter = Wallet.create()
+        factory = load_factory_wallet(testnet=True)
+        fund = send_xrp_payment(
+            wallet=factory,
+            destination=supporter.classic_address,
+            amount_xrp=float(os.getenv("TEST_SUPPORTER_PREFUND_XRP", "11.0")),
+            memo_data={"type": "supporter_prefund", "notes": "factory-funded test payer"},
+            verbose=True,
+        )
+        if not fund.get("success"):
+            raise SystemExit(f"Supporter prefund failed: {fund}")
+        print(f"[TestRevenue] Supporter funded: {supporter.classic_address}")
+        return supporter
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Send test revenue to factory treasury")
     parser.add_argument("--amount-usd", type=float, default=1.0)
     parser.add_argument("--amount-xrp", type=float, default=0.01)
     parser.add_argument("--notes", default="test supporter tip")
     parser.add_argument("--product-id", default=None, help="Optional product_id for paid briefing unlock")
+    parser.add_argument("--destination-tag", type=int, default=1, help="XRPL destination tag (1=tip)")
     args = parser.parse_args()
 
     factory = load_factory_wallet(testnet=True)
@@ -40,13 +67,7 @@ def main() -> None:
     if treasury == factory.classic_address:
         raise SystemExit("Treasury must differ from factory wallet for inbound revenue.")
 
-    supporter_seed = os.getenv("TEST_SUPPORTER_SEED")
-    if supporter_seed:
-        print("[TestRevenue] Using TEST_SUPPORTER_SEED from environment.")
-        supporter = Wallet.from_seed(supporter_seed)
-    else:
-        print("[TestRevenue] Creating ephemeral supporter wallet via faucet...")
-        supporter = create_factory_wallet(testnet=True, debug=False)
+    supporter = _load_or_create_supporter_wallet()
 
     memo = {
         "type": "revenue",
@@ -65,6 +86,7 @@ def main() -> None:
         destination=treasury,
         amount_xrp=args.amount_xrp,
         memo_data=memo,
+        destination_tag=args.destination_tag,
         verbose=True,
     )
     if not result.get("success"):

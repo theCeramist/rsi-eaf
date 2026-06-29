@@ -11,6 +11,7 @@ from typing import Any, Dict
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from factory_core.revenue_fitness import evaluate_revenue_models
+from observability.service_fulfillment import find_paid_product_ids
 from revenue_engines.base_engine import RevenueEngine, publish_and_anchor, resolve_treasury
 
 SOURCE = "micro_saas_factory_v1"
@@ -37,7 +38,22 @@ class MicroSaasFactory(RevenueEngine):
             "fitness_score": str(top["fitness"]),
         }
 
-    def _build_html(self, cycle_id: int, treasury: str, opp: Dict[str, str]) -> str:
+    def _build_html(self, cycle_id: int, treasury: str, opp: Dict[str, str], unlocked: bool) -> str:
+        base = os.getenv("FACTORY_PUBLIC_BASE_URL", "").rstrip("/") or "https://published-zeta.vercel.app"
+        product_id = f"micro-tool-cycle-{cycle_id}"
+        unlock_block = ""
+        if unlocked:
+            unlock_block = f"""
+  <section style="background:#e8f5e9;padding:1rem;border-radius:8px">
+    <h2>Unlocked</h2>
+    <p>Fetch your validator spec: <a href="{base}/deliverables/{product_id}.json">{product_id}.json</a></p>
+  </section>"""
+        else:
+            unlock_block = f"""
+  <section style="border:2px dashed #888;padding:1rem">
+    <h2>Unlock — {opp['pricing']}</h2>
+    <p>Pay treasury <code>{treasury}</code> with Destination Tag <code>3</code> or memo <code>tool</code>.</p>
+  </section>"""
         return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,8 +74,9 @@ class MicroSaasFactory(RevenueEngine):
     <p>Treasury: <code>{treasury}</code><br>
        Destination Tag: <code>3</code> or memo <code>tool</code></p>
   </div>
+{unlock_block}
   <p>Fitness anchor: {opp['fitness_model']} ({opp['fitness_score']}/100)</p>
-  <p><a href="tip-manifest.json">Agent manifest</a> · <a href="service-catalog.json">Service catalog</a></p>
+  <p><a href="agent-pay.json">Agent pay</a> · <a href="service-catalog.json">Service catalog</a></p>
   <footer><small>{SOURCE} · cycle {cycle_id}</small></footer>
 </body>
 </html>"""
@@ -67,10 +84,13 @@ class MicroSaasFactory(RevenueEngine):
     def run(self, cycle_id: int) -> Dict[str, Any]:
         treasury = resolve_treasury()
         opp = self._opportunity(cycle_id)
+        product_id = f"micro-tool-cycle-{cycle_id}"
+        paid = find_paid_product_ids(treasury, cycle_id)
+        unlocked = product_id in paid
         timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
         slug = f"micro-tool-cycle-{cycle_id}-{timestamp}"
         html_path = self.published_dir / f"{slug}.html"
-        html_path.write_text(self._build_html(cycle_id, treasury, opp), encoding="utf-8")
+        html_path.write_text(self._build_html(cycle_id, treasury, opp, unlocked), encoding="utf-8")
         return publish_and_anchor(
             source=SOURCE,
             cycle_id=cycle_id,

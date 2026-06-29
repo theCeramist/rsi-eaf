@@ -12,6 +12,8 @@ os.environ.setdefault("FACTORY_RUN_CONTINUOUS", "true")
 os.environ.setdefault("CYCLE_MODE", "hybrid")
 os.environ.setdefault("VERCEL_DEPLOY", "true")
 os.environ.setdefault("REVENUE_PURSUIT", "true")
+os.environ.setdefault("REVENUE_SERVICE_FIRST", "true")
+os.environ.setdefault("FITNESS_EVOLUTION_SMOKE", "false")
 
 from factory_core.autonomous_runner import run_autonomous
 

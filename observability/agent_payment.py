@@ -53,6 +53,8 @@ def build_agent_pay_manifest(
     featured = featured or {}
     network = _network_label()
 
+    base = (FACTORY_PUBLIC_BASE_URL or "").rstrip("/")
+    deliverable_base = f"{base}/deliverables" if base else "published/deliverables"
     products = [
         {
             "id": "tip",
@@ -60,6 +62,7 @@ def build_agent_pay_manifest(
             "credited_usd": TIP_USD,
             "plain_memo": "tip",
             "description": "General support / micro-tip (easiest)",
+            "service_type": "donation",
         },
         {
             "id": "briefing_unlock",
@@ -68,6 +71,9 @@ def build_agent_pay_manifest(
             "plain_memo": "briefing",
             "product_id": f"briefing-cycle-{cycle_id}",
             "live_url": featured.get("briefing_page"),
+            "description": "XRPL factory intelligence briefing (HTML preview + JSON deliverable after pay)",
+            "fulfillment_url": f"{deliverable_base}/briefing-cycle-{cycle_id}.json",
+            "service_type": "paid_report",
         },
         {
             "id": "micro_tool",
@@ -76,6 +82,9 @@ def build_agent_pay_manifest(
             "plain_memo": "tool",
             "product_id": f"micro-tool-cycle-{cycle_id}",
             "live_url": featured.get("micro_tool_page"),
+            "description": "Treasury payment validator spec for wallet/agent integrators",
+            "fulfillment_url": f"{deliverable_base}/micro-tool-cycle-{cycle_id}.json",
+            "service_type": "paid_tool",
         },
         {
             "id": "agent_service",
@@ -84,6 +93,9 @@ def build_agent_pay_manifest(
             "plain_memo": "service",
             "product_id": f"service-bundle-cycle-{cycle_id}",
             "live_url": featured.get("service_catalog") or featured.get("tip_page"),
+            "description": "Cycle intel bundle: ledger net, trace phases, orchestrator metadata",
+            "fulfillment_url": f"{deliverable_base}/service-bundle-cycle-{cycle_id}.json",
+            "service_type": "agent_api",
         },
         {
             "id": "mythos_artifact",
@@ -92,6 +104,9 @@ def build_agent_pay_manifest(
             "plain_memo": "mythos",
             "product_id": f"mythos-cycle-{cycle_id}",
             "live_url": featured.get("mythos_page"),
+            "description": "Narrative commerce artifact for aetherforge lane",
+            "fulfillment_url": f"{deliverable_base}/mythos-cycle-{cycle_id}.json",
+            "service_type": "creative_commerce",
         },
     ]
 

@@ -96,8 +96,8 @@ def generate_factory_fitness_report(
         ],
         "mainnet": mainnet,
         "recommendations": [
-            "Share agent-pay.json URL with paying agents (Destination Tag 1)",
-            "Enable REVENUE_INGEST_SMOKE_TEST with TEST_SUPPORTER_SEED",
+            "Publish service-catalog.json + agent-pay.json — sell paid deliverables not tips alone",
+            "Briefing (Tag 2), Validator (Tag 3), Cycle Intel (Tag 4) unlock JSON at /deliverables/",
             "Do not enable mainnet until mainnet.ready_for_mainnet is true",
             "Archive jarvis-swarm-memory scheduled workflows (rsi-eaf is SSOT)",
         ],
