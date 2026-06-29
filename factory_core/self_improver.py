@@ -180,6 +180,13 @@ def compute_cycle_focus(
     Prevents revenue_gap from permanently starving tools/RSI work.
     """
     meta = meta or analyze_improvement_history()
+    try:
+        from factory_core.fitness_evolution import fitness_is_failing
+
+        if fitness_is_failing():
+            return "revenue"
+    except Exception:
+        pass
     rotation_slot = FOCUS_ROTATION[(cycle_id - 1) % len(FOCUS_ROTATION)]
     if cycle_id % 3 == 0:
         return rotation_slot

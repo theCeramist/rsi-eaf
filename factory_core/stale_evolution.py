@@ -218,6 +218,33 @@ _RESOLVERS = {
 }
 
 
+def execute_priority_action(
+    action: str,
+    *,
+    cycle_id: int,
+    treasury_address: str = "",
+    featured: Optional[Dict[str, str]] = None,
+    factory_state: Optional[FactoryState] = None,
+) -> Optional[Dict[str, Any]]:
+    """Run a director/fitness evolution priority key deterministically."""
+    featured = featured or {}
+    if action == "batch_vercel_deploy":
+        return _resolve_batch_vercel_deploy(cycle_id)
+    if action == "refresh_tip_surfaces":
+        return _resolve_refresh_tip_surfaces(cycle_id, treasury_address, featured)
+    if action == "treasury_ingest_github":
+        return _resolve_treasury_ingest(cycle_id, treasury_address, factory_state)
+    if action == "harden_payment_intent":
+        return _resolve_payment_intent_hardening(cycle_id)
+    if action == "tool_analytics":
+        return _resolve_tool_analytics(cycle_id)
+    if action == "accelerate_treasury_surfaces":
+        return _resolve_accelerate_treasury_surfaces(
+            cycle_id, treasury_address, featured, factory_state
+        )
+    return None
+
+
 def resolve_stale_proposals(
     stale: List[str],
     cycle_id: int,

@@ -481,9 +481,13 @@ def test_ingest_flat_tip_without_tag_or_memo(tmp_path, monkeypatch):
     assert result["ingested"][0]["amount_usd_est"] == 1.0
 
 
-def test_compute_cycle_focus_forced_rotation_every_third_cycle():
+def test_compute_cycle_focus_forced_rotation_every_third_cycle(monkeypatch):
     from factory_core.self_improver import compute_cycle_focus
 
+    monkeypatch.setattr(
+        "factory_core.fitness_evolution.fitness_is_failing",
+        lambda report=None: False,
+    )
     meta = {"ledger_trends": {"revenue_gap_usd": 9.0}, "stale_proposals": []}
     analysis = {"cycle_revenue_usd": 0, "bottlenecks": ["no_verified_revenue"]}
     assert compute_cycle_focus(cycle_id=3, analysis=analysis, meta=meta) == "rsi"
@@ -599,9 +603,13 @@ def test_factory_director_revenue_sprint_sleep(monkeypatch):
         consecutive_zero_revenue=10,
         consecutive_positive_net=0,
     )
-    assert plan.reasoning.get("director_override") == "revenue_gap_critical"
+    assert plan.reasoning.get("director_override") in {
+        "fitness_revenue_capture",
+        "revenue_gap_critical",
+    }
+    assert plan.reasoning.get("fitness_override", {}).get("focus") == "revenue"
     assert plan.sleep_minutes == 5
-    assert any(
+    assert "fitness_revenue_capture" in plan.evolution_priorities or any(
         p in plan.evolution_priorities
         for p in ("accelerate_treasury_surfaces", "treasury_ingest_github")
     )
@@ -1050,6 +1058,55 @@ def test_mainnet_readiness_blocks_without_revenue():
     r = evaluate_mainnet_readiness()
     assert r["ready_for_mainnet"] is False
     assert any("verified" in b.lower() or "organic" in b.lower() for b in r["blockers"])
+
+
+def test_fitness_evolution_priorities_revenue_first():
+    from factory_core.fitness_evolution import fitness_evolution_priorities
+
+    report = {
+        "composite_score": 8.4,
+        "economics": {"verified_revenue_events": 0, "organic_revenue_usd_est": 0},
+        "actions": {
+            "evolution": {
+                "top_gate_failures": [["verified_revenue_pipeline", 10], ["live_url_reachable", 3]],
+            }
+        },
+    }
+    priorities = fitness_evolution_priorities(report=report, execution={}, gates={"all_passed": True})
+    assert priorities[0] == "fitness_revenue_capture"
+    assert "treasury_ingest_github" in priorities
+    assert "refresh_tip_surfaces" in priorities or "batch_vercel_deploy" in priorities
+
+
+def test_fitness_is_failing_and_env(monkeypatch):
+    from factory_core.fitness_evolution import (
+        apply_fitness_env,
+        fitness_focus,
+        fitness_is_failing,
+    )
+
+    failing = {"composite_score": 8.0, "verdict": "failing"}
+    passing = {"composite_score": 75.0, "verdict": "passing"}
+    assert fitness_is_failing(failing) is True
+    assert fitness_is_failing(passing) is False
+    assert fitness_focus(failing, "rsi") == "revenue"
+    assert fitness_focus(passing, "rsi") == "rsi"
+    monkeypatch.delenv("DIRECTOR_FITNESS_MODE", raising=False)
+    env = apply_fitness_env(failing)
+    assert env["fitness_mode"] is True
+    assert os.environ.get("DIRECTOR_FITNESS_MODE") == "true"
+    assert os.environ.get("CYCLE_FOCUS") == "revenue"
+
+
+def test_compute_cycle_focus_fitness_override(monkeypatch):
+    from factory_core.self_improver import compute_cycle_focus
+
+    monkeypatch.setattr(
+        "factory_core.fitness_evolution.fitness_is_failing",
+        lambda report=None: True,
+    )
+    focus = compute_cycle_focus(3, {"cycle_revenue_usd": 0, "bottlenecks": []}, {})
+    assert focus == "revenue"
 
 
 def test_factory_fitness_report(tmp_path, monkeypatch):

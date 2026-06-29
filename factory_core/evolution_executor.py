@@ -17,6 +17,7 @@ GROK_EVOLUTION_TIMEOUT = int(os.getenv("GROK_EVOLUTION_TIMEOUT_SEC", "120"))
 EVOLUTION_LOG = Path(os.getenv("EVOLUTION_EXEC_LOG", "factory_core/evolution_executions.jsonl"))
 
 _STALE_ACTION_MAP = {
+    "fitness_revenue_capture": "fix verified_revenue_pipeline",
     "refresh_tip_surfaces": "refresh live tip surfaces on vercel",
     "accelerate_treasury_surfaces": "accelerate treasury-visible payment surfaces",
     "treasury_ingest_github": "treasury ingest + github issue refresh",
@@ -121,15 +122,25 @@ def execute_evolution(
         for p in os.getenv("DIRECTOR_EVOLUTION_PRIORITIES", "").split(",")
         if p.strip()
     ]
+    fitness_mode = os.getenv("DIRECTOR_FITNESS_MODE", "").lower() in {"1", "true", "yes"}
     if not director_priorities:
-        from factory_core.director import director as factory_director
+        if fitness_mode:
+            from factory_core.fitness_evolution import fitness_evolution_priorities
 
-        director_priorities = factory_director._evolution_priorities(
-            focus=focus,
-            stale=stale,
-            execution=execution_result,
-            gates_passed=True,
-        )
+            director_priorities = fitness_evolution_priorities(
+                execution=execution_result,
+                gates=gate_result,
+                stale=stale,
+            )
+        else:
+            from factory_core.director import director as factory_director
+
+            director_priorities = factory_director._evolution_priorities(
+                focus=focus,
+                stale=stale,
+                execution=execution_result,
+                gates_passed=True,
+            )
 
     if stale:
         ordered_stale = _order_stale_by_director(stale, director_priorities)
@@ -147,27 +158,46 @@ def execute_evolution(
     for priority in director_priorities:
         if any(a.get("action") == priority for a in actions):
             continue
-        if priority == "accelerate_treasury_surfaces":
-            from tools.revenue_acceleration import accelerate_treasury_surfaces
+        if priority == "fitness_revenue_capture":
+            from tools.fitness_revenue_capture import run_fitness_revenue_capture
 
-            accel = accelerate_treasury_surfaces(
+            capture = run_fitness_revenue_capture(
                 cycle_id=cycle_id,
                 treasury_address=treasury_address,
                 featured=featured or execution_result.get("featured_surfaces", {}),
                 factory_state=factory_state,
             )
-            if factory_state and accel.get("implemented"):
-                factory_state.mark_proposal_implemented(
-                    "Accelerate treasury-visible payment surfaces"
-                )
-            actions.append(accel)
+            actions.append(capture)
+            continue
+        if priority in {
+            "accelerate_treasury_surfaces",
+            "treasury_ingest_github",
+            "refresh_tip_surfaces",
+            "batch_vercel_deploy",
+            "harden_payment_intent",
+            "tool_analytics",
+        }:
+            from factory_core.stale_evolution import execute_priority_action
+
+            resolved = execute_priority_action(
+                priority,
+                cycle_id=cycle_id,
+                treasury_address=treasury_address,
+                featured=featured or execution_result.get("featured_surfaces", {}),
+                factory_state=factory_state,
+            )
+            if resolved:
+                if factory_state and resolved.get("implemented") and resolved.get("proposal"):
+                    factory_state.mark_proposal_implemented(resolved["proposal"])
+                actions.append(resolved)
+            continue
 
     force_github = os.getenv("DIRECTOR_FORCE_GITHUB", "").lower() in {"1", "true", "yes"}
     if stale or focus == "revenue" or force_github:
         execution_result["force_distribution"] = True
 
     grok_task = None
-    if task:
+    if task and not (fitness_mode and task.get("action") == "grok_rsi_meta"):
         if task.get("action") == "grok_tool_hardening":
             grok_task = task.get("task")
         elif task.get("action") == "grok_rsi_meta":
@@ -210,6 +240,8 @@ def execute_evolution(
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "cycle_id": cycle_id,
         "focus": focus,
+        "fitness_mode": fitness_mode,
+        "director_priorities": director_priorities[:4],
         "actions": actions,
         "stale_proposals": stale[:3],
     }

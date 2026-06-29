@@ -108,9 +108,15 @@ class FactoryDirector:
         xrpl_balance = float(cycle_result.get("current_xrp_balance", 0))
         continuous = continuous_run_enabled()
 
-        focus = analysis.get("cycle_focus") or compute_cycle_focus(
-            cycle_id, analysis, self._meta
+        from factory_core.fitness_evolution import (
+            apply_fitness_env,
+            fitness_focus,
+            fitness_is_failing,
+            load_fitness_report,
         )
+
+        fitness_report = load_fitness_report(cycle_id)
+        apply_fitness_env(fitness_report)
         next_mode = active_mode
         throttle_from: Optional[str] = None
         stop_reason: Optional[str] = None
@@ -122,6 +128,15 @@ class FactoryDirector:
             "organic_revenue": net.get("organic_revenue_usd_est"),
             "gates_passed": gates.get("all_passed"),
         }
+        focus = fitness_focus(
+            fitness_report,
+            analysis.get("cycle_focus") or compute_cycle_focus(cycle_id, analysis, self._meta),
+        )
+        if fitness_is_failing(fitness_report):
+            reasoning["fitness_override"] = {
+                "composite_score": fitness_report.get("composite_score"),
+                "focus": "revenue",
+            }
 
         breaker_stop, throttle_mode = evaluate_circuit_breakers(
             net, consecutive_zero_revenue, mode=active_mode
@@ -168,7 +183,12 @@ class FactoryDirector:
             reasoning["resume"] = "revenue_detected"
 
         revenue_sprint = False
-        if not stop_reason and self._should_prioritize_revenue(net, gates, analysis):
+        if not stop_reason and fitness_is_failing(fitness_report):
+            next_mode = "hybrid"
+            focus = "revenue"
+            revenue_sprint = True
+            reasoning["director_override"] = "fitness_revenue_capture"
+        elif not stop_reason and self._should_prioritize_revenue(net, gates, analysis):
             next_mode = "hybrid"
             focus = "revenue"
             revenue_sprint = True
@@ -186,13 +206,24 @@ class FactoryDirector:
             self._meta.get("stale_proposals", []),
             factory_state=factory_state,
         )
-        evolution_priorities = self._evolution_priorities(
-            focus=focus,
-            stale=stale,
-            execution=execution,
-            gates_passed=gates.get("gates_evolution_allowed", gates.get("all_passed", False)),
-            factory_state=factory_state,
-        )
+        gates_ok = gates.get("gates_evolution_allowed", gates.get("all_passed", False))
+        if fitness_is_failing(fitness_report) and gates_ok:
+            from factory_core.fitness_evolution import fitness_evolution_priorities
+
+            evolution_priorities = fitness_evolution_priorities(
+                report=fitness_report,
+                execution=execution,
+                gates=gates,
+                stale=stale,
+            )
+        else:
+            evolution_priorities = self._evolution_priorities(
+                focus=focus,
+                stale=stale,
+                execution=execution,
+                gates_passed=gates_ok,
+                factory_state=factory_state,
+            )
         force_github = (
             os.getenv("DIRECTOR_FORCE_GITHUB", "").lower() in {"1", "true", "yes"}
             or bool(stale)
@@ -201,24 +232,35 @@ class FactoryDirector:
         force_nexus = force_github or focus == "revenue" or continuous
         try:
             from observability.cost_tracker import grok_budget_ok
+            from factory_core.fitness_evolution import fitness_allow_grok_evolution
 
-            budget_ok = grok_budget_ok(float(os.getenv("GROK_EVOLUTION_BUDGET_USD", "0.75")))
+            budget_usd = float(os.getenv("GROK_EVOLUTION_BUDGET_USD", "0.75"))
+            budget_ok = grok_budget_ok(budget_usd)
         except Exception:
             budget_ok = float(os.getenv("GROK_EVOLUTION_BUDGET_USD", "0.75")) > 0
+            fitness_allow_grok_evolution = None  # type: ignore
         revenue_friction = (
             focus == "revenue"
             and "no_verified_revenue" in analysis.get("bottlenecks", [])
         )
         unmatched = int(execution.get("treasury_unmatched_inflows", 0) or 0) > 0
-        allow_grok = (
-            gates.get("gates_core_passed", gates.get("all_passed"))
-            and budget_ok
-            and (
-                focus in ("tools", "rsi")
-                or revenue_friction
-                or unmatched
+        if fitness_is_failing(fitness_report):
+            allow_grok = fitness_allow_grok_evolution(
+                fitness_report,
+                gates_core_passed=gates.get("gates_core_passed", gates.get("all_passed", False)),
+                budget_ok=budget_ok,
+                unmatched=unmatched,
             )
-        )
+        else:
+            allow_grok = (
+                gates.get("gates_core_passed", gates.get("all_passed"))
+                and budget_ok
+                and (
+                    focus in ("tools", "rsi")
+                    or revenue_friction
+                    or unmatched
+                )
+            )
 
         plan = CyclePlan(
             cycle_id_next=cycle_id + 1,
@@ -254,7 +296,7 @@ class FactoryDirector:
         )
         if organic_gap < REVENUE_TARGET_USD * 0.5:
             return False
-        if not gates.get("all_passed"):
+        if not gates.get("gates_evolution_allowed", gates.get("all_passed")):
             return False
         if "no_verified_revenue" not in analysis.get("bottlenecks", []):
             return False
@@ -273,11 +315,6 @@ class FactoryDirector:
             return []
 
         priorities: List[str] = []
-        if int(execution.get("verified_revenue_events", 0) or 0) == 0:
-            if "batch_vercel_deploy" not in priorities:
-                priorities.append("batch_vercel_deploy")
-            if "refresh_tip_surfaces" not in priorities:
-                priorities.append("refresh_tip_surfaces")
         stale_normalized = [s.lower() for s in stale]
 
         for title in stale:

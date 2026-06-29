@@ -154,6 +154,28 @@ class CycleRunner:
         print(f"[{self.factory_name}] Starting Cycle {cycle_id}")
         print(f"{'='*60}")
 
+        try:
+            from factory_core.fitness_evolution import (
+                apply_fitness_env,
+                fitness_evolution_priorities,
+                fitness_is_failing,
+                load_fitness_report,
+            )
+
+            fitness_report = load_fitness_report(cycle_id)
+            fitness_env = apply_fitness_env(fitness_report)
+            if fitness_is_failing(fitness_report) and not os.getenv("DIRECTOR_EVOLUTION_PRIORITIES"):
+                priorities = fitness_evolution_priorities(report=fitness_report)
+                os.environ["DIRECTOR_EVOLUTION_PRIORITIES"] = ",".join(priorities)
+                print(
+                    f"[Cycle] Fitness mode ON (score={fitness_report.get('composite_score')}) "
+                    f"→ priorities={priorities[:3]}"
+                )
+            elif fitness_env.get("fitness_mode"):
+                print(f"[Cycle] Fitness mode ON (score={fitness_report.get('composite_score')})")
+        except Exception as exc:
+            print(f"[Cycle] Fitness bootstrap skipped: {exc}")
+
         start_time = time.time()
         supersede_unverified_revenue()
         backfill_revenue_classification()
@@ -322,6 +344,9 @@ class CycleRunner:
 
         print("[Cycle] Phase 3b: RSI meta-analysis (balanced self-improvement)...")
         rsi_meta = run_self_improvement_meta(cycle_id, analysis, gate_result)
+        if os.getenv("DIRECTOR_FITNESS_MODE", "").lower() in {"1", "true", "yes"}:
+            rsi_meta["focus"] = "revenue"
+            rsi_meta["fitness_override"] = True
         analysis["rsi_meta"] = rsi_meta
         analysis["cycle_focus"] = rsi_meta.get("focus")
         os.environ["CYCLE_FOCUS"] = rsi_meta.get("focus", "revenue")
