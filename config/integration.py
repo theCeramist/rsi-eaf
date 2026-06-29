@@ -23,6 +23,8 @@ NEXUS_OWNER = os.getenv("NEXUS_GITHUB_OWNER", os.getenv("NEXUS_CI_GATE_OWNER", "
 NEXUS_REPO = os.getenv("NEXUS_GITHUB_REPO", os.getenv("NEXUS_CI_GATE_REPO", "jarvis-swarm"))
 NEXUS_BRANCH = os.getenv("NEXUS_GITHUB_BRANCH", "main")
 NEXUS_REPO_URL = f"https://github.com/{NEXUS_OWNER}/{NEXUS_REPO}"
+# jarvis-swarm-memory is NOT part of factory integration (archived competing cron).
+MEMORY_REPO_EXCLUDED = "jarvis-swarm-memory"
 NEXUS_CI_HYGIENE_GATE = os.getenv("NEXUS_CI_HYGIENE_GATE", "true").lower() in {"1", "true", "yes"}
 JARVIS_CI_AUTO_REPAIR = os.getenv("JARVIS_CI_AUTO_REPAIR", "true").lower() in {"1", "true", "yes"}
 
@@ -84,6 +86,7 @@ def revenue_surface_rows(featured: Dict[str, str], cycle_id: int) -> List[Tuple[
     rows: List[Tuple[str, str]] = [
         ("Factory index", f"{base}/" if base else "n/a"),
         ("Tip page", featured.get("canonical_tip_page") or featured.get("tip_page", "")),
+        ("Agent pay endpoint", featured.get("agent_pay") or (f"{base}/agent-pay.json" if base else "")),
         ("Agent tip manifest", featured.get("tip_manifest") or (f"{base}/tip-manifest.json" if base else "")),
         ("Paid briefing", featured.get("briefing_page", "")),
     ]
@@ -133,8 +136,10 @@ def integration_manifest(cycle_id: int = 0, featured: Dict[str, str] | None = No
         "external_links": {
             "aetherforge": AETHERFORGE_URL,
             "factory_vercel": FACTORY_PUBLIC_BASE_URL,
+            "agent_pay_json": f"{FACTORY_PUBLIC_BASE_URL}/agent-pay.json" if FACTORY_PUBLIC_BASE_URL else "",
             "github_rsi_eaf": GITHUB_REPO_URL,
             "github_jarvis_swarm": NEXUS_REPO_URL,
+            "excluded_memory_repo": MEMORY_REPO_EXCLUDED,
         },
         "parallel_lanes": {
             "daemons": [

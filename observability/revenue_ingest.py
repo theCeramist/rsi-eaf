@@ -29,7 +29,7 @@ FACTORY_TREASURY_ADDRESS = os.getenv("FACTORY_TREASURY_ADDRESS")
 INTERNAL_ACCOUNTS = {
     addr for addr in (FACTORY_XRPL_ADDRESS, FACTORY_TREASURY_ADDRESS) if addr
 }
-INGEST_LIMIT = int(os.getenv("REVENUE_INGEST_TX_LIMIT", "40"))
+INGEST_LIMIT = int(os.getenv("REVENUE_INGEST_TX_LIMIT", "200"))
 
 
 def _extract_payment_fields(tx_entry: Dict[str, Any]) -> Optional[Dict[str, Any]]:
@@ -171,10 +171,6 @@ def ingest_verified_xrpl_revenue(
 
     transactions = query_recent_transactions(address, limit=INGEST_LIMIT)
     instructions = simple_payment_instructions(cycle_id, address)
-    watermark_hash = None
-    if factory_state is not None:
-        watermark_hash = factory_state.get_treasury_watermark().get("last_ingested_tx_hash")
-
     for entry in transactions:
         payment = _extract_payment_fields(entry)
         if not payment:
@@ -187,8 +183,6 @@ def ingest_verified_xrpl_revenue(
         tx_hash = payment["tx_hash"]
         if not tx_hash or tx_hash in known_hashes:
             continue
-        if watermark_hash and tx_hash == watermark_hash:
-            break
 
         intent = resolve_payment_intent(payment, cycle_id=cycle_id)
         xrp_amount = _xrp_amount(payment)

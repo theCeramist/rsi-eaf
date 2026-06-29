@@ -97,6 +97,9 @@ class CycleRunner:
             print(f"[Cycle] Engine errors: {engine_bundle['errors']}")
         treasury = resolve_treasury()
         featured = featured_links_for_index(cycle_id)
+        from observability.agent_payment import write_agent_pay_manifest
+
+        write_agent_pay_manifest(cycle_id, treasury, featured)
         build_index_html(treasury_address=treasury, featured=featured)
         write_sitemap(live_urls=engine_bundle.get("live_urls"))
         write_local_distribution_artifacts(cycle_id, featured, treasury)

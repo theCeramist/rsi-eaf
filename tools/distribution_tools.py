@@ -153,6 +153,7 @@ def featured_links_for_index(cycle_id: int) -> Dict[str, str]:
         )
     if FACTORY_PUBLIC_BASE_URL:
         links["tip_manifest"] = f"{FACTORY_PUBLIC_BASE_URL}/tip-manifest.json"
+        links["agent_pay"] = f"{FACTORY_PUBLIC_BASE_URL}/agent-pay.json"
         links["service_catalog"] = f"{FACTORY_PUBLIC_BASE_URL}/service-catalog.json"
     mythos_pages = sorted(PUBLISHED_DIR.glob(f"mythos-cycle-{cycle_id}-*.html"))
     if mythos_pages:

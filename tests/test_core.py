@@ -1034,6 +1034,43 @@ def test_maybe_emit_nexus_respects_disabled(monkeypatch):
     assert result["reason"] == "NEXUS_EMIT_DISABLED"
 
 
+def test_agent_pay_manifest_structure():
+    from observability.agent_payment import build_agent_pay_manifest
+
+    m = build_agent_pay_manifest(42, "rTreasury", {"tip_page": "https://x/tip.html"})
+    assert m["schema"] == "rsi_eaf_agent_pay_v1"
+    assert m["easiest_payment"]["destination_tag"] == 1
+    assert m["treasury_address"] == "rTreasury"
+    assert len(m["products"]) >= 5
+
+
+def test_mainnet_readiness_blocks_without_revenue():
+    from factory_core.mainnet_readiness import evaluate_mainnet_readiness
+
+    r = evaluate_mainnet_readiness()
+    assert r["ready_for_mainnet"] is False
+    assert any("verified" in b.lower() or "organic" in b.lower() for b in r["blockers"])
+
+
+def test_factory_fitness_report(tmp_path, monkeypatch):
+    from observability import factory_fitness_report as ffr
+
+    out = tmp_path / "fitness.json"
+    report = ffr.generate_factory_fitness_report(cycle_id=10, persist_path=str(out))
+    assert report["schema"] == "rsi_eaf_factory_fitness_v1"
+    assert out.exists()
+    assert "economics" in report
+
+
+def test_jarvis_memory_archive_specs():
+    from tools.jarvis_memory_archive import archive_workflow_specs
+
+    specs = archive_workflow_specs()
+    assert len(specs) == 3
+    assert "workflow_dispatch" in specs[0]["content"]
+    assert "schedule" not in specs[0]["content"] or "ARCHIVED" in specs[0]["content"]
+
+
 def test_extract_payment_fields_revenue_memo():
     memo_json = '{"type":"revenue","amount_usd_est":2.5,"notes":"tip"}'
     entry = {

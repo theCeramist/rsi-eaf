@@ -23,6 +23,15 @@ def _read_json(path: Path) -> Dict[str, Any]:
         return {}
 
 
+def _fitness_snapshot(cycle_id: int) -> Dict[str, Any]:
+    try:
+        from observability.factory_fitness_report import generate_factory_fitness_report
+
+        return generate_factory_fitness_report(cycle_id=cycle_id)
+    except Exception as exc:
+        return {"error": str(exc)}
+
+
 def build_factory_health(
     cycle_id: int = 0,
     featured: Optional[Dict[str, str]] = None,
@@ -50,6 +59,7 @@ def build_factory_health(
         "factory_state": factory_state or {},
         "organic_revenue_usd": net.get("organic_revenue_usd_est", 0),
         "runner_active": os.getenv("FACTORY_RUNNER_ACTIVE", "").lower() in {"1", "true", "yes"},
+        "factory_fitness": _fitness_snapshot(cycle_id),
     }
 
 

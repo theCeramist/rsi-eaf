@@ -98,7 +98,8 @@ def build_index_html(
     <p><strong>Easy pay:</strong> send testnet XRP to treasury with <strong>Destination Tag 1</strong> (or memo <code>tip</code>).</p>
     <p><strong>Treasury:</strong> <code>{treasury_address}</code> · <strong>Tag:</strong> <code>1</code></p>
     <p><a href="https://testnet.xrpl.org/">Verify on XRPL Testnet Explorer</a></p>
-    <p><a href="tip-manifest.json">Agent tip manifest (JSON)</a></p>
+    <p><a href="agent-pay.json"><strong>Agent pay endpoint (JSON)</strong></a> — one file for any agent wallet</p>
+    <p><a href="tip-manifest.json">Tip manifest (JSON)</a></p>
   </section>
 """
     html = f"""<!DOCTYPE html>
