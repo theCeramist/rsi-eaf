@@ -1,16 +1,17 @@
 # RSI-EAF Revenue Surfaces (Cycle 328)
 
-Updated: 2026-07-03T19:28:45.956220+00:00
+Updated: 2026-07-03T19:32:25.028030+00:00
 
 ## Live surfaces
 
 | Surface | URL |
 |---------|-----|
 | Factory index | https://published-zeta.vercel.app/ |
-| Tip page | https://published-zeta.vercel.app/tip-cycle-327-20260703T191921Z.html |
+| Tip page | https://published-zeta.vercel.app/tip-cycle-328-20260703T192853Z.html |
 | Agent pay endpoint | https://published-zeta.vercel.app/agent-pay.json |
 | Agent tip manifest | https://published-zeta.vercel.app/tip-manifest.json |
 | Paid briefing | https://published-zeta.vercel.app/briefing-cycle-328-20260703T192801Z.html |
+| Mythos artifact (Tag 5) | https://published-zeta.vercel.app/mythos-cycle-328-20260703T192907Z.html |
 | Micro-tool (Tag 3) | https://published-zeta.vercel.app/micro-tool-cycle-328-20260703T192820Z.html |
 | Agent service catalog (Tag 4) | https://published-zeta.vercel.app/service-catalog.json |
 | aetherforge nexus | https://aetherforge.world |
