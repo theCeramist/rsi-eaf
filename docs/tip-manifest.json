@@ -1,11 +1,11 @@
 {
   "schema": "rsi_eaf_tip_manifest_v2",
-  "updated_at": "2026-07-03T21:43:02.719807+00:00",
-  "cycle_id": 99,
+  "updated_at": "2026-07-03T21:50:03.763379+00:00",
+  "cycle_id": 342,
   "network": "xrpl_testnet",
-  "treasury_address": "",
+  "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
   "human_easy_path": {
-    "step_1": "Send XRP to ",
+    "step_1": "Send XRP to rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
     "step_2": "Set Destination Tag to 1",
     "step_3": "Leave memo blank (optional)",
     "destination_tag": 1,
@@ -19,27 +19,27 @@
     "briefing_unlock": {
       "tag": 2,
       "credited_usd": 2.0,
-      "product_id": "briefing-cycle-99"
+      "product_id": "briefing-cycle-342"
     },
     "trace_export": {
       "tag": 6,
       "credited_usd": 4.0,
-      "product_id": "trace-export-cycle-99"
+      "product_id": "trace-export-cycle-342"
     },
     "fitness_report": {
       "tag": 7,
       "credited_usd": 2.0,
-      "product_id": "fitness-report-cycle-99"
+      "product_id": "fitness-report-cycle-342"
     },
     "outreach_pack": {
       "tag": 8,
       "credited_usd": 3.5,
-      "product_id": "outreach-pack-cycle-99"
+      "product_id": "outreach-pack-cycle-342"
     },
     "ledger_audit": {
       "tag": 9,
       "credited_usd": 5.0,
-      "product_id": "ledger-audit-cycle-99"
+      "product_id": "ledger-audit-cycle-342"
     }
   },
   "plain_memo_aliases": {
@@ -61,6 +61,6 @@
   },
   "explorer": "https://testnet.xrpl.org/",
   "factory_landing": "https://aetherforge.world/",
-  "live_tip_page": "https://published-zeta.vercel.app/tip-manifest.json",
+  "live_tip_page": null,
   "verification": "Tag 1, memo 'tip', or flat external payment \u2192 verified tip"
 }
