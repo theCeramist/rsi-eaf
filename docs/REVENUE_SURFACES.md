@@ -1,6 +1,6 @@
-# RSI-EAF Revenue Surfaces (Cycle 390)
+# RSI-EAF Revenue Surfaces (Cycle 391)
 
-Updated: 2026-07-04T18:53:28.108203+00:00
+Updated: 2026-07-04T18:56:36.799429+00:00
 
 ## Live surfaces
 
@@ -11,9 +11,7 @@ Updated: 2026-07-04T18:53:28.108203+00:00
 | Tip page | https://published-zeta.vercel.app/tip-manifest.json |
 | Agent pay endpoint | https://published-zeta.vercel.app/agent-pay.json |
 | Agent tip manifest | https://published-zeta.vercel.app/tip-manifest.json |
-| Paid briefing | https://published-zeta.vercel.app/briefing-cycle-390-20260704T183807Z.html |
-| Mythos artifact (Tag 5) | https://published-zeta.vercel.app/mythos-cycle-390-20260704T184009Z.html |
-| Micro-tool (Tag 3) | https://published-zeta.vercel.app/micro-tool-cycle-390-20260704T183824Z.html |
+| Paid briefing | https://published-zeta.vercel.app/briefing-cycle-391-20260704T185622Z.html |
 | Agent service catalog (Tag 4) | https://published-zeta.vercel.app/service-catalog.json |
 | aetherforge nexus | https://aetherforge.world |
 | jarvis-swarm repo | https://github.com/theCeramist/jarvis-swarm |
@@ -33,7 +31,7 @@ rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN
 ## Briefing unlock memo
 
 ```json
-{"type":"revenue","amount_usd_est":2.0,"product_id":"briefing-cycle-390","notes":"unlock briefing-cycle-390"}
+{"type":"revenue","amount_usd_est":2.0,"product_id":"briefing-cycle-391","notes":"unlock briefing-cycle-391"}
 ```
 
 ## Verification
