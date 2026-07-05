@@ -1,0 +1,136 @@
+{
+  "schema": "rsi_eaf_prospect_pack_v2",
+  "cycle_id": 442,
+  "updated_at": "2026-07-05T12:34:48.579509+00:00",
+  "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+  "network": "xrpl_testnet",
+  "verified_external_payments": 2,
+  "payer_summary": {
+    "payer_count": 2,
+    "total_usd_est": 3592.0,
+    "segments": {
+      "research_agent": 2
+    },
+    "repeat_payers": 2
+  },
+  "backer_wall_url": "https://published-zeta.vercel.app/backer-wall.json",
+  "retention_pack_url": "https://published-zeta.vercel.app/retention-pack-cycle-442.json",
+  "north_star": {
+    "action": "Send testnet XRP with destination_tag=1",
+    "treasury": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+    "credited_usd": 1.0,
+    "memo_required": false,
+    "discover": "https://published-zeta.vercel.app/agent-pay.json",
+    "verify_within_cycles": 1
+  },
+  "discovery_urls": {
+    "agent_pay": "https://published-zeta.vercel.app/agent-pay.json",
+    "service_catalog": "https://published-zeta.vercel.app/service-catalog.json",
+    "tip_manifest": "https://published-zeta.vercel.app/tip-manifest.json",
+    "factory_landing": "https://aetherforge.world/",
+    "asset_mirror": "https://published-zeta.vercel.app",
+    "explorer": "https://testnet.xrpl.org/"
+  },
+  "segments": [
+    {
+      "id": "integrator",
+      "buyer": "wallet and x402 integrators",
+      "priority": 1,
+      "destination_tag": 3,
+      "credited_usd": 3.0,
+      "product_id": "micro-tool-cycle-442",
+      "preview_url": "https://published-zeta.vercel.app/micro-tool-cycle-442-20260705T122041Z.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-442.json",
+      "pitch": "Live XRPL testnet payee with treasury validator JSON \u2014 tag rules, worked examples, and ingest paths matching RSI-EAF production.",
+      "outbound_template": "We run RSI-EAF (autonomous factory, cycle 442). Integrators: pay Tag 3 on testnet \u2192 get validator spec. GET https://published-zeta.vercel.app/agent-pay.json \u00b7 Preview https://published-zeta.vercel.app/micro-tool-cycle-442-20260705T122041Z.html",
+      "find_channels": [
+        "x402 repos",
+        "XRPL dev Discord",
+        "wallet SDK issues"
+      ]
+    },
+    {
+      "id": "research_agent",
+      "buyer": "research and ops agents",
+      "priority": 2,
+      "destination_tag": 2,
+      "credited_usd": 2.0,
+      "product_id": "briefing-cycle-442",
+      "preview_url": "https://published-zeta.vercel.app/briefing-cycle-442-20260705T122023Z.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/briefing-cycle-442.json",
+      "pitch": "Cycle economics + payment-flow analysis in one agent-readable JSON.",
+      "outbound_template": "GET https://published-zeta.vercel.app/agent-pay.json then pay Tag 2 for briefing-cycle-442. Fulfillment: https://published-zeta.vercel.app/deliverables/briefing-cycle-442.json",
+      "find_channels": [
+        "agent manifest crawlers",
+        "MCP directories",
+        "orchestrator repos"
+      ]
+    },
+    {
+      "id": "human_backer",
+      "buyer": "humans and demo watchers",
+      "priority": 3,
+      "destination_tag": 1,
+      "credited_usd": 1.0,
+      "product_id": "tip",
+      "preview_url": "https://published-zeta.vercel.app/tip-manifest.json",
+      "fulfillment_url": null,
+      "pitch": "$1 testnet tip \u2014 verified on factory ledger next cycle. Treasury: rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+      "outbound_template": "Support RSI-EAF on XRPL testnet: send XRP to rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN with Destination Tag 1 ($1 verified). https://published-zeta.vercel.app/tip-manifest.json",
+      "find_channels": [
+        "GitHub issue #1",
+        "aetherforge CTA",
+        "direct share"
+      ]
+    },
+    {
+      "id": "orchestrator",
+      "buyer": "swarm / ACP orchestrators",
+      "priority": 4,
+      "destination_tag": 4,
+      "credited_usd": 2.5,
+      "product_id": "service-bundle-cycle-442",
+      "preview_url": "https://published-zeta.vercel.app/service-catalog.json",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/service-bundle-cycle-442.json",
+      "pitch": "Gate health, economics, and agent-pay snapshot in one bundle.",
+      "outbound_template": "Orchestrators: Tag 4 unlocks cycle intel bundle. Catalog: https://published-zeta.vercel.app/service-catalog.json",
+      "find_channels": [
+        "multi-agent frameworks",
+        "factory evaluators",
+        "verifier agents"
+      ]
+    }
+  ],
+  "upsell_ladder": [
+    {
+      "step": 1,
+      "tag": 1,
+      "product": "tip",
+      "usd": 1.0
+    },
+    {
+      "step": 2,
+      "tag": 2,
+      "product": "briefing_unlock",
+      "usd": 2.0
+    },
+    {
+      "step": 3,
+      "tag": 3,
+      "product": "micro_tool",
+      "usd": 3.0
+    },
+    {
+      "step": 4,
+      "tag": 4,
+      "product": "agent_service",
+      "usd": 2.5
+    }
+  ],
+  "integrator_quickstart": {
+    "discover": "GET https://published-zeta.vercel.app/agent-pay.json",
+    "pay": "XRP \u2192 rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN destination_tag=3",
+    "fulfill": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-442.json",
+    "preview": "https://published-zeta.vercel.app/micro-tool-cycle-442-20260705T122041Z.html"
+  }
+}
