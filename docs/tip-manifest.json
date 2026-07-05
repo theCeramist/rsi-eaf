@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_tip_manifest_v2",
-  "updated_at": "2026-07-05T09:42:53.839691+00:00",
-  "cycle_id": 435,
+  "updated_at": "2026-07-05T10:06:46.181874+00:00",
+  "cycle_id": 436,
   "network": "xrpl_testnet",
   "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
   "human_easy_path": {
@@ -19,27 +19,27 @@
     "briefing_unlock": {
       "tag": 2,
       "credited_usd": 2.0,
-      "product_id": "briefing-cycle-435"
+      "product_id": "briefing-cycle-436"
     },
     "trace_export": {
       "tag": 6,
       "credited_usd": 4.0,
-      "product_id": "trace-export-cycle-435"
+      "product_id": "trace-export-cycle-436"
     },
     "fitness_report": {
       "tag": 7,
       "credited_usd": 2.0,
-      "product_id": "fitness-report-cycle-435"
+      "product_id": "fitness-report-cycle-436"
     },
     "outreach_pack": {
       "tag": 8,
       "credited_usd": 3.5,
-      "product_id": "outreach-pack-cycle-435"
+      "product_id": "outreach-pack-cycle-436"
     },
     "ledger_audit": {
       "tag": 9,
       "credited_usd": 5.0,
-      "product_id": "ledger-audit-cycle-435"
+      "product_id": "ledger-audit-cycle-436"
     }
   },
   "plain_memo_aliases": {
