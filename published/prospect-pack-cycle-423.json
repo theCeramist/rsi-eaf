@@ -1,13 +1,13 @@
 {
   "schema": "rsi_eaf_prospect_pack_v2",
   "cycle_id": 423,
-  "updated_at": "2026-07-05T04:57:22.483830+00:00",
+  "updated_at": "2026-07-05T04:59:08.503131+00:00",
   "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
   "network": "xrpl_testnet",
   "verified_external_payments": 2,
   "payer_summary": {
     "payer_count": 2,
-    "total_usd_est": 932.0,
+    "total_usd_est": 980.0,
     "segments": {
       "research_agent": 2
     },
