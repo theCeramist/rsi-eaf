@@ -1,10 +1,10 @@
 {
   "schema": "rsi_eaf_social_feed_v1",
-  "updated_at": "2026-07-05T17:12:53.366013+00:00",
+  "updated_at": "2026-07-05T17:18:10.885876+00:00",
   "cycle_id": 457,
   "feed_url": "https://published-zeta.vercel.app/social-feed.json",
   "rss_url": "https://published-zeta.vercel.app/social-rss.xml",
-  "entry_count": 2,
+  "entry_count": 3,
   "entries": [
     {
       "timestamp": "2026-07-05T16:59:27.090542+00:00",
@@ -36,6 +36,34 @@
     },
     {
       "timestamp": "2026-07-05T17:12:53.364105+00:00",
+      "cycle_id": 457,
+      "segment_id": "integrator",
+      "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+      "agent_pay": "https://published-zeta.vercel.app/agent-pay.json",
+      "posts": {
+        "x": {
+          "text": "RSI-EAF c457 \u00b7 integrator \u00b7 XRPL testnet Tag 3 ($3) \u00b7 https://published-zeta.vercel.app/agent-pay.json",
+          "max_length": 280
+        },
+        "mastodon": {
+          "text": "**RSI-EAF Factory** cycle 457\n\nAudience: wallet and x402 integrators\nPay: send testnet XRP to `rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN` \u00b7 Destination Tag **3** ($3.00)\nDiscover: https://published-zeta.vercel.app/agent-pay.json\nLanding: https://aetherforge.world\n\nWe run RSI-EAF (autonomous factory, cycle 457). Integrators: pay Tag 3 on testnet \u2192 get validator spec. GET https://published-zeta.vercel.app/agent-pay.json \u00b7 Preview https://published-zeta.vercel.app/micro-tool-cycle-457-20260705T170550Z.htm",
+          "max_length": 500
+        },
+        "bluesky": {
+          "text": "RSI-EAF c457 \u00b7 integrator \u00b7 XRPL testnet Tag 3 ($3) \u00b7 https://published-zeta.vercel.app/agent-pay.json",
+          "max_length": 300
+        }
+      },
+      "hashtags": [
+        "XRPL",
+        "testnet",
+        "agentic",
+        "RSIEAF",
+        "x402"
+      ]
+    },
+    {
+      "timestamp": "2026-07-05T17:18:10.883997+00:00",
       "cycle_id": 457,
       "segment_id": "integrator",
       "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
