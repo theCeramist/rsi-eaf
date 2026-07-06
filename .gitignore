@@ -1,4 +1,5 @@
 .env
+observability/social_credentials.json
 __pycache__/
 *.pyc
 .pytest_cache/
@@ -7,7 +8,13 @@ published/.vercel/
 published/.last_vercel_deploy
 published/*.html
 published/outreach-*.json
+published/mythos-cycle-*.json
+published/prospect-pack-cycle-*.json
+published/retention-pack-cycle-*.json
+published/social-cycle-*.json
 published/archive/
+observability/archives/
+observability/repo_hygiene.jsonl
 observability/daemon_status.json
 observability/factory_health.json
 observability/distribution_daemon.jsonl
