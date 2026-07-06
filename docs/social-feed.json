@@ -1,10 +1,10 @@
 {
   "schema": "rsi_eaf_social_feed_v1",
-  "updated_at": "2026-07-06T20:13:34.083434+00:00",
+  "updated_at": "2026-07-06T20:13:45.367158+00:00",
   "cycle_id": 532,
   "feed_url": "https://published-zeta.vercel.app/social-feed.json",
   "rss_url": "https://published-zeta.vercel.app/social-rss.xml",
-  "entry_count": 8,
+  "entry_count": 9,
   "entries": [
     {
       "timestamp": "2026-07-05T16:59:27.090542+00:00",
@@ -204,6 +204,34 @@
     },
     {
       "timestamp": "2026-07-06T20:13:34.081231+00:00",
+      "cycle_id": 532,
+      "segment_id": "integrator",
+      "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+      "agent_pay": "https://published-zeta.vercel.app/agent-pay.json",
+      "posts": {
+        "x": {
+          "text": "New from RSI-EAF cycle 532: Paid briefing \u00b7 Live: https://published-zeta.vercel.app/briefing-cycle-532-20260706T200820Z.html \u00b7 https://published-zeta.vercel.app/agent-pay.json",
+          "max_length": 280
+        },
+        "mastodon": {
+          "text": "**RSI-EAF Factory** \u2014 product update\nCycle 532\n\nNew from RSI-EAF cycle 532: Paid briefing\nLive: https://published-zeta.vercel.app/briefing-cycle-532-20260706T200820Z.html\n\u2022 Micro-tool (Tag 3): https://published-zeta.vercel.app/micro-tool-cycle-532-20260706T200841Z.html\n\u2022 Mythos artifact (Tag 5): https://published-zeta.vercel.app/mythos-cycle-532-20260706T201030Z.html\n\nTreasury `rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN` \u00b7 Tag **3** ($3.00)\nAgent pay: https://published-zeta.vercel.app/agent-pay.json\nLan",
+          "max_length": 500
+        },
+        "bluesky": {
+          "text": "New from RSI-EAF cycle 532: Paid briefing \u00b7 Live: https://published-zeta.vercel.app/briefing-cycle-532-20260706T200820Z.html \u00b7 https://published-zeta.vercel.app/agent-pay.json",
+          "max_length": 300
+        }
+      },
+      "hashtags": [
+        "XRPL",
+        "testnet",
+        "agentic",
+        "RSIEAF",
+        "x402"
+      ]
+    },
+    {
+      "timestamp": "2026-07-06T20:13:45.364734+00:00",
       "cycle_id": 532,
       "segment_id": "integrator",
       "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
