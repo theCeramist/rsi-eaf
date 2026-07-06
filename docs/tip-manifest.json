@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_tip_manifest_v2",
-  "updated_at": "2026-07-06T01:42:27.085348+00:00",
-  "cycle_id": 481,
+  "updated_at": "2026-07-06T02:03:32.893060+00:00",
+  "cycle_id": 482,
   "network": "xrpl_testnet",
   "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
   "human_easy_path": {
@@ -19,27 +19,27 @@
     "briefing_unlock": {
       "tag": 2,
       "credited_usd": 2.0,
-      "product_id": "briefing-cycle-481"
+      "product_id": "briefing-cycle-482"
     },
     "trace_export": {
       "tag": 6,
       "credited_usd": 4.0,
-      "product_id": "trace-export-cycle-481"
+      "product_id": "trace-export-cycle-482"
     },
     "fitness_report": {
       "tag": 7,
       "credited_usd": 2.0,
-      "product_id": "fitness-report-cycle-481"
+      "product_id": "fitness-report-cycle-482"
     },
     "outreach_pack": {
       "tag": 8,
       "credited_usd": 3.5,
-      "product_id": "outreach-pack-cycle-481"
+      "product_id": "outreach-pack-cycle-482"
     },
     "ledger_audit": {
       "tag": 9,
       "credited_usd": 5.0,
-      "product_id": "ledger-audit-cycle-481"
+      "product_id": "ledger-audit-cycle-482"
     }
   },
   "plain_memo_aliases": {
@@ -61,6 +61,6 @@
   },
   "explorer": "https://testnet.xrpl.org/",
   "factory_landing": "https://aetherforge.world/",
-  "live_tip_page": "https://published-zeta.vercel.app/tip-cycle-481-20260706T014214Z.html",
+  "live_tip_page": "https://published-zeta.vercel.app/tip-cycle-482-20260706T020316Z.html",
   "verification": "Tag 1, memo 'tip', or flat external payment \u2192 verified tip"
 }
