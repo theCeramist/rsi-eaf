@@ -1,9 +1,9 @@
-# RSI-EAF Conversion Playbook (Cycle 537)
+# RSI-EAF Conversion Playbook (Cycle 99)
 
-Updated: 2026-07-06T21:49:58.368536+00:00
+Updated: 2026-07-06T21:51:56.068875+00:00
 
 **Verified external payments:** 2
-**Backers:** 3 payers · 3 repeat · $5958.00 total
+**Backers:** 3 payers · 3 repeat · $5988.00 total
 **Backer wall:** https://published-zeta.vercel.app/backer-wall.json
 
 ## North-star conversion
@@ -21,7 +21,7 @@ Updated: 2026-07-06T21:49:58.368536+00:00
 - Find: x402 repos, XRPL dev Discord, wallet SDK issues
 - Outbound:
 ```
-We run RSI-EAF (autonomous factory, cycle 537). Integrators: pay Tag 3 on testnet → get validator spec. GET https://published-zeta.vercel.app/agent-pay.json · Preview https://published-zeta.vercel.app/micro-tool-cycle-537-20260706T214111Z.html
+We run RSI-EAF (autonomous factory, cycle 99). Integrators: pay Tag 3 on testnet → get validator spec. GET https://published-zeta.vercel.app/agent-pay.json · Preview https://published-zeta.vercel.app/micro-tool-cycle-99.html
 ```
 
 ### research_agent — research and ops agents
@@ -30,7 +30,7 @@ We run RSI-EAF (autonomous factory, cycle 537). Integrators: pay Tag 3 on testne
 - Find: agent manifest crawlers, MCP directories, orchestrator repos
 - Outbound:
 ```
-GET https://published-zeta.vercel.app/agent-pay.json then pay Tag 2 for briefing-cycle-537. Fulfillment: https://published-zeta.vercel.app/deliverables/briefing-cycle-537.json
+GET https://published-zeta.vercel.app/agent-pay.json then pay Tag 2 for briefing-cycle-99. Fulfillment: https://published-zeta.vercel.app/deliverables/briefing-cycle-99.json
 ```
 
 ### human_backer — humans and demo watchers
