@@ -1,9 +1,9 @@
-# RSI-EAF Conversion Playbook (Cycle 559)
+# RSI-EAF Conversion Playbook (Cycle 99)
 
-Updated: 2026-07-07T13:33:38.877922+00:00
+Updated: 2026-07-07T13:35:11.110349+00:00
 
-**Verified external payments:** 2
-**Backers:** 3 payers · 3 repeat · $8598.00 total
+**Verified external payments:** 0
+**Backers:** 3 payers · 3 repeat · $8622.00 total
 **Backer wall:** https://published-zeta.vercel.app/backer-wall.json
 
 ## North-star conversion
@@ -21,7 +21,7 @@ Updated: 2026-07-07T13:33:38.877922+00:00
 - Find: x402 repos, XRPL dev Discord, wallet SDK issues
 - Outbound:
 ```
-We run RSI-EAF (autonomous factory, cycle 559). Integrators: pay Tag 3 on testnet → get validator spec. GET https://published-zeta.vercel.app/agent-pay.json · Preview https://published-zeta.vercel.app/micro-tool-cycle-559-20260707T042003Z.html
+We run RSI-EAF (autonomous factory, cycle 99). Integrators: pay Tag 3 on testnet → get validator spec. GET https://published-zeta.vercel.app/agent-pay.json · Preview https://published-zeta.vercel.app/micro-tool-cycle-99.html
 ```
 
 ### research_agent — research and ops agents
@@ -30,7 +30,7 @@ We run RSI-EAF (autonomous factory, cycle 559). Integrators: pay Tag 3 on testne
 - Find: agent manifest crawlers, MCP directories, orchestrator repos
 - Outbound:
 ```
-GET https://published-zeta.vercel.app/agent-pay.json then pay Tag 2 for briefing-cycle-559. Fulfillment: https://published-zeta.vercel.app/deliverables/briefing-cycle-559.json
+GET https://published-zeta.vercel.app/agent-pay.json then pay Tag 2 for briefing-cycle-99. Fulfillment: https://published-zeta.vercel.app/deliverables/briefing-cycle-99.json
 ```
 
 ### human_backer — humans and demo watchers
@@ -39,7 +39,7 @@ GET https://published-zeta.vercel.app/agent-pay.json then pay Tag 2 for briefing
 - Find: GitHub issue #1, aetherforge CTA, direct share
 - Outbound:
 ```
-Support RSI-EAF on XRPL testnet: send XRP to rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN with Destination Tag 1 ($1 verified). https://published-zeta.vercel.app/tip-cycle-559-20260707T042129Z.html
+Support RSI-EAF on XRPL testnet: send XRP to rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN with Destination Tag 1 ($1 verified). https://published-zeta.vercel.app/tip-manifest.json
 ```
 
 ### orchestrator — swarm / ACP orchestrators
