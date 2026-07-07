@@ -1,6 +1,6 @@
 {
   "schema": "rsi_eaf_tip_manifest_v2",
-  "updated_at": "2026-07-07T16:01:25.095954+00:00",
+  "updated_at": "2026-07-07T16:12:28.518581+00:00",
   "cycle_id": 572,
   "network": "xrpl_testnet",
   "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
@@ -51,7 +51,8 @@
     "plain_memo_trace": "trace",
     "plain_memo_fitness": "fitness",
     "plain_memo_outreach": "outreach",
-    "plain_memo_ledger": "ledger"
+    "plain_memo_ledger": "ledger",
+    "plain_memo_referral": "ref:rReferrerWallet"
   },
   "payment_memo_template": {
     "type": "revenue",
