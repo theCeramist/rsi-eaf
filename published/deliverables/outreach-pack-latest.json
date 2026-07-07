@@ -1,10 +1,10 @@
 {
   "schema": "rsi_eaf_deliverable_alias_v1",
   "stable_id": "outreach_pack",
-  "product_id": "outreach-pack-cycle-601",
-  "cycle_id": 601,
-  "updated_at": "2026-07-07T22:30:03.242119+00:00",
-  "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/outreach-pack-cycle-601.json",
-  "preview_url": null,
-  "redirect_to": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/outreach-pack-cycle-601.json"
+  "product_id": "outreach-pack-cycle-603",
+  "cycle_id": 603,
+  "updated_at": "2026-07-07T22:38:11.617464+00:00",
+  "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/outreach-pack-cycle-603.json",
+  "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/outreach-cycle-603.html",
+  "redirect_to": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/outreach-pack-cycle-603.json"
 }

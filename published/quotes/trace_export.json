@@ -1,23 +1,23 @@
 {
   "schema": "rsi_eaf_payment_quote_v1",
-  "quoted_at": "2026-07-07T22:30:03.236668+00:00",
-  "cycle_id": 601,
+  "quoted_at": "2026-07-07T22:38:11.612345+00:00",
+  "cycle_id": 603,
   "stable_id": "trace_export",
-  "product_id": "trace-export-cycle-601",
+  "product_id": "trace-export-cycle-603",
   "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
   "network": "xrpl_testnet",
   "destination_tag": 6,
   "credited_usd": 4.0,
   "plain_memo": "trace",
-  "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/trace-export-cycle-601.json",
-  "preview_url": null,
+  "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/trace-export-cycle-603.json",
+  "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/trace-cycle-603.html",
   "payment_status_url_template": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/payment-status/{tx_hash}.json",
   "poll_after_pay_sec": 5,
   "amount_drops": "13333333",
   "amount_xrp_est": 13.333333,
   "x402": {
     "gated": true,
-    "payment_required_b64": "eyJ4NDAyVmVyc2lvbiI6MiwiYWNjZXB0cyI6W3sic2NoZW1lIjoiZXhhY3QiLCJuZXR3b3JrIjoieHJwbDoxIiwiYXNzZXQiOiJYUlAiLCJwYXlUbyI6InJCaVU3NHEyd0NQUTdyaTlZRDZKNkxyUTJZM2pGZDhwY04iLCJhbW91bnQiOiIxMzMzMzMzMyIsIm1heFRpbWVvdXRTZWNvbmRzIjo2MDAsImV4dHJhIjp7Imludm9pY2VJZCI6InRyYWNlLWV4cG9ydC1jeWNsZS02MDEiLCJzb3VyY2VUYWciOjIwMjYwNzAzLCJkZXN0aW5hdGlvblRhZyI6Nn19XSwicmVzb3VyY2UiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvZ2gvdGhlQ2VyYW1pc3QvcnNpLWVhZkBtYWluL3B1Ymxpc2hlZC9kZWxpdmVyYWJsZXMvdHJhY2UtZXhwb3J0LWN5Y2xlLTYwMS5qc29uIiwiaW52b2ljZUlkIjoidHJhY2UtZXhwb3J0LWN5Y2xlLTYwMSJ9",
+    "payment_required_b64": "eyJ4NDAyVmVyc2lvbiI6MiwiYWNjZXB0cyI6W3sic2NoZW1lIjoiZXhhY3QiLCJuZXR3b3JrIjoieHJwbDoxIiwiYXNzZXQiOiJYUlAiLCJwYXlUbyI6InJCaVU3NHEyd0NQUTdyaTlZRDZKNkxyUTJZM2pGZDhwY04iLCJhbW91bnQiOiIxMzMzMzMzMyIsIm1heFRpbWVvdXRTZWNvbmRzIjo2MDAsImV4dHJhIjp7Imludm9pY2VJZCI6InRyYWNlLWV4cG9ydC1jeWNsZS02MDMiLCJzb3VyY2VUYWciOjIwMjYwNzAzLCJkZXN0aW5hdGlvblRhZyI6Nn19XSwicmVzb3VyY2UiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvZ2gvdGhlQ2VyYW1pc3QvcnNpLWVhZkBtYWluL3B1Ymxpc2hlZC9kZWxpdmVyYWJsZXMvdHJhY2UtZXhwb3J0LWN5Y2xlLTYwMy5qc29uIiwiaW52b2ljZUlkIjoidHJhY2UtZXhwb3J0LWN5Y2xlLTYwMyJ9",
     "challenge": {
       "x402Version": 2,
       "accepts": [
@@ -29,14 +29,14 @@
           "amount": "13333333",
           "maxTimeoutSeconds": 600,
           "extra": {
-            "invoiceId": "trace-export-cycle-601",
+            "invoiceId": "trace-export-cycle-603",
             "sourceTag": 20260703,
             "destinationTag": 6
           }
         }
       ],
-      "resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/trace-export-cycle-601.json",
-      "invoiceId": "trace-export-cycle-601"
+      "resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/trace-export-cycle-603.json",
+      "invoiceId": "trace-export-cycle-603"
     }
   },
   "scarcity_multiplier": 1.0,
@@ -44,7 +44,7 @@
   "agent_json_memo_template": {
     "type": "revenue",
     "amount_usd_est": 4.0,
-    "product_id": "trace-export-cycle-601",
+    "product_id": "trace-export-cycle-603",
     "source": "agent_client",
     "callback_url": null,
     "run_id": "optional-for-eval-bounty"

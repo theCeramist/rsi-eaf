@@ -1,10 +1,10 @@
 {
   "schema": "rsi_eaf_deliverable_alias_v1",
   "stable_id": "briefing_subscription",
-  "product_id": "briefing-subscription-cycle-601",
-  "cycle_id": 601,
-  "updated_at": "2026-07-07T22:30:03.251919+00:00",
-  "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/briefing-subscription-cycle-601.json",
-  "preview_url": null,
-  "redirect_to": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/briefing-subscription-cycle-601.json"
+  "product_id": "briefing-subscription-cycle-603",
+  "cycle_id": 603,
+  "updated_at": "2026-07-07T22:38:11.628007+00:00",
+  "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/briefing-subscription-cycle-603.json",
+  "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/briefing-cycle-603.html",
+  "redirect_to": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/briefing-subscription-cycle-603.json"
 }
