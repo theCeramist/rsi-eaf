@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_agent_pay_v1",
   "version": "1.4",
-  "updated_at": "2026-07-07T22:17:37.118411+00:00",
+  "updated_at": "2026-07-07T22:30:03.203911+00:00",
   "cycle_id": 601,
   "factory": "RSI-EAF",
   "network": "xrpl_testnet",
@@ -50,10 +50,10 @@
     }
   ],
   "integration_quickstart": {
-    "discover": "https://published-zeta.vercel.app/agent-pay.json",
-    "catalog": "https://published-zeta.vercel.app/service-catalog.json",
+    "discover": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/agent-pay.json",
+    "catalog": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/service-catalog.json",
     "pay": "XRP \u2192 rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN with destination_tag from products[]",
-    "fulfill": "https://published-zeta.vercel.app/deliverables/{product_id}.json",
+    "fulfill": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/{product_id}.json",
     "verify": "observability/revenue_ingest.py ingests within 1 cycle"
   },
   "easiest_payment": {
@@ -83,10 +83,10 @@
       "credited_usd": 2.0,
       "plain_memo": "briefing",
       "product_id": "briefing-cycle-601",
-      "live_url": "https://published-zeta.vercel.app/briefing-cycle-601.html",
+      "live_url": null,
       "description": "XRPL agent economy briefing: payment-flow analysis, economics, product lineup, integration checklist (HTML preview + JSON)",
       "buyer": "research agents and operators",
-      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/briefing-cycle-601.json",
+      "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/briefing-cycle-601.json",
       "service_type": "paid_report",
       "x402": {
         "enabled": true,
@@ -102,8 +102,8 @@
         "destination_tag": 2,
         "source_tag": 20260703,
         "max_timeout_seconds": 600,
-        "protected_resource": "https://published-zeta.vercel.app/deliverables/briefing-cycle-601.json",
-        "preview_resource": "https://published-zeta.vercel.app/briefing-cycle-601.html",
+        "protected_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/briefing-cycle-601.json",
+        "preview_resource": null,
         "payment_requirements_template": {
           "scheme": "exact",
           "network": "xrpl:1",
@@ -126,10 +126,10 @@
       "credited_usd": 3.0,
       "plain_memo": "tool",
       "product_id": "micro-tool-cycle-601",
-      "live_url": "https://published-zeta.vercel.app/micro-tool-cycle-601.html",
+      "live_url": null,
       "description": "Treasury validator v2: tags 1\u20139, worked examples, live flow samples, x402 hooks",
       "buyer": "wallet and x402 integrators",
-      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-601.json",
+      "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/micro-tool-cycle-601.json",
       "service_type": "paid_tool",
       "x402": {
         "enabled": true,
@@ -145,8 +145,8 @@
         "destination_tag": 3,
         "source_tag": 20260703,
         "max_timeout_seconds": 600,
-        "protected_resource": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-601.json",
-        "preview_resource": "https://published-zeta.vercel.app/micro-tool-cycle-601.html",
+        "protected_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/micro-tool-cycle-601.json",
+        "preview_resource": null,
         "payment_requirements_template": {
           "scheme": "exact",
           "network": "xrpl:1",
@@ -169,10 +169,10 @@
       "credited_usd": 2.5,
       "plain_memo": "service",
       "product_id": "service-bundle-cycle-601",
-      "live_url": "https://published-zeta.vercel.app/service-catalog.json",
+      "live_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/service-catalog.json",
       "description": "Orchestrator bundle: trace phases, gate trends, economics, agent-pay snapshot",
       "buyer": "ACP / swarm orchestrator agents",
-      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/service-bundle-cycle-601.json",
+      "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/service-bundle-cycle-601.json",
       "service_type": "agent_api",
       "x402": {
         "enabled": true,
@@ -188,8 +188,8 @@
         "destination_tag": 4,
         "source_tag": 20260703,
         "max_timeout_seconds": 600,
-        "protected_resource": "https://published-zeta.vercel.app/deliverables/service-bundle-cycle-601.json",
-        "preview_resource": "https://published-zeta.vercel.app/service-catalog.json",
+        "protected_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/service-bundle-cycle-601.json",
+        "preview_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/service-catalog.json",
         "payment_requirements_template": {
           "scheme": "exact",
           "network": "xrpl:1",
@@ -212,9 +212,9 @@
       "credited_usd": 1.5,
       "plain_memo": "mythos",
       "product_id": "mythos-cycle-601",
-      "live_url": "https://published-zeta.vercel.app/mythos-cycle-601.html",
+      "live_url": null,
       "description": "Narrative commerce artifact for aetherforge lane",
-      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/mythos-cycle-601.json",
+      "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/mythos-cycle-601.json",
       "service_type": "creative_commerce",
       "x402": {
         "enabled": true,
@@ -230,8 +230,8 @@
         "destination_tag": 5,
         "source_tag": 20260703,
         "max_timeout_seconds": 600,
-        "protected_resource": "https://published-zeta.vercel.app/deliverables/mythos-cycle-601.json",
-        "preview_resource": "https://published-zeta.vercel.app/mythos-cycle-601.html",
+        "protected_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/mythos-cycle-601.json",
+        "preview_resource": null,
         "payment_requirements_template": {
           "scheme": "exact",
           "network": "xrpl:1",
@@ -254,9 +254,9 @@
       "credited_usd": 4.0,
       "plain_memo": "trace",
       "product_id": "trace-export-cycle-601",
-      "live_url": "https://published-zeta.vercel.app/trace-cycle-601.html",
+      "live_url": null,
       "description": "Structured cycle trace export for observability agents",
-      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/trace-export-cycle-601.json",
+      "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/trace-export-cycle-601.json",
       "service_type": "observability_export",
       "x402": {
         "enabled": true,
@@ -272,8 +272,8 @@
         "destination_tag": 6,
         "source_tag": 20260703,
         "max_timeout_seconds": 600,
-        "protected_resource": "https://published-zeta.vercel.app/deliverables/trace-export-cycle-601.json",
-        "preview_resource": "https://published-zeta.vercel.app/trace-cycle-601.html",
+        "protected_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/trace-export-cycle-601.json",
+        "preview_resource": null,
         "payment_requirements_template": {
           "scheme": "exact",
           "network": "xrpl:1",
@@ -296,9 +296,9 @@
       "credited_usd": 2.0,
       "plain_memo": "fitness",
       "product_id": "fitness-report-cycle-601",
-      "live_url": "https://published-zeta.vercel.app/fitness-cycle-601.html",
+      "live_url": null,
       "description": "Factory fitness score and economics health report",
-      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/fitness-report-cycle-601.json",
+      "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/fitness-report-cycle-601.json",
       "service_type": "ops_report",
       "x402": {
         "enabled": true,
@@ -314,8 +314,8 @@
         "destination_tag": 7,
         "source_tag": 20260703,
         "max_timeout_seconds": 600,
-        "protected_resource": "https://published-zeta.vercel.app/deliverables/fitness-report-cycle-601.json",
-        "preview_resource": "https://published-zeta.vercel.app/fitness-cycle-601.html",
+        "protected_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/fitness-report-cycle-601.json",
+        "preview_resource": null,
         "payment_requirements_template": {
           "scheme": "exact",
           "network": "xrpl:1",
@@ -338,9 +338,9 @@
       "credited_usd": 3.5,
       "plain_memo": "outreach",
       "product_id": "outreach-pack-cycle-601",
-      "live_url": "https://published-zeta.vercel.app/outreach-cycle-601.html",
+      "live_url": null,
       "description": "Share-ready outreach copy and tip links for distribution",
-      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/outreach-pack-cycle-601.json",
+      "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/outreach-pack-cycle-601.json",
       "service_type": "growth_pack",
       "x402": {
         "enabled": true,
@@ -356,8 +356,8 @@
         "destination_tag": 8,
         "source_tag": 20260703,
         "max_timeout_seconds": 600,
-        "protected_resource": "https://published-zeta.vercel.app/deliverables/outreach-pack-cycle-601.json",
-        "preview_resource": "https://published-zeta.vercel.app/outreach-cycle-601.html",
+        "protected_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/outreach-pack-cycle-601.json",
+        "preview_resource": null,
         "payment_requirements_template": {
           "scheme": "exact",
           "network": "xrpl:1",
@@ -380,9 +380,9 @@
       "credited_usd": 5.0,
       "plain_memo": "ledger",
       "product_id": "ledger-audit-cycle-601",
-      "live_url": "https://published-zeta.vercel.app/ledger-cycle-601.html",
+      "live_url": null,
       "description": "Economic ledger audit snapshot for treasury verifiers",
-      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/ledger-audit-cycle-601.json",
+      "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/ledger-audit-cycle-601.json",
       "service_type": "audit_snapshot",
       "x402": {
         "enabled": true,
@@ -398,8 +398,8 @@
         "destination_tag": 9,
         "source_tag": 20260703,
         "max_timeout_seconds": 600,
-        "protected_resource": "https://published-zeta.vercel.app/deliverables/ledger-audit-cycle-601.json",
-        "preview_resource": "https://published-zeta.vercel.app/ledger-cycle-601.html",
+        "protected_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/ledger-audit-cycle-601.json",
+        "preview_resource": null,
         "payment_requirements_template": {
           "scheme": "exact",
           "network": "xrpl:1",
@@ -424,7 +424,7 @@
       "product_id": "referral-cycle-601",
       "description": "Referral chain \u2014 include memo ref:rReferrerWallet on any tag, or pay Tag 10 with ref: memo for on-ledger viral attribution",
       "buyer": "referring agents and orchestrators",
-      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/referral-cycle-601.json",
+      "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/referral-cycle-601.json",
       "service_type": "referral_attribution",
       "memo_required": "ref:rReferrerWallet (plain memo or JSON referrer field)",
       "x402": {
@@ -441,7 +441,7 @@
         "destination_tag": 10,
         "source_tag": 20260703,
         "max_timeout_seconds": 600,
-        "protected_resource": "https://published-zeta.vercel.app/deliverables/referral-cycle-601.json",
+        "protected_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/referral-cycle-601.json",
         "preview_resource": null,
         "payment_requirements_template": {
           "scheme": "exact",
@@ -465,10 +465,10 @@
       "credited_usd": 5.0,
       "plain_memo": "subscribe",
       "product_id": "briefing-subscription-cycle-601",
-      "live_url": "https://published-zeta.vercel.app/briefing-cycle-601.html",
+      "live_url": null,
       "description": "Recurring briefing entitlement \u2014 unlocks briefing-cycle deliverables for N cycles; agents poll payment-status after pay",
       "buyer": "research agents with recurring spend",
-      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/briefing-subscription-cycle-601.json",
+      "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/briefing-subscription-cycle-601.json",
       "service_type": "subscription",
       "x402": {
         "enabled": true,
@@ -484,8 +484,8 @@
         "destination_tag": 11,
         "source_tag": 20260703,
         "max_timeout_seconds": 600,
-        "protected_resource": "https://published-zeta.vercel.app/deliverables/briefing-subscription-cycle-601.json",
-        "preview_resource": "https://published-zeta.vercel.app/briefing-cycle-601.html",
+        "protected_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/briefing-subscription-cycle-601.json",
+        "preview_resource": null,
         "payment_requirements_template": {
           "scheme": "exact",
           "network": "xrpl:1",
@@ -508,10 +508,10 @@
       "credited_usd": 6.0,
       "plain_memo": "run_id:YOUR_RUN_ID",
       "product_id": "eval-bounty-cycle-601",
-      "live_url": "https://published-zeta.vercel.app/trace-cycle-601.html",
+      "live_url": null,
       "description": "Eval harness bounty \u2014 include memo run_id:UUID; receive trace export with run_id + gate hash for benchmark proof",
       "buyer": "agent eval harnesses and trace consumers",
-      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/eval-bounty-cycle-601.json",
+      "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/eval-bounty-cycle-601.json",
       "service_type": "eval_bounty",
       "x402": {
         "enabled": true,
@@ -527,8 +527,8 @@
         "destination_tag": 12,
         "source_tag": 20260703,
         "max_timeout_seconds": 600,
-        "protected_resource": "https://published-zeta.vercel.app/deliverables/eval-bounty-cycle-601.json",
-        "preview_resource": "https://published-zeta.vercel.app/trace-cycle-601.html",
+        "protected_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/eval-bounty-cycle-601.json",
+        "preview_resource": null,
         "payment_requirements_template": {
           "scheme": "exact",
           "network": "xrpl:1",
@@ -551,10 +551,10 @@
       "credited_usd": 1.0,
       "plain_memo": "factory_id:your-factory-slug",
       "product_id": "factory-iou-cycle-601",
-      "live_url": "https://published-zeta.vercel.app/cross-factory-iou.json",
+      "live_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/cross-factory-iou.json",
       "description": "Cross-factory IOU settlement \u2014 pay issued currency with factory_id memo; enables meta-factory agent-to-agent revenue on XRPL testnet",
       "buyer": "meta-factory orchestrators",
-      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/factory-iou-cycle-601.json",
+      "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/factory-iou-cycle-601.json",
       "service_type": "iou_settlement",
       "memo_required": "factory_id:your-factory-slug (JSON or plain memo)",
       "x402": {
@@ -571,8 +571,8 @@
         "destination_tag": null,
         "source_tag": 20260703,
         "max_timeout_seconds": 600,
-        "protected_resource": "https://published-zeta.vercel.app/deliverables/factory-iou-cycle-601.json",
-        "preview_resource": "https://published-zeta.vercel.app/cross-factory-iou.json",
+        "protected_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/factory-iou-cycle-601.json",
+        "preview_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/cross-factory-iou.json",
         "payment_requirements_template": {
           "scheme": "exact",
           "network": "xrpl:1",
@@ -595,10 +595,10 @@
       "credited_usd": 4.5,
       "plain_memo": "funnel",
       "product_id": "payer-funnel-cycle-601",
-      "live_url": "https://published-zeta.vercel.app/payer-funnel-cycle-601.html",
+      "live_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/payer-funnel.json",
       "description": "Novel SKU \u2014 payer funnel snapshot with discover\u2192fulfill bottleneck analysis for conversion-tuning agents",
       "buyer": "meta-factory growth agents",
-      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/payer-funnel-cycle-601.json",
+      "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/payer-funnel-cycle-601.json",
       "service_type": "payer_funnel_export",
       "memo_required": "funnel (Tag 8 disambiguates from outreach pack)",
       "x402": {
@@ -615,8 +615,8 @@
         "destination_tag": 8,
         "source_tag": 20260703,
         "max_timeout_seconds": 600,
-        "protected_resource": "https://published-zeta.vercel.app/deliverables/payer-funnel-cycle-601.json",
-        "preview_resource": "https://published-zeta.vercel.app/payer-funnel-cycle-601.html",
+        "protected_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/payer-funnel-cycle-601.json",
+        "preview_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/payer-funnel.json",
         "payment_requirements_template": {
           "scheme": "exact",
           "network": "xrpl:1",
@@ -639,10 +639,10 @@
       "credited_usd": 9.0,
       "plain_memo": "suite-bundle",
       "product_id": "suite-bundle-cycle-601",
-      "live_url": "https://published-zeta.vercel.app/product-suite-cycle-601.html",
+      "live_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/product-suite-index.json",
       "description": "Novel scarcity bundle \u2014 trace + fitness + payer funnel in one deliverable at discount vs separate purchases",
       "buyer": "orchestrators and eval harnesses",
-      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/suite-bundle-cycle-601.json",
+      "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/suite-bundle-cycle-601.json",
       "service_type": "novelty_bundle",
       "memo_required": "suite-bundle (Tag 4 disambiguates from cycle intel bundle)",
       "x402": {
@@ -659,8 +659,8 @@
         "destination_tag": 4,
         "source_tag": 20260703,
         "max_timeout_seconds": 600,
-        "protected_resource": "https://published-zeta.vercel.app/deliverables/suite-bundle-cycle-601.json",
-        "preview_resource": "https://published-zeta.vercel.app/product-suite-cycle-601.html",
+        "protected_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/suite-bundle-cycle-601.json",
+        "preview_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/product-suite-index.json",
         "payment_requirements_template": {
           "scheme": "exact",
           "network": "xrpl:1",
@@ -772,27 +772,27 @@
   },
   "discovery_urls": {
     "factory_landing": "https://aetherforge.world/",
-    "factory_assets": "https://published-zeta.vercel.app/",
-    "agent_pay": "https://published-zeta.vercel.app/agent-pay.json",
-    "tip_manifest": "https://published-zeta.vercel.app/tip-manifest.json",
+    "factory_assets": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/",
+    "agent_pay": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/agent-pay.json",
+    "tip_manifest": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/tip-manifest.json",
     "factory_index": "https://aetherforge.world/",
     "aetherforge": "https://aetherforge.world",
-    "agent_pay_latest": "https://published-zeta.vercel.app/agent-pay-latest.json",
-    "quote_api": "https://published-zeta.vercel.app/api/quote",
-    "payment_status_template": "https://published-zeta.vercel.app/payment-status/{tx_hash}.json",
-    "payment_events_feed": "https://published-zeta.vercel.app/payment-events-feed.json",
-    "payment_events_rss": "https://published-zeta.vercel.app/payment-events-rss.xml",
-    "integrator_test_suite": "https://published-zeta.vercel.app/integrator-test-suite.json",
-    "conformance_payee": "https://published-zeta.vercel.app/conformance-payee.json",
-    "tip_deep_link": "https://published-zeta.vercel.app/tip-deep-link.json",
-    "mcp_payee_catalog": "https://published-zeta.vercel.app/mcp-payee-catalog.json",
-    "novel_capture_roadmap": "https://published-zeta.vercel.app/novel-capture-roadmap.json",
-    "compliance_certificate": "https://published-zeta.vercel.app/compliance-cert-latest.json",
-    "cross_factory_iou": "https://published-zeta.vercel.app/cross-factory-iou.json",
-    "payer_funnel": "https://published-zeta.vercel.app/payer-funnel.json",
-    "tool_registry": "https://published-zeta.vercel.app/tool-registry.json",
-    "referral_graph": "https://published-zeta.vercel.app/referral-graph.json",
-    "product_suite_index": "https://published-zeta.vercel.app/product-suite-index.json"
+    "agent_pay_latest": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/agent-pay-latest.json",
+    "quote_api": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/api/quote",
+    "payment_status_template": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/payment-status/{tx_hash}.json",
+    "payment_events_feed": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/payment-events-feed.json",
+    "payment_events_rss": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/payment-events-rss.xml",
+    "integrator_test_suite": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/integrator-test-suite.json",
+    "conformance_payee": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/conformance-payee.json",
+    "tip_deep_link": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/tip-deep-link.json",
+    "mcp_payee_catalog": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/mcp-payee-catalog.json",
+    "novel_capture_roadmap": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/novel-capture-roadmap.json",
+    "compliance_certificate": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/compliance-cert-latest.json",
+    "cross_factory_iou": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/cross-factory-iou.json",
+    "payer_funnel": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/payer-funnel.json",
+    "tool_registry": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/tool-registry.json",
+    "referral_graph": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/referral-graph.json",
+    "product_suite_index": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/product-suite-index.json"
   },
   "examples": {
     "python_xrpl_py": "from xrpl.wallet import Wallet\nfrom tools.xrpl_tools import send_xrp_payment\nsend_xrp_payment(wallet, 'rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN', 0.01, memo_data={'type':'revenue','amount_usd_est':1.0,'source':'my_agent'}, destination_tag=1, testnet=True)",
@@ -855,8 +855,8 @@
         "destination_tag": 2,
         "credited_usd": 2.0
       },
-      "output": "https://published-zeta.vercel.app/deliverables/briefing-cycle-601.json",
-      "preview": "https://published-zeta.vercel.app/briefing-cycle-601.html",
+      "output": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/briefing-cycle-601.json",
+      "preview": null,
       "service_type": "paid_report"
     },
     {
@@ -874,8 +874,8 @@
         "destination_tag": 3,
         "credited_usd": 3.0
       },
-      "output": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-601.json",
-      "preview": "https://published-zeta.vercel.app/micro-tool-cycle-601.html",
+      "output": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/micro-tool-cycle-601.json",
+      "preview": null,
       "service_type": "paid_tool"
     },
     {
@@ -894,8 +894,8 @@
         "destination_tag": 4,
         "credited_usd": 2.5
       },
-      "output": "https://published-zeta.vercel.app/deliverables/service-bundle-cycle-601.json",
-      "preview": "https://published-zeta.vercel.app/service-catalog.json",
+      "output": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/service-bundle-cycle-601.json",
+      "preview": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/service-catalog.json",
       "service_type": "agent_api"
     },
     {
@@ -913,8 +913,8 @@
         "destination_tag": 5,
         "credited_usd": 1.5
       },
-      "output": "https://published-zeta.vercel.app/deliverables/mythos-cycle-601.json",
-      "preview": "https://published-zeta.vercel.app/mythos-cycle-601.html",
+      "output": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/mythos-cycle-601.json",
+      "preview": null,
       "service_type": "creative_commerce"
     },
     {
@@ -933,8 +933,8 @@
         "destination_tag": 6,
         "credited_usd": 4.0
       },
-      "output": "https://published-zeta.vercel.app/deliverables/trace-export-cycle-601.json",
-      "preview": "https://published-zeta.vercel.app/trace-cycle-601.html",
+      "output": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/trace-export-cycle-601.json",
+      "preview": null,
       "service_type": "observability_export"
     },
     {
@@ -952,8 +952,8 @@
         "destination_tag": 7,
         "credited_usd": 2.0
       },
-      "output": "https://published-zeta.vercel.app/deliverables/fitness-report-cycle-601.json",
-      "preview": "https://published-zeta.vercel.app/fitness-cycle-601.html",
+      "output": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/fitness-report-cycle-601.json",
+      "preview": null,
       "service_type": "ops_report"
     },
     {
@@ -971,8 +971,8 @@
         "destination_tag": 8,
         "credited_usd": 3.5
       },
-      "output": "https://published-zeta.vercel.app/deliverables/outreach-pack-cycle-601.json",
-      "preview": "https://published-zeta.vercel.app/outreach-cycle-601.html",
+      "output": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/outreach-pack-cycle-601.json",
+      "preview": null,
       "service_type": "growth_pack"
     },
     {
@@ -990,8 +990,8 @@
         "destination_tag": 9,
         "credited_usd": 5.0
       },
-      "output": "https://published-zeta.vercel.app/deliverables/ledger-audit-cycle-601.json",
-      "preview": "https://published-zeta.vercel.app/ledger-cycle-601.html",
+      "output": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/ledger-audit-cycle-601.json",
+      "preview": null,
       "service_type": "audit_snapshot"
     },
     {
@@ -1009,7 +1009,7 @@
         "destination_tag": 10,
         "credited_usd": 1.0
       },
-      "output": "https://published-zeta.vercel.app/deliverables/referral-cycle-601.json",
+      "output": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/referral-cycle-601.json",
       "preview": null,
       "service_type": "referral_attribution"
     },
@@ -1028,8 +1028,8 @@
         "destination_tag": 11,
         "credited_usd": 5.0
       },
-      "output": "https://published-zeta.vercel.app/deliverables/briefing-subscription-cycle-601.json",
-      "preview": "https://published-zeta.vercel.app/briefing-cycle-601.html",
+      "output": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/briefing-subscription-cycle-601.json",
+      "preview": null,
       "service_type": "subscription"
     },
     {
@@ -1047,8 +1047,8 @@
         "destination_tag": 12,
         "credited_usd": 6.0
       },
-      "output": "https://published-zeta.vercel.app/deliverables/eval-bounty-cycle-601.json",
-      "preview": "https://published-zeta.vercel.app/trace-cycle-601.html",
+      "output": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/eval-bounty-cycle-601.json",
+      "preview": null,
       "service_type": "eval_bounty"
     },
     {
@@ -1066,8 +1066,8 @@
         "destination_tag": null,
         "credited_usd": 1.0
       },
-      "output": "https://published-zeta.vercel.app/deliverables/factory-iou-cycle-601.json",
-      "preview": "https://published-zeta.vercel.app/cross-factory-iou.json",
+      "output": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/factory-iou-cycle-601.json",
+      "preview": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/cross-factory-iou.json",
       "service_type": "iou_settlement"
     },
     {
@@ -1086,8 +1086,8 @@
         "destination_tag": 8,
         "credited_usd": 4.5
       },
-      "output": "https://published-zeta.vercel.app/deliverables/payer-funnel-cycle-601.json",
-      "preview": "https://published-zeta.vercel.app/payer-funnel-cycle-601.html",
+      "output": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/payer-funnel-cycle-601.json",
+      "preview": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/payer-funnel.json",
       "service_type": "payer_funnel_export"
     },
     {
@@ -1106,94 +1106,94 @@
         "destination_tag": 4,
         "credited_usd": 9.0
       },
-      "output": "https://published-zeta.vercel.app/deliverables/suite-bundle-cycle-601.json",
-      "preview": "https://published-zeta.vercel.app/product-suite-cycle-601.html",
+      "output": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/suite-bundle-cycle-601.json",
+      "preview": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/product-suite-index.json",
       "service_type": "novelty_bundle"
     }
   ],
   "stable_products": {
     "briefing_unlock": {
       "prefix": "briefing",
-      "latest_deliverable": "https://published-zeta.vercel.app/deliverables/briefing-latest.json",
-      "quote": "https://published-zeta.vercel.app/quotes/briefing_unlock.json",
+      "latest_deliverable": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/briefing-latest.json",
+      "quote": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/quotes/briefing_unlock.json",
       "current_product_id": "briefing-cycle-601"
     },
     "micro_tool": {
       "prefix": "micro-tool",
-      "latest_deliverable": "https://published-zeta.vercel.app/deliverables/micro-tool-latest.json",
-      "quote": "https://published-zeta.vercel.app/quotes/micro_tool.json",
+      "latest_deliverable": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/micro-tool-latest.json",
+      "quote": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/quotes/micro_tool.json",
       "current_product_id": "micro-tool-cycle-601"
     },
     "trace_export": {
       "prefix": "trace-export",
-      "latest_deliverable": "https://published-zeta.vercel.app/deliverables/trace-export-latest.json",
-      "quote": "https://published-zeta.vercel.app/quotes/trace_export.json",
+      "latest_deliverable": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/trace-export-latest.json",
+      "quote": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/quotes/trace_export.json",
       "current_product_id": "trace-export-cycle-601"
     },
     "agent_service": {
       "prefix": "service-bundle",
-      "latest_deliverable": "https://published-zeta.vercel.app/deliverables/service-bundle-latest.json",
-      "quote": "https://published-zeta.vercel.app/quotes/agent_service.json",
+      "latest_deliverable": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/service-bundle-latest.json",
+      "quote": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/quotes/agent_service.json",
       "current_product_id": "service-bundle-cycle-601"
     },
     "mythos_artifact": {
       "prefix": "mythos",
-      "latest_deliverable": "https://published-zeta.vercel.app/deliverables/mythos-latest.json",
-      "quote": "https://published-zeta.vercel.app/quotes/mythos_artifact.json",
+      "latest_deliverable": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/mythos-latest.json",
+      "quote": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/quotes/mythos_artifact.json",
       "current_product_id": "mythos-cycle-601"
     },
     "fitness_report": {
       "prefix": "fitness-report",
-      "latest_deliverable": "https://published-zeta.vercel.app/deliverables/fitness-report-latest.json",
-      "quote": "https://published-zeta.vercel.app/quotes/fitness_report.json",
+      "latest_deliverable": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/fitness-report-latest.json",
+      "quote": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/quotes/fitness_report.json",
       "current_product_id": "fitness-report-cycle-601"
     },
     "outreach_pack": {
       "prefix": "outreach-pack",
-      "latest_deliverable": "https://published-zeta.vercel.app/deliverables/outreach-pack-latest.json",
-      "quote": "https://published-zeta.vercel.app/quotes/outreach_pack.json",
+      "latest_deliverable": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/outreach-pack-latest.json",
+      "quote": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/quotes/outreach_pack.json",
       "current_product_id": "outreach-pack-cycle-601"
     },
     "ledger_audit": {
       "prefix": "ledger-audit",
-      "latest_deliverable": "https://published-zeta.vercel.app/deliverables/ledger-audit-latest.json",
-      "quote": "https://published-zeta.vercel.app/quotes/ledger_audit.json",
+      "latest_deliverable": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/ledger-audit-latest.json",
+      "quote": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/quotes/ledger_audit.json",
       "current_product_id": "ledger-audit-cycle-601"
     },
     "referral_attribution": {
       "prefix": "referral",
-      "latest_deliverable": "https://published-zeta.vercel.app/deliverables/referral-latest.json",
-      "quote": "https://published-zeta.vercel.app/quotes/referral_attribution.json",
+      "latest_deliverable": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/referral-latest.json",
+      "quote": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/quotes/referral_attribution.json",
       "current_product_id": "referral-cycle-601"
     },
     "briefing_subscription": {
       "prefix": "briefing-subscription",
-      "latest_deliverable": "https://published-zeta.vercel.app/deliverables/briefing-subscription-latest.json",
-      "quote": "https://published-zeta.vercel.app/quotes/briefing_subscription.json",
+      "latest_deliverable": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/briefing-subscription-latest.json",
+      "quote": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/quotes/briefing_subscription.json",
       "current_product_id": "briefing-subscription-cycle-601"
     },
     "eval_bounty": {
       "prefix": "eval-bounty",
-      "latest_deliverable": "https://published-zeta.vercel.app/deliverables/eval-bounty-latest.json",
-      "quote": "https://published-zeta.vercel.app/quotes/eval_bounty.json",
+      "latest_deliverable": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/eval-bounty-latest.json",
+      "quote": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/quotes/eval_bounty.json",
       "current_product_id": "eval-bounty-cycle-601"
     },
     "cross_factory_iou": {
       "prefix": "factory-iou",
-      "latest_deliverable": "https://published-zeta.vercel.app/deliverables/factory-iou-latest.json",
-      "quote": "https://published-zeta.vercel.app/quotes/cross_factory_iou.json",
+      "latest_deliverable": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/factory-iou-latest.json",
+      "quote": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/quotes/cross_factory_iou.json",
       "current_product_id": "factory-iou-cycle-601"
     },
     "payer_funnel_export": {
       "prefix": "payer-funnel",
-      "latest_deliverable": "https://published-zeta.vercel.app/deliverables/payer-funnel-latest.json",
-      "quote": "https://published-zeta.vercel.app/quotes/payer_funnel_export.json",
+      "latest_deliverable": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/payer-funnel-latest.json",
+      "quote": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/quotes/payer_funnel_export.json",
       "current_product_id": "payer-funnel-cycle-601"
     },
     "suite_novelty_bundle": {
       "prefix": "suite-bundle",
-      "latest_deliverable": "https://published-zeta.vercel.app/deliverables/suite-bundle-latest.json",
-      "quote": "https://published-zeta.vercel.app/quotes/suite_novelty_bundle.json",
+      "latest_deliverable": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/suite-bundle-latest.json",
+      "quote": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/quotes/suite_novelty_bundle.json",
       "current_product_id": "suite-bundle-cycle-601"
     }
   },
@@ -1201,25 +1201,25 @@
     {
       "name": "rsi_eaf_get_agent_pay",
       "method": "GET",
-      "url": "https://published-zeta.vercel.app/agent-pay-latest.json",
+      "url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/agent-pay-latest.json",
       "description": "Current treasury product manifest"
     },
     {
       "name": "rsi_eaf_get_quote",
       "method": "GET",
-      "url": "https://published-zeta.vercel.app/api/quote?product={stable_id}",
+      "url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/api/quote?product={stable_id}",
       "description": "Payment quote with x402 challenge when gated"
     },
     {
       "name": "rsi_eaf_verify_payment",
       "method": "GET",
-      "url": "https://published-zeta.vercel.app/payment-status/{tx_hash}.json",
+      "url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/payment-status/{tx_hash}.json",
       "description": "Ingest + fulfillment status by XRPL tx hash"
     },
     {
       "name": "rsi_eaf_get_service_catalog",
       "method": "GET",
-      "url": "https://published-zeta.vercel.app/service-catalog.json"
+      "url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/service-catalog.json"
     }
   ]
 }

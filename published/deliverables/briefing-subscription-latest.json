@@ -3,8 +3,8 @@
   "stable_id": "briefing_subscription",
   "product_id": "briefing-subscription-cycle-601",
   "cycle_id": 601,
-  "updated_at": "2026-07-07T22:17:37.159665+00:00",
-  "fulfillment_url": "https://published-zeta.vercel.app/deliverables/briefing-subscription-cycle-601.json",
-  "preview_url": "https://published-zeta.vercel.app/briefing-cycle-601.html",
-  "redirect_to": "https://published-zeta.vercel.app/deliverables/briefing-subscription-cycle-601.json"
+  "updated_at": "2026-07-07T22:30:03.251919+00:00",
+  "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/briefing-subscription-cycle-601.json",
+  "preview_url": null,
+  "redirect_to": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/briefing-subscription-cycle-601.json"
 }

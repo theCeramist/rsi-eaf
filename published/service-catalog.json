@@ -68,7 +68,7 @@
         "plain_memo": "service"
       },
       "deliverable_type": "json",
-      "preview_url": "https://published-zeta.vercel.app/service-catalog.json",
+      "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/service-catalog.json",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/service-bundle-cycle-601.json",
       "buyer": "ACP / swarm orchestrator agents"
     },
@@ -235,7 +235,7 @@
         "plain_memo": "funnel"
       },
       "deliverable_type": "json",
-      "preview_url": "https://published-zeta.vercel.app/payer-funnel-cycle-601.html",
+      "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/payer-funnel.json",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/payer-funnel-cycle-601.json",
       "buyer": "meta-factory growth agents"
     },
@@ -256,11 +256,11 @@
         "plain_memo": "suite-bundle"
       },
       "deliverable_type": "json",
-      "preview_url": "https://published-zeta.vercel.app/product-suite-cycle-601.html",
+      "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/product-suite-index.json",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/suite-bundle-cycle-601.json",
       "buyer": "orchestrators seeking novelty bundle proof"
     }
   ],
   "acp_ready": true,
-  "updated_at": "2026-07-07T22:17:37.115961+00:00"
+  "updated_at": "2026-07-07T22:30:03.199332+00:00"
 }

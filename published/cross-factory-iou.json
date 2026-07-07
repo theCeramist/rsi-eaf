@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_cross_factory_iou_v1",
-  "cycle_id": 602,
-  "updated_at": "2026-07-07T22:14:38.705375+00:00",
+  "cycle_id": 603,
+  "updated_at": "2026-07-07T22:28:40.025096+00:00",
   "status": "accept_inbound",
   "network": "xrpl_testnet",
   "currency": "RSI",
@@ -22,5 +22,5 @@
     "plain": "factory_id:your-factory-slug"
   },
   "ingest_module": "observability/cross_factory_iou.py",
-  "fulfillment_url": "https://published-zeta.vercel.app/deliverables/factory-iou-cycle-602.json"
+  "fulfillment_url": "https://published-zeta.vercel.app/deliverables/factory-iou-cycle-603.json"
 }

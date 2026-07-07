@@ -1,11 +1,11 @@
 {
   "schema": "rsi_eaf_novel_capture_roadmap_v1",
-  "generated_at": "2026-07-07T22:20:19.149836+00:00",
-  "cycle_id": 602,
+  "generated_at": "2026-07-07T22:30:49.445724+00:00",
+  "cycle_id": 603,
   "evaluation": {
     "schema": "rsi_eaf_capture_evaluation_v1",
-    "evaluated_at": "2026-07-07T22:20:18.446274+00:00",
-    "cycle_id": 602,
+    "evaluated_at": "2026-07-07T22:30:48.762477+00:00",
+    "cycle_id": 603,
     "economics": {
       "net_usd_est": -1280.2028,
       "organic_revenue_usd_est": 2.0,
@@ -413,6 +413,6 @@
     "roadmap": "https://published-zeta.vercel.app/novel-capture-roadmap.json",
     "agent_pay": "https://published-zeta.vercel.app/agent-pay-latest.json",
     "integrator_suite": "https://published-zeta.vercel.app/integrator-test-suite.json",
-    "conversion_playbook": "https://published-zeta.vercel.app/prospect-pack-cycle-602.json"
+    "conversion_playbook": "https://published-zeta.vercel.app/prospect-pack-cycle-603.json"
   }
 }

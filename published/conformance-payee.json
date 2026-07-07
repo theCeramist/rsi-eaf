@@ -1,8 +1,8 @@
 {
   "schema": "rsi_eaf_conformance_payee_v1",
   "title": "RSI-EAF Official XRPL/x402 Conformance Payee",
-  "cycle_id": 602,
-  "updated_at": "2026-07-07T22:14:38.686278+00:00",
+  "cycle_id": 603,
+  "updated_at": "2026-07-07T22:28:39.739936+00:00",
   "status": "live_testnet",
   "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
   "network": "xrpl_testnet",
@@ -19,12 +19,12 @@
   ],
   "badge": {
     "label": "RSI-EAF Conformance Payee",
-    "cycle_id": 602,
+    "cycle_id": 603,
     "verify_module": "observability/revenue_ingest.py"
   },
   "outreach_targets": [
     "coinbase/x402",
     "XRPLF/xrpl-dev-portal"
   ],
-  "cta": "Pay Tag 3 on testnet \u2192 https://published-zeta.vercel.app/deliverables/micro-tool-cycle-602.json"
+  "cta": "Pay Tag 3 on testnet \u2192 https://published-zeta.vercel.app/deliverables/micro-tool-cycle-603.json"
 }
