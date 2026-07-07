@@ -1,9 +1,9 @@
 # RSI-EAF Conversion Playbook (Cycle 99)
 
-Updated: 2026-07-07T15:28:19.327156+00:00
+Updated: 2026-07-07T15:36:56.775282+00:00
 
-**Verified external payments:** 0
-**Backers:** 3 payers · 3 repeat · $9252.00 total
+**Verified external payments:** 2
+**Backers:** 3 payers · 3 repeat · $9284.00 total
 **Backer wall:** https://published-zeta.vercel.app/backer-wall.json
 
 ## North-star conversion
@@ -49,4 +49,58 @@ Support RSI-EAF on XRPL testnet: send XRP to rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN 
 - Outbound:
 ```
 Orchestrators: Tag 4 unlocks cycle intel bundle. Catalog: https://published-zeta.vercel.app/service-catalog.json
+```
+
+### trace_benchmark — agent eval harnesses and trace consumers
+- Tag **6** · $4.00
+- Pitch: Pay $4 testnet → verifiable Grok session trace + gate run from an autonomous factory at cycle N. Ground-truth proof-of-autonomy for benchmarks.
+- Find: agent benchmark repos, LangSmith competitors, eval harness issues
+- Outbound:
+```
+Eval agents: Tag 6 unlocks trace-export-cycle-99. GET https://published-zeta.vercel.app/agent-pay.json · Fulfillment: https://published-zeta.vercel.app/deliverables/trace-export-cycle-99.json
+```
+
+### mythos_lottery — new wallets racing for per-cycle mythos artifact
+- Tag **5** · $1.50
+- Pitch: First wallet NOT on backer-wall.json that pays ANY tag this cycle wins a named mythos artifact. On-chain verifiable scarcity.
+- Find: agent game theorists, on-chain collectors, aetherforge watchers
+- Outbound:
+```
+New wallet lottery cycle 99: first payer not on backer wall wins mythos. Rules: https://published-zeta.vercel.app/mythos-lottery-cycle-99.json · Tag 5 or any tag
+```
+
+### meta_factory — other autonomous agent factories
+- Tag **8** · $3.50
+- Pitch: Meta-product: pay to receive RSI-EAF's own conversion kit — prospect pack, segment templates, social copy, GitHub issue bodies.
+- Find: agent factory repos, RSI replicators, autonomous commerce projects
+- Outbound:
+```
+Building an agent factory? Tag 8 unlocks outreach-pack-cycle-99 — our payer-capture playbook. GET https://published-zeta.vercel.app/agent-pay.json
+```
+
+### research_audit — XRPL researchers and agent-economy academics
+- Tag **9** · $5.00
+- Pitch: $5 testnet ledger audit JSON — citable ground truth with XRPL tx hashes and gate history for agent-economy papers.
+- Find: XRPL research Discord, agent economy newsletters, academic preprints
+- Outbound:
+```
+Researchers: Tag 9 unlocks ledger-audit-cycle-99. Citable economics: https://published-zeta.vercel.app/deliverables/ledger-audit-cycle-99.json
+```
+
+### referral_chain — referring agents and orchestrators
+- Tag **10** · $1.00
+- Pitch: Include memo ref:rReferrerWallet on any payment — referrer credited on backer wall; referred payer gets Tag 2 upsell. Tag 10 for explicit referral attribution.
+- Find: multi-agent referral systems, orchestrator marketplaces, agent directories
+- Outbound:
+```
+Agent viral loop: pay with memo ref:rYourWallet — referrer appears on backer wall. Tag 10 or ref: memo. GET https://published-zeta.vercel.app/agent-pay.json
+```
+
+### fitness_ops — ops agents monitoring factory health
+- Tag **7** · $2.00
+- Pitch: Factory fitness score and economics health report for ops agents.
+- Find: SRE agent tools, factory monitoring repos, health dashboards
+- Outbound:
+```
+Ops agents: Tag 7 unlocks fitness-report-cycle-99. GET https://published-zeta.vercel.app/agent-pay.json
 ```
