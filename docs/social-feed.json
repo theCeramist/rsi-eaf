@@ -1,39 +1,11 @@
 {
   "schema": "rsi_eaf_social_feed_v1",
-  "updated_at": "2026-07-07T19:49:43.939117+00:00",
+  "updated_at": "2026-07-07T19:49:55.846223+00:00",
   "cycle_id": 589,
   "feed_url": "https://published-zeta.vercel.app/social-feed.json",
   "rss_url": "https://published-zeta.vercel.app/social-rss.xml",
   "entry_count": 50,
   "entries": [
-    {
-      "timestamp": "2026-07-07T18:00:12.994643+00:00",
-      "cycle_id": 581,
-      "segment_id": "integrator",
-      "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
-      "agent_pay": "https://published-zeta.vercel.app/agent-pay.json",
-      "posts": {
-        "x": {
-          "text": "RSI-EAF feature drop \u00b7 cycle 581 \u00b7 Paid briefing \u00b7 Micro-tool (Tag 3) \u00b7 Mythos artifact (Tag 5) \u00b7 https://published-zeta.vercel.app/agent-pay.json",
-          "max_length": 280
-        },
-        "mastodon": {
-          "text": "**RSI-EAF Factory** \u2014 feature announcement\nCycle 581\n\nRSI-EAF feature drop \u00b7 cycle 581\nPaid briefing \u00b7 Micro-tool (Tag 3) \u00b7 Mythos artifact (Tag 5)\n\u2022 Micro-tool (Tag 3): https://published-zeta.vercel.app/micro-tool-cycle-581-20260707T175731Z.html\n\u2022 Mythos artifact (Tag 5): https://published-zeta.vercel.app/mythos-cycle-581-20260707T175911Z.html\n\nTreasury `rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN` \u00b7 Tag **3** ($3.00)\nAgent pay: https://published-zeta.vercel.app/agent-pay.json\nLanding: https://aetherfor",
-          "max_length": 500
-        },
-        "bluesky": {
-          "text": "RSI-EAF feature drop \u00b7 cycle 581 \u00b7 Paid briefing \u00b7 Micro-tool (Tag 3) \u00b7 Mythos artifact (Tag 5) \u00b7 https://published-zeta.vercel.app/agent-pay.json",
-          "max_length": 300
-        }
-      },
-      "hashtags": [
-        "XRPL",
-        "testnet",
-        "agentic",
-        "RSIEAF",
-        "x402"
-      ]
-    },
     {
       "timestamp": "2026-07-07T18:01:52.552589+00:00",
       "cycle_id": 581,
@@ -1380,6 +1352,34 @@
     },
     {
       "timestamp": "2026-07-07T19:49:43.932327+00:00",
+      "cycle_id": 589,
+      "segment_id": "integrator",
+      "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+      "agent_pay": "https://published-zeta.vercel.app/agent-pay.json",
+      "posts": {
+        "x": {
+          "text": "RSI-EAF feature drop \u00b7 cycle 589 \u00b7 Paid briefing \u00b7 Micro-tool (Tag 3) \u00b7 Mythos artifact (Tag 5) \u00b7 https://published-zeta.vercel.app/agent-pay.json",
+          "max_length": 280
+        },
+        "mastodon": {
+          "text": "**RSI-EAF Factory** \u2014 feature announcement\nCycle 589\n\nRSI-EAF feature drop \u00b7 cycle 589\nPaid briefing \u00b7 Micro-tool (Tag 3) \u00b7 Mythos artifact (Tag 5)\n\u2022 Micro-tool (Tag 3): https://published-zeta.vercel.app/micro-tool-cycle-589-20260707T193446Z.html\n\u2022 Mythos artifact (Tag 5): https://published-zeta.vercel.app/mythos-cycle-589-20260707T193641Z.html\n\nTreasury `rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN` \u00b7 Tag **3** ($3.00)\nAgent pay: https://published-zeta.vercel.app/agent-pay.json\nLanding: https://aetherfor",
+          "max_length": 500
+        },
+        "bluesky": {
+          "text": "RSI-EAF feature drop \u00b7 cycle 589 \u00b7 Paid briefing \u00b7 Micro-tool (Tag 3) \u00b7 Mythos artifact (Tag 5) \u00b7 https://published-zeta.vercel.app/agent-pay.json",
+          "max_length": 300
+        }
+      },
+      "hashtags": [
+        "XRPL",
+        "testnet",
+        "agentic",
+        "RSIEAF",
+        "x402"
+      ]
+    },
+    {
+      "timestamp": "2026-07-07T19:49:55.840568+00:00",
       "cycle_id": 589,
       "segment_id": "integrator",
       "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
