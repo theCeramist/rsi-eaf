@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_integrator_test_suite_v1",
   "cycle_id": 603,
-  "updated_at": "2026-07-07T22:38:11.642991+00:00",
+  "updated_at": "2026-07-07T22:40:29.338262+00:00",
   "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
   "network": "xrpl_testnet",
   "agent_pay_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/agent-pay.json",

@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_agent_pay_v1",
   "version": "1.4",
-  "updated_at": "2026-07-07T22:38:11.586706+00:00",
+  "updated_at": "2026-07-07T22:40:29.285871+00:00",
   "cycle_id": 603,
   "factory": "RSI-EAF",
   "network": "xrpl_testnet",
@@ -83,7 +83,7 @@
       "credited_usd": 2.0,
       "plain_memo": "briefing",
       "product_id": "briefing-cycle-603",
-      "live_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/briefing-cycle-603.html",
+      "live_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/briefing-cycle-603-20260707T222521Z.html",
       "description": "XRPL agent economy briefing: payment-flow analysis, economics, product lineup, integration checklist (HTML preview + JSON)",
       "buyer": "research agents and operators",
       "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/briefing-cycle-603.json",
@@ -103,7 +103,7 @@
         "source_tag": 20260703,
         "max_timeout_seconds": 600,
         "protected_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/briefing-cycle-603.json",
-        "preview_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/briefing-cycle-603.html",
+        "preview_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/briefing-cycle-603-20260707T222521Z.html",
         "payment_requirements_template": {
           "scheme": "exact",
           "network": "xrpl:1",
@@ -126,7 +126,7 @@
       "credited_usd": 3.0,
       "plain_memo": "tool",
       "product_id": "micro-tool-cycle-603",
-      "live_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/micro-tool-cycle-603.html",
+      "live_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/micro-tool-cycle-603-20260707T222540Z.html",
       "description": "Treasury validator v2: tags 1\u20139, worked examples, live flow samples, x402 hooks",
       "buyer": "wallet and x402 integrators",
       "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/micro-tool-cycle-603.json",
@@ -146,7 +146,7 @@
         "source_tag": 20260703,
         "max_timeout_seconds": 600,
         "protected_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/micro-tool-cycle-603.json",
-        "preview_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/micro-tool-cycle-603.html",
+        "preview_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/micro-tool-cycle-603-20260707T222540Z.html",
         "payment_requirements_template": {
           "scheme": "exact",
           "network": "xrpl:1",
@@ -212,7 +212,7 @@
       "credited_usd": 1.5,
       "plain_memo": "mythos",
       "product_id": "mythos-cycle-603",
-      "live_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/mythos-cycle-603.html",
+      "live_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/mythos-cycle-603-20260707T222729Z.html",
       "description": "Narrative commerce artifact for aetherforge lane",
       "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/mythos-cycle-603.json",
       "service_type": "creative_commerce",
@@ -231,7 +231,7 @@
         "source_tag": 20260703,
         "max_timeout_seconds": 600,
         "protected_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/mythos-cycle-603.json",
-        "preview_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/mythos-cycle-603.html",
+        "preview_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/mythos-cycle-603-20260707T222729Z.html",
         "payment_requirements_template": {
           "scheme": "exact",
           "network": "xrpl:1",
@@ -254,7 +254,7 @@
       "credited_usd": 4.0,
       "plain_memo": "trace",
       "product_id": "trace-export-cycle-603",
-      "live_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/trace-cycle-603.html",
+      "live_url": null,
       "description": "Structured cycle trace export for observability agents",
       "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/trace-export-cycle-603.json",
       "service_type": "observability_export",
@@ -273,7 +273,7 @@
         "source_tag": 20260703,
         "max_timeout_seconds": 600,
         "protected_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/trace-export-cycle-603.json",
-        "preview_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/trace-cycle-603.html",
+        "preview_resource": null,
         "payment_requirements_template": {
           "scheme": "exact",
           "network": "xrpl:1",
@@ -296,7 +296,7 @@
       "credited_usd": 2.0,
       "plain_memo": "fitness",
       "product_id": "fitness-report-cycle-603",
-      "live_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/fitness-cycle-603.html",
+      "live_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/fitness-cycle-603-20260707T222554Z.html",
       "description": "Factory fitness score and economics health report",
       "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/fitness-report-cycle-603.json",
       "service_type": "ops_report",
@@ -315,7 +315,7 @@
         "source_tag": 20260703,
         "max_timeout_seconds": 600,
         "protected_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/fitness-report-cycle-603.json",
-        "preview_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/fitness-cycle-603.html",
+        "preview_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/fitness-cycle-603-20260707T222554Z.html",
         "payment_requirements_template": {
           "scheme": "exact",
           "network": "xrpl:1",
@@ -338,7 +338,7 @@
       "credited_usd": 3.5,
       "plain_memo": "outreach",
       "product_id": "outreach-pack-cycle-603",
-      "live_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/outreach-cycle-603.html",
+      "live_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/outreach-cycle-603-20260707T222554Z.html",
       "description": "Share-ready outreach copy and tip links for distribution",
       "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/outreach-pack-cycle-603.json",
       "service_type": "growth_pack",
@@ -357,7 +357,7 @@
         "source_tag": 20260703,
         "max_timeout_seconds": 600,
         "protected_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/outreach-pack-cycle-603.json",
-        "preview_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/outreach-cycle-603.html",
+        "preview_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/outreach-cycle-603-20260707T222554Z.html",
         "payment_requirements_template": {
           "scheme": "exact",
           "network": "xrpl:1",
@@ -380,7 +380,7 @@
       "credited_usd": 5.0,
       "plain_memo": "ledger",
       "product_id": "ledger-audit-cycle-603",
-      "live_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/ledger-cycle-603.html",
+      "live_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/ledger-cycle-603-20260707T222554Z.html",
       "description": "Economic ledger audit snapshot for treasury verifiers",
       "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/ledger-audit-cycle-603.json",
       "service_type": "audit_snapshot",
@@ -399,7 +399,7 @@
         "source_tag": 20260703,
         "max_timeout_seconds": 600,
         "protected_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/ledger-audit-cycle-603.json",
-        "preview_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/ledger-cycle-603.html",
+        "preview_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/ledger-cycle-603-20260707T222554Z.html",
         "payment_requirements_template": {
           "scheme": "exact",
           "network": "xrpl:1",
@@ -465,7 +465,7 @@
       "credited_usd": 5.0,
       "plain_memo": "subscribe",
       "product_id": "briefing-subscription-cycle-603",
-      "live_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/briefing-cycle-603.html",
+      "live_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/briefing-cycle-603-20260707T222521Z.html",
       "description": "Recurring briefing entitlement \u2014 unlocks briefing-cycle deliverables for N cycles; agents poll payment-status after pay",
       "buyer": "research agents with recurring spend",
       "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/briefing-subscription-cycle-603.json",
@@ -485,7 +485,7 @@
         "source_tag": 20260703,
         "max_timeout_seconds": 600,
         "protected_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/briefing-subscription-cycle-603.json",
-        "preview_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/briefing-cycle-603.html",
+        "preview_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/briefing-cycle-603-20260707T222521Z.html",
         "payment_requirements_template": {
           "scheme": "exact",
           "network": "xrpl:1",
@@ -508,7 +508,7 @@
       "credited_usd": 6.0,
       "plain_memo": "run_id:YOUR_RUN_ID",
       "product_id": "eval-bounty-cycle-603",
-      "live_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/trace-cycle-603.html",
+      "live_url": null,
       "description": "Eval harness bounty \u2014 include memo run_id:UUID; receive trace export with run_id + gate hash for benchmark proof",
       "buyer": "agent eval harnesses and trace consumers",
       "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/eval-bounty-cycle-603.json",
@@ -528,7 +528,7 @@
         "source_tag": 20260703,
         "max_timeout_seconds": 600,
         "protected_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/eval-bounty-cycle-603.json",
-        "preview_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/trace-cycle-603.html",
+        "preview_resource": null,
         "payment_requirements_template": {
           "scheme": "exact",
           "network": "xrpl:1",
@@ -595,7 +595,7 @@
       "credited_usd": 4.5,
       "plain_memo": "funnel",
       "product_id": "payer-funnel-cycle-603",
-      "live_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/payer-funnel-cycle-603.html",
+      "live_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/payer-funnel.json",
       "description": "Novel SKU \u2014 payer funnel snapshot with discover\u2192fulfill bottleneck analysis for conversion-tuning agents",
       "buyer": "meta-factory growth agents",
       "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/payer-funnel-cycle-603.json",
@@ -616,7 +616,7 @@
         "source_tag": 20260703,
         "max_timeout_seconds": 600,
         "protected_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/payer-funnel-cycle-603.json",
-        "preview_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/payer-funnel-cycle-603.html",
+        "preview_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/payer-funnel.json",
         "payment_requirements_template": {
           "scheme": "exact",
           "network": "xrpl:1",
@@ -639,7 +639,7 @@
       "credited_usd": 9.0,
       "plain_memo": "suite-bundle",
       "product_id": "suite-bundle-cycle-603",
-      "live_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/product-suite-cycle-603.html",
+      "live_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/product-suite-index.json",
       "description": "Novel scarcity bundle \u2014 trace + fitness + payer funnel in one deliverable at discount vs separate purchases",
       "buyer": "orchestrators and eval harnesses",
       "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/suite-bundle-cycle-603.json",
@@ -660,7 +660,7 @@
         "source_tag": 20260703,
         "max_timeout_seconds": 600,
         "protected_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/suite-bundle-cycle-603.json",
-        "preview_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/product-suite-cycle-603.html",
+        "preview_resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/product-suite-index.json",
         "payment_requirements_template": {
           "scheme": "exact",
           "network": "xrpl:1",
@@ -856,7 +856,7 @@
         "credited_usd": 2.0
       },
       "output": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/briefing-cycle-603.json",
-      "preview": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/briefing-cycle-603.html",
+      "preview": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/briefing-cycle-603-20260707T222521Z.html",
       "service_type": "paid_report"
     },
     {
@@ -875,7 +875,7 @@
         "credited_usd": 3.0
       },
       "output": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/micro-tool-cycle-603.json",
-      "preview": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/micro-tool-cycle-603.html",
+      "preview": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/micro-tool-cycle-603-20260707T222540Z.html",
       "service_type": "paid_tool"
     },
     {
@@ -914,7 +914,7 @@
         "credited_usd": 1.5
       },
       "output": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/mythos-cycle-603.json",
-      "preview": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/mythos-cycle-603.html",
+      "preview": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/mythos-cycle-603-20260707T222729Z.html",
       "service_type": "creative_commerce"
     },
     {
@@ -934,7 +934,7 @@
         "credited_usd": 4.0
       },
       "output": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/trace-export-cycle-603.json",
-      "preview": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/trace-cycle-603.html",
+      "preview": null,
       "service_type": "observability_export"
     },
     {
@@ -953,7 +953,7 @@
         "credited_usd": 2.0
       },
       "output": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/fitness-report-cycle-603.json",
-      "preview": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/fitness-cycle-603.html",
+      "preview": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/fitness-cycle-603-20260707T222554Z.html",
       "service_type": "ops_report"
     },
     {
@@ -972,7 +972,7 @@
         "credited_usd": 3.5
       },
       "output": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/outreach-pack-cycle-603.json",
-      "preview": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/outreach-cycle-603.html",
+      "preview": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/outreach-cycle-603-20260707T222554Z.html",
       "service_type": "growth_pack"
     },
     {
@@ -991,7 +991,7 @@
         "credited_usd": 5.0
       },
       "output": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/ledger-audit-cycle-603.json",
-      "preview": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/ledger-cycle-603.html",
+      "preview": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/ledger-cycle-603-20260707T222554Z.html",
       "service_type": "audit_snapshot"
     },
     {
@@ -1029,7 +1029,7 @@
         "credited_usd": 5.0
       },
       "output": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/briefing-subscription-cycle-603.json",
-      "preview": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/briefing-cycle-603.html",
+      "preview": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/briefing-cycle-603-20260707T222521Z.html",
       "service_type": "subscription"
     },
     {
@@ -1048,7 +1048,7 @@
         "credited_usd": 6.0
       },
       "output": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/eval-bounty-cycle-603.json",
-      "preview": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/trace-cycle-603.html",
+      "preview": null,
       "service_type": "eval_bounty"
     },
     {
@@ -1087,7 +1087,7 @@
         "credited_usd": 4.5
       },
       "output": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/payer-funnel-cycle-603.json",
-      "preview": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/payer-funnel-cycle-603.html",
+      "preview": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/payer-funnel.json",
       "service_type": "payer_funnel_export"
     },
     {
@@ -1107,7 +1107,7 @@
         "credited_usd": 9.0
       },
       "output": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/suite-bundle-cycle-603.json",
-      "preview": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/product-suite-cycle-603.html",
+      "preview": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/product-suite-index.json",
       "service_type": "novelty_bundle"
     }
   ],

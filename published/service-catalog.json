@@ -26,7 +26,7 @@
         "plain_memo": "briefing"
       },
       "deliverable_type": "html+json",
-      "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/briefing-cycle-603.html",
+      "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/briefing-cycle-603-20260707T222521Z.html",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/briefing-cycle-603.json",
       "buyer": "humans and research agents"
     },
@@ -47,7 +47,7 @@
         "plain_memo": "tool"
       },
       "deliverable_type": "json",
-      "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/micro-tool-cycle-603.html",
+      "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/micro-tool-cycle-603-20260707T222540Z.html",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-603.json",
       "buyer": "wallet integrators and paying agents"
     },
@@ -83,7 +83,7 @@
         "plain_memo": "mythos"
       },
       "deliverable_type": "json",
-      "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/mythos-cycle-603.html",
+      "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/mythos-cycle-603-20260707T222729Z.html",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/mythos-cycle-603.json",
       "buyer": "creators and narrative commerce agents"
     },
@@ -98,7 +98,7 @@
         "plain_memo": "trace"
       },
       "deliverable_type": "json",
-      "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/trace-cycle-603.html",
+      "preview_url": "https://published-zeta.vercel.app/trace-cycle-603.html",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/trace-export-cycle-603.json",
       "buyer": "observability and LangSmith-style trace consumers"
     },
@@ -113,7 +113,7 @@
         "plain_memo": "fitness"
       },
       "deliverable_type": "json",
-      "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/fitness-cycle-603.html",
+      "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/fitness-cycle-603-20260707T222554Z.html",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/fitness-report-cycle-603.json",
       "buyer": "factory operators and fitness evolution lane"
     },
@@ -128,7 +128,7 @@
         "plain_memo": "outreach"
       },
       "deliverable_type": "json",
-      "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/outreach-cycle-603.html",
+      "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/outreach-cycle-603-20260707T222554Z.html",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/outreach-pack-cycle-603.json",
       "buyer": "growth agents and human promoters"
     },
@@ -143,7 +143,7 @@
         "plain_memo": "ledger"
       },
       "deliverable_type": "json",
-      "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/ledger-cycle-603.html",
+      "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/ledger-cycle-603-20260707T222554Z.html",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/ledger-audit-cycle-603.json",
       "buyer": "treasury auditors and verifier subagents"
     },
@@ -173,7 +173,7 @@
         "plain_memo": "run_id:UUID"
       },
       "deliverable_type": "json",
-      "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/trace-cycle-603.html",
+      "preview_url": "https://published-zeta.vercel.app/trace-cycle-603.html",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/eval-bounty-cycle-603.json",
       "buyer": "agent eval harnesses"
     },
@@ -214,7 +214,7 @@
         "plain_memo": "subscribe"
       },
       "deliverable_type": "json",
-      "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/briefing-cycle-603.html",
+      "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/briefing-cycle-603-20260707T222521Z.html",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/briefing-subscription-cycle-603.json",
       "buyer": "research agents with recurring spend"
     },
@@ -235,7 +235,7 @@
         "plain_memo": "funnel"
       },
       "deliverable_type": "json",
-      "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/payer-funnel-cycle-603.html",
+      "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/payer-funnel.json",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/payer-funnel-cycle-603.json",
       "buyer": "meta-factory growth agents"
     },
@@ -256,11 +256,11 @@
         "plain_memo": "suite-bundle"
       },
       "deliverable_type": "json",
-      "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/product-suite-cycle-603.html",
+      "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/product-suite-index.json",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/suite-bundle-cycle-603.json",
       "buyer": "orchestrators seeking novelty bundle proof"
     }
   ],
   "acp_ready": true,
-  "updated_at": "2026-07-07T22:38:11.584151+00:00"
+  "updated_at": "2026-07-07T22:40:29.283538+00:00"
 }

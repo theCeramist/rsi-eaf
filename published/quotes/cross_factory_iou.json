@@ -1,6 +1,6 @@
 {
   "schema": "rsi_eaf_payment_quote_v1",
-  "quoted_at": "2026-07-07T22:38:11.635007+00:00",
+  "quoted_at": "2026-07-07T22:40:29.329986+00:00",
   "cycle_id": 603,
   "stable_id": "cross_factory_iou",
   "product_id": "factory-iou-cycle-603",

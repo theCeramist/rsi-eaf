@@ -1,6 +1,6 @@
 {
   "schema": "rsi_eaf_payment_quote_v1",
-  "quoted_at": "2026-07-07T22:38:11.632047+00:00",
+  "quoted_at": "2026-07-07T22:40:29.326336+00:00",
   "cycle_id": 603,
   "stable_id": "eval_bounty",
   "product_id": "eval-bounty-cycle-603",
@@ -10,7 +10,7 @@
   "credited_usd": 6.0,
   "plain_memo": "run_id:YOUR_RUN_ID",
   "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/eval-bounty-cycle-603.json",
-  "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/trace-cycle-603.html",
+  "preview_url": null,
   "payment_status_url_template": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/payment-status/{tx_hash}.json",
   "poll_after_pay_sec": 5,
   "amount_drops": "20000000",

@@ -1,6 +1,6 @@
 {
   "schema": "rsi_eaf_payment_quote_v1",
-  "quoted_at": "2026-07-07T22:38:11.599174+00:00",
+  "quoted_at": "2026-07-07T22:40:29.294958+00:00",
   "cycle_id": 603,
   "stable_id": "briefing_unlock",
   "product_id": "briefing-cycle-603",
@@ -10,7 +10,7 @@
   "credited_usd": 2.0,
   "plain_memo": "briefing",
   "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/briefing-cycle-603.json",
-  "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/briefing-cycle-603.html",
+  "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/briefing-cycle-603-20260707T222521Z.html",
   "payment_status_url_template": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/payment-status/{tx_hash}.json",
   "poll_after_pay_sec": 5,
   "amount_drops": "6666667",
