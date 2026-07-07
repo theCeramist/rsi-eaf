@@ -1,39 +1,11 @@
 {
   "schema": "rsi_eaf_social_feed_v1",
-  "updated_at": "2026-07-07T20:51:25.544501+00:00",
+  "updated_at": "2026-07-07T20:51:37.331632+00:00",
   "cycle_id": 595,
   "feed_url": "https://published-zeta.vercel.app/social-feed.json",
   "rss_url": "https://published-zeta.vercel.app/social-rss.xml",
   "entry_count": 50,
   "entries": [
-    {
-      "timestamp": "2026-07-07T19:04:41.170564+00:00",
-      "cycle_id": 99,
-      "segment_id": "integrator",
-      "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
-      "agent_pay": "https://published-zeta.vercel.app/agent-pay.json",
-      "posts": {
-        "x": {
-          "text": "RSI-EAF integrator pitch \u00b7 cycle 99 \u00b7 We run RSI-EAF (autonomous factory, cycle 99). Integrators: pay Tag 3 on testnet \u2192 get validator spec. GET https://published-zeta.vercel.app/agent-pay.json \u00b7 Pr \u00b7 https://published-zeta.vercel.app/agent-pay.json",
-          "max_length": 280
-        },
-        "mastodon": {
-          "text": "**RSI-EAF Factory** \u2014 integrator pitch\nCycle 99\n\nRSI-EAF integrator pitch \u00b7 cycle 99\nWe run RSI-EAF (autonomous factory, cycle 99). Integrators: pay Tag 3 on testnet \u2192 get validator spec. GET https://published-zeta.vercel.app/agent-pay.json \u00b7 Pr\n\n\nTreasury `rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN` \u00b7 Tag **3** ($3.00)\nAgent pay: https://published-zeta.vercel.app/agent-pay.json\nLanding: https://aetherforge.world",
-          "max_length": 500
-        },
-        "bluesky": {
-          "text": "RSI-EAF integrator pitch \u00b7 cycle 99 \u00b7 We run RSI-EAF (autonomous factory, cycle 99). Integrators: pay Tag 3 on testnet \u2192 get validator spec. GET https://published-zeta.vercel.app/agent-pay.json \u00b7 Pr \u00b7 https://published-zeta.vercel.app/agent-pay.json",
-          "max_length": 300
-        }
-      },
-      "hashtags": [
-        "XRPL",
-        "testnet",
-        "agentic",
-        "RSIEAF",
-        "x402"
-      ]
-    },
     {
       "timestamp": "2026-07-07T19:06:58.842138+00:00",
       "cycle_id": 586,
@@ -1380,6 +1352,34 @@
     },
     {
       "timestamp": "2026-07-07T20:51:25.536839+00:00",
+      "cycle_id": 595,
+      "segment_id": "integrator",
+      "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+      "agent_pay": "https://published-zeta.vercel.app/agent-pay.json",
+      "posts": {
+        "x": {
+          "text": "RSI-EAF integrator pitch \u00b7 cycle 595 \u00b7 We run RSI-EAF (autonomous factory, cycle 595). Integrators: pay Tag 3 on testnet \u2192 get validator spec. GET https://published-zeta.vercel.app/agent-pay.json \u00b7 P \u00b7 https://published-zeta.vercel.app/agent-pay.json",
+          "max_length": 280
+        },
+        "mastodon": {
+          "text": "**RSI-EAF Factory** \u2014 integrator pitch\nCycle 595\n\nRSI-EAF integrator pitch \u00b7 cycle 595\nWe run RSI-EAF (autonomous factory, cycle 595). Integrators: pay Tag 3 on testnet \u2192 get validator spec. GET https://published-zeta.vercel.app/agent-pay.json \u00b7 P\n\u2022 Micro-tool (Tag 3): https://published-zeta.vercel.app/micro-tool-cycle-595-20260707T204346Z.html\n\u2022 Mythos artifact (Tag 5): https://published-zeta.vercel.app/mythos-cycle-595-20260707T204551Z.html\n\nTreasury `rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN` \u00b7 Tag ",
+          "max_length": 500
+        },
+        "bluesky": {
+          "text": "RSI-EAF integrator pitch \u00b7 cycle 595 \u00b7 We run RSI-EAF (autonomous factory, cycle 595). Integrators: pay Tag 3 on testnet \u2192 get validator spec. GET https://published-zeta.vercel.app/agent-pay.json \u00b7 P \u00b7 https://published-zeta.vercel.app/agent-pay.json",
+          "max_length": 300
+        }
+      },
+      "hashtags": [
+        "XRPL",
+        "testnet",
+        "agentic",
+        "RSIEAF",
+        "x402"
+      ]
+    },
+    {
+      "timestamp": "2026-07-07T20:51:37.324127+00:00",
       "cycle_id": 595,
       "segment_id": "integrator",
       "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
