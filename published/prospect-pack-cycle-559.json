@@ -1,13 +1,13 @@
 {
   "schema": "rsi_eaf_prospect_pack_v2",
   "cycle_id": 559,
-  "updated_at": "2026-07-07T04:27:47.009454+00:00",
+  "updated_at": "2026-07-07T13:33:38.877922+00:00",
   "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
   "network": "xrpl_testnet",
   "verified_external_payments": 2,
   "payer_summary": {
     "payer_count": 3,
-    "total_usd_est": 8508.0,
+    "total_usd_est": 8598.0,
     "segments": {
       "human_backer": 1,
       "research_agent": 2
@@ -74,10 +74,10 @@
       "destination_tag": 1,
       "credited_usd": 1.0,
       "product_id": "tip",
-      "preview_url": "https://published-zeta.vercel.app/tip-manifest.json",
+      "preview_url": "https://published-zeta.vercel.app/tip-cycle-559-20260707T042129Z.html",
       "fulfillment_url": null,
       "pitch": "$1 testnet tip \u2014 verified on factory ledger next cycle. Treasury: rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
-      "outbound_template": "Support RSI-EAF on XRPL testnet: send XRP to rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN with Destination Tag 1 ($1 verified). https://published-zeta.vercel.app/tip-manifest.json",
+      "outbound_template": "Support RSI-EAF on XRPL testnet: send XRP to rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN with Destination Tag 1 ($1 verified). https://published-zeta.vercel.app/tip-cycle-559-20260707T042129Z.html",
       "find_channels": [
         "GitHub issue #1",
         "aetherforge CTA",
