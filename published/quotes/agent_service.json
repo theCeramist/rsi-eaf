@@ -1,15 +1,15 @@
 {
   "schema": "rsi_eaf_payment_quote_v1",
-  "quoted_at": "2026-07-07T22:30:03.230133+00:00",
-  "cycle_id": 601,
+  "quoted_at": "2026-07-07T22:38:11.605749+00:00",
+  "cycle_id": 603,
   "stable_id": "agent_service",
-  "product_id": "service-bundle-cycle-601",
+  "product_id": "service-bundle-cycle-603",
   "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
   "network": "xrpl_testnet",
   "destination_tag": 4,
   "credited_usd": 2.5,
   "plain_memo": "service",
-  "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/service-bundle-cycle-601.json",
+  "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/service-bundle-cycle-603.json",
   "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/service-catalog.json",
   "payment_status_url_template": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/payment-status/{tx_hash}.json",
   "poll_after_pay_sec": 5,
@@ -23,7 +23,7 @@
   "agent_json_memo_template": {
     "type": "revenue",
     "amount_usd_est": 2.5,
-    "product_id": "service-bundle-cycle-601",
+    "product_id": "service-bundle-cycle-603",
     "source": "agent_client",
     "callback_url": null,
     "run_id": "optional-for-eval-bounty"

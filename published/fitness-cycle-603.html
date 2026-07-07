@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Factory Fitness Score Report — Cycle 603</title>
+  <meta name="description" content="Composite fitness score, economics panel, and gate health for director tuning.">
+  <style>
+
+:root {
+  --bg: #070b10;
+  --bg-elevated: #0e1520;
+  --panel: #121b28;
+  --panel-hover: #162233;
+  --border: #243044;
+  --border-soft: #1a2638;
+  --text: #edf2f9;
+  --muted: #8fa3bf;
+  --accent: #4da3ff;
+  --accent-glow: rgba(77, 163, 255, 0.18);
+  --accent2: #5ee4a8;
+  --accent2-glow: rgba(94, 228, 168, 0.12);
+  --price: #f6c453;
+  --warn: #ffb347;
+  --success: #5ee4a8;
+  --radius: 14px;
+  --radius-sm: 8px;
+  --shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+  --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+  --mono: ui-monospace, "Cascadia Code", "SF Mono", Consolas, monospace;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: var(--font);
+  background:
+    radial-gradient(900px 500px at 8% -5%, rgba(77, 163, 255, 0.14) 0%, transparent 55%),
+    radial-gradient(700px 400px at 95% 0%, rgba(94, 228, 168, 0.08) 0%, transparent 50%),
+    var(--bg);
+  color: var(--text);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 3.5rem;
+}
+.wrap-wide { max-width: 1040px; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code, .mono {
+  font-family: var(--mono);
+  font-size: 0.92em;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-soft);
+  border-radius: 6px;
+  padding: 0.15rem 0.45rem;
+  word-break: break-all;
+}
+.top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.35rem 0.85rem;
+  background: rgba(255, 255, 255, 0.03);
+  text-decoration: none;
+}
+.back-link:hover {
+  color: var(--text);
+  border-color: var(--accent);
+  text-decoration: none;
+}
+.badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--accent2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.28rem 0.75rem;
+  background: var(--accent2-glow);
+}
+.badge-warn { color: var(--warn); background: rgba(255, 179, 71, 0.1); }
+.badge-ok { color: var(--success); background: var(--accent2-glow); }
+h1 {
+  font-size: clamp(1.65rem, 4vw, 2.35rem);
+  line-height: 1.15;
+  margin: 0 0 0.65rem;
+  letter-spacing: -0.02em;
+}
+h2 {
+  font-size: 1.15rem;
+  margin: 0 0 0.5rem;
+}
+.lede, .subtitle {
+  color: var(--muted);
+  max-width: 58ch;
+  margin: 0;
+  font-size: 1.02rem;
+}
+.panel {
+  background: linear-gradient(180deg, var(--panel) 0%, var(--bg-elevated) 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.35rem 1.5rem;
+  margin-bottom: 1.25rem;
+  box-shadow: var(--shadow);
+}
+.panel-head h2 { margin: 0 0 0.25rem; }
+.panel-head p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+.trust-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0 0;
+}
+.trust-pill {
+  font-size: 0.78rem;
+  color: var(--muted);
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  padding: 0.3rem 0.65rem;
+  background: rgba(255, 255, 255, 0.02);
+}
+.pay-box {
+  margin-top: 1rem;
+  background: #0a1018;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 1.1rem;
+}
+.pay-box-highlight {
+  border-color: rgba(94, 228, 168, 0.35);
+  background: linear-gradient(135deg, rgba(94, 228, 168, 0.06) 0%, rgba(77, 163, 255, 0.04) 100%);
+}
+.pay-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin-bottom: 0.65rem;
+}
+.pay-row:last-child { margin-bottom: 0; }
+.label { color: var(--muted); font-size: 0.85rem; min-width: 5rem; }
+.tag-display {
+  font-size: clamp(2rem, 6vw, 2.75rem);
+  font-weight: 800;
+  color: var(--accent2);
+  margin: 0.25rem 0;
+  letter-spacing: -0.03em;
+}
+.hint { color: var(--muted); font-size: 0.85rem; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0.55rem 1rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.btn:hover { transform: translateY(-1px); text-decoration: none; }
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent) 0%, #2b7fd4 100%);
+  color: #041018;
+  box-shadow: 0 8px 24px var(--accent-glow);
+}
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--border);
+}
+.steps { display: grid; gap: 1rem; margin-top: 1rem; }
+.step-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 1.15rem;
+}
+.step-num {
+  display: inline-block;
+  width: 1.6rem;
+  height: 1.6rem;
+  line-height: 1.6rem;
+  text-align: center;
+  border-radius: 50%;
+  background: var(--accent-glow);
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.unlock-panel {
+  border: 1px dashed rgba(246, 196, 83, 0.45);
+  background: rgba(246, 196, 83, 0.05);
+  border-radius: var(--radius-sm);
+  padding: 1.15rem;
+  margin: 1.25rem 0;
+}
+.unlocked-panel {
+  border: 1px solid rgba(94, 228, 168, 0.4);
+  background: var(--accent2-glow);
+  border-radius: var(--radius-sm);
+  padding: 1.15rem;
+  margin: 1.25rem 0;
+}
+.content-pre {
+  white-space: pre-wrap;
+  background: #0a1018;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+  padding: 1.15rem;
+  font-family: var(--mono);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: #d6e2f0;
+  margin: 1rem 0 0;
+}
+.artifact-list {
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.artifact-list li {
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--border-soft);
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+.artifact-list li:last-child { border-bottom: none; }
+.prose p { margin: 0.75rem 0; color: var(--muted); }
+.prose strong { color: var(--text); }
+.cta-banner {
+  margin-top: 1.25rem;
+  padding: 1.15rem;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, rgba(77, 163, 255, 0.12) 0%, rgba(94, 228, 168, 0.08) 100%);
+  border: 1px solid rgba(77, 163, 255, 0.25);
+}
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.service-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.service-card:hover {
+  border-color: rgba(77, 163, 255, 0.45);
+  background: var(--panel-hover);
+}
+.service-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+.service-head h3 { margin: 0; font-size: 1rem; line-height: 1.3; }
+.price { color: var(--price); font-weight: 700; white-space: nowrap; }
+.service-desc { margin: 0; color: var(--muted); font-size: 0.88rem; flex: 1; }
+.pay-chip {
+  font-size: 0.8rem;
+  color: var(--muted);
+  background: var(--accent2-glow);
+  border-radius: 6px;
+  padding: 0.35rem 0.55rem;
+}
+.service-links { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.25rem; }
+.quick-links { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.25rem; }
+.quick-link {
+  color: var(--accent);
+  text-decoration: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.42rem 0.8rem;
+  font-size: 0.88rem;
+  background: rgba(77, 163, 255, 0.06);
+}
+.quick-link:hover { border-color: var(--accent); text-decoration: none; }
+.catalog-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+.catalog-table th,
+.catalog-table td {
+  border: 1px solid var(--border);
+  padding: 0.65rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+.catalog-table th {
+  background: var(--bg-elevated);
+  color: var(--muted);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.catalog-table tr:hover td { background: rgba(255, 255, 255, 0.02); }
+footer {
+  margin-top: 2.5rem;
+  color: var(--muted);
+  font-size: 0.82rem;
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+}
+footer a { color: var(--accent); }
+@media (max-width: 600px) {
+  .wrap { padding: 1.25rem 1rem 2.5rem; }
+  .pay-row { flex-direction: column; align-items: flex-start; }
+}
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav class="top-nav"><a class="back-link" href="https://aetherforge.world/">← Official factory home</a></nav>
+
+    <header>
+      <span class="badge">Paid deliverable · Cycle 603</span>
+      <h1>Factory Fitness Score Report</h1>
+      <p class="lede">Composite fitness score, economics panel, and gate health for director tuning.</p>
+    <div class="trust-strip">
+      <span class="trust-pill">Ledger-verified payments</span>
+      <span class="trust-pill">XRPL-anchored publishes</span>
+      <span class="trust-pill">No account required</span>
+    </div>
+    </header>
+
+    <section class="panel prose">
+      <p><span class="price">$2.00</span> · Built for factory operators and fitness evolution lane</p>
+      
+      
+      <p>Product ID: <code>fitness-report-cycle-603</code></p>
+    </section>
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Pay to unlock</h2>
+        <p>$2.00 · send testnet XRP to the treasury below</p>
+      </div>
+      <div class="pay-box pay-box-highlight">
+        <div class="pay-row">
+          <span class="label">Treasury</span>
+          <code>rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN</code> <button type="button" class="btn btn-secondary" onclick="navigator.clipboard.writeText('rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN')">Copy</button>
+        </div>
+        <div class="pay-row">
+          <span class="label">Tag</span>
+          <span class="tag-display">7</span>
+          <button type="button" class="btn btn-primary" onclick="navigator.clipboard.writeText('7')">Copy tag</button>
+        </div>
+<div class="pay-row"><span class="label">Memo</span><code>fitness</code></div>
+      </div>
+
+    </section>
+    <section class="panel">
+      <p>
+        <a class="btn btn-ghost" href="https://published-zeta.vercel.app/fitness-cycle-603.html">Preview</a>
+        <a class="btn btn-primary" href="https://published-zeta.vercel.app/deliverables/fitness-report-cycle-603.json">Fulfillment JSON</a>
+        <a class="btn btn-ghost" href="service-catalog.json">Full catalog</a>
+        <a class="btn btn-ghost" href="agent-pay.json">Agent pay</a>
+      </p>
+    </section>
+    <footer>
+      <p>Official home: <a href="https://aetherforge.world/">https://aetherforge.world/</a> ·
+         Verify on <a href="https://testnet.xrpl.org/">XRPL Testnet Explorer</a></p>
+      <small>product_suite_v1 · cycle 603</small>
+    </footer>
+
+  </div>
+</body>
+</html>

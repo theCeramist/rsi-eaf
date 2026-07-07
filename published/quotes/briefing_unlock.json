@@ -1,23 +1,23 @@
 {
   "schema": "rsi_eaf_payment_quote_v1",
-  "quoted_at": "2026-07-07T22:30:03.221914+00:00",
-  "cycle_id": 601,
+  "quoted_at": "2026-07-07T22:38:11.599174+00:00",
+  "cycle_id": 603,
   "stable_id": "briefing_unlock",
-  "product_id": "briefing-cycle-601",
+  "product_id": "briefing-cycle-603",
   "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
   "network": "xrpl_testnet",
   "destination_tag": 2,
   "credited_usd": 2.0,
   "plain_memo": "briefing",
-  "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/briefing-cycle-601.json",
-  "preview_url": null,
+  "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/briefing-cycle-603.json",
+  "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/briefing-cycle-603.html",
   "payment_status_url_template": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/payment-status/{tx_hash}.json",
   "poll_after_pay_sec": 5,
   "amount_drops": "6666667",
   "amount_xrp_est": 6.666667,
   "x402": {
     "gated": true,
-    "payment_required_b64": "eyJ4NDAyVmVyc2lvbiI6MiwiYWNjZXB0cyI6W3sic2NoZW1lIjoiZXhhY3QiLCJuZXR3b3JrIjoieHJwbDoxIiwiYXNzZXQiOiJYUlAiLCJwYXlUbyI6InJCaVU3NHEyd0NQUTdyaTlZRDZKNkxyUTJZM2pGZDhwY04iLCJhbW91bnQiOiI2NjY2NjY3IiwibWF4VGltZW91dFNlY29uZHMiOjYwMCwiZXh0cmEiOnsiaW52b2ljZUlkIjoiYnJpZWZpbmctY3ljbGUtNjAxIiwic291cmNlVGFnIjoyMDI2MDcwMywiZGVzdGluYXRpb25UYWciOjJ9fV0sInJlc291cmNlIjoiaHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0L2doL3RoZUNlcmFtaXN0L3JzaS1lYWZAbWFpbi9wdWJsaXNoZWQvZGVsaXZlcmFibGVzL2JyaWVmaW5nLWN5Y2xlLTYwMS5qc29uIiwiaW52b2ljZUlkIjoiYnJpZWZpbmctY3ljbGUtNjAxIn0=",
+    "payment_required_b64": "eyJ4NDAyVmVyc2lvbiI6MiwiYWNjZXB0cyI6W3sic2NoZW1lIjoiZXhhY3QiLCJuZXR3b3JrIjoieHJwbDoxIiwiYXNzZXQiOiJYUlAiLCJwYXlUbyI6InJCaVU3NHEyd0NQUTdyaTlZRDZKNkxyUTJZM2pGZDhwY04iLCJhbW91bnQiOiI2NjY2NjY3IiwibWF4VGltZW91dFNlY29uZHMiOjYwMCwiZXh0cmEiOnsiaW52b2ljZUlkIjoiYnJpZWZpbmctY3ljbGUtNjAzIiwic291cmNlVGFnIjoyMDI2MDcwMywiZGVzdGluYXRpb25UYWciOjJ9fV0sInJlc291cmNlIjoiaHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0L2doL3RoZUNlcmFtaXN0L3JzaS1lYWZAbWFpbi9wdWJsaXNoZWQvZGVsaXZlcmFibGVzL2JyaWVmaW5nLWN5Y2xlLTYwMy5qc29uIiwiaW52b2ljZUlkIjoiYnJpZWZpbmctY3ljbGUtNjAzIn0=",
     "challenge": {
       "x402Version": 2,
       "accepts": [
@@ -29,14 +29,14 @@
           "amount": "6666667",
           "maxTimeoutSeconds": 600,
           "extra": {
-            "invoiceId": "briefing-cycle-601",
+            "invoiceId": "briefing-cycle-603",
             "sourceTag": 20260703,
             "destinationTag": 2
           }
         }
       ],
-      "resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/briefing-cycle-601.json",
-      "invoiceId": "briefing-cycle-601"
+      "resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/briefing-cycle-603.json",
+      "invoiceId": "briefing-cycle-603"
     }
   },
   "scarcity_multiplier": 1.0,
@@ -44,7 +44,7 @@
   "agent_json_memo_template": {
     "type": "revenue",
     "amount_usd_est": 2.0,
-    "product_id": "briefing-cycle-601",
+    "product_id": "briefing-cycle-603",
     "source": "agent_client",
     "callback_url": null,
     "run_id": "optional-for-eval-bounty"

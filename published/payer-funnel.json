@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_payer_funnel_v1",
   "cycle_id": 603,
-  "updated_at": "2026-07-07T22:31:08.651861+00:00",
+  "updated_at": "2026-07-07T22:38:19.527951+00:00",
   "stages": {
     "discover": {
       "agent_pay_live": true,
@@ -30,12 +30,7 @@
   "external_payer_count": 2,
   "organic_revenue_usd_est": 2.0,
   "verified_revenue_events": 0,
-  "mesh_lanes_completed": [
-    "discovery",
-    "ingest",
-    "conversion",
-    "distribution"
-  ],
+  "mesh_lanes_completed": [],
   "bottleneck": "scale_distribution",
   "evolution_directive": "Widen integrator wedge + referral chain"
 }

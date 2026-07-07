@@ -1,10 +1,10 @@
 {
   "schema": "rsi_eaf_novel_capture_roadmap_v1",
-  "generated_at": "2026-07-07T22:30:49.445724+00:00",
+  "generated_at": "2026-07-07T22:38:22.569600+00:00",
   "cycle_id": 603,
   "evaluation": {
     "schema": "rsi_eaf_capture_evaluation_v1",
-    "evaluated_at": "2026-07-07T22:30:48.762477+00:00",
+    "evaluated_at": "2026-07-07T22:38:21.782392+00:00",
     "cycle_id": 603,
     "economics": {
       "net_usd_est": -1280.2028,
@@ -15,7 +15,7 @@
     "surfaces": {
       "agent_pay_version": "1.4",
       "agent_pay_latest_version": "1.4",
-      "x402_phase": 2,
+      "x402_phase": 1,
       "phase1_products": [
         "briefing_unlock",
         "trace_export",
@@ -25,6 +25,7 @@
     },
     "bottlenecks": [
       "social_outreach_never_posted",
+      "x402_settlement_not_ingested",
       "deep_negative_net_requires_cost_guards"
     ],
     "strengths": [
@@ -74,8 +75,8 @@
         "verify": "external Tag 3 payment + integrator-test-suite scenario pass"
       },
       "urls": {
-        "test_suite": "https://published-zeta.vercel.app/integrator-test-suite.json",
-        "quote": "https://published-zeta.vercel.app/api/quote?product=micro_tool"
+        "test_suite": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/integrator-test-suite.json",
+        "quote": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/api/quote?product=micro_tool"
       }
     },
     {
@@ -104,7 +105,7 @@
         "verify": "test harness receives webhook within 30s of testnet pay"
       },
       "urls": {
-        "status_template": "https://published-zeta.vercel.app/payment-status/{tx_hash}.json"
+        "status_template": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/payment-status/{tx_hash}.json"
       }
     },
     {
@@ -132,7 +133,7 @@
         "verify": "MCP client completes pay loop against testnet"
       },
       "urls": {
-        "catalog": "https://published-zeta.vercel.app/agent-pay-latest.json"
+        "catalog": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/agent-pay-latest.json"
       }
     }
   ],
@@ -164,8 +165,8 @@
           "verify": "external Tag 3 payment + integrator-test-suite scenario pass"
         },
         "urls": {
-          "test_suite": "https://published-zeta.vercel.app/integrator-test-suite.json",
-          "quote": "https://published-zeta.vercel.app/api/quote?product=micro_tool"
+          "test_suite": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/integrator-test-suite.json",
+          "quote": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/api/quote?product=micro_tool"
         }
       },
       {
@@ -194,7 +195,7 @@
           "verify": "test harness receives webhook within 30s of testnet pay"
         },
         "urls": {
-          "status_template": "https://published-zeta.vercel.app/payment-status/{tx_hash}.json"
+          "status_template": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/payment-status/{tx_hash}.json"
         }
       },
       {
@@ -222,7 +223,7 @@
           "verify": "MCP client completes pay loop against testnet"
         },
         "urls": {
-          "catalog": "https://published-zeta.vercel.app/agent-pay-latest.json"
+          "catalog": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/agent-pay-latest.json"
         }
       },
       {
@@ -304,9 +305,67 @@
         }
       },
       {
-        "id": "human_zero_friction_tip",
+        "id": "product_suite_complete",
         "phase": "P2",
         "priority": 10,
+        "title": "Complete product suite catalog hub",
+        "hypothesis": "Agents discover partial catalogs; unified suite index + per-SKU landings raise Tag 2\u201312 trial rate.",
+        "buyer": "research_agent",
+        "expected_delta_usd": 7.0,
+        "effort": "low",
+        "dependencies": [
+          "product_suite_v2",
+          "service-catalog.json"
+        ],
+        "implementation": {
+          "modules": [
+            "revenue_engines/product_suite.py",
+            "observability/agent_payment.py"
+          ],
+          "actions": [
+            "Publish landing for every sellable_services() entry",
+            "Emit product-suite-index.json with novelty flags",
+            "Sync agent-pay stable_products + quotes for new SKUs"
+          ],
+          "verify": "product-suite-index.json lists >= 14 products with live landing URLs"
+        },
+        "urls": {
+          "suite_index": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/product-suite-index.json",
+          "agent_pay": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/agent-pay-latest.json"
+        }
+      },
+      {
+        "id": "payer_funnel_product",
+        "phase": "P2",
+        "priority": 11,
+        "title": "Paid payer-funnel export SKU",
+        "hypothesis": "Meta-factories pay for bottleneck analysis instead of rebuilding funnel telemetry.",
+        "buyer": "meta_factory",
+        "expected_delta_usd": 5.0,
+        "effort": "low",
+        "dependencies": [
+          "observability/payer_funnel.py",
+          "Tag 8 memo funnel"
+        ],
+        "implementation": {
+          "modules": [
+            "observability/service_fulfillment.py",
+            "observability/payment_intent.py"
+          ],
+          "actions": [
+            "Tag 8 + memo funnel \u2192 payer-funnel-cycle deliverable",
+            "Quote + integrator scenario in test suite"
+          ],
+          "verify": "external Tag 8 funnel payment fulfills payer-funnel JSON"
+        },
+        "urls": {
+          "preview": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/payer-funnel.json"
+        }
+      },
+      {
+        "id": "human_zero_friction_tip",
+        "phase": "P2",
+        "priority": 13,
         "title": "QR + deep-link tip surface",
         "hypothesis": "Humans won't copy r-address; QR to XUMM/testnet wallet with tag pre-filled converts.",
         "buyer": "human_backer",
@@ -403,16 +462,42 @@
           ],
           "verify": "IOU payment ingested as verified revenue"
         }
+      },
+      {
+        "id": "suite_bundle_discount",
+        "phase": "P3",
+        "priority": 12,
+        "title": "Novelty suite bundle (Tag 4 + suite-bundle memo)",
+        "hypothesis": "Bundled trace+fitness+funnel at discount converts eval agents who need multi-artifact proof.",
+        "buyer": "eval_agent",
+        "expected_delta_usd": 9.0,
+        "effort": "low",
+        "dependencies": [
+          "suite_novelty_bundle product",
+          "scarcity quotes"
+        ],
+        "implementation": {
+          "modules": [
+            "observability/service_fulfillment.py",
+            "tools/agent_pay_agentic.py"
+          ],
+          "actions": [
+            "Tag 4 + memo suite-bundle disambiguates from cycle intel",
+            "Deliverable embeds bundle_discount_usd metadata"
+          ],
+          "verify": "suite-bundle-cycle JSON includes trace, fitness, funnel sections"
+        }
       }
     ]
   },
   "immediate_actions": [
-    "enable SOCIAL_POST_API or manual post of integrator wedge"
+    "enable SOCIAL_POST_API or manual post of integrator wedge",
+    "smoke x402 facilitator then enable X402_PHASE=2"
   ],
   "discovery_urls": {
-    "roadmap": "https://published-zeta.vercel.app/novel-capture-roadmap.json",
-    "agent_pay": "https://published-zeta.vercel.app/agent-pay-latest.json",
-    "integrator_suite": "https://published-zeta.vercel.app/integrator-test-suite.json",
-    "conversion_playbook": "https://published-zeta.vercel.app/prospect-pack-cycle-603.json"
+    "roadmap": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/novel-capture-roadmap.json",
+    "agent_pay": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/agent-pay-latest.json",
+    "integrator_suite": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/integrator-test-suite.json",
+    "conversion_playbook": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/prospect-pack-cycle-603.json"
   }
 }

@@ -1,23 +1,23 @@
 {
   "schema": "rsi_eaf_payment_quote_v1",
-  "quoted_at": "2026-07-07T22:30:03.226369+00:00",
-  "cycle_id": 601,
+  "quoted_at": "2026-07-07T22:38:11.602706+00:00",
+  "cycle_id": 603,
   "stable_id": "micro_tool",
-  "product_id": "micro-tool-cycle-601",
+  "product_id": "micro-tool-cycle-603",
   "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
   "network": "xrpl_testnet",
   "destination_tag": 3,
   "credited_usd": 3.0,
   "plain_memo": "tool",
-  "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/micro-tool-cycle-601.json",
-  "preview_url": null,
+  "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/micro-tool-cycle-603.json",
+  "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/micro-tool-cycle-603.html",
   "payment_status_url_template": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/payment-status/{tx_hash}.json",
   "poll_after_pay_sec": 5,
   "amount_drops": "10000000",
   "amount_xrp_est": 10.0,
   "x402": {
     "gated": true,
-    "payment_required_b64": "eyJ4NDAyVmVyc2lvbiI6MiwiYWNjZXB0cyI6W3sic2NoZW1lIjoiZXhhY3QiLCJuZXR3b3JrIjoieHJwbDoxIiwiYXNzZXQiOiJYUlAiLCJwYXlUbyI6InJCaVU3NHEyd0NQUTdyaTlZRDZKNkxyUTJZM2pGZDhwY04iLCJhbW91bnQiOiIxMDAwMDAwMCIsIm1heFRpbWVvdXRTZWNvbmRzIjo2MDAsImV4dHJhIjp7Imludm9pY2VJZCI6Im1pY3JvLXRvb2wtY3ljbGUtNjAxIiwic291cmNlVGFnIjoyMDI2MDcwMywiZGVzdGluYXRpb25UYWciOjN9fV0sInJlc291cmNlIjoiaHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0L2doL3RoZUNlcmFtaXN0L3JzaS1lYWZAbWFpbi9wdWJsaXNoZWQvZGVsaXZlcmFibGVzL21pY3JvLXRvb2wtY3ljbGUtNjAxLmpzb24iLCJpbnZvaWNlSWQiOiJtaWNyby10b29sLWN5Y2xlLTYwMSJ9",
+    "payment_required_b64": "eyJ4NDAyVmVyc2lvbiI6MiwiYWNjZXB0cyI6W3sic2NoZW1lIjoiZXhhY3QiLCJuZXR3b3JrIjoieHJwbDoxIiwiYXNzZXQiOiJYUlAiLCJwYXlUbyI6InJCaVU3NHEyd0NQUTdyaTlZRDZKNkxyUTJZM2pGZDhwY04iLCJhbW91bnQiOiIxMDAwMDAwMCIsIm1heFRpbWVvdXRTZWNvbmRzIjo2MDAsImV4dHJhIjp7Imludm9pY2VJZCI6Im1pY3JvLXRvb2wtY3ljbGUtNjAzIiwic291cmNlVGFnIjoyMDI2MDcwMywiZGVzdGluYXRpb25UYWciOjN9fV0sInJlc291cmNlIjoiaHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0L2doL3RoZUNlcmFtaXN0L3JzaS1lYWZAbWFpbi9wdWJsaXNoZWQvZGVsaXZlcmFibGVzL21pY3JvLXRvb2wtY3ljbGUtNjAzLmpzb24iLCJpbnZvaWNlSWQiOiJtaWNyby10b29sLWN5Y2xlLTYwMyJ9",
     "challenge": {
       "x402Version": 2,
       "accepts": [
@@ -29,14 +29,14 @@
           "amount": "10000000",
           "maxTimeoutSeconds": 600,
           "extra": {
-            "invoiceId": "micro-tool-cycle-601",
+            "invoiceId": "micro-tool-cycle-603",
             "sourceTag": 20260703,
             "destinationTag": 3
           }
         }
       ],
-      "resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/micro-tool-cycle-601.json",
-      "invoiceId": "micro-tool-cycle-601"
+      "resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/micro-tool-cycle-603.json",
+      "invoiceId": "micro-tool-cycle-603"
     }
   },
   "scarcity_multiplier": 1.0,
@@ -44,7 +44,7 @@
   "agent_json_memo_template": {
     "type": "revenue",
     "amount_usd_est": 3.0,
-    "product_id": "micro-tool-cycle-601",
+    "product_id": "micro-tool-cycle-603",
     "source": "agent_client",
     "callback_url": null,
     "run_id": "optional-for-eval-bounty"

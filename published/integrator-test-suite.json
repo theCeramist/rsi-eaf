@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_integrator_test_suite_v1",
-  "cycle_id": 601,
-  "updated_at": "2026-07-07T22:30:03.270079+00:00",
+  "cycle_id": 603,
+  "updated_at": "2026-07-07T22:38:11.642991+00:00",
   "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
   "network": "xrpl_testnet",
   "agent_pay_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/agent-pay.json",
@@ -17,46 +17,46 @@
     {
       "id": "briefing_tag",
       "destination_tag": 2,
-      "product_id": "briefing-cycle-601",
-      "expected_fulfillment": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/briefing-cycle-601.json"
+      "product_id": "briefing-cycle-603",
+      "expected_fulfillment": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/briefing-cycle-603.json"
     },
     {
       "id": "integrator_validator",
       "destination_tag": 3,
-      "product_id": "micro-tool-cycle-601",
-      "expected_fulfillment": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/micro-tool-cycle-601.json"
+      "product_id": "micro-tool-cycle-603",
+      "expected_fulfillment": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/micro-tool-cycle-603.json"
     },
     {
       "id": "trace_export",
       "destination_tag": 6,
-      "product_id": "trace-export-cycle-601"
+      "product_id": "trace-export-cycle-603"
     },
     {
       "id": "x402_briefing",
       "method": "x402_exact",
-      "resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/briefing-cycle-601.json",
+      "resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/briefing-cycle-603.json",
       "quote_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/quotes/briefing_unlock.json"
     },
     {
       "id": "payer_funnel_export",
       "destination_tag": 8,
       "plain_memo": "funnel",
-      "product_id": "payer-funnel-cycle-601",
-      "expected_fulfillment": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/payer-funnel-cycle-601.json"
+      "product_id": "payer-funnel-cycle-603",
+      "expected_fulfillment": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/payer-funnel-cycle-603.json"
     },
     {
       "id": "suite_novelty_bundle",
       "destination_tag": 4,
       "plain_memo": "suite-bundle",
-      "product_id": "suite-bundle-cycle-601",
-      "expected_fulfillment": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/suite-bundle-cycle-601.json"
+      "product_id": "suite-bundle-cycle-603",
+      "expected_fulfillment": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/suite-bundle-cycle-603.json"
     },
     {
       "id": "cross_factory_iou",
       "method": "iou_payment",
       "currency": "RSI",
       "plain_memo": "factory_id:test-factory",
-      "product_id": "factory-iou-cycle-601",
+      "product_id": "factory-iou-cycle-603",
       "manifest_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/cross-factory-iou.json"
     }
   ],

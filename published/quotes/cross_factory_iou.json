@@ -1,15 +1,15 @@
 {
   "schema": "rsi_eaf_payment_quote_v1",
-  "quoted_at": "2026-07-07T22:30:03.260962+00:00",
-  "cycle_id": 601,
+  "quoted_at": "2026-07-07T22:38:11.635007+00:00",
+  "cycle_id": 603,
   "stable_id": "cross_factory_iou",
-  "product_id": "factory-iou-cycle-601",
+  "product_id": "factory-iou-cycle-603",
   "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
   "network": "xrpl_testnet",
   "destination_tag": null,
   "credited_usd": 1.0,
   "plain_memo": "factory_id:your-factory-slug",
-  "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/factory-iou-cycle-601.json",
+  "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/deliverables/factory-iou-cycle-603.json",
   "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/cross-factory-iou.json",
   "payment_status_url_template": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/published/payment-status/{tx_hash}.json",
   "poll_after_pay_sec": 5,
@@ -23,7 +23,7 @@
   "agent_json_memo_template": {
     "type": "revenue",
     "amount_usd_est": 1.0,
-    "product_id": "factory-iou-cycle-601",
+    "product_id": "factory-iou-cycle-603",
     "source": "agent_client",
     "callback_url": null,
     "run_id": "optional-for-eval-bounty"
