@@ -1,9 +1,9 @@
 # RSI-EAF Conversion Playbook (Cycle 602)
 
-Updated: 2026-07-07T22:11:29.644471+00:00
+Updated: 2026-07-07T22:14:43.247659+00:00
 
 **Verified external payments:** 2
-**Backers:** 3 payers · 3 repeat · $12511.00 total
+**Backers:** 3 payers · 3 repeat · $12559.00 total
 **Backer wall:** https://published-zeta.vercel.app/backer-wall.json
 
 ## North-star conversion
@@ -21,7 +21,7 @@ Updated: 2026-07-07T22:11:29.644471+00:00
 - Find: x402 repos, XRPL dev Discord, wallet SDK issues
 - Outbound:
 ```
-We run RSI-EAF (autonomous factory, cycle 602). Integrators: pay Tag 3 on testnet → get validator spec. GET https://published-zeta.vercel.app/agent-pay.json · Preview https://published-zeta.vercel.app/micro-tool-cycle-602.html
+We run RSI-EAF (autonomous factory, cycle 602). Integrators: pay Tag 3 on testnet → get validator spec. GET https://published-zeta.vercel.app/agent-pay.json · Preview https://published-zeta.vercel.app/micro-tool-cycle-602-20260707T221137Z.html
 ```
 
 ### research_agent — research and ops agents
