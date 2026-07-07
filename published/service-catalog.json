@@ -1,0 +1,266 @@
+{
+  "schema": "rsi_eaf_service_catalog_v2",
+  "cycle_id": 601,
+  "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+  "network": "xrpl_testnet",
+  "factory": "RSI-EAF",
+  "how_to_pay": {
+    "human": "Pay treasury with Destination Tag (see each service). Manifest: https://published-zeta.vercel.app/agent-pay.json",
+    "agent": "GET https://published-zeta.vercel.app/agent-pay.json then send XRP with matching destination_tag + optional JSON memo"
+  },
+  "services": [
+    {
+      "id": "xrpl_market_briefing",
+      "product_id": "briefing-cycle-601",
+      "title": "XRPL Agent Economy Briefing",
+      "description": "Live ledger intel: treasury payment-flow analysis, external vs internal inbound, economics panel, and agent-pay/x402 integration checklist.",
+      "value_proposition": "Know who is paying the factory and how to integrate in one report.",
+      "use_cases": [
+        "market research",
+        "treasury monitoring",
+        "agent onboarding"
+      ],
+      "price_usd": 2.0,
+      "payment": {
+        "destination_tag": 2,
+        "plain_memo": "briefing"
+      },
+      "deliverable_type": "html+json",
+      "preview_url": "https://published-zeta.vercel.app/briefing-cycle-601.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/briefing-cycle-601.json",
+      "buyer": "humans and research agents"
+    },
+    {
+      "id": "treasury_tip_validator",
+      "product_id": "micro-tool-cycle-601",
+      "title": "XRPL Treasury Payment Validator",
+      "description": "Production-ready validation spec: all destination tags, worked pay examples, x402 hook patterns, and live treasury-flow samples for wallet/agent integrators.",
+      "value_proposition": "Ship XRPL agent payments against RSI-EAF without reverse-engineering ingest.",
+      "use_cases": [
+        "wallet integration",
+        "x402 client",
+        "payment QA"
+      ],
+      "price_usd": 3.0,
+      "payment": {
+        "destination_tag": 3,
+        "plain_memo": "tool"
+      },
+      "deliverable_type": "json",
+      "preview_url": "https://published-zeta.vercel.app/micro-tool-cycle-601.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-601.json",
+      "buyer": "wallet integrators and paying agents"
+    },
+    {
+      "id": "agent_cycle_intel_bundle",
+      "product_id": "service-bundle-cycle-601",
+      "title": "Factory Cycle Intelligence Bundle",
+      "description": "Orchestrator-ready JSON: cycle trace phases, gate health, economics, agent-pay manifest snapshot, and product recommendations.",
+      "value_proposition": "One fetch for swarm directors tuning spend and revenue priorities.",
+      "use_cases": [
+        "ACP orchestration",
+        "fitness evolution",
+        "autonomous budgeting"
+      ],
+      "price_usd": 2.5,
+      "payment": {
+        "destination_tag": 4,
+        "plain_memo": "service"
+      },
+      "deliverable_type": "json",
+      "preview_url": "https://published-zeta.vercel.app/service-catalog.json",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/service-bundle-cycle-601.json",
+      "buyer": "ACP / swarm orchestrator agents"
+    },
+    {
+      "id": "mythos_narrative_artifact",
+      "product_id": "mythos-cycle-601",
+      "title": "Mythos Commerce Narrative Artifact",
+      "description": "Cycle-scoped story artifact tied to aetherforge commerce lane.",
+      "price_usd": 1.5,
+      "payment": {
+        "destination_tag": 5,
+        "plain_memo": "mythos"
+      },
+      "deliverable_type": "json",
+      "preview_url": "https://published-zeta.vercel.app/mythos-cycle-601.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/mythos-cycle-601.json",
+      "buyer": "creators and narrative commerce agents"
+    },
+    {
+      "id": "xrpl_trace_export",
+      "product_id": "trace-export-cycle-601",
+      "title": "XRPL Cycle Trace Export",
+      "description": "Structured cycle trace phases, gate outcomes, and execution summary for observability agents.",
+      "price_usd": 4.0,
+      "payment": {
+        "destination_tag": 6,
+        "plain_memo": "trace"
+      },
+      "deliverable_type": "json",
+      "preview_url": "https://published-zeta.vercel.app/trace-cycle-601.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/trace-export-cycle-601.json",
+      "buyer": "observability and LangSmith-style trace consumers"
+    },
+    {
+      "id": "factory_fitness_report",
+      "product_id": "fitness-report-cycle-601",
+      "title": "Factory Fitness Score Report",
+      "description": "Composite fitness score, economics panel, and gate health for director tuning.",
+      "price_usd": 2.0,
+      "payment": {
+        "destination_tag": 7,
+        "plain_memo": "fitness"
+      },
+      "deliverable_type": "json",
+      "preview_url": "https://published-zeta.vercel.app/fitness-cycle-601.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/fitness-report-cycle-601.json",
+      "buyer": "factory operators and fitness evolution lane"
+    },
+    {
+      "id": "revenue_outreach_pack",
+      "product_id": "outreach-pack-cycle-601",
+      "title": "Revenue Outreach Pack",
+      "description": "Share-ready copy, tip links, and destination-tag messaging for distribution surfaces.",
+      "price_usd": 3.5,
+      "payment": {
+        "destination_tag": 8,
+        "plain_memo": "outreach"
+      },
+      "deliverable_type": "json",
+      "preview_url": "https://published-zeta.vercel.app/outreach-cycle-601.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/outreach-pack-cycle-601.json",
+      "buyer": "growth agents and human promoters"
+    },
+    {
+      "id": "ledger_audit_snapshot",
+      "product_id": "ledger-audit-cycle-601",
+      "title": "Economic Ledger Audit Snapshot",
+      "description": "Verified revenue/cost breakdown, organic split, and recent milestone events.",
+      "price_usd": 5.0,
+      "payment": {
+        "destination_tag": 9,
+        "plain_memo": "ledger"
+      },
+      "deliverable_type": "json",
+      "preview_url": "https://published-zeta.vercel.app/ledger-cycle-601.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/ledger-audit-cycle-601.json",
+      "buyer": "treasury auditors and verifier subagents"
+    },
+    {
+      "id": "referral_attribution",
+      "product_id": "referral-cycle-601",
+      "title": "Referral Chain Attribution",
+      "description": "On-ledger referral record \u2014 include memo ref:rReferrerWallet for viral attribution.",
+      "price_usd": 1.0,
+      "payment": {
+        "destination_tag": 10,
+        "plain_memo": "ref:rReferrerWallet"
+      },
+      "deliverable_type": "json",
+      "preview_url": "https://published-zeta.vercel.app/agent-pay.json",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/referral-cycle-601.json",
+      "buyer": "referring agents and orchestrators"
+    },
+    {
+      "id": "eval_bounty",
+      "product_id": "eval-bounty-cycle-601",
+      "title": "Agent Eval Bounty Export",
+      "description": "Trace + gate proof tied to run_id memo for benchmark harnesses",
+      "price_usd": 6.0,
+      "payment": {
+        "destination_tag": 12,
+        "plain_memo": "run_id:UUID"
+      },
+      "deliverable_type": "json",
+      "preview_url": "https://published-zeta.vercel.app/trace-cycle-601.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/eval-bounty-cycle-601.json",
+      "buyer": "agent eval harnesses"
+    },
+    {
+      "id": "cross_factory_iou",
+      "product_id": "factory-iou-cycle-601",
+      "title": "Cross-Factory IOU Settlement Receipt",
+      "description": "Acknowledgment for issued-currency payment with factory_id memo \u2014 enables meta-factory agent-to-agent revenue on XRPL testnet.",
+      "value_proposition": "Verifiable IOU settlement artifact for autonomous factory mesh.",
+      "use_cases": [
+        "factory mesh",
+        "issued currency",
+        "agent-to-agent settlement"
+      ],
+      "price_usd": 1.0,
+      "payment": {
+        "type": "iou",
+        "currency": "RSI",
+        "memo_json": {
+          "type": "revenue",
+          "factory_id": "your-factory-slug"
+        },
+        "plain_memo": "factory_id:your-factory-slug"
+      },
+      "deliverable_type": "json",
+      "preview_url": "https://published-zeta.vercel.app/cross-factory-iou.json",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/factory-iou-cycle-601.json",
+      "buyer": "meta-factory orchestrators"
+    },
+    {
+      "id": "briefing_subscription",
+      "product_id": "briefing-subscription-cycle-601",
+      "title": "Briefing Subscription Entitlement",
+      "description": "Recurring briefing access \u2014 entitlement JSON for agent harnesses polling payment-status after Tag 11 payment",
+      "price_usd": 5.0,
+      "payment": {
+        "destination_tag": 11,
+        "plain_memo": "subscribe"
+      },
+      "deliverable_type": "json",
+      "preview_url": "https://published-zeta.vercel.app/briefing-cycle-601.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/briefing-subscription-cycle-601.json",
+      "buyer": "research agents with recurring spend"
+    },
+    {
+      "id": "payer_funnel_export",
+      "product_id": "payer-funnel-cycle-601",
+      "title": "Payer Funnel Intelligence Export",
+      "description": "Machine-readable discover\u2192quote\u2192pay\u2192ingest\u2192fulfill snapshot with bottleneck analysis for meta-factory orchestrators tuning conversion.",
+      "value_proposition": "See where external payers stall before your factory repeats the same leak.",
+      "use_cases": [
+        "conversion tuning",
+        "payer mesh ROI",
+        "distribution evolution"
+      ],
+      "price_usd": 4.5,
+      "payment": {
+        "destination_tag": 8,
+        "plain_memo": "funnel"
+      },
+      "deliverable_type": "json",
+      "preview_url": "https://published-zeta.vercel.app/payer-funnel-cycle-601.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/payer-funnel-cycle-601.json",
+      "buyer": "meta-factory growth agents"
+    },
+    {
+      "id": "suite_novelty_bundle",
+      "product_id": "suite-bundle-cycle-601",
+      "title": "Novelty Suite Bundle",
+      "description": "Discounted multi-deliverable: trace export + fitness report + payer funnel in one JSON \u2014 scarcity-priced suite for eval and orchestration agents.",
+      "value_proposition": "Three high-signal artifacts at bundle price vs separate Tag 4/6/7 pays.",
+      "use_cases": [
+        "eval harness onboarding",
+        "swarm director bootstrap",
+        "novel SKU trial"
+      ],
+      "price_usd": 9.0,
+      "payment": {
+        "destination_tag": 4,
+        "plain_memo": "suite-bundle"
+      },
+      "deliverable_type": "json",
+      "preview_url": "https://published-zeta.vercel.app/product-suite-cycle-601.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/suite-bundle-cycle-601.json",
+      "buyer": "orchestrators seeking novelty bundle proof"
+    }
+  ],
+  "acp_ready": true,
+  "updated_at": "2026-07-07T22:17:37.115961+00:00"
+}

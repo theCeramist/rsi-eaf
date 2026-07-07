@@ -2,52 +2,639 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>RSI-EAF Published Assets</title>
-  <style>body{font-family:system-ui;max-width:720px;margin:2rem auto;padding:0 1rem}</style>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://aetherforge.world/">
+  <title>RSI-EAF — Asset Mirror (Official home: aetherforge.world)</title>
+  <meta name="description" content="Vercel asset mirror for RSI-EAF. Official factory landing: https://aetherforge.world/">
+  <style>
+
+:root {
+  --bg: #070b10;
+  --bg-elevated: #0e1520;
+  --panel: #121b28;
+  --panel-hover: #162233;
+  --border: #243044;
+  --border-soft: #1a2638;
+  --text: #edf2f9;
+  --muted: #8fa3bf;
+  --accent: #4da3ff;
+  --accent-glow: rgba(77, 163, 255, 0.18);
+  --accent2: #5ee4a8;
+  --accent2-glow: rgba(94, 228, 168, 0.12);
+  --price: #f6c453;
+  --warn: #ffb347;
+  --success: #5ee4a8;
+  --radius: 14px;
+  --radius-sm: 8px;
+  --shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+  --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+  --mono: ui-monospace, "Cascadia Code", "SF Mono", Consolas, monospace;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: var(--font);
+  background:
+    radial-gradient(900px 500px at 8% -5%, rgba(77, 163, 255, 0.14) 0%, transparent 55%),
+    radial-gradient(700px 400px at 95% 0%, rgba(94, 228, 168, 0.08) 0%, transparent 50%),
+    var(--bg);
+  color: var(--text);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 3.5rem;
+}
+.wrap-wide { max-width: 1040px; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code, .mono {
+  font-family: var(--mono);
+  font-size: 0.92em;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-soft);
+  border-radius: 6px;
+  padding: 0.15rem 0.45rem;
+  word-break: break-all;
+}
+.top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.35rem 0.85rem;
+  background: rgba(255, 255, 255, 0.03);
+  text-decoration: none;
+}
+.back-link:hover {
+  color: var(--text);
+  border-color: var(--accent);
+  text-decoration: none;
+}
+.badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--accent2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.28rem 0.75rem;
+  background: var(--accent2-glow);
+}
+.badge-warn { color: var(--warn); background: rgba(255, 179, 71, 0.1); }
+.badge-ok { color: var(--success); background: var(--accent2-glow); }
+h1 {
+  font-size: clamp(1.65rem, 4vw, 2.35rem);
+  line-height: 1.15;
+  margin: 0 0 0.65rem;
+  letter-spacing: -0.02em;
+}
+h2 {
+  font-size: 1.15rem;
+  margin: 0 0 0.5rem;
+}
+.lede, .subtitle {
+  color: var(--muted);
+  max-width: 58ch;
+  margin: 0;
+  font-size: 1.02rem;
+}
+.panel {
+  background: linear-gradient(180deg, var(--panel) 0%, var(--bg-elevated) 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.35rem 1.5rem;
+  margin-bottom: 1.25rem;
+  box-shadow: var(--shadow);
+}
+.panel-head h2 { margin: 0 0 0.25rem; }
+.panel-head p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+.trust-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0 0;
+}
+.trust-pill {
+  font-size: 0.78rem;
+  color: var(--muted);
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  padding: 0.3rem 0.65rem;
+  background: rgba(255, 255, 255, 0.02);
+}
+.pay-box {
+  margin-top: 1rem;
+  background: #0a1018;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 1.1rem;
+}
+.pay-box-highlight {
+  border-color: rgba(94, 228, 168, 0.35);
+  background: linear-gradient(135deg, rgba(94, 228, 168, 0.06) 0%, rgba(77, 163, 255, 0.04) 100%);
+}
+.pay-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin-bottom: 0.65rem;
+}
+.pay-row:last-child { margin-bottom: 0; }
+.label { color: var(--muted); font-size: 0.85rem; min-width: 5rem; }
+.tag-display {
+  font-size: clamp(2rem, 6vw, 2.75rem);
+  font-weight: 800;
+  color: var(--accent2);
+  margin: 0.25rem 0;
+  letter-spacing: -0.03em;
+}
+.hint { color: var(--muted); font-size: 0.85rem; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0.55rem 1rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.btn:hover { transform: translateY(-1px); text-decoration: none; }
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent) 0%, #2b7fd4 100%);
+  color: #041018;
+  box-shadow: 0 8px 24px var(--accent-glow);
+}
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--border);
+}
+.steps { display: grid; gap: 1rem; margin-top: 1rem; }
+.step-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 1.15rem;
+}
+.step-num {
+  display: inline-block;
+  width: 1.6rem;
+  height: 1.6rem;
+  line-height: 1.6rem;
+  text-align: center;
+  border-radius: 50%;
+  background: var(--accent-glow);
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.unlock-panel {
+  border: 1px dashed rgba(246, 196, 83, 0.45);
+  background: rgba(246, 196, 83, 0.05);
+  border-radius: var(--radius-sm);
+  padding: 1.15rem;
+  margin: 1.25rem 0;
+}
+.unlocked-panel {
+  border: 1px solid rgba(94, 228, 168, 0.4);
+  background: var(--accent2-glow);
+  border-radius: var(--radius-sm);
+  padding: 1.15rem;
+  margin: 1.25rem 0;
+}
+.content-pre {
+  white-space: pre-wrap;
+  background: #0a1018;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+  padding: 1.15rem;
+  font-family: var(--mono);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: #d6e2f0;
+  margin: 1rem 0 0;
+}
+.artifact-list {
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.artifact-list li {
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--border-soft);
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+.artifact-list li:last-child { border-bottom: none; }
+.prose p { margin: 0.75rem 0; color: var(--muted); }
+.prose strong { color: var(--text); }
+.cta-banner {
+  margin-top: 1.25rem;
+  padding: 1.15rem;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, rgba(77, 163, 255, 0.12) 0%, rgba(94, 228, 168, 0.08) 100%);
+  border: 1px solid rgba(77, 163, 255, 0.25);
+}
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.service-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.service-card:hover {
+  border-color: rgba(77, 163, 255, 0.45);
+  background: var(--panel-hover);
+}
+.service-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+.service-head h3 { margin: 0; font-size: 1rem; line-height: 1.3; }
+.price { color: var(--price); font-weight: 700; white-space: nowrap; }
+.service-desc { margin: 0; color: var(--muted); font-size: 0.88rem; flex: 1; }
+.pay-chip {
+  font-size: 0.8rem;
+  color: var(--muted);
+  background: var(--accent2-glow);
+  border-radius: 6px;
+  padding: 0.35rem 0.55rem;
+}
+.service-links { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.25rem; }
+.quick-links { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.25rem; }
+.quick-link {
+  color: var(--accent);
+  text-decoration: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.42rem 0.8rem;
+  font-size: 0.88rem;
+  background: rgba(77, 163, 255, 0.06);
+}
+.quick-link:hover { border-color: var(--accent); text-decoration: none; }
+.catalog-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+.catalog-table th,
+.catalog-table td {
+  border: 1px solid var(--border);
+  padding: 0.65rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+.catalog-table th {
+  background: var(--bg-elevated);
+  color: var(--muted);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.catalog-table tr:hover td { background: rgba(255, 255, 255, 0.02); }
+footer {
+  margin-top: 2.5rem;
+  color: var(--muted);
+  font-size: 0.82rem;
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+}
+footer a { color: var(--accent); }
+@media (max-width: 600px) {
+  .wrap { padding: 1.25rem 1rem 2.5rem; }
+  .pay-row { flex-direction: column; align-items: flex-start; }
+}
+
+    .hero-pay .pay-box { margin-top: 1rem; }
+    .assets ul {
+      margin: .75rem 0 0;
+      padding-left: 1.25rem;
+      color: var(--muted);
+      font-size: .9rem;
+    }
+    .assets a { color: var(--accent); }
+    .agent-cta {
+      margin-top: 1rem;
+      font-size: .9rem;
+      color: var(--muted);
+    }
+    .agent-cta a { color: var(--accent); margin-left: .5rem; }
+  </style>
 </head>
 <body>
-  <h1>RSI-EAF Published Assets</h1>
-  <p>Verifiable factory output — each asset anchored on XRPL testnet.</p>
+  <div class="wrap wrap-wide">
+    <header>
+      <span class="badge">Cycle 601 · XRPL Testnet · Asset mirror</span>
+      <h1>Factory products, verified on XRPL</h1>
+      <p class="lede">
+        Official factory home:
+        <a href="https://aetherforge.world/"><strong>https://aetherforge.world/</strong></a>.
+        This Vercel page mirrors cycle-scoped assets at <code>https://published-zeta.vercel.app/</code>.
+      </p>
+      <p style="margin-top:0.75rem">
+        <a class="btn btn-primary" href="https://aetherforge.world/">Go to official landing →</a>
+      </p>
+    <div class="trust-strip">
+      <span class="trust-pill">Ledger-verified payments</span>
+      <span class="trust-pill">XRPL-anchored publishes</span>
+      <span class="trust-pill">No account required</span>
+    </div>
+      <div class="quick-links">
+        <a class="quick-link" href="https://published-zeta.vercel.app/agent-pay.json">Agent pay JSON</a>
+        <a class="quick-link" href="https://published-zeta.vercel.app/service-catalog.json">Service catalog</a>
+        <a class="quick-link" href="https://published-zeta.vercel.app/tip-manifest.json">Tip manifest</a>
+        <a class="quick-link" href="https://published-zeta.vercel.app/conformance-payee.json">Conformance payee</a>
+        <a class="quick-link" href="https://published-zeta.vercel.app/tip-deep-link.json">Tip deep link</a>
+        <a class="quick-link" href="https://published-zeta.vercel.app/briefing-cycle-601.html">Briefing</a>
+        <a class="quick-link" href="https://published-zeta.vercel.app/micro-tool-cycle-601.html">Micro-tool</a>
+      </div>
+    </header>
 
-  <section id="featured">
-    <h2>Revenue Surfaces (highest impact)</h2>
-    <ul>
-    <li><a href="https://published-zeta.vercel.app/tip-cycle-11-20260627T043141Z.html">tip_page</a></li>
-    <li><a href="https://published-zeta.vercel.app/briefing-cycle-11-20260627T043211Z.html">briefing_page</a></li>
-    <li><a href="https://published-zeta.vercel.app/tip-manifest.json">tip_manifest</a></li>
-    </ul>
-  </section>
-
-  <ul>
-    <li><a href="briefing-cycle-11-20260627T043211Z.html">briefing-cycle-11-20260627T043211Z.html</a></li>
-    <li><a href="cycle-1-20260627T025729Z.html">cycle-1-20260627T025729Z.html</a></li>
-    <li><a href="cycle-1-20260627T025745Z.html">cycle-1-20260627T025745Z.html</a></li>
-    <li><a href="cycle-1-20260627T025936Z.html">cycle-1-20260627T025936Z.html</a></li>
-    <li><a href="cycle-1-20260627T030729Z.html">cycle-1-20260627T030729Z.html</a></li>
-    <li><a href="cycle-1-20260627T030814Z.html">cycle-1-20260627T030814Z.html</a></li>
-    <li><a href="cycle-1-20260627T031053Z.html">cycle-1-20260627T031053Z.html</a></li>
-    <li><a href="cycle-1-20260627T031459Z.html">cycle-1-20260627T031459Z.html</a></li>
-    <li><a href="cycle-10-20260627T041807Z.html">cycle-10-20260627T041807Z.html</a></li>
-    <li><a href="cycle-11-20260627T043121Z.html">cycle-11-20260627T043121Z.html</a></li>
-    <li><a href="cycle-2-20260627T031955Z.html">cycle-2-20260627T031955Z.html</a></li>
-    <li><a href="cycle-3-20260627T032034Z.html">cycle-3-20260627T032034Z.html</a></li>
-    <li><a href="cycle-4-20260627T032826Z.html">cycle-4-20260627T032826Z.html</a></li>
-    <li><a href="cycle-5-20260627T032951Z.html">cycle-5-20260627T032951Z.html</a></li>
-    <li><a href="cycle-6-20260627T033255Z.html">cycle-6-20260627T033255Z.html</a></li>
-    <li><a href="cycle-7-20260627T034522Z.html">cycle-7-20260627T034522Z.html</a></li>
-    <li><a href="cycle-8-20260627T040544Z.html">cycle-8-20260627T040544Z.html</a></li>
-    <li><a href="cycle-9-20260627T040707Z.html">cycle-9-20260627T040707Z.html</a></li>
-    <li><a href="tip-cycle-11-20260627T043141Z.html">tip-cycle-11-20260627T043141Z.html</a></li>
-  </ul>
-
-  <section id="support">
-    <h2>Support RSI-EAF (XRPL Testnet)</h2>
-    <p>Send a testnet payment to the factory treasury with this memo JSON:</p>
-    <pre>{"type":"revenue","amount_usd_est":1.0,"notes":"supporter tip"}</pre>
-    <p><strong>Treasury:</strong> <code>rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN</code></p>
-    <p><a href="https://testnet.xrpl.org/">Verify on XRPL Testnet Explorer</a></p>
-    <p><a href="tip-manifest.json">Agent tip manifest (JSON)</a></p>
-  </section>
-
+    <section class="panel hero-pay" id="pay">
+      <div class="panel-head">
+        <h2>Quick tip — $1.00</h2>
+        <p>Send XRPL Testnet XRP with <strong>Destination Tag 1</strong>. Two fields, instant verification.</p>
+      </div>
+      <div class="pay-box pay-box-highlight">
+        <div class="pay-row">
+          <span class="label">Treasury</span>
+          <code id="treasury">rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN</code>
+          <button type="button" class="btn btn-primary" onclick="navigator.clipboard.writeText('rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN')">Copy</button>
+        </div>
+        <div class="pay-row">
+          <span class="label">Tag</span>
+          <span class="tag-display">1</span>
+          <button type="button" class="btn btn-secondary" onclick="navigator.clipboard.writeText('1')">Copy tag</button>
+          <span class="hint">No memo required</span>
+        </div>
+        <div class="pay-row"><a href="https://xumm.app/detect/request:rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN_1">Open in XUMM</a> · <a href="https://published-zeta.vercel.app/tip-deep-link.json">tip-deep-link.json</a></div>
+        <div class="pay-row"><img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN%3Fdt%3D1" alt="Tip QR" width="160" height="160" loading="lazy" /></div>
+      </div>
+      <div class="agent-cta">
+        <strong>For agents:</strong> <code>GET /agent-pay.json</code> then pay matching <code>destination_tag</code>.
+        <a href="agent-pay.json">Open agent-pay.json</a>
+      </div>
+    </section>
+    <section class="panel" id="services">
+      <div class="panel-head">
+        <h2>Paid deliverables</h2>
+        <p>Choose a product, pay with its destination tag, and unlock ledger-verified JSON deliverables.</p>
+      </div>
+      <div class="service-grid">
+      <article class="service-card">
+        <div class="service-head">
+          <h3>XRPL Agent Economy Briefing</h3>
+          <span class="price">$2.00</span>
+        </div>
+        <p class="service-desc">Live ledger intel: treasury payment-flow analysis, external vs internal inbound, economics panel, and agent-pay/x402 integration checklist.</p>
+        <div class="pay-chip">Tag <strong>2</strong> · memo <code>briefing</code></div>
+        <div class="service-links">
+          <a class="btn btn-primary" href="https://published-zeta.vercel.app/briefing-cycle-601.html">Preview &amp; pay</a>
+          <a class="btn btn-ghost" href="https://published-zeta.vercel.app/deliverables/briefing-cycle-601.json">Deliverable</a>
+        </div>
+      </article>
+      <article class="service-card">
+        <div class="service-head">
+          <h3>XRPL Treasury Payment Validator</h3>
+          <span class="price">$3.00</span>
+        </div>
+        <p class="service-desc">Production-ready validation spec: all destination tags, worked pay examples, x402 hook patterns, and live treasury-flow samples for wallet/agent integrators.</p>
+        <div class="pay-chip">Tag <strong>3</strong> · memo <code>tool</code></div>
+        <div class="service-links">
+          <a class="btn btn-primary" href="https://published-zeta.vercel.app/micro-tool-cycle-601.html">Preview &amp; pay</a>
+          <a class="btn btn-ghost" href="https://published-zeta.vercel.app/deliverables/micro-tool-cycle-601.json">Deliverable</a>
+        </div>
+      </article>
+      <article class="service-card">
+        <div class="service-head">
+          <h3>Factory Cycle Intelligence Bundle</h3>
+          <span class="price">$2.50</span>
+        </div>
+        <p class="service-desc">Orchestrator-ready JSON: cycle trace phases, gate health, economics, agent-pay manifest snapshot, and product recommendations.</p>
+        <div class="pay-chip">Tag <strong>4</strong> · memo <code>service</code></div>
+        <div class="service-links">
+          <a class="btn btn-primary" href="https://published-zeta.vercel.app/service-catalog.json">Preview &amp; pay</a>
+          <a class="btn btn-ghost" href="https://published-zeta.vercel.app/deliverables/service-bundle-cycle-601.json">Deliverable</a>
+        </div>
+      </article>
+      <article class="service-card">
+        <div class="service-head">
+          <h3>Mythos Commerce Narrative Artifact</h3>
+          <span class="price">$1.50</span>
+        </div>
+        <p class="service-desc">Cycle-scoped story artifact tied to aetherforge commerce lane.</p>
+        <div class="pay-chip">Tag <strong>5</strong> · memo <code>mythos</code></div>
+        <div class="service-links">
+          <a class="btn btn-primary" href="https://published-zeta.vercel.app/mythos-cycle-601.html">Preview &amp; pay</a>
+          <a class="btn btn-ghost" href="https://published-zeta.vercel.app/deliverables/mythos-cycle-601.json">Deliverable</a>
+        </div>
+      </article>
+      <article class="service-card">
+        <div class="service-head">
+          <h3>XRPL Cycle Trace Export</h3>
+          <span class="price">$4.00</span>
+        </div>
+        <p class="service-desc">Structured cycle trace phases, gate outcomes, and execution summary for observability agents.</p>
+        <div class="pay-chip">Tag <strong>6</strong> · memo <code>trace</code></div>
+        <div class="service-links">
+          <a class="btn btn-primary" href="https://published-zeta.vercel.app/trace-cycle-601.html">Preview &amp; pay</a>
+          <a class="btn btn-ghost" href="https://published-zeta.vercel.app/deliverables/trace-export-cycle-601.json">Deliverable</a>
+        </div>
+      </article>
+      <article class="service-card">
+        <div class="service-head">
+          <h3>Factory Fitness Score Report</h3>
+          <span class="price">$2.00</span>
+        </div>
+        <p class="service-desc">Composite fitness score, economics panel, and gate health for director tuning.</p>
+        <div class="pay-chip">Tag <strong>7</strong> · memo <code>fitness</code></div>
+        <div class="service-links">
+          <a class="btn btn-primary" href="https://published-zeta.vercel.app/fitness-cycle-601.html">Preview &amp; pay</a>
+          <a class="btn btn-ghost" href="https://published-zeta.vercel.app/deliverables/fitness-report-cycle-601.json">Deliverable</a>
+        </div>
+      </article>
+      <article class="service-card">
+        <div class="service-head">
+          <h3>Revenue Outreach Pack</h3>
+          <span class="price">$3.50</span>
+        </div>
+        <p class="service-desc">Share-ready copy, tip links, and destination-tag messaging for distribution surfaces.</p>
+        <div class="pay-chip">Tag <strong>8</strong> · memo <code>outreach</code></div>
+        <div class="service-links">
+          <a class="btn btn-primary" href="https://published-zeta.vercel.app/outreach-cycle-601.html">Preview &amp; pay</a>
+          <a class="btn btn-ghost" href="https://published-zeta.vercel.app/deliverables/outreach-pack-cycle-601.json">Deliverable</a>
+        </div>
+      </article>
+      <article class="service-card">
+        <div class="service-head">
+          <h3>Economic Ledger Audit Snapshot</h3>
+          <span class="price">$5.00</span>
+        </div>
+        <p class="service-desc">Verified revenue/cost breakdown, organic split, and recent milestone events.</p>
+        <div class="pay-chip">Tag <strong>9</strong> · memo <code>ledger</code></div>
+        <div class="service-links">
+          <a class="btn btn-primary" href="https://published-zeta.vercel.app/ledger-cycle-601.html">Preview &amp; pay</a>
+          <a class="btn btn-ghost" href="https://published-zeta.vercel.app/deliverables/ledger-audit-cycle-601.json">Deliverable</a>
+        </div>
+      </article>
+      <article class="service-card">
+        <div class="service-head">
+          <h3>Referral Chain Attribution</h3>
+          <span class="price">$1.00</span>
+        </div>
+        <p class="service-desc">On-ledger referral record — include memo ref:rReferrerWallet for viral attribution.</p>
+        <div class="pay-chip">Tag <strong>10</strong> · memo <code>ref:rReferrerWallet</code></div>
+        <div class="service-links">
+          <a class="btn btn-primary" href="https://published-zeta.vercel.app/agent-pay.json">Preview &amp; pay</a>
+          <a class="btn btn-ghost" href="https://published-zeta.vercel.app/deliverables/referral-cycle-601.json">Deliverable</a>
+        </div>
+      </article>
+      <article class="service-card">
+        <div class="service-head">
+          <h3>Agent Eval Bounty Export</h3>
+          <span class="price">$6.00</span>
+        </div>
+        <p class="service-desc">Trace + gate proof tied to run_id memo for benchmark harnesses</p>
+        <div class="pay-chip">Tag <strong>12</strong> · memo <code>run_id:UUID</code></div>
+        <div class="service-links">
+          <a class="btn btn-primary" href="https://published-zeta.vercel.app/trace-cycle-601.html">Preview &amp; pay</a>
+          <a class="btn btn-ghost" href="https://published-zeta.vercel.app/deliverables/eval-bounty-cycle-601.json">Deliverable</a>
+        </div>
+      </article>
+      <article class="service-card">
+        <div class="service-head">
+          <h3>Cross-Factory IOU Settlement Receipt</h3>
+          <span class="price">$1.00</span>
+        </div>
+        <p class="service-desc">Acknowledgment for issued-currency payment with factory_id memo — enables meta-factory agent-to-agent revenue on XRPL testnet.</p>
+        <div class="pay-chip">Tag <strong></strong> · memo <code>factory_id:your-factory-slug</code></div>
+        <div class="service-links">
+          <a class="btn btn-primary" href="https://published-zeta.vercel.app/cross-factory-iou.json">Preview &amp; pay</a>
+          <a class="btn btn-ghost" href="https://published-zeta.vercel.app/deliverables/factory-iou-cycle-601.json">Deliverable</a>
+        </div>
+      </article>
+      <article class="service-card">
+        <div class="service-head">
+          <h3>Briefing Subscription Entitlement</h3>
+          <span class="price">$5.00</span>
+        </div>
+        <p class="service-desc">Recurring briefing access — entitlement JSON for agent harnesses polling payment-status after Tag 11 payment</p>
+        <div class="pay-chip">Tag <strong>11</strong> · memo <code>subscribe</code></div>
+        <div class="service-links">
+          <a class="btn btn-primary" href="https://published-zeta.vercel.app/briefing-cycle-601.html">Preview &amp; pay</a>
+          <a class="btn btn-ghost" href="https://published-zeta.vercel.app/deliverables/briefing-subscription-cycle-601.json">Deliverable</a>
+        </div>
+      </article>
+      <article class="service-card">
+        <div class="service-head">
+          <h3>Payer Funnel Intelligence Export</h3>
+          <span class="price">$4.50</span>
+        </div>
+        <p class="service-desc">Machine-readable discover→quote→pay→ingest→fulfill snapshot with bottleneck analysis for meta-factory orchestrators tuning conversion.</p>
+        <div class="pay-chip">Tag <strong>8</strong> · memo <code>funnel</code></div>
+        <div class="service-links">
+          <a class="btn btn-primary" href="https://published-zeta.vercel.app/payer-funnel-cycle-601.html">Preview &amp; pay</a>
+          <a class="btn btn-ghost" href="https://published-zeta.vercel.app/deliverables/payer-funnel-cycle-601.json">Deliverable</a>
+        </div>
+      </article>
+      <article class="service-card">
+        <div class="service-head">
+          <h3>Novelty Suite Bundle</h3>
+          <span class="price">$9.00</span>
+        </div>
+        <p class="service-desc">Discounted multi-deliverable: trace export + fitness report + payer funnel in one JSON — scarcity-priced suite for eval and orchestration agents.</p>
+        <div class="pay-chip">Tag <strong>4</strong> · memo <code>suite-bundle</code></div>
+        <div class="service-links">
+          <a class="btn btn-primary" href="https://published-zeta.vercel.app/product-suite-cycle-601.html">Preview &amp; pay</a>
+          <a class="btn btn-ghost" href="https://published-zeta.vercel.app/deliverables/suite-bundle-cycle-601.json">Deliverable</a>
+        </div>
+      </article>
+      </div>
+    </section>
+    <section class="panel assets" id="assets">
+      <div class="panel-head">
+        <h2>Published artifacts</h2>
+        <p>Cycle-scoped HTML assets anchored on XRPL Testnet.</p>
+      </div>
+      <ul>
+        <li><a href="briefing-cycle-601.html">briefing-cycle-601.html</a></li>
+        <li><a href="briefing-cycle-602-20260707T221118Z.html">briefing-cycle-602-20260707T221118Z.html</a></li>
+        <li><a href="briefing-subscription-cycle-601-20260707T221506Z.html">briefing-subscription-cycle-601-20260707T221506Z.html</a></li>
+        <li><a href="briefing-subscription-cycle-601.html">briefing-subscription-cycle-601.html</a></li>
+        <li><a href="cycle-602-20260707T221312Z.html">cycle-602-20260707T221312Z.html</a></li>
+        <li><a href="eval-bounty-cycle-601-20260707T221506Z.html">eval-bounty-cycle-601-20260707T221506Z.html</a></li>
+        <li><a href="eval-bounty-cycle-601.html">eval-bounty-cycle-601.html</a></li>
+        <li><a href="factory-iou-cycle-601-20260707T221506Z.html">factory-iou-cycle-601-20260707T221506Z.html</a></li>
+        <li><a href="factory-iou-cycle-601.html">factory-iou-cycle-601.html</a></li>
+        <li><a href="fitness-cycle-601.html">fitness-cycle-601.html</a></li>
+        <li><a href="fitness-cycle-602-20260707T221156Z.html">fitness-cycle-602-20260707T221156Z.html</a></li>
+        <li><a href="ledger-cycle-601.html">ledger-cycle-601.html</a></li>
+        <li><a href="ledger-cycle-602-20260707T221156Z.html">ledger-cycle-602-20260707T221156Z.html</a></li>
+        <li><a href="micro-tool-cycle-601.html">micro-tool-cycle-601.html</a></li>
+        <li><a href="micro-tool-cycle-602-20260707T221137Z.html">micro-tool-cycle-602-20260707T221137Z.html</a></li>
+        <li><a href="mythos-cycle-601.html">mythos-cycle-601.html</a></li>
+        <li><a href="mythos-cycle-602-20260707T221344Z.html">mythos-cycle-602-20260707T221344Z.html</a></li>
+        <li><a href="outreach-cycle-601.html">outreach-cycle-601.html</a></li>
+        <li><a href="outreach-cycle-602-20260707T221156Z.html">outreach-cycle-602-20260707T221156Z.html</a></li>
+        <li><a href="payer-funnel-cycle-601-20260707T221506Z.html">payer-funnel-cycle-601-20260707T221506Z.html</a></li>
+        <li><a href="payer-funnel-cycle-601.html">payer-funnel-cycle-601.html</a></li>
+        <li><a href="product-suite-cycle-601-20260707T221506Z.html">product-suite-cycle-601-20260707T221506Z.html</a></li>
+        <li><a href="product-suite-cycle-601.html">product-suite-cycle-601.html</a></li>
+        <li><a href="referral-cycle-601-20260707T221506Z.html">referral-cycle-601-20260707T221506Z.html</a></li>
+        <li><a href="referral-cycle-601.html">referral-cycle-601.html</a></li>
+        <li><a href="service-bundle-cycle-601-20260707T221506Z.html">service-bundle-cycle-601-20260707T221506Z.html</a></li>
+        <li><a href="service-bundle-cycle-601.html">service-bundle-cycle-601.html</a></li>
+        <li><a href="suite-bundle-cycle-601-20260707T221506Z.html">suite-bundle-cycle-601-20260707T221506Z.html</a></li>
+        <li><a href="suite-bundle-cycle-601.html">suite-bundle-cycle-601.html</a></li>
+        <li><a href="tip-cycle-602-20260707T221328Z.html">tip-cycle-602-20260707T221328Z.html</a></li>
+        <li><a href="trace-cycle-601-20260707T221506Z.html">trace-cycle-601-20260707T221506Z.html</a></li>
+        <li><a href="trace-cycle-601.html">trace-cycle-601.html</a></li>
+      </ul>
+    </section>
+    <footer>
+      Official landing: <a href="https://aetherforge.world/">https://aetherforge.world/</a> ·
+      Verify payments on <a href="https://testnet.xrpl.org/">XRPL Testnet Explorer</a>
+    </footer>
+  </div>
 </body>
 </html>

@@ -1,0 +1,26 @@
+{
+  "schema": "rsi_eaf_cross_factory_iou_v1",
+  "cycle_id": 602,
+  "updated_at": "2026-07-07T22:14:38.705375+00:00",
+  "status": "accept_inbound",
+  "network": "xrpl_testnet",
+  "currency": "RSI",
+  "issuer": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+  "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+  "usd_per_unit": 1.0,
+  "trust_line": {
+    "required": true,
+    "limit": "1000000",
+    "instructions": "Establish trust line to issuer rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN for currency RSI, then pay treasury with JSON memo factory_id:your-factory-slug"
+  },
+  "memo_templates": {
+    "json": {
+      "type": "revenue",
+      "factory_id": "your-factory-slug",
+      "amount_usd_est": 1.0
+    },
+    "plain": "factory_id:your-factory-slug"
+  },
+  "ingest_module": "observability/cross_factory_iou.py",
+  "fulfillment_url": "https://published-zeta.vercel.app/deliverables/factory-iou-cycle-602.json"
+}

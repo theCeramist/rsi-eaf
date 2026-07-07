@@ -1,0 +1,41 @@
+{
+  "schema": "rsi_eaf_payer_funnel_v1",
+  "cycle_id": 602,
+  "updated_at": "2026-07-07T22:20:48.876692+00:00",
+  "stages": {
+    "discover": {
+      "agent_pay_live": true,
+      "tip_live": true,
+      "llms_txt": true,
+      "well_known_agent_pay": true,
+      "conformance_payee": true
+    },
+    "quote": {
+      "quote_api": true,
+      "integrator_suite": true
+    },
+    "pay": {
+      "tip_manifest": true,
+      "tip_deep_link": true
+    },
+    "ingest": {
+      "payment_status_index": true
+    },
+    "fulfill": {
+      "service_catalog_live": true,
+      "fulfillment_index": true
+    }
+  },
+  "conversion_score": 12,
+  "external_payer_count": 2,
+  "organic_revenue_usd_est": 2.0,
+  "verified_revenue_events": 0,
+  "mesh_lanes_completed": [
+    "discovery",
+    "ingest",
+    "conversion",
+    "distribution"
+  ],
+  "bottleneck": "scale_distribution",
+  "evolution_directive": "Widen integrator wedge + referral chain"
+}

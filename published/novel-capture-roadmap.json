@@ -1,0 +1,418 @@
+{
+  "schema": "rsi_eaf_novel_capture_roadmap_v1",
+  "generated_at": "2026-07-07T22:20:19.149836+00:00",
+  "cycle_id": 602,
+  "evaluation": {
+    "schema": "rsi_eaf_capture_evaluation_v1",
+    "evaluated_at": "2026-07-07T22:20:18.446274+00:00",
+    "cycle_id": 602,
+    "economics": {
+      "net_usd_est": -1280.2028,
+      "organic_revenue_usd_est": 2.0,
+      "verified_revenue_events": null,
+      "external_organic": true
+    },
+    "surfaces": {
+      "agent_pay_version": "1.4",
+      "agent_pay_latest_version": "1.4",
+      "x402_phase": 2,
+      "phase1_products": [
+        "briefing_unlock",
+        "trace_export",
+        "micro_tool"
+      ],
+      "ingested_this_cycle": 0
+    },
+    "bottlenecks": [
+      "social_outreach_never_posted",
+      "deep_negative_net_requires_cost_guards"
+    ],
+    "strengths": [
+      "integrator_compliance_suite_live",
+      "stable_quote_artifacts",
+      "payment_status_api_ready",
+      "x402_phase1_gate_active"
+    ],
+    "verdict": "infrastructure_ready_distribution_weak"
+  },
+  "implemented_baseline": {
+    "conversion_segments": 10,
+    "agentic_loop": [
+      "discover",
+      "quote",
+      "pay",
+      "poll_status",
+      "fulfill"
+    ],
+    "agent_pay_target_version": "1.4",
+    "tags": "1-12"
+  },
+  "recommended_next": [
+    {
+      "id": "payee_conformance_target",
+      "phase": "P2",
+      "priority": 1,
+      "title": "Official x402/XRPL conformance payee",
+      "hypothesis": "Integrators need a live testnet payee; listing integrator-test-suite in x402 + XRPL docs drives Tag 3 payments.",
+      "buyer": "wallet_integrator",
+      "expected_delta_usd": 6.0,
+      "effort": "medium",
+      "dependencies": [
+        "integrator-test-suite.json",
+        "agent-pay v1.3"
+      ],
+      "implementation": {
+        "modules": [
+          "tools/integrator_wedge.py",
+          "tools/gist_distribution.py"
+        ],
+        "actions": [
+          "PR to coinbase/x402 examples with test suite URL",
+          "Gist: 'RSI-EAF reference payee' with scenario matrix",
+          "Add conformance badge to micro-tool deliverable"
+        ],
+        "verify": "external Tag 3 payment + integrator-test-suite scenario pass"
+      },
+      "urls": {
+        "test_suite": "https://published-zeta.vercel.app/integrator-test-suite.json",
+        "quote": "https://published-zeta.vercel.app/api/quote?product=micro_tool"
+      }
+    },
+    {
+      "id": "agent_webhook_callback",
+      "phase": "P2",
+      "priority": 2,
+      "title": "Payment-status webhook on ingest",
+      "hypothesis": "Agents polling is friction; JSON memo callback_url triggers HTTP POST on fulfill.",
+      "buyer": "orchestrator",
+      "expected_delta_usd": 4.0,
+      "effort": "medium",
+      "dependencies": [
+        "payment_status.py",
+        "revenue_ingest hooks"
+      ],
+      "implementation": {
+        "modules": [
+          "observability/payment_webhook.py",
+          "observability/revenue_ingest.py"
+        ],
+        "actions": [
+          "Parse callback_url from agent JSON memo",
+          "POST payment-status payload on ingest + fulfill",
+          "Publish webhook schema in agent-pay v1.4"
+        ],
+        "verify": "test harness receives webhook within 30s of testnet pay"
+      },
+      "urls": {
+        "status_template": "https://published-zeta.vercel.app/payment-status/{tx_hash}.json"
+      }
+    },
+    {
+      "id": "mcp_payee_server",
+      "phase": "P2",
+      "priority": 3,
+      "title": "Native MCP payee tools",
+      "hypothesis": "MCP-native agents skip HTTP discovery; rsi_eaf_factory MCP drives quote\u2192pay\u2192verify.",
+      "buyer": "research_agent",
+      "expected_delta_usd": 5.0,
+      "effort": "high",
+      "dependencies": [
+        "mcp_tools in agent-pay",
+        "quote API"
+      ],
+      "implementation": {
+        "modules": [
+          "mcps/rsi_eaf_factory/",
+          "tools/agent_pay_agentic.py"
+        ],
+        "actions": [
+          "MCP tools: get_agent_pay, get_quote, verify_payment, list_capabilities",
+          "Register in llms.txt + agent manifest directories"
+        ],
+        "verify": "MCP client completes pay loop against testnet"
+      },
+      "urls": {
+        "catalog": "https://published-zeta.vercel.app/agent-pay-latest.json"
+      }
+    }
+  ],
+  "plays": {
+    "P2": [
+      {
+        "id": "payee_conformance_target",
+        "phase": "P2",
+        "priority": 1,
+        "title": "Official x402/XRPL conformance payee",
+        "hypothesis": "Integrators need a live testnet payee; listing integrator-test-suite in x402 + XRPL docs drives Tag 3 payments.",
+        "buyer": "wallet_integrator",
+        "expected_delta_usd": 6.0,
+        "effort": "medium",
+        "dependencies": [
+          "integrator-test-suite.json",
+          "agent-pay v1.3"
+        ],
+        "implementation": {
+          "modules": [
+            "tools/integrator_wedge.py",
+            "tools/gist_distribution.py"
+          ],
+          "actions": [
+            "PR to coinbase/x402 examples with test suite URL",
+            "Gist: 'RSI-EAF reference payee' with scenario matrix",
+            "Add conformance badge to micro-tool deliverable"
+          ],
+          "verify": "external Tag 3 payment + integrator-test-suite scenario pass"
+        },
+        "urls": {
+          "test_suite": "https://published-zeta.vercel.app/integrator-test-suite.json",
+          "quote": "https://published-zeta.vercel.app/api/quote?product=micro_tool"
+        }
+      },
+      {
+        "id": "agent_webhook_callback",
+        "phase": "P2",
+        "priority": 2,
+        "title": "Payment-status webhook on ingest",
+        "hypothesis": "Agents polling is friction; JSON memo callback_url triggers HTTP POST on fulfill.",
+        "buyer": "orchestrator",
+        "expected_delta_usd": 4.0,
+        "effort": "medium",
+        "dependencies": [
+          "payment_status.py",
+          "revenue_ingest hooks"
+        ],
+        "implementation": {
+          "modules": [
+            "observability/payment_webhook.py",
+            "observability/revenue_ingest.py"
+          ],
+          "actions": [
+            "Parse callback_url from agent JSON memo",
+            "POST payment-status payload on ingest + fulfill",
+            "Publish webhook schema in agent-pay v1.4"
+          ],
+          "verify": "test harness receives webhook within 30s of testnet pay"
+        },
+        "urls": {
+          "status_template": "https://published-zeta.vercel.app/payment-status/{tx_hash}.json"
+        }
+      },
+      {
+        "id": "mcp_payee_server",
+        "phase": "P2",
+        "priority": 3,
+        "title": "Native MCP payee tools",
+        "hypothesis": "MCP-native agents skip HTTP discovery; rsi_eaf_factory MCP drives quote\u2192pay\u2192verify.",
+        "buyer": "research_agent",
+        "expected_delta_usd": 5.0,
+        "effort": "high",
+        "dependencies": [
+          "mcp_tools in agent-pay",
+          "quote API"
+        ],
+        "implementation": {
+          "modules": [
+            "mcps/rsi_eaf_factory/",
+            "tools/agent_pay_agentic.py"
+          ],
+          "actions": [
+            "MCP tools: get_agent_pay, get_quote, verify_payment, list_capabilities",
+            "Register in llms.txt + agent manifest directories"
+          ],
+          "verify": "MCP client completes pay loop against testnet"
+        },
+        "urls": {
+          "catalog": "https://published-zeta.vercel.app/agent-pay-latest.json"
+        }
+      },
+      {
+        "id": "x402_phase2_ingest",
+        "phase": "P2",
+        "priority": 4,
+        "title": "x402 settlement \u2192 treasury ingest bridge",
+        "hypothesis": "Agents paying via 402 never hit destination-tag ingest; Phase 2 closes the loop.",
+        "buyer": "integrator",
+        "expected_delta_usd": 8.0,
+        "effort": "medium",
+        "dependencies": [
+          "X402_INGEST_ENABLED",
+          "x402_payment.py"
+        ],
+        "implementation": {
+          "modules": [
+            "observability/x402_payment.py",
+            "observability/revenue_ingest.py"
+          ],
+          "actions": [
+            "Enable X402_INGEST_ENABLED after facilitator smoke",
+            "Map settlement memos to product_id + record payment-status"
+          ],
+          "verify": "402-only payment appears in ledger without manual tag pay"
+        },
+        "env": {
+          "X402_PHASE": "2",
+          "X402_INGEST_ENABLED": "true"
+        }
+      },
+      {
+        "id": "eval_bounty_lane",
+        "phase": "P2",
+        "priority": 5,
+        "title": "Agent eval bounty (Tag 12)",
+        "hypothesis": "Eval harnesses pay for verifiable trace exports tied to their run_id.",
+        "buyer": "trace_benchmark",
+        "expected_delta_usd": 12.0,
+        "effort": "medium",
+        "dependencies": [
+          "trace_export product",
+          "payment_intent Tag 12"
+        ],
+        "implementation": {
+          "modules": [
+            "observability/payment_intent.py",
+            "observability/service_fulfillment.py"
+          ],
+          "actions": [
+            "Tag 12: eval_bounty with memo run_id:UUID",
+            "Deliverable embeds run_id + gate trace hash"
+          ],
+          "verify": "external Tag 6/12 payment from non-factory wallet"
+        }
+      },
+      {
+        "id": "rss_agent_feed",
+        "phase": "P2",
+        "priority": 9,
+        "title": "Machine-readable payment event feed",
+        "hypothesis": "Agents subscribe to payment RSS/JSONL instead of polling payment-status.",
+        "buyer": "orchestrator",
+        "expected_delta_usd": 2.0,
+        "effort": "low",
+        "dependencies": [
+          "payment_status index"
+        ],
+        "implementation": {
+          "modules": [
+            "observability/payment_status.py",
+            "tools/bot_discovery.py"
+          ],
+          "actions": [
+            "Publish payment-events.jsonl + RSS from payment-status-index",
+            "Link from llms.txt and agent-pay discovery_urls"
+          ],
+          "verify": "feed updates within 1 cycle of test payment"
+        }
+      },
+      {
+        "id": "human_zero_friction_tip",
+        "phase": "P2",
+        "priority": 10,
+        "title": "QR + deep-link tip surface",
+        "hypothesis": "Humans won't copy r-address; QR to XUMM/testnet wallet with tag pre-filled converts.",
+        "buyer": "human_backer",
+        "expected_delta_usd": 2.0,
+        "effort": "low",
+        "dependencies": [
+          "tip-manifest",
+          "aetherforge CTA"
+        ],
+        "implementation": {
+          "modules": [
+            "tools/publish_tools.py",
+            "published/index.html"
+          ],
+          "actions": [
+            "tip-deep-link.json with wallet URI scheme",
+            "QR on index.html + aetherforge pulse panel"
+          ],
+          "verify": "human tip from non-factory wallet on backer wall"
+        }
+      }
+    ],
+    "P3": [
+      {
+        "id": "dynamic_quote_pricing",
+        "phase": "P3",
+        "priority": 6,
+        "title": "Scarcity-adjusted quote API",
+        "hypothesis": "Dynamic drops based on cycle treasury inflow creates urgency for agent buyers.",
+        "buyer": "research_agent",
+        "expected_delta_usd": 3.0,
+        "effort": "low",
+        "dependencies": [
+          "quote API",
+          "treasury monitor"
+        ],
+        "implementation": {
+          "modules": [
+            "tools/agent_pay_agentic.py",
+            "published/api/quote.py"
+          ],
+          "actions": [
+            "Quote includes scarcity_multiplier from 24h inbound count",
+            "Cap multiplier at 1.5x for fairness"
+          ],
+          "verify": "quote JSON shows multiplier field; ingest still uses floor USD"
+        }
+      },
+      {
+        "id": "compliance_certificate",
+        "phase": "P3",
+        "priority": 7,
+        "title": "Signed integrator compliance cert",
+        "hypothesis": "Wallet vendors pay for auditable proof they passed all test-suite scenarios.",
+        "buyer": "integrator",
+        "expected_delta_usd": 15.0,
+        "effort": "high",
+        "dependencies": [
+          "integrator-test-suite",
+          "payment-status chain"
+        ],
+        "implementation": {
+          "modules": [
+            "tools/integrator_compliance.py"
+          ],
+          "actions": [
+            "After N scenario txs, issue compliance-cert-cycle-N.json",
+            "Chain: scenario tx_hashes \u2192 fulfillment \u2192 cert signature"
+          ],
+          "verify": "cert references real XRPL txs queryable on testnet explorer"
+        }
+      },
+      {
+        "id": "cross_factory_trust_line",
+        "phase": "P3",
+        "priority": 8,
+        "title": "Issued-currency agent-to-agent lane",
+        "hypothesis": "Other autonomous factories pay via factory IOU trust line instead of raw XRP.",
+        "buyer": "meta_factory",
+        "expected_delta_usd": 20.0,
+        "effort": "very_high",
+        "dependencies": [
+          "mainnet_readiness",
+          "XRPL issued currency hooks"
+        ],
+        "implementation": {
+          "modules": [
+            "tools/xrpl_tools.py",
+            "observability/revenue_ingest.py"
+          ],
+          "actions": [
+            "Issue RSI_CREDIT testnet IOU",
+            "Accept IOU payments with memo factory_id"
+          ],
+          "verify": "IOU payment ingested as verified revenue"
+        }
+      }
+    ]
+  },
+  "immediate_actions": [
+    "enable SOCIAL_POST_API or manual post of integrator wedge"
+  ],
+  "discovery_urls": {
+    "roadmap": "https://published-zeta.vercel.app/novel-capture-roadmap.json",
+    "agent_pay": "https://published-zeta.vercel.app/agent-pay-latest.json",
+    "integrator_suite": "https://published-zeta.vercel.app/integrator-test-suite.json",
+    "conversion_playbook": "https://published-zeta.vercel.app/prospect-pack-cycle-602.json"
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "schema": "rsi_eaf_tool_registry_v1",
+  "updated_at": "2026-07-07T22:20:59.471216+00:00",
+  "tools": {
+    "distribution_tools": {
+      "category": "distribution",
+      "module": "tools/distribution_tools.py",
+      "artifacts": [
+        "tip-manifest.json",
+        "sitemap.xml"
+      ],
+      "gates": [
+        "live_url_reachable"
+      ],
+      "payer_stage": "discover"
+    },
+    "github_distribution": {
+      "category": "distribution",
+      "module": "tools/github_distribution.py",
+      "artifacts": [
+        "github_issue",
+        "gist"
+      ],
+      "gates": [],
+      "payer_stage": "discover"
+    },
+    "social_distribution": {
+      "category": "distribution",
+      "module": "tools/social_distribution.py",
+      "artifacts": [
+        "social-feed.json",
+        "social-rss.xml"
+      ],
+      "gates": [],
+      "payer_stage": "discover"
+    },
+    "revenue_acceleration": {
+      "category": "distribution",
+      "module": "tools/revenue_acceleration.py",
+      "artifacts": [
+        "outreach-bundle"
+      ],
+      "gates": [],
+      "payer_stage": "discover"
+    },
+    "bot_discovery": {
+      "category": "payer_capture",
+      "module": "tools/bot_discovery.py",
+      "artifacts": [
+        "bot-discovery.json",
+        "llms.txt"
+      ],
+      "gates": [],
+      "payer_stage": "discover"
+    },
+    "integrator_wedge": {
+      "category": "payer_capture",
+      "module": "tools/integrator_wedge.py",
+      "artifacts": [
+        "integrator-wedge.json"
+      ],
+      "gates": [],
+      "payer_stage": "quote"
+    },
+    "customer_conversion": {
+      "category": "payer_capture",
+      "module": "tools/customer_conversion.py",
+      "artifacts": [
+        "prospect-pack",
+        "conversion_state.json"
+      ],
+      "gates": [
+        "verified_revenue_pipeline"
+      ],
+      "payer_stage": "convert"
+    },
+    "novel_capture_executor": {
+      "category": "payer_capture",
+      "module": "tools/novel_capture_executor.py",
+      "artifacts": [
+        "conformance-payee.json",
+        "mcp-payee-catalog.json"
+      ],
+      "gates": [],
+      "payer_stage": "pay"
+    },
+    "fitness_revenue_capture": {
+      "category": "payer_capture",
+      "module": "tools/fitness_revenue_capture.py",
+      "artifacts": [
+        "agent-pay.json",
+        "service-catalog.json"
+      ],
+      "gates": [
+        "verified_revenue_pipeline",
+        "live_url_reachable"
+      ],
+      "payer_stage": "fulfill"
+    },
+    "agent_pay_agentic": {
+      "category": "payer_capture",
+      "module": "tools/agent_pay_agentic.py",
+      "artifacts": [
+        "quotes/",
+        "integrator-test-suite.json"
+      ],
+      "gates": [],
+      "payer_stage": "quote"
+    }
+  },
+  "distribution_count": 4,
+  "payer_capture_count": 6,
+  "evolution_priority": {
+    "priority_actions": [
+      "parallel_payer_mesh",
+      "payer_funnel_refresh",
+      "fitness_revenue_capture",
+      "accelerate_treasury_surfaces",
+      "treasury_ingest_github"
+    ],
+    "tool_ids": [
+      "distribution_tools",
+      "github_distribution",
+      "social_distribution",
+      "revenue_acceleration",
+      "bot_discovery",
+      "integrator_wedge",
+      "customer_conversion",
+      "novel_capture_executor",
+      "fitness_revenue_capture",
+      "agent_pay_agentic"
+    ]
+  }
+}

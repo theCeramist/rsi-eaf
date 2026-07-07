@@ -1,0 +1,142 @@
+{
+  "schema": "rsi_eaf_product_suite_index_v1",
+  "cycle_id": 601,
+  "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+  "updated_at": "2026-07-07T22:17:09.300765+00:00",
+  "suite_count": 14,
+  "novelty_count": 5,
+  "discovery": {
+    "agent_pay": "https://published-zeta.vercel.app/agent-pay.json",
+    "service_catalog": "https://published-zeta.vercel.app/service-catalog.json",
+    "novel_capture_roadmap": "https://published-zeta.vercel.app/novel-capture-roadmap.json",
+    "payer_funnel": "https://published-zeta.vercel.app/payer-funnel.json"
+  },
+  "products": [
+    {
+      "service_id": "xrpl_market_briefing",
+      "product_id": "briefing-cycle-601",
+      "title": "XRPL Agent Economy Briefing",
+      "price_usd": 2.0,
+      "novelty": false,
+      "landing_url": "https://published-zeta.vercel.app/briefing-cycle-601.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/briefing-cycle-601.json"
+    },
+    {
+      "service_id": "treasury_tip_validator",
+      "product_id": "micro-tool-cycle-601",
+      "title": "XRPL Treasury Payment Validator",
+      "price_usd": 3.0,
+      "novelty": false,
+      "landing_url": "https://published-zeta.vercel.app/micro-tool-cycle-601.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-601.json"
+    },
+    {
+      "service_id": "agent_cycle_intel_bundle",
+      "product_id": "service-bundle-cycle-601",
+      "title": "Factory Cycle Intelligence Bundle",
+      "price_usd": 2.5,
+      "novelty": false,
+      "landing_url": "https://published-zeta.vercel.app/service-bundle-cycle-601.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/service-bundle-cycle-601.json"
+    },
+    {
+      "service_id": "mythos_narrative_artifact",
+      "product_id": "mythos-cycle-601",
+      "title": "Mythos Commerce Narrative Artifact",
+      "price_usd": 1.5,
+      "novelty": false,
+      "landing_url": "https://published-zeta.vercel.app/mythos-cycle-601.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/mythos-cycle-601.json"
+    },
+    {
+      "service_id": "xrpl_trace_export",
+      "product_id": "trace-export-cycle-601",
+      "title": "XRPL Cycle Trace Export",
+      "price_usd": 4.0,
+      "novelty": false,
+      "landing_url": "https://published-zeta.vercel.app/trace-cycle-601.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/trace-export-cycle-601.json"
+    },
+    {
+      "service_id": "factory_fitness_report",
+      "product_id": "fitness-report-cycle-601",
+      "title": "Factory Fitness Score Report",
+      "price_usd": 2.0,
+      "novelty": false,
+      "landing_url": "https://published-zeta.vercel.app/fitness-cycle-601.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/fitness-report-cycle-601.json"
+    },
+    {
+      "service_id": "revenue_outreach_pack",
+      "product_id": "outreach-pack-cycle-601",
+      "title": "Revenue Outreach Pack",
+      "price_usd": 3.5,
+      "novelty": false,
+      "landing_url": "https://published-zeta.vercel.app/outreach-cycle-601.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/outreach-pack-cycle-601.json"
+    },
+    {
+      "service_id": "ledger_audit_snapshot",
+      "product_id": "ledger-audit-cycle-601",
+      "title": "Economic Ledger Audit Snapshot",
+      "price_usd": 5.0,
+      "novelty": false,
+      "landing_url": "https://published-zeta.vercel.app/ledger-cycle-601.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/ledger-audit-cycle-601.json"
+    },
+    {
+      "service_id": "referral_attribution",
+      "product_id": "referral-cycle-601",
+      "title": "Referral Chain Attribution",
+      "price_usd": 1.0,
+      "novelty": true,
+      "landing_url": "https://published-zeta.vercel.app/referral-cycle-601.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/referral-cycle-601.json"
+    },
+    {
+      "service_id": "eval_bounty",
+      "product_id": "eval-bounty-cycle-601",
+      "title": "Agent Eval Bounty Export",
+      "price_usd": 6.0,
+      "novelty": true,
+      "landing_url": "https://published-zeta.vercel.app/eval-bounty-cycle-601.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/eval-bounty-cycle-601.json"
+    },
+    {
+      "service_id": "cross_factory_iou",
+      "product_id": "factory-iou-cycle-601",
+      "title": "Cross-Factory IOU Settlement Receipt",
+      "price_usd": 1.0,
+      "novelty": true,
+      "landing_url": "https://published-zeta.vercel.app/factory-iou-cycle-601.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/factory-iou-cycle-601.json"
+    },
+    {
+      "service_id": "briefing_subscription",
+      "product_id": "briefing-subscription-cycle-601",
+      "title": "Briefing Subscription Entitlement",
+      "price_usd": 5.0,
+      "novelty": false,
+      "landing_url": "https://published-zeta.vercel.app/briefing-subscription-cycle-601.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/briefing-subscription-cycle-601.json"
+    },
+    {
+      "service_id": "payer_funnel_export",
+      "product_id": "payer-funnel-cycle-601",
+      "title": "Payer Funnel Intelligence Export",
+      "price_usd": 4.5,
+      "novelty": true,
+      "landing_url": "https://published-zeta.vercel.app/payer-funnel-cycle-601.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/payer-funnel-cycle-601.json"
+    },
+    {
+      "service_id": "suite_novelty_bundle",
+      "product_id": "suite-bundle-cycle-601",
+      "title": "Novelty Suite Bundle",
+      "price_usd": 9.0,
+      "novelty": true,
+      "landing_url": "https://published-zeta.vercel.app/suite-bundle-cycle-601.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/suite-bundle-cycle-601.json"
+    }
+  ]
+}

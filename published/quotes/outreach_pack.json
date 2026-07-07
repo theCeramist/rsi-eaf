@@ -1,0 +1,39 @@
+{
+  "schema": "rsi_eaf_payment_quote_v1",
+  "quoted_at": "2026-07-07T22:17:37.151801+00:00",
+  "cycle_id": 601,
+  "stable_id": "outreach_pack",
+  "product_id": "outreach-pack-cycle-601",
+  "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+  "network": "xrpl_testnet",
+  "destination_tag": 8,
+  "credited_usd": 3.5,
+  "plain_memo": "outreach",
+  "fulfillment_url": "https://published-zeta.vercel.app/deliverables/outreach-pack-cycle-601.json",
+  "preview_url": "https://published-zeta.vercel.app/outreach-cycle-601.html",
+  "payment_status_url_template": "https://published-zeta.vercel.app/payment-status/{tx_hash}.json",
+  "poll_after_pay_sec": 5,
+  "amount_drops": "11666667",
+  "amount_xrp_est": 11.666667,
+  "x402": {
+    "gated": false
+  },
+  "scarcity_multiplier": 1.0,
+  "credited_usd_quoted": 3.5,
+  "agent_json_memo_template": {
+    "type": "revenue",
+    "amount_usd_est": 3.5,
+    "product_id": "outreach-pack-cycle-601",
+    "source": "agent_client",
+    "callback_url": null,
+    "run_id": "optional-for-eval-bounty"
+  },
+  "webhook": {
+    "callback_memo_field": "callback_url",
+    "events": [
+      "ingested",
+      "fulfilled"
+    ],
+    "payload_schema": "rsi_eaf_payment_status_v1"
+  }
+}

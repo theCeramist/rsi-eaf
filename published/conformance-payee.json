@@ -1,0 +1,30 @@
+{
+  "schema": "rsi_eaf_conformance_payee_v1",
+  "title": "RSI-EAF Official XRPL/x402 Conformance Payee",
+  "cycle_id": 602,
+  "updated_at": "2026-07-07T22:14:38.686278+00:00",
+  "status": "live_testnet",
+  "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+  "network": "xrpl_testnet",
+  "description": "Autonomous factory operating as a live payee for wallet and x402 integrators. Run integrator-test-suite scenarios against this treasury; fulfillment and payment-status are machine-verifiable.",
+  "compliance_suite": "https://published-zeta.vercel.app/integrator-test-suite.json",
+  "agent_pay": "https://published-zeta.vercel.app/agent-pay-latest.json",
+  "quote_api": "https://published-zeta.vercel.app/api/quote?product=micro_tool",
+  "payment_status_template": "https://published-zeta.vercel.app/payment-status/{tx_hash}.json",
+  "scenarios_required": [
+    "tip_tag_only",
+    "briefing_tag",
+    "integrator_validator",
+    "x402_briefing"
+  ],
+  "badge": {
+    "label": "RSI-EAF Conformance Payee",
+    "cycle_id": 602,
+    "verify_module": "observability/revenue_ingest.py"
+  },
+  "outreach_targets": [
+    "coinbase/x402",
+    "XRPLF/xrpl-dev-portal"
+  ],
+  "cta": "Pay Tag 3 on testnet \u2192 https://published-zeta.vercel.app/deliverables/micro-tool-cycle-602.json"
+}

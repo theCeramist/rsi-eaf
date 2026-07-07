@@ -1,0 +1,1225 @@
+{
+  "schema": "rsi_eaf_agent_pay_v1",
+  "version": "1.4",
+  "updated_at": "2026-07-07T22:17:37.118411+00:00",
+  "cycle_id": 601,
+  "factory": "RSI-EAF",
+  "network": "xrpl_testnet",
+  "currency": "XRP",
+  "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+  "recommended_products": [
+    {
+      "rank": 1,
+      "id": "briefing_unlock",
+      "reason": "Best for humans and research agents; live x402 gate when X402_PHASE>=1"
+    },
+    {
+      "rank": 2,
+      "id": "trace_export",
+      "reason": "Verifiable factory execution proof for eval harnesses and researchers"
+    },
+    {
+      "rank": 3,
+      "id": "micro_tool",
+      "reason": "Best for wallet/x402 builders integrating XRPL agent payments"
+    },
+    {
+      "rank": 4,
+      "id": "outreach_pack",
+      "reason": "Meta-factory conversion kit \u2014 copy our payer-capture playbook"
+    },
+    {
+      "rank": 5,
+      "id": "ledger_audit",
+      "reason": "Citable economics ground truth for agent-economy research"
+    },
+    {
+      "rank": 6,
+      "id": "payer_funnel_export",
+      "reason": "Novel conversion intelligence \u2014 where external payers stall in the mesh"
+    },
+    {
+      "rank": 7,
+      "id": "suite_novelty_bundle",
+      "reason": "Discounted multi-artifact bundle for eval and orchestration onboarding"
+    },
+    {
+      "rank": 8,
+      "id": "cross_factory_iou",
+      "reason": "Meta-factory issued-currency lane for agent-to-agent settlement"
+    }
+  ],
+  "integration_quickstart": {
+    "discover": "https://published-zeta.vercel.app/agent-pay.json",
+    "catalog": "https://published-zeta.vercel.app/service-catalog.json",
+    "pay": "XRP \u2192 rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN with destination_tag from products[]",
+    "fulfill": "https://published-zeta.vercel.app/deliverables/{product_id}.json",
+    "verify": "observability/revenue_ingest.py ingests within 1 cycle"
+  },
+  "easiest_payment": {
+    "instruction": "Send any amount of XRP to treasury_address with destination_tag=1. No memo required.",
+    "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+    "destination_tag": 1,
+    "credited_usd_est": 1.0,
+    "amount_xrp_min": 1e-05
+  },
+  "products": [
+    {
+      "id": "tip",
+      "destination_tag": 1,
+      "credited_usd": 1.0,
+      "plain_memo": "tip",
+      "description": "General support \u2014 easiest path (tag only, no memo)",
+      "buyer": "humans",
+      "service_type": "donation",
+      "x402": {
+        "enabled": false,
+        "reason": "tips use destination_tag only; no invoice-gated deliverable"
+      }
+    },
+    {
+      "id": "briefing_unlock",
+      "destination_tag": 2,
+      "credited_usd": 2.0,
+      "plain_memo": "briefing",
+      "product_id": "briefing-cycle-601",
+      "live_url": "https://published-zeta.vercel.app/briefing-cycle-601.html",
+      "description": "XRPL agent economy briefing: payment-flow analysis, economics, product lineup, integration checklist (HTML preview + JSON)",
+      "buyer": "research agents and operators",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/briefing-cycle-601.json",
+      "service_type": "paid_report",
+      "x402": {
+        "enabled": true,
+        "middleware_active": true,
+        "status": "live",
+        "scheme": "exact",
+        "network_caip2": "xrpl:1",
+        "asset": "XRP",
+        "pay_to": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+        "amount_drops": "6666667",
+        "amount_xrp_est": 6.666667,
+        "invoice_id": "briefing-cycle-601",
+        "destination_tag": 2,
+        "source_tag": 20260703,
+        "max_timeout_seconds": 600,
+        "protected_resource": "https://published-zeta.vercel.app/deliverables/briefing-cycle-601.json",
+        "preview_resource": "https://published-zeta.vercel.app/briefing-cycle-601.html",
+        "payment_requirements_template": {
+          "scheme": "exact",
+          "network": "xrpl:1",
+          "asset": "XRP",
+          "payTo": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+          "amount": "6666667",
+          "maxTimeoutSeconds": 600,
+          "extra": {
+            "invoiceId": "briefing-cycle-601",
+            "sourceTag": 20260703,
+            "destinationTag": 2
+          }
+        },
+        "phase1_pilot": true
+      }
+    },
+    {
+      "id": "micro_tool",
+      "destination_tag": 3,
+      "credited_usd": 3.0,
+      "plain_memo": "tool",
+      "product_id": "micro-tool-cycle-601",
+      "live_url": "https://published-zeta.vercel.app/micro-tool-cycle-601.html",
+      "description": "Treasury validator v2: tags 1\u20139, worked examples, live flow samples, x402 hooks",
+      "buyer": "wallet and x402 integrators",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-601.json",
+      "service_type": "paid_tool",
+      "x402": {
+        "enabled": true,
+        "middleware_active": true,
+        "status": "live",
+        "scheme": "exact",
+        "network_caip2": "xrpl:1",
+        "asset": "XRP",
+        "pay_to": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+        "amount_drops": "10000000",
+        "amount_xrp_est": 10.0,
+        "invoice_id": "micro-tool-cycle-601",
+        "destination_tag": 3,
+        "source_tag": 20260703,
+        "max_timeout_seconds": 600,
+        "protected_resource": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-601.json",
+        "preview_resource": "https://published-zeta.vercel.app/micro-tool-cycle-601.html",
+        "payment_requirements_template": {
+          "scheme": "exact",
+          "network": "xrpl:1",
+          "asset": "XRP",
+          "payTo": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+          "amount": "10000000",
+          "maxTimeoutSeconds": 600,
+          "extra": {
+            "invoiceId": "micro-tool-cycle-601",
+            "sourceTag": 20260703,
+            "destinationTag": 3
+          }
+        },
+        "phase1_pilot": true
+      }
+    },
+    {
+      "id": "agent_service",
+      "destination_tag": 4,
+      "credited_usd": 2.5,
+      "plain_memo": "service",
+      "product_id": "service-bundle-cycle-601",
+      "live_url": "https://published-zeta.vercel.app/service-catalog.json",
+      "description": "Orchestrator bundle: trace phases, gate trends, economics, agent-pay snapshot",
+      "buyer": "ACP / swarm orchestrator agents",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/service-bundle-cycle-601.json",
+      "service_type": "agent_api",
+      "x402": {
+        "enabled": true,
+        "middleware_active": false,
+        "status": "metadata_only",
+        "scheme": "exact",
+        "network_caip2": "xrpl:1",
+        "asset": "XRP",
+        "pay_to": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+        "amount_drops": "8333333",
+        "amount_xrp_est": 8.333333,
+        "invoice_id": "service-bundle-cycle-601",
+        "destination_tag": 4,
+        "source_tag": 20260703,
+        "max_timeout_seconds": 600,
+        "protected_resource": "https://published-zeta.vercel.app/deliverables/service-bundle-cycle-601.json",
+        "preview_resource": "https://published-zeta.vercel.app/service-catalog.json",
+        "payment_requirements_template": {
+          "scheme": "exact",
+          "network": "xrpl:1",
+          "asset": "XRP",
+          "payTo": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+          "amount": "8333333",
+          "maxTimeoutSeconds": 600,
+          "extra": {
+            "invoiceId": "service-bundle-cycle-601",
+            "sourceTag": 20260703,
+            "destinationTag": 4
+          }
+        },
+        "phase1_pilot": false
+      }
+    },
+    {
+      "id": "mythos_artifact",
+      "destination_tag": 5,
+      "credited_usd": 1.5,
+      "plain_memo": "mythos",
+      "product_id": "mythos-cycle-601",
+      "live_url": "https://published-zeta.vercel.app/mythos-cycle-601.html",
+      "description": "Narrative commerce artifact for aetherforge lane",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/mythos-cycle-601.json",
+      "service_type": "creative_commerce",
+      "x402": {
+        "enabled": true,
+        "middleware_active": false,
+        "status": "metadata_only",
+        "scheme": "exact",
+        "network_caip2": "xrpl:1",
+        "asset": "XRP",
+        "pay_to": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+        "amount_drops": "5000000",
+        "amount_xrp_est": 5.0,
+        "invoice_id": "mythos-cycle-601",
+        "destination_tag": 5,
+        "source_tag": 20260703,
+        "max_timeout_seconds": 600,
+        "protected_resource": "https://published-zeta.vercel.app/deliverables/mythos-cycle-601.json",
+        "preview_resource": "https://published-zeta.vercel.app/mythos-cycle-601.html",
+        "payment_requirements_template": {
+          "scheme": "exact",
+          "network": "xrpl:1",
+          "asset": "XRP",
+          "payTo": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+          "amount": "5000000",
+          "maxTimeoutSeconds": 600,
+          "extra": {
+            "invoiceId": "mythos-cycle-601",
+            "sourceTag": 20260703,
+            "destinationTag": 5
+          }
+        },
+        "phase1_pilot": false
+      }
+    },
+    {
+      "id": "trace_export",
+      "destination_tag": 6,
+      "credited_usd": 4.0,
+      "plain_memo": "trace",
+      "product_id": "trace-export-cycle-601",
+      "live_url": "https://published-zeta.vercel.app/trace-cycle-601.html",
+      "description": "Structured cycle trace export for observability agents",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/trace-export-cycle-601.json",
+      "service_type": "observability_export",
+      "x402": {
+        "enabled": true,
+        "middleware_active": true,
+        "status": "live",
+        "scheme": "exact",
+        "network_caip2": "xrpl:1",
+        "asset": "XRP",
+        "pay_to": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+        "amount_drops": "13333333",
+        "amount_xrp_est": 13.333333,
+        "invoice_id": "trace-export-cycle-601",
+        "destination_tag": 6,
+        "source_tag": 20260703,
+        "max_timeout_seconds": 600,
+        "protected_resource": "https://published-zeta.vercel.app/deliverables/trace-export-cycle-601.json",
+        "preview_resource": "https://published-zeta.vercel.app/trace-cycle-601.html",
+        "payment_requirements_template": {
+          "scheme": "exact",
+          "network": "xrpl:1",
+          "asset": "XRP",
+          "payTo": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+          "amount": "13333333",
+          "maxTimeoutSeconds": 600,
+          "extra": {
+            "invoiceId": "trace-export-cycle-601",
+            "sourceTag": 20260703,
+            "destinationTag": 6
+          }
+        },
+        "phase1_pilot": true
+      }
+    },
+    {
+      "id": "fitness_report",
+      "destination_tag": 7,
+      "credited_usd": 2.0,
+      "plain_memo": "fitness",
+      "product_id": "fitness-report-cycle-601",
+      "live_url": "https://published-zeta.vercel.app/fitness-cycle-601.html",
+      "description": "Factory fitness score and economics health report",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/fitness-report-cycle-601.json",
+      "service_type": "ops_report",
+      "x402": {
+        "enabled": true,
+        "middleware_active": false,
+        "status": "metadata_only",
+        "scheme": "exact",
+        "network_caip2": "xrpl:1",
+        "asset": "XRP",
+        "pay_to": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+        "amount_drops": "6666667",
+        "amount_xrp_est": 6.666667,
+        "invoice_id": "fitness-report-cycle-601",
+        "destination_tag": 7,
+        "source_tag": 20260703,
+        "max_timeout_seconds": 600,
+        "protected_resource": "https://published-zeta.vercel.app/deliverables/fitness-report-cycle-601.json",
+        "preview_resource": "https://published-zeta.vercel.app/fitness-cycle-601.html",
+        "payment_requirements_template": {
+          "scheme": "exact",
+          "network": "xrpl:1",
+          "asset": "XRP",
+          "payTo": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+          "amount": "6666667",
+          "maxTimeoutSeconds": 600,
+          "extra": {
+            "invoiceId": "fitness-report-cycle-601",
+            "sourceTag": 20260703,
+            "destinationTag": 7
+          }
+        },
+        "phase1_pilot": false
+      }
+    },
+    {
+      "id": "outreach_pack",
+      "destination_tag": 8,
+      "credited_usd": 3.5,
+      "plain_memo": "outreach",
+      "product_id": "outreach-pack-cycle-601",
+      "live_url": "https://published-zeta.vercel.app/outreach-cycle-601.html",
+      "description": "Share-ready outreach copy and tip links for distribution",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/outreach-pack-cycle-601.json",
+      "service_type": "growth_pack",
+      "x402": {
+        "enabled": true,
+        "middleware_active": false,
+        "status": "metadata_only",
+        "scheme": "exact",
+        "network_caip2": "xrpl:1",
+        "asset": "XRP",
+        "pay_to": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+        "amount_drops": "11666667",
+        "amount_xrp_est": 11.666667,
+        "invoice_id": "outreach-pack-cycle-601",
+        "destination_tag": 8,
+        "source_tag": 20260703,
+        "max_timeout_seconds": 600,
+        "protected_resource": "https://published-zeta.vercel.app/deliverables/outreach-pack-cycle-601.json",
+        "preview_resource": "https://published-zeta.vercel.app/outreach-cycle-601.html",
+        "payment_requirements_template": {
+          "scheme": "exact",
+          "network": "xrpl:1",
+          "asset": "XRP",
+          "payTo": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+          "amount": "11666667",
+          "maxTimeoutSeconds": 600,
+          "extra": {
+            "invoiceId": "outreach-pack-cycle-601",
+            "sourceTag": 20260703,
+            "destinationTag": 8
+          }
+        },
+        "phase1_pilot": false
+      }
+    },
+    {
+      "id": "ledger_audit",
+      "destination_tag": 9,
+      "credited_usd": 5.0,
+      "plain_memo": "ledger",
+      "product_id": "ledger-audit-cycle-601",
+      "live_url": "https://published-zeta.vercel.app/ledger-cycle-601.html",
+      "description": "Economic ledger audit snapshot for treasury verifiers",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/ledger-audit-cycle-601.json",
+      "service_type": "audit_snapshot",
+      "x402": {
+        "enabled": true,
+        "middleware_active": false,
+        "status": "metadata_only",
+        "scheme": "exact",
+        "network_caip2": "xrpl:1",
+        "asset": "XRP",
+        "pay_to": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+        "amount_drops": "16666667",
+        "amount_xrp_est": 16.666667,
+        "invoice_id": "ledger-audit-cycle-601",
+        "destination_tag": 9,
+        "source_tag": 20260703,
+        "max_timeout_seconds": 600,
+        "protected_resource": "https://published-zeta.vercel.app/deliverables/ledger-audit-cycle-601.json",
+        "preview_resource": "https://published-zeta.vercel.app/ledger-cycle-601.html",
+        "payment_requirements_template": {
+          "scheme": "exact",
+          "network": "xrpl:1",
+          "asset": "XRP",
+          "payTo": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+          "amount": "16666667",
+          "maxTimeoutSeconds": 600,
+          "extra": {
+            "invoiceId": "ledger-audit-cycle-601",
+            "sourceTag": 20260703,
+            "destinationTag": 9
+          }
+        },
+        "phase1_pilot": false
+      }
+    },
+    {
+      "id": "referral_attribution",
+      "destination_tag": 10,
+      "credited_usd": 1.0,
+      "plain_memo": "ref:rReferrerWallet",
+      "product_id": "referral-cycle-601",
+      "description": "Referral chain \u2014 include memo ref:rReferrerWallet on any tag, or pay Tag 10 with ref: memo for on-ledger viral attribution",
+      "buyer": "referring agents and orchestrators",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/referral-cycle-601.json",
+      "service_type": "referral_attribution",
+      "memo_required": "ref:rReferrerWallet (plain memo or JSON referrer field)",
+      "x402": {
+        "enabled": true,
+        "middleware_active": false,
+        "status": "metadata_only",
+        "scheme": "exact",
+        "network_caip2": "xrpl:1",
+        "asset": "XRP",
+        "pay_to": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+        "amount_drops": "3333333",
+        "amount_xrp_est": 3.333333,
+        "invoice_id": "referral-cycle-601",
+        "destination_tag": 10,
+        "source_tag": 20260703,
+        "max_timeout_seconds": 600,
+        "protected_resource": "https://published-zeta.vercel.app/deliverables/referral-cycle-601.json",
+        "preview_resource": null,
+        "payment_requirements_template": {
+          "scheme": "exact",
+          "network": "xrpl:1",
+          "asset": "XRP",
+          "payTo": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+          "amount": "3333333",
+          "maxTimeoutSeconds": 600,
+          "extra": {
+            "invoiceId": "referral-cycle-601",
+            "sourceTag": 20260703,
+            "destinationTag": 10
+          }
+        },
+        "phase1_pilot": false
+      }
+    },
+    {
+      "id": "briefing_subscription",
+      "destination_tag": 11,
+      "credited_usd": 5.0,
+      "plain_memo": "subscribe",
+      "product_id": "briefing-subscription-cycle-601",
+      "live_url": "https://published-zeta.vercel.app/briefing-cycle-601.html",
+      "description": "Recurring briefing entitlement \u2014 unlocks briefing-cycle deliverables for N cycles; agents poll payment-status after pay",
+      "buyer": "research agents with recurring spend",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/briefing-subscription-cycle-601.json",
+      "service_type": "subscription",
+      "x402": {
+        "enabled": true,
+        "middleware_active": false,
+        "status": "metadata_only",
+        "scheme": "exact",
+        "network_caip2": "xrpl:1",
+        "asset": "XRP",
+        "pay_to": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+        "amount_drops": "16666667",
+        "amount_xrp_est": 16.666667,
+        "invoice_id": "briefing-subscription-cycle-601",
+        "destination_tag": 11,
+        "source_tag": 20260703,
+        "max_timeout_seconds": 600,
+        "protected_resource": "https://published-zeta.vercel.app/deliverables/briefing-subscription-cycle-601.json",
+        "preview_resource": "https://published-zeta.vercel.app/briefing-cycle-601.html",
+        "payment_requirements_template": {
+          "scheme": "exact",
+          "network": "xrpl:1",
+          "asset": "XRP",
+          "payTo": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+          "amount": "16666667",
+          "maxTimeoutSeconds": 600,
+          "extra": {
+            "invoiceId": "briefing-subscription-cycle-601",
+            "sourceTag": 20260703,
+            "destinationTag": 11
+          }
+        },
+        "phase1_pilot": false
+      }
+    },
+    {
+      "id": "eval_bounty",
+      "destination_tag": 12,
+      "credited_usd": 6.0,
+      "plain_memo": "run_id:YOUR_RUN_ID",
+      "product_id": "eval-bounty-cycle-601",
+      "live_url": "https://published-zeta.vercel.app/trace-cycle-601.html",
+      "description": "Eval harness bounty \u2014 include memo run_id:UUID; receive trace export with run_id + gate hash for benchmark proof",
+      "buyer": "agent eval harnesses and trace consumers",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/eval-bounty-cycle-601.json",
+      "service_type": "eval_bounty",
+      "x402": {
+        "enabled": true,
+        "middleware_active": false,
+        "status": "metadata_only",
+        "scheme": "exact",
+        "network_caip2": "xrpl:1",
+        "asset": "XRP",
+        "pay_to": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+        "amount_drops": "20000000",
+        "amount_xrp_est": 20.0,
+        "invoice_id": "eval-bounty-cycle-601",
+        "destination_tag": 12,
+        "source_tag": 20260703,
+        "max_timeout_seconds": 600,
+        "protected_resource": "https://published-zeta.vercel.app/deliverables/eval-bounty-cycle-601.json",
+        "preview_resource": "https://published-zeta.vercel.app/trace-cycle-601.html",
+        "payment_requirements_template": {
+          "scheme": "exact",
+          "network": "xrpl:1",
+          "asset": "XRP",
+          "payTo": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+          "amount": "20000000",
+          "maxTimeoutSeconds": 600,
+          "extra": {
+            "invoiceId": "eval-bounty-cycle-601",
+            "sourceTag": 20260703,
+            "destinationTag": 12
+          }
+        },
+        "phase1_pilot": false
+      }
+    },
+    {
+      "id": "cross_factory_iou",
+      "payment_type": "iou",
+      "credited_usd": 1.0,
+      "plain_memo": "factory_id:your-factory-slug",
+      "product_id": "factory-iou-cycle-601",
+      "live_url": "https://published-zeta.vercel.app/cross-factory-iou.json",
+      "description": "Cross-factory IOU settlement \u2014 pay issued currency with factory_id memo; enables meta-factory agent-to-agent revenue on XRPL testnet",
+      "buyer": "meta-factory orchestrators",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/factory-iou-cycle-601.json",
+      "service_type": "iou_settlement",
+      "memo_required": "factory_id:your-factory-slug (JSON or plain memo)",
+      "x402": {
+        "enabled": true,
+        "middleware_active": false,
+        "status": "metadata_only",
+        "scheme": "exact",
+        "network_caip2": "xrpl:1",
+        "asset": "XRP",
+        "pay_to": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+        "amount_drops": "3333333",
+        "amount_xrp_est": 3.333333,
+        "invoice_id": "factory-iou-cycle-601",
+        "destination_tag": null,
+        "source_tag": 20260703,
+        "max_timeout_seconds": 600,
+        "protected_resource": "https://published-zeta.vercel.app/deliverables/factory-iou-cycle-601.json",
+        "preview_resource": "https://published-zeta.vercel.app/cross-factory-iou.json",
+        "payment_requirements_template": {
+          "scheme": "exact",
+          "network": "xrpl:1",
+          "asset": "XRP",
+          "payTo": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+          "amount": "3333333",
+          "maxTimeoutSeconds": 600,
+          "extra": {
+            "invoiceId": "factory-iou-cycle-601",
+            "sourceTag": 20260703,
+            "destinationTag": null
+          }
+        },
+        "phase1_pilot": false
+      }
+    },
+    {
+      "id": "payer_funnel_export",
+      "destination_tag": 8,
+      "credited_usd": 4.5,
+      "plain_memo": "funnel",
+      "product_id": "payer-funnel-cycle-601",
+      "live_url": "https://published-zeta.vercel.app/payer-funnel-cycle-601.html",
+      "description": "Novel SKU \u2014 payer funnel snapshot with discover\u2192fulfill bottleneck analysis for conversion-tuning agents",
+      "buyer": "meta-factory growth agents",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/payer-funnel-cycle-601.json",
+      "service_type": "payer_funnel_export",
+      "memo_required": "funnel (Tag 8 disambiguates from outreach pack)",
+      "x402": {
+        "enabled": true,
+        "middleware_active": false,
+        "status": "metadata_only",
+        "scheme": "exact",
+        "network_caip2": "xrpl:1",
+        "asset": "XRP",
+        "pay_to": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+        "amount_drops": "15000000",
+        "amount_xrp_est": 15.0,
+        "invoice_id": "payer-funnel-cycle-601",
+        "destination_tag": 8,
+        "source_tag": 20260703,
+        "max_timeout_seconds": 600,
+        "protected_resource": "https://published-zeta.vercel.app/deliverables/payer-funnel-cycle-601.json",
+        "preview_resource": "https://published-zeta.vercel.app/payer-funnel-cycle-601.html",
+        "payment_requirements_template": {
+          "scheme": "exact",
+          "network": "xrpl:1",
+          "asset": "XRP",
+          "payTo": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+          "amount": "15000000",
+          "maxTimeoutSeconds": 600,
+          "extra": {
+            "invoiceId": "payer-funnel-cycle-601",
+            "sourceTag": 20260703,
+            "destinationTag": 8
+          }
+        },
+        "phase1_pilot": false
+      }
+    },
+    {
+      "id": "suite_novelty_bundle",
+      "destination_tag": 4,
+      "credited_usd": 9.0,
+      "plain_memo": "suite-bundle",
+      "product_id": "suite-bundle-cycle-601",
+      "live_url": "https://published-zeta.vercel.app/product-suite-cycle-601.html",
+      "description": "Novel scarcity bundle \u2014 trace + fitness + payer funnel in one deliverable at discount vs separate purchases",
+      "buyer": "orchestrators and eval harnesses",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/suite-bundle-cycle-601.json",
+      "service_type": "novelty_bundle",
+      "memo_required": "suite-bundle (Tag 4 disambiguates from cycle intel bundle)",
+      "x402": {
+        "enabled": true,
+        "middleware_active": false,
+        "status": "metadata_only",
+        "scheme": "exact",
+        "network_caip2": "xrpl:1",
+        "asset": "XRP",
+        "pay_to": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+        "amount_drops": "30000000",
+        "amount_xrp_est": 30.0,
+        "invoice_id": "suite-bundle-cycle-601",
+        "destination_tag": 4,
+        "source_tag": 20260703,
+        "max_timeout_seconds": 600,
+        "protected_resource": "https://published-zeta.vercel.app/deliverables/suite-bundle-cycle-601.json",
+        "preview_resource": "https://published-zeta.vercel.app/product-suite-cycle-601.html",
+        "payment_requirements_template": {
+          "scheme": "exact",
+          "network": "xrpl:1",
+          "asset": "XRP",
+          "payTo": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+          "amount": "30000000",
+          "maxTimeoutSeconds": 600,
+          "extra": {
+            "invoiceId": "suite-bundle-cycle-601",
+            "sourceTag": 20260703,
+            "destinationTag": 4
+          }
+        },
+        "phase1_pilot": false
+      }
+    }
+  ],
+  "x402": {
+    "schema": "rsi_eaf_x402_metadata_v1",
+    "phase": 1,
+    "phase_label": "middleware_active",
+    "enabled": true,
+    "protocol": {
+      "x402_version": 2,
+      "scheme": "exact",
+      "sdk_package": "x402-xrpl",
+      "sdk_install": "pip install x402-xrpl",
+      "reference_docs": "https://xrpl.org/docs/agents/agentic-payments-x402",
+      "xrpl_scheme_docs": "https://xrpl-x402.t54.ai/docs/xrpl-scheme"
+    },
+    "network_caip2": "xrpl:1",
+    "facilitator": {
+      "url": "https://xrpl-facilitator-testnet.t54.ai",
+      "operator": "t54",
+      "endpoints": {
+        "supported": "/supported",
+        "verify": "/verify",
+        "settle": "/settle"
+      },
+      "custody_model": "no_custody_presigned_submit",
+      "sla_note": "testnet best-effort until mainnet proof cycles complete"
+    },
+    "xrpl": {
+      "rpc": "https://s.altnet.rippletest.net:51234",
+      "ws": "wss://s.altnet.rippletest.net:51233",
+      "explorer_template": "https://testnet.xrpl.org/transactions/{tx_hash}"
+    },
+    "pay_to": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+    "source_tag": 20260703,
+    "max_timeout_seconds": 600,
+    "invoice_binding": {
+      "methods": [
+        "memo_data_hex_utf8_invoice_id",
+        "invoice_id_sha256"
+      ],
+      "required": true
+    },
+    "http_headers": {
+      "payment_required": "PAYMENT-REQUIRED",
+      "payment_signature": "PAYMENT-SIGNATURE",
+      "payment_response": "PAYMENT-RESPONSE"
+    },
+    "client_quickstart": {
+      "python": "from x402_xrpl.clients import x402_requests\n# session = x402_requests(wallet, rpc_url=...); session.get(resource_url)",
+      "merchant_quickstart": "from x402_xrpl.server import require_payment  # FastAPI middleware \u2014 Phase 1+"
+    },
+    "rollout": {
+      "current_phase": 1,
+      "phase1_pilot_products": [
+        "briefing_unlock",
+        "micro_tool",
+        "trace_export"
+      ],
+      "phase1_target": "HTTP 402 gate on /deliverables/*.json via middleware",
+      "phase2_target": "Settlement tx \u2192 observability/revenue_ingest.py with source=x402",
+      "mainnet_gate": "factory_core/mainnet_readiness.py ready_for_mainnet"
+    },
+    "ingest_bridge": {
+      "status": "planned",
+      "ledger_module": "observability/revenue_ingest.py",
+      "metadata_fields": [
+        "invoice_id",
+        "settlement_tx",
+        "facilitator",
+        "payment_method"
+      ]
+    },
+    "cycle_id": 601
+  },
+  "agent_json_memo_template": {
+    "type": "revenue",
+    "amount_usd_est": 1.0,
+    "notes": "agent payment",
+    "source": "agent_client",
+    "product_id": null
+  },
+  "verification": {
+    "method": "xrpl_treasury_ingest",
+    "ledger_within_cycles": 1,
+    "explorer_template": "https://testnet.xrpl.org/transactions/{tx_hash}",
+    "factory_confirms": "observability/revenue_ingest.py",
+    "x402_settlement": {
+      "status": "phase_1_gate_active",
+      "method": "http_402_gate_plus_treasury_ingest",
+      "invoice_field": "product_id",
+      "ingest_module": "observability/revenue_ingest.py",
+      "gate_module": "observability/x402_gate.py"
+    }
+  },
+  "discovery_urls": {
+    "factory_landing": "https://aetherforge.world/",
+    "factory_assets": "https://published-zeta.vercel.app/",
+    "agent_pay": "https://published-zeta.vercel.app/agent-pay.json",
+    "tip_manifest": "https://published-zeta.vercel.app/tip-manifest.json",
+    "factory_index": "https://aetherforge.world/",
+    "aetherforge": "https://aetherforge.world",
+    "agent_pay_latest": "https://published-zeta.vercel.app/agent-pay-latest.json",
+    "quote_api": "https://published-zeta.vercel.app/api/quote",
+    "payment_status_template": "https://published-zeta.vercel.app/payment-status/{tx_hash}.json",
+    "payment_events_feed": "https://published-zeta.vercel.app/payment-events-feed.json",
+    "payment_events_rss": "https://published-zeta.vercel.app/payment-events-rss.xml",
+    "integrator_test_suite": "https://published-zeta.vercel.app/integrator-test-suite.json",
+    "conformance_payee": "https://published-zeta.vercel.app/conformance-payee.json",
+    "tip_deep_link": "https://published-zeta.vercel.app/tip-deep-link.json",
+    "mcp_payee_catalog": "https://published-zeta.vercel.app/mcp-payee-catalog.json",
+    "novel_capture_roadmap": "https://published-zeta.vercel.app/novel-capture-roadmap.json",
+    "compliance_certificate": "https://published-zeta.vercel.app/compliance-cert-latest.json",
+    "cross_factory_iou": "https://published-zeta.vercel.app/cross-factory-iou.json",
+    "payer_funnel": "https://published-zeta.vercel.app/payer-funnel.json",
+    "tool_registry": "https://published-zeta.vercel.app/tool-registry.json",
+    "referral_graph": "https://published-zeta.vercel.app/referral-graph.json",
+    "product_suite_index": "https://published-zeta.vercel.app/product-suite-index.json"
+  },
+  "examples": {
+    "python_xrpl_py": "from xrpl.wallet import Wallet\nfrom tools.xrpl_tools import send_xrp_payment\nsend_xrp_payment(wallet, 'rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN', 0.01, memo_data={'type':'revenue','amount_usd_est':1.0,'source':'my_agent'}, destination_tag=1, testnet=True)",
+    "human_steps": [
+      "1. Open XRPL wallet (testnet faucet if needed)",
+      "2. Pay \u2192 rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+      "3. Destination Tag: 1",
+      "4. Optional memo: tip"
+    ]
+  },
+  "agent_loop": [
+    "discover",
+    "quote",
+    "pay",
+    "poll_status",
+    "fulfill"
+  ],
+  "webhook": {
+    "enabled": true,
+    "callback_memo_field": "callback_url",
+    "events": [
+      "ingested",
+      "fulfilled"
+    ],
+    "payload_schema": "rsi_eaf_payment_status_v1",
+    "timeout_sec": 15
+  },
+  "capabilities": [
+    {
+      "id": "tip",
+      "product_id": null,
+      "stable_alias": "tip-latest",
+      "buyer_personas": [
+        "human_backer"
+      ],
+      "payment": {
+        "schemes": [
+          "xrpl_destination_tag"
+        ],
+        "destination_tag": 1,
+        "credited_usd": 1.0
+      },
+      "output": null,
+      "preview": null,
+      "service_type": "donation"
+    },
+    {
+      "id": "briefing_unlock",
+      "product_id": "briefing-cycle-601",
+      "stable_alias": "briefing-latest",
+      "buyer_personas": [
+        "research_agent",
+        "orchestrator"
+      ],
+      "payment": {
+        "schemes": [
+          "xrpl_destination_tag",
+          "x402_exact"
+        ],
+        "destination_tag": 2,
+        "credited_usd": 2.0
+      },
+      "output": "https://published-zeta.vercel.app/deliverables/briefing-cycle-601.json",
+      "preview": "https://published-zeta.vercel.app/briefing-cycle-601.html",
+      "service_type": "paid_report"
+    },
+    {
+      "id": "micro_tool",
+      "product_id": "micro-tool-cycle-601",
+      "stable_alias": "micro-tool-latest",
+      "buyer_personas": [
+        "integrator"
+      ],
+      "payment": {
+        "schemes": [
+          "xrpl_destination_tag",
+          "x402_exact"
+        ],
+        "destination_tag": 3,
+        "credited_usd": 3.0
+      },
+      "output": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-601.json",
+      "preview": "https://published-zeta.vercel.app/micro-tool-cycle-601.html",
+      "service_type": "paid_tool"
+    },
+    {
+      "id": "agent_service",
+      "product_id": "service-bundle-cycle-601",
+      "stable_alias": "service-bundle-latest",
+      "buyer_personas": [
+        "orchestrator",
+        "acp_lane"
+      ],
+      "payment": {
+        "schemes": [
+          "xrpl_destination_tag",
+          "x402_exact"
+        ],
+        "destination_tag": 4,
+        "credited_usd": 2.5
+      },
+      "output": "https://published-zeta.vercel.app/deliverables/service-bundle-cycle-601.json",
+      "preview": "https://published-zeta.vercel.app/service-catalog.json",
+      "service_type": "agent_api"
+    },
+    {
+      "id": "mythos_artifact",
+      "product_id": "mythos-cycle-601",
+      "stable_alias": "mythos-latest",
+      "buyer_personas": [
+        "agent"
+      ],
+      "payment": {
+        "schemes": [
+          "xrpl_destination_tag",
+          "x402_exact"
+        ],
+        "destination_tag": 5,
+        "credited_usd": 1.5
+      },
+      "output": "https://published-zeta.vercel.app/deliverables/mythos-cycle-601.json",
+      "preview": "https://published-zeta.vercel.app/mythos-cycle-601.html",
+      "service_type": "creative_commerce"
+    },
+    {
+      "id": "trace_export",
+      "product_id": "trace-export-cycle-601",
+      "stable_alias": "trace-export-latest",
+      "buyer_personas": [
+        "eval_agent",
+        "orchestrator"
+      ],
+      "payment": {
+        "schemes": [
+          "xrpl_destination_tag",
+          "x402_exact"
+        ],
+        "destination_tag": 6,
+        "credited_usd": 4.0
+      },
+      "output": "https://published-zeta.vercel.app/deliverables/trace-export-cycle-601.json",
+      "preview": "https://published-zeta.vercel.app/trace-cycle-601.html",
+      "service_type": "observability_export"
+    },
+    {
+      "id": "fitness_report",
+      "product_id": "fitness-report-cycle-601",
+      "stable_alias": "fitness-report-latest",
+      "buyer_personas": [
+        "agent"
+      ],
+      "payment": {
+        "schemes": [
+          "xrpl_destination_tag",
+          "x402_exact"
+        ],
+        "destination_tag": 7,
+        "credited_usd": 2.0
+      },
+      "output": "https://published-zeta.vercel.app/deliverables/fitness-report-cycle-601.json",
+      "preview": "https://published-zeta.vercel.app/fitness-cycle-601.html",
+      "service_type": "ops_report"
+    },
+    {
+      "id": "outreach_pack",
+      "product_id": "outreach-pack-cycle-601",
+      "stable_alias": "outreach-pack-latest",
+      "buyer_personas": [
+        "meta_factory"
+      ],
+      "payment": {
+        "schemes": [
+          "xrpl_destination_tag",
+          "x402_exact"
+        ],
+        "destination_tag": 8,
+        "credited_usd": 3.5
+      },
+      "output": "https://published-zeta.vercel.app/deliverables/outreach-pack-cycle-601.json",
+      "preview": "https://published-zeta.vercel.app/outreach-cycle-601.html",
+      "service_type": "growth_pack"
+    },
+    {
+      "id": "ledger_audit",
+      "product_id": "ledger-audit-cycle-601",
+      "stable_alias": "ledger-audit-latest",
+      "buyer_personas": [
+        "research_agent"
+      ],
+      "payment": {
+        "schemes": [
+          "xrpl_destination_tag",
+          "x402_exact"
+        ],
+        "destination_tag": 9,
+        "credited_usd": 5.0
+      },
+      "output": "https://published-zeta.vercel.app/deliverables/ledger-audit-cycle-601.json",
+      "preview": "https://published-zeta.vercel.app/ledger-cycle-601.html",
+      "service_type": "audit_snapshot"
+    },
+    {
+      "id": "referral_attribution",
+      "product_id": "referral-cycle-601",
+      "stable_alias": "referral-latest",
+      "buyer_personas": [
+        "referring_agent"
+      ],
+      "payment": {
+        "schemes": [
+          "xrpl_destination_tag",
+          "x402_exact"
+        ],
+        "destination_tag": 10,
+        "credited_usd": 1.0
+      },
+      "output": "https://published-zeta.vercel.app/deliverables/referral-cycle-601.json",
+      "preview": null,
+      "service_type": "referral_attribution"
+    },
+    {
+      "id": "briefing_subscription",
+      "product_id": "briefing-subscription-cycle-601",
+      "stable_alias": "briefing-subscription-latest",
+      "buyer_personas": [
+        "research_agent"
+      ],
+      "payment": {
+        "schemes": [
+          "xrpl_destination_tag",
+          "x402_exact"
+        ],
+        "destination_tag": 11,
+        "credited_usd": 5.0
+      },
+      "output": "https://published-zeta.vercel.app/deliverables/briefing-subscription-cycle-601.json",
+      "preview": "https://published-zeta.vercel.app/briefing-cycle-601.html",
+      "service_type": "subscription"
+    },
+    {
+      "id": "eval_bounty",
+      "product_id": "eval-bounty-cycle-601",
+      "stable_alias": "eval-bounty-latest",
+      "buyer_personas": [
+        "eval_agent"
+      ],
+      "payment": {
+        "schemes": [
+          "xrpl_destination_tag",
+          "x402_exact"
+        ],
+        "destination_tag": 12,
+        "credited_usd": 6.0
+      },
+      "output": "https://published-zeta.vercel.app/deliverables/eval-bounty-cycle-601.json",
+      "preview": "https://published-zeta.vercel.app/trace-cycle-601.html",
+      "service_type": "eval_bounty"
+    },
+    {
+      "id": "cross_factory_iou",
+      "product_id": "factory-iou-cycle-601",
+      "stable_alias": "factory-iou-latest",
+      "buyer_personas": [
+        "meta_factory"
+      ],
+      "payment": {
+        "schemes": [
+          "xrpl_destination_tag",
+          "x402_exact"
+        ],
+        "destination_tag": null,
+        "credited_usd": 1.0
+      },
+      "output": "https://published-zeta.vercel.app/deliverables/factory-iou-cycle-601.json",
+      "preview": "https://published-zeta.vercel.app/cross-factory-iou.json",
+      "service_type": "iou_settlement"
+    },
+    {
+      "id": "payer_funnel_export",
+      "product_id": "payer-funnel-cycle-601",
+      "stable_alias": "payer-funnel-latest",
+      "buyer_personas": [
+        "meta_factory",
+        "growth_agent"
+      ],
+      "payment": {
+        "schemes": [
+          "xrpl_destination_tag",
+          "x402_exact"
+        ],
+        "destination_tag": 8,
+        "credited_usd": 4.5
+      },
+      "output": "https://published-zeta.vercel.app/deliverables/payer-funnel-cycle-601.json",
+      "preview": "https://published-zeta.vercel.app/payer-funnel-cycle-601.html",
+      "service_type": "payer_funnel_export"
+    },
+    {
+      "id": "suite_novelty_bundle",
+      "product_id": "suite-bundle-cycle-601",
+      "stable_alias": "suite-bundle-latest",
+      "buyer_personas": [
+        "orchestrator",
+        "eval_agent"
+      ],
+      "payment": {
+        "schemes": [
+          "xrpl_destination_tag",
+          "x402_exact"
+        ],
+        "destination_tag": 4,
+        "credited_usd": 9.0
+      },
+      "output": "https://published-zeta.vercel.app/deliverables/suite-bundle-cycle-601.json",
+      "preview": "https://published-zeta.vercel.app/product-suite-cycle-601.html",
+      "service_type": "novelty_bundle"
+    }
+  ],
+  "stable_products": {
+    "briefing_unlock": {
+      "prefix": "briefing",
+      "latest_deliverable": "https://published-zeta.vercel.app/deliverables/briefing-latest.json",
+      "quote": "https://published-zeta.vercel.app/quotes/briefing_unlock.json",
+      "current_product_id": "briefing-cycle-601"
+    },
+    "micro_tool": {
+      "prefix": "micro-tool",
+      "latest_deliverable": "https://published-zeta.vercel.app/deliverables/micro-tool-latest.json",
+      "quote": "https://published-zeta.vercel.app/quotes/micro_tool.json",
+      "current_product_id": "micro-tool-cycle-601"
+    },
+    "trace_export": {
+      "prefix": "trace-export",
+      "latest_deliverable": "https://published-zeta.vercel.app/deliverables/trace-export-latest.json",
+      "quote": "https://published-zeta.vercel.app/quotes/trace_export.json",
+      "current_product_id": "trace-export-cycle-601"
+    },
+    "agent_service": {
+      "prefix": "service-bundle",
+      "latest_deliverable": "https://published-zeta.vercel.app/deliverables/service-bundle-latest.json",
+      "quote": "https://published-zeta.vercel.app/quotes/agent_service.json",
+      "current_product_id": "service-bundle-cycle-601"
+    },
+    "mythos_artifact": {
+      "prefix": "mythos",
+      "latest_deliverable": "https://published-zeta.vercel.app/deliverables/mythos-latest.json",
+      "quote": "https://published-zeta.vercel.app/quotes/mythos_artifact.json",
+      "current_product_id": "mythos-cycle-601"
+    },
+    "fitness_report": {
+      "prefix": "fitness-report",
+      "latest_deliverable": "https://published-zeta.vercel.app/deliverables/fitness-report-latest.json",
+      "quote": "https://published-zeta.vercel.app/quotes/fitness_report.json",
+      "current_product_id": "fitness-report-cycle-601"
+    },
+    "outreach_pack": {
+      "prefix": "outreach-pack",
+      "latest_deliverable": "https://published-zeta.vercel.app/deliverables/outreach-pack-latest.json",
+      "quote": "https://published-zeta.vercel.app/quotes/outreach_pack.json",
+      "current_product_id": "outreach-pack-cycle-601"
+    },
+    "ledger_audit": {
+      "prefix": "ledger-audit",
+      "latest_deliverable": "https://published-zeta.vercel.app/deliverables/ledger-audit-latest.json",
+      "quote": "https://published-zeta.vercel.app/quotes/ledger_audit.json",
+      "current_product_id": "ledger-audit-cycle-601"
+    },
+    "referral_attribution": {
+      "prefix": "referral",
+      "latest_deliverable": "https://published-zeta.vercel.app/deliverables/referral-latest.json",
+      "quote": "https://published-zeta.vercel.app/quotes/referral_attribution.json",
+      "current_product_id": "referral-cycle-601"
+    },
+    "briefing_subscription": {
+      "prefix": "briefing-subscription",
+      "latest_deliverable": "https://published-zeta.vercel.app/deliverables/briefing-subscription-latest.json",
+      "quote": "https://published-zeta.vercel.app/quotes/briefing_subscription.json",
+      "current_product_id": "briefing-subscription-cycle-601"
+    },
+    "eval_bounty": {
+      "prefix": "eval-bounty",
+      "latest_deliverable": "https://published-zeta.vercel.app/deliverables/eval-bounty-latest.json",
+      "quote": "https://published-zeta.vercel.app/quotes/eval_bounty.json",
+      "current_product_id": "eval-bounty-cycle-601"
+    },
+    "cross_factory_iou": {
+      "prefix": "factory-iou",
+      "latest_deliverable": "https://published-zeta.vercel.app/deliverables/factory-iou-latest.json",
+      "quote": "https://published-zeta.vercel.app/quotes/cross_factory_iou.json",
+      "current_product_id": "factory-iou-cycle-601"
+    },
+    "payer_funnel_export": {
+      "prefix": "payer-funnel",
+      "latest_deliverable": "https://published-zeta.vercel.app/deliverables/payer-funnel-latest.json",
+      "quote": "https://published-zeta.vercel.app/quotes/payer_funnel_export.json",
+      "current_product_id": "payer-funnel-cycle-601"
+    },
+    "suite_novelty_bundle": {
+      "prefix": "suite-bundle",
+      "latest_deliverable": "https://published-zeta.vercel.app/deliverables/suite-bundle-latest.json",
+      "quote": "https://published-zeta.vercel.app/quotes/suite_novelty_bundle.json",
+      "current_product_id": "suite-bundle-cycle-601"
+    }
+  },
+  "mcp_tools": [
+    {
+      "name": "rsi_eaf_get_agent_pay",
+      "method": "GET",
+      "url": "https://published-zeta.vercel.app/agent-pay-latest.json",
+      "description": "Current treasury product manifest"
+    },
+    {
+      "name": "rsi_eaf_get_quote",
+      "method": "GET",
+      "url": "https://published-zeta.vercel.app/api/quote?product={stable_id}",
+      "description": "Payment quote with x402 challenge when gated"
+    },
+    {
+      "name": "rsi_eaf_verify_payment",
+      "method": "GET",
+      "url": "https://published-zeta.vercel.app/payment-status/{tx_hash}.json",
+      "description": "Ingest + fulfillment status by XRPL tx hash"
+    },
+    {
+      "name": "rsi_eaf_get_service_catalog",
+      "method": "GET",
+      "url": "https://published-zeta.vercel.app/service-catalog.json"
+    }
+  ]
+}
