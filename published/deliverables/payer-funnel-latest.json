@@ -1,0 +1,10 @@
+{
+  "schema": "rsi_eaf_deliverable_alias_v1",
+  "stable_id": "payer_funnel_export",
+  "product_id": "payer-funnel-cycle-601",
+  "cycle_id": 601,
+  "updated_at": "2026-07-07T22:17:37.168775+00:00",
+  "fulfillment_url": "https://published-zeta.vercel.app/deliverables/payer-funnel-cycle-601.json",
+  "preview_url": "https://published-zeta.vercel.app/payer-funnel-cycle-601.html",
+  "redirect_to": "https://published-zeta.vercel.app/deliverables/payer-funnel-cycle-601.json"
+}

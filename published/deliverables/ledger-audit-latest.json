@@ -1,0 +1,10 @@
+{
+  "schema": "rsi_eaf_deliverable_alias_v1",
+  "stable_id": "ledger_audit",
+  "product_id": "ledger-audit-cycle-601",
+  "cycle_id": 601,
+  "updated_at": "2026-07-07T22:17:37.153780+00:00",
+  "fulfillment_url": "https://published-zeta.vercel.app/deliverables/ledger-audit-cycle-601.json",
+  "preview_url": "https://published-zeta.vercel.app/ledger-cycle-601.html",
+  "redirect_to": "https://published-zeta.vercel.app/deliverables/ledger-audit-cycle-601.json"
+}

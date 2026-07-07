@@ -1,0 +1,60 @@
+{
+  "schema": "rsi_eaf_payment_quote_v1",
+  "quoted_at": "2026-07-07T22:17:37.145302+00:00",
+  "cycle_id": 601,
+  "stable_id": "trace_export",
+  "product_id": "trace-export-cycle-601",
+  "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+  "network": "xrpl_testnet",
+  "destination_tag": 6,
+  "credited_usd": 4.0,
+  "plain_memo": "trace",
+  "fulfillment_url": "https://published-zeta.vercel.app/deliverables/trace-export-cycle-601.json",
+  "preview_url": "https://published-zeta.vercel.app/trace-cycle-601.html",
+  "payment_status_url_template": "https://published-zeta.vercel.app/payment-status/{tx_hash}.json",
+  "poll_after_pay_sec": 5,
+  "amount_drops": "13333333",
+  "amount_xrp_est": 13.333333,
+  "x402": {
+    "gated": true,
+    "payment_required_b64": "eyJ4NDAyVmVyc2lvbiI6MiwiYWNjZXB0cyI6W3sic2NoZW1lIjoiZXhhY3QiLCJuZXR3b3JrIjoieHJwbDoxIiwiYXNzZXQiOiJYUlAiLCJwYXlUbyI6InJCaVU3NHEyd0NQUTdyaTlZRDZKNkxyUTJZM2pGZDhwY04iLCJhbW91bnQiOiIxMzMzMzMzMyIsIm1heFRpbWVvdXRTZWNvbmRzIjo2MDAsImV4dHJhIjp7Imludm9pY2VJZCI6InRyYWNlLWV4cG9ydC1jeWNsZS02MDEiLCJzb3VyY2VUYWciOjIwMjYwNzAzLCJkZXN0aW5hdGlvblRhZyI6Nn19XSwicmVzb3VyY2UiOiJodHRwczovL3B1Ymxpc2hlZC16ZXRhLnZlcmNlbC5hcHAvZGVsaXZlcmFibGVzL3RyYWNlLWV4cG9ydC1jeWNsZS02MDEuanNvbiIsImludm9pY2VJZCI6InRyYWNlLWV4cG9ydC1jeWNsZS02MDEifQ==",
+    "challenge": {
+      "x402Version": 2,
+      "accepts": [
+        {
+          "scheme": "exact",
+          "network": "xrpl:1",
+          "asset": "XRP",
+          "payTo": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+          "amount": "13333333",
+          "maxTimeoutSeconds": 600,
+          "extra": {
+            "invoiceId": "trace-export-cycle-601",
+            "sourceTag": 20260703,
+            "destinationTag": 6
+          }
+        }
+      ],
+      "resource": "https://published-zeta.vercel.app/deliverables/trace-export-cycle-601.json",
+      "invoiceId": "trace-export-cycle-601"
+    }
+  },
+  "scarcity_multiplier": 1.0,
+  "credited_usd_quoted": 4.0,
+  "agent_json_memo_template": {
+    "type": "revenue",
+    "amount_usd_est": 4.0,
+    "product_id": "trace-export-cycle-601",
+    "source": "agent_client",
+    "callback_url": null,
+    "run_id": "optional-for-eval-bounty"
+  },
+  "webhook": {
+    "callback_memo_field": "callback_url",
+    "events": [
+      "ingested",
+      "fulfilled"
+    ],
+    "payload_schema": "rsi_eaf_payment_status_v1"
+  }
+}

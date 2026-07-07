@@ -1,0 +1,10 @@
+{
+  "schema": "rsi_eaf_deliverable_alias_v1",
+  "stable_id": "cross_factory_iou",
+  "product_id": "factory-iou-cycle-601",
+  "cycle_id": 601,
+  "updated_at": "2026-07-07T22:17:37.165810+00:00",
+  "fulfillment_url": "https://published-zeta.vercel.app/deliverables/factory-iou-cycle-601.json",
+  "preview_url": "https://published-zeta.vercel.app/cross-factory-iou.json",
+  "redirect_to": "https://published-zeta.vercel.app/deliverables/factory-iou-cycle-601.json"
+}
