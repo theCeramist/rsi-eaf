@@ -1,6 +1,6 @@
 {
   "schema": "rsi_eaf_tip_manifest_v2",
-  "updated_at": "2026-07-08T02:06:38.379105+00:00",
+  "updated_at": "2026-07-08T02:09:34.484636+00:00",
   "cycle_id": 500,
   "network": "xrpl_testnet",
   "treasury_address": "rTest",
