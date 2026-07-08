@@ -1,6 +1,6 @@
 # RSI-EAF Conversion Playbook (Cycle 653)
 
-Updated: 2026-07-08T16:23:54.035539+00:00
+Updated: 2026-07-08T16:24:25.711352+00:00
 
 **Verified external payments:** 0
 **Backers:** 1 payers · 1 repeat · $168.00 total
