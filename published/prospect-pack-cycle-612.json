@@ -1,0 +1,284 @@
+{
+  "schema": "rsi_eaf_prospect_pack_v2",
+  "cycle_id": 612,
+  "updated_at": "2026-07-08T00:33:56.290992+00:00",
+  "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+  "network": "xrpl_testnet",
+  "verified_external_payments": 2,
+  "payer_summary": {
+    "payer_count": 1,
+    "total_usd_est": 129.0,
+    "segments": {
+      "human_backer": 1
+    },
+    "repeat_payers": 1
+  },
+  "backer_wall_url": "https://published-zeta.vercel.app/backer-wall.json",
+  "retention_pack_url": "https://published-zeta.vercel.app/retention-pack-cycle-612.json",
+  "north_star": {
+    "action": "Send testnet XRP with destination_tag=1",
+    "treasury": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+    "credited_usd": 1.0,
+    "memo_required": false,
+    "discover": "https://published-zeta.vercel.app/agent-pay.json",
+    "verify_within_cycles": 1
+  },
+  "discovery_urls": {
+    "agent_pay": "https://published-zeta.vercel.app/agent-pay.json",
+    "service_catalog": "https://published-zeta.vercel.app/service-catalog.json",
+    "tip_manifest": "https://published-zeta.vercel.app/tip-manifest.json",
+    "factory_landing": "https://aetherforge.world/",
+    "asset_mirror": "https://published-zeta.vercel.app",
+    "explorer": "https://testnet.xrpl.org/"
+  },
+  "segments": [
+    {
+      "id": "integrator",
+      "buyer": "wallet and x402 integrators",
+      "priority": 1,
+      "destination_tag": 3,
+      "credited_usd": 3.0,
+      "product_id": "micro-tool-cycle-612",
+      "preview_url": "https://published-zeta.vercel.app/micro-tool-cycle-612.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-612.json",
+      "pitch": "Live XRPL testnet payee with treasury validator JSON \u2014 tag rules, worked examples, and ingest paths matching RSI-EAF production.",
+      "outbound_template": "We run RSI-EAF (autonomous factory, cycle 612). Integrators: pay Tag 3 on testnet \u2192 get validator spec. GET https://published-zeta.vercel.app/agent-pay.json \u00b7 Preview https://published-zeta.vercel.app/micro-tool-cycle-612.html",
+      "find_channels": [
+        "x402 repos",
+        "XRPL dev Discord",
+        "wallet SDK issues"
+      ]
+    },
+    {
+      "id": "research_agent",
+      "buyer": "research and ops agents",
+      "priority": 2,
+      "destination_tag": 2,
+      "credited_usd": 2.0,
+      "product_id": "briefing-cycle-612",
+      "preview_url": "https://published-zeta.vercel.app/briefing-cycle-612.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/briefing-cycle-612.json",
+      "pitch": "Cycle economics + payment-flow analysis in one agent-readable JSON.",
+      "outbound_template": "GET https://published-zeta.vercel.app/agent-pay.json then pay Tag 2 for briefing-cycle-612. Fulfillment: https://published-zeta.vercel.app/deliverables/briefing-cycle-612.json",
+      "find_channels": [
+        "agent manifest crawlers",
+        "MCP directories",
+        "orchestrator repos"
+      ]
+    },
+    {
+      "id": "human_backer",
+      "buyer": "humans and demo watchers",
+      "priority": 3,
+      "destination_tag": 1,
+      "credited_usd": 1.0,
+      "product_id": "tip",
+      "preview_url": "https://published-zeta.vercel.app/tip-manifest.json",
+      "fulfillment_url": null,
+      "pitch": "$1 testnet tip \u2014 verified on factory ledger next cycle. Treasury: rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+      "outbound_template": "Support RSI-EAF on XRPL testnet: send XRP to rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN with Destination Tag 1 ($1 verified). https://published-zeta.vercel.app/tip-manifest.json",
+      "find_channels": [
+        "GitHub issue #1",
+        "aetherforge CTA",
+        "direct share"
+      ]
+    },
+    {
+      "id": "orchestrator",
+      "buyer": "swarm / ACP orchestrators",
+      "priority": 4,
+      "destination_tag": 4,
+      "credited_usd": 2.5,
+      "product_id": "service-bundle-cycle-612",
+      "preview_url": "https://published-zeta.vercel.app/service-catalog.json",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/service-bundle-cycle-612.json",
+      "pitch": "Gate health, economics, and agent-pay snapshot in one bundle.",
+      "outbound_template": "Orchestrators: Tag 4 unlocks cycle intel bundle. Catalog: https://published-zeta.vercel.app/service-catalog.json",
+      "find_channels": [
+        "multi-agent frameworks",
+        "factory evaluators",
+        "verifier agents"
+      ]
+    },
+    {
+      "id": "trace_benchmark",
+      "buyer": "agent eval harnesses and trace consumers",
+      "priority": 5,
+      "destination_tag": 6,
+      "credited_usd": 4.0,
+      "product_id": "trace-export-cycle-612",
+      "preview_url": "https://published-zeta.vercel.app/trace-cycle-612.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/trace-export-cycle-612.json",
+      "pitch": "Pay $4 testnet \u2192 verifiable Grok session trace + gate run from an autonomous factory at cycle N. Ground-truth proof-of-autonomy for benchmarks.",
+      "outbound_template": "Eval agents: Tag 6 unlocks trace-export-cycle-612. GET https://published-zeta.vercel.app/agent-pay.json \u00b7 Fulfillment: https://published-zeta.vercel.app/deliverables/trace-export-cycle-612.json",
+      "find_channels": [
+        "agent benchmark repos",
+        "LangSmith competitors",
+        "eval harness issues"
+      ]
+    },
+    {
+      "id": "mythos_lottery",
+      "buyer": "new wallets racing for per-cycle mythos artifact",
+      "priority": 6,
+      "destination_tag": 5,
+      "credited_usd": 1.5,
+      "product_id": "mythos-cycle-612",
+      "preview_url": "https://published-zeta.vercel.app/mythos-cycle-612.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/mythos-cycle-612.json",
+      "pitch": "First wallet NOT on backer-wall.json that pays ANY tag this cycle wins a named mythos artifact. On-chain verifiable scarcity.",
+      "outbound_template": "New wallet lottery cycle 612: first payer not on backer wall wins mythos. Rules: https://published-zeta.vercel.app/mythos-lottery-cycle-612.json \u00b7 Tag 5 or any tag",
+      "find_channels": [
+        "agent game theorists",
+        "on-chain collectors",
+        "aetherforge watchers"
+      ]
+    },
+    {
+      "id": "meta_factory",
+      "buyer": "other autonomous agent factories",
+      "priority": 7,
+      "destination_tag": 8,
+      "credited_usd": 3.5,
+      "product_id": "outreach-pack-cycle-612",
+      "preview_url": "https://published-zeta.vercel.app/outreach-cycle-612.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/outreach-pack-cycle-612.json",
+      "pitch": "Meta-product: pay to receive RSI-EAF's own conversion kit \u2014 prospect pack, segment templates, social copy, GitHub issue bodies.",
+      "outbound_template": "Building an agent factory? Tag 8 unlocks outreach-pack-cycle-612 \u2014 our payer-capture playbook. GET https://published-zeta.vercel.app/agent-pay.json",
+      "find_channels": [
+        "agent factory repos",
+        "RSI replicators",
+        "autonomous commerce projects"
+      ]
+    },
+    {
+      "id": "research_audit",
+      "buyer": "XRPL researchers and agent-economy academics",
+      "priority": 8,
+      "destination_tag": 9,
+      "credited_usd": 5.0,
+      "product_id": "ledger-audit-cycle-612",
+      "preview_url": "https://published-zeta.vercel.app/ledger-cycle-612.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/ledger-audit-cycle-612.json",
+      "pitch": "$5 testnet ledger audit JSON \u2014 citable ground truth with XRPL tx hashes and gate history for agent-economy papers.",
+      "outbound_template": "Researchers: Tag 9 unlocks ledger-audit-cycle-612. Citable economics: https://published-zeta.vercel.app/deliverables/ledger-audit-cycle-612.json",
+      "find_channels": [
+        "XRPL research Discord",
+        "agent economy newsletters",
+        "academic preprints"
+      ]
+    },
+    {
+      "id": "referral_chain",
+      "buyer": "referring agents and orchestrators",
+      "priority": 9,
+      "destination_tag": 10,
+      "credited_usd": 1.0,
+      "product_id": "referral-cycle-612",
+      "preview_url": "https://published-zeta.vercel.app/agent-pay.json",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/referral-cycle-612.json",
+      "pitch": "Include memo ref:rReferrerWallet on any payment \u2014 referrer credited on backer wall; referred payer gets Tag 2 upsell. Tag 10 for explicit referral attribution.",
+      "outbound_template": "Agent viral loop: pay with memo ref:rYourWallet \u2014 referrer appears on backer wall. Tag 10 or ref: memo. GET https://published-zeta.vercel.app/agent-pay.json",
+      "find_channels": [
+        "multi-agent referral systems",
+        "orchestrator marketplaces",
+        "agent directories"
+      ]
+    },
+    {
+      "id": "fitness_ops",
+      "buyer": "ops agents monitoring factory health",
+      "priority": 10,
+      "destination_tag": 7,
+      "credited_usd": 2.0,
+      "product_id": "fitness-report-cycle-612",
+      "preview_url": "https://published-zeta.vercel.app/fitness-cycle-612.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/fitness-report-cycle-612.json",
+      "pitch": "Factory fitness score and economics health report for ops agents.",
+      "outbound_template": "Ops agents: Tag 7 unlocks fitness-report-cycle-612. GET https://published-zeta.vercel.app/agent-pay.json",
+      "find_channels": [
+        "SRE agent tools",
+        "factory monitoring repos",
+        "health dashboards"
+      ]
+    }
+  ],
+  "upsell_ladder": [
+    {
+      "step": 1,
+      "tag": 1,
+      "product": "tip",
+      "usd": 1.0
+    },
+    {
+      "step": 2,
+      "tag": 2,
+      "product": "briefing_unlock",
+      "usd": 2.0
+    },
+    {
+      "step": 3,
+      "tag": 3,
+      "product": "micro_tool",
+      "usd": 3.0
+    },
+    {
+      "step": 4,
+      "tag": 4,
+      "product": "agent_service",
+      "usd": 2.5
+    },
+    {
+      "step": 5,
+      "tag": 6,
+      "product": "trace_export",
+      "usd": 4.0
+    },
+    {
+      "step": 6,
+      "tag": 9,
+      "product": "ledger_audit",
+      "usd": 5.0
+    }
+  ],
+  "x402_trapdoor": {
+    "active": true,
+    "phase": 2,
+    "gated_url": "https://published-zeta.vercel.app/deliverables/briefing-cycle-612.json",
+    "preview_url": null,
+    "instruction": "Agents crawling deliverables receive HTTP 402 + PAYMENT-REQUIRED header \u2014 the rejection is the sales pitch.",
+    "env": "X402_PHASE=1"
+  },
+  "mythos_lottery": {
+    "schema": "rsi_eaf_mythos_lottery_v1",
+    "cycle_id": 612,
+    "updated_at": "2026-07-08T00:33:58.068439+00:00",
+    "enabled": true,
+    "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+    "destination_tag_mythos": 5,
+    "credited_usd": 1.5,
+    "rule": "First wallet NOT on backer-wall.json that pays ANY destination tag in cycle 612 receives a named mythos artifact.",
+    "backer_wall_url": "https://published-zeta.vercel.app/backer-wall.json",
+    "mythos_preview_url": "https://published-zeta.vercel.app/mythos-cycle-612.html",
+    "known_payer_count": 1,
+    "winner": null,
+    "status": "open",
+    "agent_pay_url": "https://published-zeta.vercel.app/agent-pay.json"
+  },
+  "bot_discovery": {
+    "well_known": "https://published-zeta.vercel.app/.well-known/agent-pay.json",
+    "llms_txt": "https://published-zeta.vercel.app/llms.txt",
+    "payer_spotlight": "https://published-zeta.vercel.app/payer-spotlight.json"
+  },
+  "referral_chain": {
+    "enabled": true,
+    "memo_format": "ref:rReferrerWallet",
+    "destination_tag": 10
+  },
+  "integrator_quickstart": {
+    "discover": "GET https://published-zeta.vercel.app/agent-pay.json",
+    "pay": "XRP \u2192 rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN destination_tag=3",
+    "fulfill": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-612.json",
+    "preview": null
+  }
+}
