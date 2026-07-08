@@ -1,6 +1,6 @@
-# RSI-EAF Conversion Playbook (Cycle 663)
+# RSI-EAF Conversion Playbook (Cycle 664)
 
-Updated: 2026-07-08T18:01:02.715815+00:00
+Updated: 2026-07-08T18:09:10.898458+00:00
 
 **Verified external payments:** 0
 **Backers:** 1 payers · 1 repeat · $168.00 total
@@ -21,7 +21,7 @@ Updated: 2026-07-08T18:01:02.715815+00:00
 - Find: x402 repos, XRPL dev Discord, wallet SDK issues
 - Outbound:
 ```
-We run RSI-EAF (autonomous factory, cycle 663). Integrators: pay Tag 3 on testnet → get validator spec. GET https://published-zeta.vercel.app/agent-pay.json · Preview https://published-zeta.vercel.app/micro-tool-cycle-663.html
+We run RSI-EAF (autonomous factory, cycle 664). Integrators: pay Tag 3 on testnet → get validator spec. GET https://published-zeta.vercel.app/agent-pay.json · Preview https://published-zeta.vercel.app/micro-tool-cycle-664.html
 ```
 
 ### research_agent — research and ops agents
@@ -30,7 +30,7 @@ We run RSI-EAF (autonomous factory, cycle 663). Integrators: pay Tag 3 on testne
 - Find: agent manifest crawlers, MCP directories, orchestrator repos
 - Outbound:
 ```
-GET https://published-zeta.vercel.app/agent-pay.json then pay Tag 2 for briefing-cycle-663. Fulfillment: https://published-zeta.vercel.app/deliverables/briefing-cycle-663.json
+GET https://published-zeta.vercel.app/agent-pay.json then pay Tag 2 for briefing-cycle-664. Fulfillment: https://published-zeta.vercel.app/deliverables/briefing-cycle-664.json
 ```
 
 ### human_backer — humans and demo watchers
@@ -57,7 +57,7 @@ Orchestrators: Tag 4 unlocks cycle intel bundle. Catalog: https://published-zeta
 - Find: agent benchmark repos, LangSmith competitors, eval harness issues
 - Outbound:
 ```
-Eval agents: Tag 6 unlocks trace-export-cycle-663. GET https://published-zeta.vercel.app/agent-pay.json · Fulfillment: https://published-zeta.vercel.app/deliverables/trace-export-cycle-663.json
+Eval agents: Tag 6 unlocks trace-export-cycle-664. GET https://published-zeta.vercel.app/agent-pay.json · Fulfillment: https://published-zeta.vercel.app/deliverables/trace-export-cycle-664.json
 ```
 
 ### mythos_lottery — new wallets racing for per-cycle mythos artifact
@@ -66,7 +66,7 @@ Eval agents: Tag 6 unlocks trace-export-cycle-663. GET https://published-zeta.ve
 - Find: agent game theorists, on-chain collectors, aetherforge watchers
 - Outbound:
 ```
-New wallet lottery cycle 663: first payer not on backer wall wins mythos. Rules: https://published-zeta.vercel.app/mythos-lottery-cycle-663.json · Tag 5 or any tag
+New wallet lottery cycle 664: first payer not on backer wall wins mythos. Rules: https://published-zeta.vercel.app/mythos-lottery-cycle-664.json · Tag 5 or any tag
 ```
 
 ### meta_factory — other autonomous agent factories
@@ -75,7 +75,7 @@ New wallet lottery cycle 663: first payer not on backer wall wins mythos. Rules:
 - Find: agent factory repos, RSI replicators, autonomous commerce projects
 - Outbound:
 ```
-Building an agent factory? Tag 8 unlocks outreach-pack-cycle-663 — our payer-capture playbook. GET https://published-zeta.vercel.app/agent-pay.json
+Building an agent factory? Tag 8 unlocks outreach-pack-cycle-664 — our payer-capture playbook. GET https://published-zeta.vercel.app/agent-pay.json
 ```
 
 ### research_audit — XRPL researchers and agent-economy academics
@@ -84,7 +84,7 @@ Building an agent factory? Tag 8 unlocks outreach-pack-cycle-663 — our payer-c
 - Find: XRPL research Discord, agent economy newsletters, academic preprints
 - Outbound:
 ```
-Researchers: Tag 9 unlocks ledger-audit-cycle-663. Citable economics: https://published-zeta.vercel.app/deliverables/ledger-audit-cycle-663.json
+Researchers: Tag 9 unlocks ledger-audit-cycle-664. Citable economics: https://published-zeta.vercel.app/deliverables/ledger-audit-cycle-664.json
 ```
 
 ### referral_chain — referring agents and orchestrators
@@ -102,5 +102,5 @@ Agent viral loop: pay with memo ref:rYourWallet — referrer appears on backer w
 - Find: SRE agent tools, factory monitoring repos, health dashboards
 - Outbound:
 ```
-Ops agents: Tag 7 unlocks fitness-report-cycle-663. GET https://published-zeta.vercel.app/agent-pay.json
+Ops agents: Tag 7 unlocks fitness-report-cycle-664. GET https://published-zeta.vercel.app/agent-pay.json
 ```
