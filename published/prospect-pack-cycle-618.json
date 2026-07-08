@@ -1,13 +1,13 @@
 {
   "schema": "rsi_eaf_prospect_pack_v2",
   "cycle_id": 618,
-  "updated_at": "2026-07-08T02:33:50.477076+00:00",
+  "updated_at": "2026-07-08T02:41:34.308300+00:00",
   "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
   "network": "xrpl_testnet",
   "verified_external_payments": 2,
   "payer_summary": {
     "payer_count": 1,
-    "total_usd_est": 1888.0,
+    "total_usd_est": 1938.0,
     "segments": {
       "human_backer": 1
     },
@@ -39,10 +39,10 @@
       "destination_tag": 3,
       "credited_usd": 3.0,
       "product_id": "micro-tool-cycle-618",
-      "preview_url": "https://published-zeta.vercel.app/micro-tool-cycle-618.html",
+      "preview_url": "https://published-zeta.vercel.app/micro-tool-cycle-618-20260708T023843Z.html",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-618.json",
       "pitch": "Live XRPL testnet payee with treasury validator JSON \u2014 tag rules, worked examples, and ingest paths matching RSI-EAF production.",
-      "outbound_template": "We run RSI-EAF (autonomous factory, cycle 618). Integrators: pay Tag 3 on testnet \u2192 get validator spec. GET https://published-zeta.vercel.app/agent-pay.json \u00b7 Preview https://published-zeta.vercel.app/micro-tool-cycle-618.html",
+      "outbound_template": "We run RSI-EAF (autonomous factory, cycle 618). Integrators: pay Tag 3 on testnet \u2192 get validator spec. GET https://published-zeta.vercel.app/agent-pay.json \u00b7 Preview https://published-zeta.vercel.app/micro-tool-cycle-618-20260708T023843Z.html",
       "find_channels": [
         "x402 repos",
         "XRPL dev Discord",
@@ -56,7 +56,7 @@
       "destination_tag": 2,
       "credited_usd": 2.0,
       "product_id": "briefing-cycle-618",
-      "preview_url": "https://published-zeta.vercel.app/briefing-cycle-618.html",
+      "preview_url": "https://published-zeta.vercel.app/briefing-cycle-618-20260708T023826Z.html",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/briefing-cycle-618.json",
       "pitch": "Cycle economics + payment-flow analysis in one agent-readable JSON.",
       "outbound_template": "GET https://published-zeta.vercel.app/agent-pay.json then pay Tag 2 for briefing-cycle-618. Fulfillment: https://published-zeta.vercel.app/deliverables/briefing-cycle-618.json",
@@ -124,7 +124,7 @@
       "destination_tag": 5,
       "credited_usd": 1.5,
       "product_id": "mythos-cycle-618",
-      "preview_url": "https://published-zeta.vercel.app/mythos-cycle-618.html",
+      "preview_url": "https://published-zeta.vercel.app/mythos-cycle-618-20260708T024040Z.html",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/mythos-cycle-618.json",
       "pitch": "First wallet NOT on backer-wall.json that pays ANY tag this cycle wins a named mythos artifact. On-chain verifiable scarcity.",
       "outbound_template": "New wallet lottery cycle 618: first payer not on backer wall wins mythos. Rules: https://published-zeta.vercel.app/mythos-lottery-cycle-618.json \u00b7 Tag 5 or any tag",
@@ -141,7 +141,7 @@
       "destination_tag": 8,
       "credited_usd": 3.5,
       "product_id": "outreach-pack-cycle-618",
-      "preview_url": "https://published-zeta.vercel.app/outreach-cycle-618.html",
+      "preview_url": "https://published-zeta.vercel.app/outreach-cycle-618-20260708T023900Z.html",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/outreach-pack-cycle-618.json",
       "pitch": "Meta-product: pay to receive RSI-EAF's own conversion kit \u2014 prospect pack, segment templates, social copy, GitHub issue bodies.",
       "outbound_template": "Building an agent factory? Tag 8 unlocks outreach-pack-cycle-618 \u2014 our payer-capture playbook. GET https://published-zeta.vercel.app/agent-pay.json",
@@ -158,7 +158,7 @@
       "destination_tag": 9,
       "credited_usd": 5.0,
       "product_id": "ledger-audit-cycle-618",
-      "preview_url": "https://published-zeta.vercel.app/ledger-cycle-618.html",
+      "preview_url": "https://published-zeta.vercel.app/ledger-cycle-618-20260708T023900Z.html",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/ledger-audit-cycle-618.json",
       "pitch": "$5 testnet ledger audit JSON \u2014 citable ground truth with XRPL tx hashes and gate history for agent-economy papers.",
       "outbound_template": "Researchers: Tag 9 unlocks ledger-audit-cycle-618. Citable economics: https://published-zeta.vercel.app/deliverables/ledger-audit-cycle-618.json",
@@ -192,7 +192,7 @@
       "destination_tag": 7,
       "credited_usd": 2.0,
       "product_id": "fitness-report-cycle-618",
-      "preview_url": "https://published-zeta.vercel.app/fitness-cycle-618.html",
+      "preview_url": "https://published-zeta.vercel.app/fitness-cycle-618-20260708T023900Z.html",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/fitness-report-cycle-618.json",
       "pitch": "Factory fitness score and economics health report for ops agents.",
       "outbound_template": "Ops agents: Tag 7 unlocks fitness-report-cycle-618. GET https://published-zeta.vercel.app/agent-pay.json",
@@ -245,14 +245,14 @@
     "active": true,
     "phase": 2,
     "gated_url": "https://published-zeta.vercel.app/deliverables/briefing-cycle-618.json",
-    "preview_url": null,
+    "preview_url": "https://published-zeta.vercel.app/briefing-cycle-618-20260708T023826Z.html",
     "instruction": "Agents crawling deliverables receive HTTP 402 + PAYMENT-REQUIRED header \u2014 the rejection is the sales pitch.",
     "env": "X402_PHASE=1"
   },
   "mythos_lottery": {
     "schema": "rsi_eaf_mythos_lottery_v1",
     "cycle_id": 618,
-    "updated_at": "2026-07-08T02:33:52.110399+00:00",
+    "updated_at": "2026-07-08T02:41:35.896160+00:00",
     "enabled": true,
     "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
     "destination_tag_mythos": 5,
@@ -279,6 +279,6 @@
     "discover": "GET https://published-zeta.vercel.app/agent-pay.json",
     "pay": "XRP \u2192 rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN destination_tag=3",
     "fulfill": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-618.json",
-    "preview": null
+    "preview": "https://published-zeta.vercel.app/micro-tool-cycle-618-20260708T023843Z.html"
   }
 }
