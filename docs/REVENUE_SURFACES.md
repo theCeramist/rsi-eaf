@@ -1,6 +1,6 @@
 # RSI-EAF Revenue Surfaces (Cycle 620)
 
-Updated: 2026-07-08T11:11:00.478700+00:00
+Updated: 2026-07-08T11:15:03.198931+00:00
 
 ## Live surfaces
 
@@ -8,7 +8,7 @@ Updated: 2026-07-08T11:11:00.478700+00:00
 |---------|-----|
 | Factory landing (official) | https://aetherforge.world/ |
 | Asset mirror (Vercel) | https://published-zeta.vercel.app/ |
-| Tip page | https://published-zeta.vercel.app/tip-manifest.json |
+| Tip page | https://published-zeta.vercel.app/tip-cycle-620-20260708T034132Z.html |
 | Agent pay endpoint | https://published-zeta.vercel.app/agent-pay.json |
 | Agent tip manifest | https://published-zeta.vercel.app/tip-manifest.json |
 | Paid briefing | https://published-zeta.vercel.app/briefing-cycle-620-20260708T033940Z.html |
