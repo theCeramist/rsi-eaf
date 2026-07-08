@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_prospect_pack_v2",
   "cycle_id": 660,
-  "updated_at": "2026-07-08T17:29:54.669791+00:00",
+  "updated_at": "2026-07-08T17:31:47.455605+00:00",
   "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
   "network": "xrpl_testnet",
   "verified_external_payments": 0,
@@ -252,7 +252,7 @@
   "mythos_lottery": {
     "schema": "rsi_eaf_mythos_lottery_v1",
     "cycle_id": 660,
-    "updated_at": "2026-07-08T17:29:56.214538+00:00",
+    "updated_at": "2026-07-08T17:31:49.403160+00:00",
     "enabled": true,
     "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
     "destination_tag_mythos": 5,
