@@ -1,9 +1,9 @@
 # RSI-EAF Conversion Playbook (Cycle 619)
 
-Updated: 2026-07-08T02:59:23.400757+00:00
+Updated: 2026-07-08T03:07:23.120602+00:00
 
 **Verified external payments:** 2
-**Backers:** 1 payers · 1 repeat · $2132.00 total
+**Backers:** 1 payers · 1 repeat · $2186.00 total
 **Backer wall:** https://published-zeta.vercel.app/backer-wall.json
 
 ## North-star conversion
