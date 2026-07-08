@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_tip_manifest_v2",
-  "updated_at": "2026-07-08T18:37:30.087832+00:00",
-  "cycle_id": 667,
+  "updated_at": "2026-07-08T19:07:13.184259+00:00",
+  "cycle_id": 669,
   "network": "xrpl_testnet",
   "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
   "human_easy_path": {
@@ -19,40 +19,12 @@
     "briefing_unlock": {
       "tag": 2,
       "credited_usd": 2.0,
-      "product_id": "briefing-cycle-667"
-    },
-    "trace_export": {
-      "tag": 6,
-      "credited_usd": 4.0,
-      "product_id": "trace-export-cycle-667"
-    },
-    "fitness_report": {
-      "tag": 7,
-      "credited_usd": 2.0,
-      "product_id": "fitness-report-cycle-667"
-    },
-    "outreach_pack": {
-      "tag": 8,
-      "credited_usd": 3.5,
-      "product_id": "outreach-pack-cycle-667"
-    },
-    "ledger_audit": {
-      "tag": 9,
-      "credited_usd": 5.0,
-      "product_id": "ledger-audit-cycle-667"
+      "product_id": "briefing-cycle-669"
     }
   },
   "plain_memo_aliases": {
     "plain_memo_tip": "tip",
-    "plain_memo_briefing": "briefing",
-    "plain_memo_tool": "tool",
-    "plain_memo_service": "service",
-    "plain_memo_mythos": "mythos",
-    "plain_memo_trace": "trace",
-    "plain_memo_fitness": "fitness",
-    "plain_memo_outreach": "outreach",
-    "plain_memo_ledger": "ledger",
-    "plain_memo_referral": "ref:rReferrerWallet"
+    "plain_memo_briefing": "briefing"
   },
   "payment_memo_template": {
     "type": "revenue",
@@ -61,7 +33,6 @@
     "source": "tip_manifest"
   },
   "explorer": "https://testnet.xrpl.org/",
-  "factory_landing": "https://aetherforge.world/",
-  "live_tip_page": "https://published-zeta.vercel.app/tip-cycle-667-20260708T183712Z.html",
+  "live_tip_page": "https://published-zeta.vercel.app/tip-cycle-669-20260708T190656Z.html",
   "verification": "Tag 1, memo 'tip', or flat external payment \u2192 verified tip"
 }
