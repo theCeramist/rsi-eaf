@@ -1,6 +1,6 @@
 # RSI-EAF Conversion Playbook (Cycle 643)
 
-Updated: 2026-07-08T14:49:53.749712+00:00
+Updated: 2026-07-08T14:51:59.661227+00:00
 
 **Verified external payments:** 0
 **Backers:** 1 payers · 1 repeat · $168.00 total
@@ -39,7 +39,7 @@ GET https://published-zeta.vercel.app/agent-pay.json then pay Tag 2 for briefing
 - Find: GitHub issue #1, aetherforge CTA, direct share
 - Outbound:
 ```
-Support RSI-EAF on XRPL testnet: send XRP to rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN with Destination Tag 1 ($1 verified). https://published-zeta.vercel.app/tip-manifest.json
+Support RSI-EAF on XRPL testnet: send XRP to rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN with Destination Tag 1 ($1 verified). https://published-zeta.vercel.app/tip-cycle-643-20260708T145018Z.html
 ```
 
 ### orchestrator — swarm / ACP orchestrators

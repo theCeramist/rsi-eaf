@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_prospect_pack_v2",
   "cycle_id": 643,
-  "updated_at": "2026-07-08T14:49:53.749712+00:00",
+  "updated_at": "2026-07-08T14:51:59.661227+00:00",
   "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
   "network": "xrpl_testnet",
   "verified_external_payments": 0,
@@ -73,10 +73,10 @@
       "destination_tag": 1,
       "credited_usd": 1.0,
       "product_id": "tip",
-      "preview_url": "https://published-zeta.vercel.app/tip-manifest.json",
+      "preview_url": "https://published-zeta.vercel.app/tip-cycle-643-20260708T145018Z.html",
       "fulfillment_url": null,
       "pitch": "$1 testnet tip \u2014 verified on factory ledger next cycle. Treasury: rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
-      "outbound_template": "Support RSI-EAF on XRPL testnet: send XRP to rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN with Destination Tag 1 ($1 verified). https://published-zeta.vercel.app/tip-manifest.json",
+      "outbound_template": "Support RSI-EAF on XRPL testnet: send XRP to rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN with Destination Tag 1 ($1 verified). https://published-zeta.vercel.app/tip-cycle-643-20260708T145018Z.html",
       "find_channels": [
         "GitHub issue #1",
         "aetherforge CTA",
@@ -252,7 +252,7 @@
   "mythos_lottery": {
     "schema": "rsi_eaf_mythos_lottery_v1",
     "cycle_id": 643,
-    "updated_at": "2026-07-08T14:49:55.427475+00:00",
+    "updated_at": "2026-07-08T14:52:01.186740+00:00",
     "enabled": true,
     "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
     "destination_tag_mythos": 5,
