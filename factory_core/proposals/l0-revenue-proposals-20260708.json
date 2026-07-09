@@ -1,0 +1,216 @@
+{
+  "schema": "rsi_eaf_l0_revenue_proposals_v1",
+  "generated_at": "2026-07-09T06:48:31.679542+00:00",
+  "goal": "L0 — Positive net economic activity (Sustain net_usd_est >= 0 with verifiable ledger events)",
+  "focus": "revenue",
+  "primary_stack_goal": "L0",
+  "grounding": {
+    "captured_via": "observability.economic_ledger.EconomicLedger.calculate_net + gates.verifier.count_verified_revenue_events",
+    "baseline_net_usd_est": -1412.7061,
+    "baseline_total_revenue_usd_est": 7.0,
+    "baseline_organic_revenue_usd_est": 2.0,
+    "baseline_factory_adjacent_revenue_usd_est": 0.0,
+    "baseline_total_cost_usd_est": 1419.7061,
+    "baseline_verified_revenue_events": 5,
+    "baseline_events_counted": 11275,
+    "gap_to_l0_net_zero_usd": 1412.7061,
+    "fitness_verdict": "passing",
+    "primary_gate_failure": "verified_revenue_pipeline",
+    "last_xrpl_tx_hash": "04E5A2D29939A295F30E889A5F9133EA27C39819E8F538253B90E6E38B64CCDA",
+    "last_xrpl_explorer_url": "https://testnet.xrpl.org/transactions/04E5A2D29939A295F30E889A5F9133EA27C39819E8F538253B90E6E38B64CCDA",
+    "last_verified_revenue_tx_hash": "F0CC25C32E0F7A1C80732296954D1B0AFE9C96ADA004F78ED0BD675FFA22D565",
+    "last_verified_revenue_explorer_url": "https://testnet.xrpl.org/transactions/F0CC25C32E0F7A1C80732296954D1B0AFE9C96ADA004F78ED0BD675FFA22D565",
+    "revenue_gap_context": "Live EconomicLedger.calculate_net() reports net_usd_est=-1412.7061 (revenue 7.0 vs cost 1419.7061) with count_verified_revenue_events()=5, events_counted=11275, organic_revenue_usd_est=2.0. L0 requires net_usd_est >= 0 with verifiable ledger events; gap_to_l0_net_zero_usd=1412.7061 (= max(0, -baseline_net_usd_est)). Verified pipeline exists but costs dominate — need sustained external Tag-1/2 payments and cost throttle, not more outbound anchors alone."
+  },
+  "proposals": [
+    {
+      "id": "l0-p1-tip-manifest-distribution",
+      "title": "Distribute tip-manifest + agent-pay URLs to drive Destination Tag 1 external payments",
+      "focus": "revenue",
+      "gating": true,
+      "expected_economic_delta_usd": 5.0,
+      "expected_economic_delta_note": "+$1.00 per verified tip (TIP_USD); conservative 5 external tips over next ~20 cycles = +$5.00 organic revenue vs baseline organic_revenue_usd_est=2.0. Does not alone flip net to >=0 (gap $1412.71) but is the primary verifiable L0 revenue lever.",
+      "impact": "expected_economic_delta_usd=+5.00 organic revenue (5 x $1.00 Destination Tag 1 tips) relative to baseline organic_revenue_usd_est=2.0 / net_usd_est=-1412.7061",
+      "risk": "Distribution without conversion yields $0; Vercel free-tier cooldowns can stale live URLs; must not spoof payments.",
+      "verification": {
+        "summary": "Independently confirm inbound XRPL tip payments and ledger verified-revenue growth",
+        "observables": [
+          {
+            "name": "verified_revenue_events_delta",
+            "queryable_source": "gates.verifier.count_verified_revenue_events",
+            "pass_if": "count increases by >=1 from baseline 5 after external payment"
+          },
+          {
+            "name": "ledger_revenue_event",
+            "queryable_source": "observability/economic_ledger.jsonl",
+            "fields": [
+              "event_type=revenue",
+              "metadata.verified=true OR metadata.verification_method set",
+              "metadata.revenue_class=organic preferred",
+              "amount_usd_est >= 1.0",
+              "xrpl_tx_hash non-null"
+            ],
+            "pass_if": "at least one new revenue row with xrpl_tx_hash after tip"
+          },
+          {
+            "name": "xrpl_tx_explorer_lookup",
+            "queryable_source": "https://testnet.xrpl.org/transactions/{xrpl_tx_hash}",
+            "pass_if": "Payment to FACTORY_TREASURY_ADDRESS with Destination Tag 1 (or memo tip) is visible on explorer"
+          },
+          {
+            "name": "gate_verified_revenue_pipeline",
+            "queryable_source": "gates.verifier._verified_revenue_gate / run_cycle_gates",
+            "pass_if": "gate verified_revenue_pipeline passes (verified_events>0 or organic_revenue_usd_est>0)"
+          },
+          {
+            "name": "ledger_net_rollup",
+            "queryable_source": "EconomicLedger.calculate_net()",
+            "fields": [
+              "organic_revenue_usd_est",
+              "net_usd_est",
+              "total_revenue_usd_est"
+            ],
+            "pass_if": "organic_revenue_usd_est >= baseline + expected tip amount"
+          }
+        ]
+      },
+      "verification_text": "After distribution: (1) count_verified_revenue_events() > baseline 5; (2) economic_ledger.jsonl has new event_type=revenue with metadata.verified=true and xrpl_tx_hash; (3) open https://testnet.xrpl.org/transactions/{hash} and confirm Payment Destination Tag 1 to treasury; (4) gate verified_revenue_pipeline passes; (5) calculate_net().organic_revenue_usd_est increases by ~$1 per tip."
+    },
+    {
+      "id": "l0-p2-briefing-unlock-campaign",
+      "title": "Paid briefing unlock campaign (Destination Tag 2 / product_id memo)",
+      "focus": "revenue",
+      "gating": true,
+      "expected_economic_delta_usd": 6.0,
+      "expected_economic_delta_note": "+$2.00 per briefing unlock (BRIEFING_UNLOCK_USD default); 3 unlocks = +$6.00 organic vs baseline organic=2.0. Stacks with tips toward closing $1412.71 L0 gap.",
+      "impact": "expected_economic_delta_usd=+6.00 organic revenue (3 x $2.00 briefing unlocks) relative to baseline net_usd_est=-1412.7061",
+      "risk": "Requires live teaser + deliverable path; internal self-payments must not count as organic.",
+      "verification": {
+        "summary": "Confirm briefing unlock payments land as verified ledger revenue with explorer-backed hashes",
+        "observables": [
+          {
+            "name": "briefing_ledger_events",
+            "queryable_source": "observability/economic_ledger.jsonl",
+            "fields": [
+              "event_type=revenue",
+              "source contains paid_briefing OR metadata.product_id briefing-cycle-*",
+              "xrpl_tx_hash",
+              "metadata.verified=true"
+            ],
+            "pass_if": ">=1 verified briefing revenue event after campaign"
+          },
+          {
+            "name": "xrpl_destination_tag_2",
+            "queryable_source": "https://testnet.xrpl.org/transactions/{xrpl_tx_hash}",
+            "pass_if": "Payment shows Destination Tag 2 (or memo briefing/product_id) to treasury"
+          },
+          {
+            "name": "organic_revenue_delta",
+            "queryable_source": "EconomicLedger.calculate_net()",
+            "pass_if": "organic_revenue_usd_est increases by ~2.0 per unlock vs baseline 2.0"
+          },
+          {
+            "name": "gate_verified_revenue_pipeline",
+            "queryable_source": "gates.verifier.run_cycle_gates",
+            "pass_if": "verified_revenue_pipeline passes on subsequent hybrid cycle"
+          }
+        ]
+      },
+      "verification_text": "For each unlock: ledger revenue event with xrpl_tx_hash; explorer lookup at testnet.xrpl.org confirms Tag 2 payment; calculate_net() organic_revenue_usd_est rises; verified_revenue_pipeline gate passes."
+    },
+    {
+      "id": "l0-p3-treasury-ingest-hygiene",
+      "title": "Harden treasury ingest so unmatched XRPL inflows become verified revenue events",
+      "focus": "revenue",
+      "gating": true,
+      "expected_economic_delta_usd": 2.0,
+      "expected_economic_delta_note": "Does not create demand; recovers +$2.00 (or more) that would otherwise stay unmatched if Tag 1/2 payments arrived without classification. Relative to baseline verified_revenue_events=5, each successful unmatched->verified conversion adds organic USD when a real external tip exists.",
+      "impact": "expected_economic_delta_usd=+2.00 recovered organic (unmatched Tag-1 tips correctly classified) vs baseline verified=5 / organic=2.0",
+      "risk": "Over-attribution of internal/faucet txs would spoof organic — must keep internal address filters.",
+      "verification": {
+        "summary": "Re-read ledger + XRPL for newly classified verified events after ingest pass",
+        "observables": [
+          {
+            "name": "verified_revenue_events",
+            "queryable_source": "gates.verifier.count_verified_revenue_events",
+            "pass_if": "increases after treasury_monitor / revenue_ingest cycle when external payment present"
+          },
+          {
+            "name": "ledger_event_fields",
+            "queryable_source": "observability/economic_ledger.jsonl",
+            "fields": [
+              "xrpl_tx_hash",
+              "metadata.verification_method",
+              "metadata.verified",
+              "amount_usd_est > 0"
+            ],
+            "pass_if": "new revenue rows refuse zero amount and require xrpl_tx_hash (log_verified_revenue contract)"
+          },
+          {
+            "name": "xrpl_explorer",
+            "queryable_source": "https://testnet.xrpl.org/transactions/{xrpl_tx_hash}",
+            "pass_if": "hash on explorer matches ledger amount direction (inbound to treasury)"
+          },
+          {
+            "name": "net_rollup",
+            "queryable_source": "EconomicLedger.calculate_net()",
+            "pass_if": "total_revenue_usd_est and organic_revenue_usd_est move with verified events only (not anchors)"
+          }
+        ]
+      },
+      "verification_text": "Run treasury ingest; count_verified_revenue_events increases beyond baseline 5; each new revenue event has xrpl_tx_hash openable on testnet.xrpl.org; calculate_net() only counts verified revenue (metadata.verified or verification_method)."
+    },
+    {
+      "id": "l0-p4-cost-throttle-revenue-priority",
+      "title": "Throttle non-revenue Grok spend while revenue surfaces stay live",
+      "focus": "revenue",
+      "gating": true,
+      "expected_economic_delta_usd": 20.0,
+      "expected_economic_delta_note": "Cost-side L0 contribution: reducing session/token cost burn by ~$20 over next sprint narrows gap_to_l0 without spoofing revenue. Paired with p1-p3 revenue lifts. Baseline total_cost_usd_est=1419.7061 vs total_revenue 7.0.",
+      "impact": "expected_economic_delta_usd=+20.00 via avoided cost (improves net_usd_est by ~20) relative to baseline net_usd_est=-1412.7061",
+      "risk": "Over-throttling can stall evolution/distribution that produces the next external payer.",
+      "verification": {
+        "summary": "Confirm cost events slow and net improves without fabricating revenue",
+        "observables": [
+          {
+            "name": "ledger_cost_growth",
+            "queryable_source": "observability/economic_ledger.jsonl",
+            "fields": [
+              "event_type=cost",
+              "amount_usd_est"
+            ],
+            "pass_if": "marginal cost growth rate declines after throttle vs prior window"
+          },
+          {
+            "name": "net_rollup",
+            "queryable_source": "EconomicLedger.calculate_net()",
+            "fields": [
+              "total_cost_usd_est",
+              "net_usd_est",
+              "total_revenue_usd_est"
+            ],
+            "pass_if": "net_usd_est improves (less negative) without total_revenue_usd_est decreasing"
+          },
+          {
+            "name": "verified_revenue_not_spoofed",
+            "queryable_source": "gates.verifier.count_verified_revenue_events",
+            "pass_if": "verified count does not jump without matching xrpl_tx_hash explorer rows"
+          },
+          {
+            "name": "xrpl_explorer_unchanged_for_costs",
+            "queryable_source": "https://testnet.xrpl.org/transactions/{xrpl_tx_hash}",
+            "pass_if": "any new revenue still has explorer-visible Payment; cost throttle does not mint fake revenue hashes"
+          }
+        ]
+      },
+      "verification_text": "After throttle window: calculate_net().total_cost_usd_est growth slows; net_usd_est improves toward 0; count_verified_revenue_events only rises with real economic_ledger revenue rows that open on testnet.xrpl.org."
+    }
+  ],
+  "aggregate": {
+    "sum_expected_economic_delta_usd": 33.0,
+    "vs_baseline_net_usd_est": -1412.7061,
+    "projected_net_if_all_realized_usd": -1379.7061,
+    "l0_attainment_note": "These proposals move toward L0 with verifiable XRPL/ledger checks; they do not claim single-session net flip to >=0 without sustained external payments and cost control. Partial progress is honest: +$33.00 expected vs $1412.71 gap (baseline net_usd_est=-1412.7061).",
+    "focus": "revenue"
+  }
+}
