@@ -1,6 +1,6 @@
 # RSI-EAF Revenue Surfaces (Cycle 713)
 
-Updated: 2026-07-09T21:46:24.382050+00:00
+Updated: 2026-07-09T21:59:48.309324+00:00
 
 ## Live surfaces
 
@@ -11,6 +11,8 @@ Updated: 2026-07-09T21:46:24.382050+00:00
 | Agent pay endpoint | https://published-zeta.vercel.app/agent-pay.json |
 | Agent tip manifest | https://published-zeta.vercel.app/tip-manifest.json |
 | Paid briefing | https://published-zeta.vercel.app/briefing-cycle-713-20260709T214602Z.html |
+| Mythos artifact (Tag 5) | https://published-zeta.vercel.app/mythos-cycle-713-20260709T214717Z.html |
+| Micro-tool (Tag 3) | https://published-zeta.vercel.app/micro-tool-cycle-713-20260709T214624Z.html |
 | Agent service catalog (Tag 4) | https://published-zeta.vercel.app/service-catalog.json |
 | aetherforge nexus | https://aetherforge.world |
 | jarvis-swarm repo | https://github.com/theCeramist/jarvis-swarm |
