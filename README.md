@@ -70,7 +70,10 @@ rsi-eaf/
 │   └── dashboard/             # Future live view (metrics, on-chain txs, evolution timeline)
 ├── tools/
 │   ├── xrpl_tools.py          # xrpl-py powered: wallets, payments, WS monitoring, ledger queries, market research
+│   ├── hum/                   # Vendored HUM DREAMS (slow cognition) — https://github.com/nobulart/hum
 │   └── general_tools.py       # Browser, code exec, publishing, etc. (deep & verifiable)
+├── observability/dreams/      # Night capture + SURFACE.md (soft director feed; never auto-edits AGENTS.md)
+├── factory_core/dreams_integration.py  # Cycle-end capture + surface cadence
 ├── skills/
 │   ├── base_skill.py
 │   └── [domain_skills]/       # Self-improving, versioned, with benchmarks + XRPL hooks
@@ -93,6 +96,17 @@ rsi-eaf/
   - On-chain queries for market intelligence (AMM, order books, recent activity).
 - **Economic Anchoring**: Revenue events → XRPL Payment (or reference tx) with Memo. Explorer links stored in local ledger for instant auditability.
 - **Explorers**: Use https://testnet.xrpl.org/ and mainnet equivalents for research and verification.
+
+## HUM DREAMS (slow cognition)
+Vendored from [nobulart/hum](https://github.com/nobulart/hum) (MIT) under `tools/hum/`.
+
+- **Capture**: every hybrid cycle end (`factory_core.dreams_integration.record_cycle_dreams`) → `observability/dreams/DREAMS.md`
+- **Surface**: every 3 cycles or when night count ≥ budget → `SURFACE.md` (also daily review)
+- **Director/coordination**: soft `dream:*` priorities only — **never** override AGENTS.md, gates, or treasury
+- **Skill**: `.grok/skills/dreams-capture`
+- **CLI**: `python -m tools.hum.capture ...` · `python scripts/run_dreams_surface.py --force`
+
+Env: `DREAMS_ENABLED`, `DREAMS_DIR`, `DREAMS_MAX_PER_CYCLE`, `DREAMS_SURFACE_EVERY_N_CYCLES`, `DREAMS_DIRECTOR_FEED`.
 
 ## Development & Evolution Workflow
 - **Always** start significant work in **Plan Mode** with Grok Build.
