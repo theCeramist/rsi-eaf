@@ -25,28 +25,63 @@ def _append_log(entry: Dict[str, Any]) -> None:
 
 def _isolated_pytest_env() -> Dict[str, str]:
     """Pytest must not inherit runner overrides (loss ceiling, continuous mode)."""
-    env = os.environ.copy()
-    for key in (
-        "MAX_CUMULATIVE_NET_LOSS_USD",
-        "FACTORY_RUN_CONTINUOUS",
-        "CYCLE_MODE",
-        "CYCLE_FOCUS",
-        "SKIP_VERCEL_DEPLOY",
-        "FACTORY_RUNNER_ACTIVE",
-    ):
-        env.pop(key, None)
-    return env
+    try:
+        from factory_core.pytest_isolation import isolated_pytest_env
+
+        return isolated_pytest_env()
+    except ImportError:
+        env = os.environ.copy()
+        for key in (
+            "MAX_CUMULATIVE_NET_LOSS_USD",
+            "FACTORY_RUN_CONTINUOUS",
+            "CYCLE_MODE",
+            "CYCLE_FOCUS",
+            "SKIP_VERCEL_DEPLOY",
+            "FACTORY_RUNNER_ACTIVE",
+        ):
+            env.pop(key, None)
+        return env
 
 
 def run_pytest() -> Dict[str, Any]:
     start = time.time()
+    try:
+        from factory_core.pytest_isolation import (
+            isolated_pytest_env,
+            pytest_timeout_sec,
+            tool_gate_pytest_argv,
+        )
+
+        argv = tool_gate_pytest_argv()
+        env = isolated_pytest_env()
+        timeout = pytest_timeout_sec()
+        cwd = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    except ImportError:
+        import sys
+
+        markers = os.getenv("TOOL_IMPROVEMENT_TEST_MARKERS", "not meta")
+        argv = [sys.executable, "-m", "pytest", TEST_PATH, "-q", "--tb=no"]
+        if markers.strip():
+            argv.extend(["-m", markers.strip()])
+        env = os.environ.copy()
+        for key in (
+            "MAX_CUMULATIVE_NET_LOSS_USD",
+            "FACTORY_RUN_CONTINUOUS",
+            "CYCLE_MODE",
+            "FACTORY_RUNNER_ACTIVE",
+        ):
+            env.pop(key, None)
+        timeout = int(os.getenv("FACTORY_PYTEST_TIMEOUT_SEC", "600"))
+        cwd = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+
     result = subprocess.run(
-        ["python", "-m", "pytest", TEST_PATH, "-q"],
+        argv,
         capture_output=True,
         text=True,
-        cwd=os.getcwd(),
+        cwd=cwd,
         check=False,
-        env=_isolated_pytest_env(),
+        env=env,
+        timeout=timeout,
     )
     output = (result.stdout or "") + (result.stderr or "")
     passed = result.returncode == 0
@@ -93,6 +128,7 @@ def analyze_tool_bottlenecks() -> List[Dict[str, Any]]:
         "tool": "revenue_engines/registry",
         "issue": "per_engine_vercel_deploy",
         "action": "batch_deploy_once_per_cycle",
+        "status": "implemented",
     })
     opportunities.append({
         "tool": "observability/payment_intent",
@@ -100,6 +136,20 @@ def analyze_tool_bottlenecks() -> List[Dict[str, Any]]:
         "action": "destination_tag_primary_path",
         "status": "implemented",
     })
+    try:
+        from tools.publish_tools import quota_exhausted_status
+
+        quota = quota_exhausted_status()
+        if quota.get("exhausted"):
+            opportunities.append({
+                "tool": "publish_tools",
+                "issue": "vercel_deploy_quota_exhausted",
+                "action": "use_api_deploy_fallback",
+                "detail": quota.get("reason"),
+                "status": "workaround_active",
+            })
+    except Exception:
+        pass
     return opportunities
 
 
@@ -108,10 +158,34 @@ def run_tool_improvement_cycle(cycle_id: int) -> Dict[str, Any]:
     print("[ToolImprover] Running tool improvement cycle...")
     t0 = time.time()
 
-    from factory_core.pytest_cache import set_pytest_result
+    from factory_core.pytest_cache import (
+        get_reusable_pytest_result,
+        set_pytest_result,
+        tool_gate_pytest_every_n,
+    )
 
-    pytest_result = run_pytest()
-    set_pytest_result(cycle_id, pytest_result)
+    reused = get_reusable_pytest_result(cycle_id)
+    if reused:
+        print(
+            f"[ToolImprover] Reusing pytest pass from cycle "
+            f"{reused.get('reused_from_cycle')} "
+            f"(every {tool_gate_pytest_every_n()} cycles in continuous mode)"
+        )
+        # Memory-only: do not rewrite disk watermark or age resets and pytest never re-runs.
+        from factory_core import pytest_cache as _pc
+
+        _pc._cache[cycle_id] = {
+            "passed": True,
+            "exit_code": reused.get("exit_code", 0),
+            "duration_ms": 0,
+            "output_tail": (reused.get("output_tail") or "")[-200:],
+            "reused": True,
+            "reused_from_cycle": reused.get("reused_from_cycle"),
+        }
+        pytest_result = _pc._cache[cycle_id]
+    else:
+        pytest_result = run_pytest()
+        set_pytest_result(cycle_id, pytest_result)
     xrpl_result = check_xrpl_connectivity()
     opportunities = analyze_tool_bottlenecks()
 

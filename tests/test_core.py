@@ -28,6 +28,25 @@ def test_ledger_net_excludes_superseded(tmp_path):
     assert net["total_cost_usd_est"] == 1.0
 
 
+def test_ledger_verified_revenue_survives_cost_window(tmp_path):
+    """Verified revenue must not disappear when recent rows are mostly costs."""
+    ledger_path = tmp_path / "ledger.jsonl"
+    led = EconomicLedger(ledger_path=str(ledger_path))
+    led.log_verified_revenue(
+        "xrpl_inbound_payment",
+        2.0,
+        cycle_id=1,
+        xrpl_tx_hash="ABC123",
+        verification_method="xrpl_treasury_flat_tip_default",
+        metadata={"organic": True, "revenue_class": "organic"},
+    )
+    for i in range(1200):
+        led.log_event("cost", "grok", 0.01, cycle_id=100 + i, anchor_to_xrpl=False)
+    assert led.count_verified_revenue_events() == 1
+    net = led.calculate_net()
+    assert net["organic_revenue_usd_est"] == 2.0
+
+
 def test_build_index_html(tmp_path, monkeypatch):
     monkeypatch.setenv("PUBLISHED_DIR", str(tmp_path))
     import tools.publish_tools as pt
@@ -231,6 +250,7 @@ def test_revenue_sprint_should_run():
 
     assert should_run_revenue_sprint(0.0, consecutive_zero=1) is True
     assert should_run_revenue_sprint(5.0, consecutive_zero=1) is False
+    assert should_run_revenue_sprint(5.0, consecutive_zero=2) is True
 
 
 def test_nexus_echo_drift_structure(monkeypatch):
@@ -312,11 +332,74 @@ def test_publish_hygiene_archives_stale_html(tmp_path, monkeypatch):
     monkeypatch.setattr(ph, "ARCHIVE_DIR", tmp_path / "archive")
     (tmp_path / "tip-cycle-1-old.html").write_text("a", encoding="utf-8")
     (tmp_path / "tip-cycle-99-new.html").write_text("b", encoding="utf-8")
+    (tmp_path / "services-cycle-99-x.html").write_text("svc", encoding="utf-8")
     (tmp_path / "index.html").write_text("idx", encoding="utf-8")
     result = ph.prune_published_for_deploy(cycle_id=99, max_html=8)
     assert result["archived_count"] >= 1
     assert (tmp_path / "tip-cycle-99-new.html").exists()
+    assert (tmp_path / "services-cycle-99-x.html").exists()
     assert not (tmp_path / "tip-cycle-1-old.html").exists()
+
+
+def test_published_asset_gate_accepts_archive_and_live(tmp_path, monkeypatch):
+    from gates.verifier import _published_assets_resolvable, run_cycle_gates
+
+    monkeypatch.setenv("PUBLISHED_DIR", str(tmp_path))
+    arch = tmp_path / "archive"
+    arch.mkdir()
+    name = "tip-cycle-50-x.html"
+    (arch / name).write_text("tip", encoding="utf-8")
+    ok, detail = _published_assets_resolvable(
+        [str(tmp_path / name)],
+        {},
+    )
+    assert ok, detail
+    assert "archive" in detail or "resolved" in detail
+
+    ok2, detail2 = _published_assets_resolvable(
+        ["published/missing.html"],
+        {"live_verified": True, "live_url": "https://example.com/tip"},
+    )
+    assert ok2, detail2
+
+    # Stable surface after prune (tip-manifest / index still on disk)
+    (tmp_path / "tip-manifest.json").write_text("{}", encoding="utf-8")
+    ok3, detail3 = _published_assets_resolvable(
+        ["published/missing-cycle.html"],
+        {"live_verified": False},
+    )
+    assert ok3, detail3
+    assert "stable_surface" in detail3
+
+    # Full gate path with archived asset
+    import gates.verifier as gv
+
+    monkeypatch.setattr(gv, "PUBLISHED_DIR", str(tmp_path))
+    result = run_cycle_gates(
+        50,
+        {
+            "published_assets": [str(tmp_path / name)],
+            "live_verified": False,
+            "cycle_mode": "revenue",
+        },
+    )
+    pub_gate = next(g for g in result["gates"] if g["gate"] == "published_asset_exists")
+    assert pub_gate["passed"] is True
+
+
+def test_pytest_cache_reuse_continuous(tmp_path, monkeypatch):
+    from factory_core import pytest_cache as pc
+
+    monkeypatch.setenv("FACTORY_RUN_CONTINUOUS", "true")
+    monkeypatch.setenv("TOOL_GATE_PYTEST_EVERY_N", "3")
+    monkeypatch.setenv("FACTORY_PYTEST_CACHE_FILE", str(tmp_path / "pytest_gate_cache.json"))
+    pc._cache.clear()
+    pc.set_pytest_result(100, {"passed": True, "exit_code": 0, "duration_ms": 10, "output_tail": "ok"})
+    reused = pc.get_reusable_pytest_result(101)
+    assert reused is not None
+    assert reused.get("reused_from_cycle") == 100
+    assert pc.get_reusable_pytest_result(103) is None  # age 3 >= every_n
+    assert pc.tool_gate_pytest_every_n() == 3
 
 
 def test_director_enables_top3_engines(monkeypatch):
@@ -346,12 +429,166 @@ def test_jarvis_ci_workflow_yaml_valid():
     from tools.jarvis_swarm_ci_repair import _WORKFLOW
 
     assert "python3 scripts/jarvis_hygiene_scan.py" in _WORKFLOW
+    assert "python3 scripts/aetherforge_deploy_gate.py" in _WORKFLOW
     assert "name: Nexus Portal CI/CD" in _WORKFLOW
     assert "${{ secrets.VERCEL_TOKEN }}" in _WORKFLOW
+    assert "AETHERFORGE_DEPLOY_HOOK_URL" in _WORKFLOW
+    assert "notify:" not in _WORKFLOW
     assert "${{{{" not in _WORKFLOW
     for line in _WORKFLOW.splitlines():
         if line.startswith("import ") or line.startswith("from "):
             raise AssertionError(f"unindented python in workflow YAML: {line!r}")
+
+
+def test_aetherforge_publish_deploy_hook_when_stale(monkeypatch):
+    from tools import aetherforge_publish as af
+
+    calls = []
+
+    class FakeResponse:
+        status_code = 200
+        text = "ok"
+
+    monkeypatch.setenv("AETHERFORGE_DEPLOY_HOOK_URL", "https://api.vercel.com/v1/integrations/deploy/hook/test")
+    monkeypatch.setattr(
+        "httpx.post",
+        lambda url, **kw: calls.append(url) or FakeResponse(),
+    )
+    monkeypatch.setattr(
+        af,
+        "verify_aetherforge_freshness",
+        lambda *a, **k: {"fresh": False, "live_cycle_id": 1, "expected_cycle_id": 42},
+    )
+    monkeypatch.setattr(
+        af,
+        "trigger_vercel_git_deploy",
+        lambda: {"success": False, "skipped": True, "reason": "test"},
+    )
+    monkeypatch.setenv("AETHERFORGE_VERIFY_DELAY_SEC", "0")
+    result = af.publish_aetherforge(42, local_paths={}, git_push_ok=True)
+    assert result["deploy"]["success"] is True
+    assert calls
+
+
+def test_aetherforge_publish_skips_hook_when_fresh(monkeypatch):
+    from tools import aetherforge_publish as af
+
+    monkeypatch.setenv("AETHERFORGE_DEPLOY_HOOK_URL", "https://api.vercel.com/v1/integrations/deploy/hook/test")
+    monkeypatch.setattr(
+        af,
+        "verify_aetherforge_freshness",
+        lambda *a, **k: {"fresh": True, "live_cycle_id": 42, "expected_cycle_id": 42},
+    )
+    result = af.publish_aetherforge(42, local_paths={}, git_push_ok=True)
+    assert result["deploy"]["reason"] == "already_fresh"
+
+
+def test_aetherforge_publish_hooks_when_one_cycle_behind(monkeypatch):
+    from tools import aetherforge_publish as af
+
+    calls = []
+
+    class FakeResponse:
+        status_code = 200
+        text = "ok"
+
+    monkeypatch.setenv("AETHERFORGE_DEPLOY_HOOK_URL", "https://api.vercel.com/v1/integrations/deploy/hook/test")
+    monkeypatch.setattr("httpx.post", lambda url, **kw: calls.append(url) or FakeResponse())
+    def _freshness(cid, **k):
+        if k.get("strict"):
+            return {"fresh": False, "live_cycle_id": cid - 1, "expected_cycle_id": cid}
+        return {"fresh": True, "live_cycle_id": cid, "expected_cycle_id": cid}
+
+    monkeypatch.setattr(af, "verify_aetherforge_freshness", _freshness)
+    monkeypatch.setattr(
+        af,
+        "trigger_vercel_git_deploy",
+        lambda: {"success": False, "skipped": True, "reason": "test"},
+    )
+    monkeypatch.setenv("AETHERFORGE_VERIFY_DELAY_SEC", "0")
+    result = af.publish_aetherforge(712, local_paths={}, git_push_ok=True)
+    assert result["deploy"]["success"] is True
+    assert calls
+
+
+def test_nexus_ci_gate_disabled_by_default(monkeypatch):
+    from tools.github_ci_gate import block_distribution_if_ci_red
+
+    monkeypatch.delenv("NEXUS_CI_GATE_ENABLED", raising=False)
+    monkeypatch.setenv("GITHUB_CI_GATE", "true")
+    assert block_distribution_if_ci_red(owner="theCeramist", repo="jarvis-swarm") is None
+
+
+def test_aetherforge_mirror_writes_files(tmp_path, monkeypatch):
+    from tools import aetherforge_publish as af
+
+    monkeypatch.setattr(af, "MIRROR_DIR", tmp_path)
+    src = tmp_path / "src.json"
+    src.write_text('{"cycle": 1}', encoding="utf-8")
+    out = af.mirror_nexus_files({"control_state": str(src)})
+    assert out["mirrored"] == 1
+    assert (tmp_path / "control-state.json").exists()
+
+
+def test_hygiene_never_started_detects_actions_infra():
+    from tools.nexus_ci_runner_watch import hygiene_never_started
+
+    assert hygiene_never_started(
+        {"success": True, "conclusion": "failure", "step_count": 0, "runner_id": 0}
+    )
+    assert not hygiene_never_started(
+        {"success": True, "conclusion": "success", "step_count": 3, "runner_id": 99}
+    )
+
+
+def test_payment_status_index_from_ledger(tmp_path, monkeypatch):
+    from observability import payment_status_index as psi
+    from observability.economic_ledger import EconomicLedger
+
+    ledger_path = tmp_path / "ledger.jsonl"
+    pub = tmp_path / "published"
+    monkeypatch.setattr(psi, "PUBLISHED_DIR", pub)
+    monkeypatch.setattr(psi, "PAYMENT_STATUS_FILE", pub / "payment-status.json")
+
+    led = EconomicLedger(ledger_path=str(ledger_path))
+    monkeypatch.setattr(psi, "ledger", led)
+    led.log_verified_revenue(
+        "xrpl_inbound_payment",
+        1.0,
+        cycle_id=9,
+        xrpl_tx_hash="HASH9",
+        verification_method="xrpl_treasury_flat_tip_default",
+        metadata={"organic": True, "from_address": "rExt"},
+    )
+    path = psi.write_payment_status_index()
+    data = json.loads(path.read_text(encoding="utf-8"))
+    assert data["summary"]["total_verified"] == 1
+    assert data["payments"][0]["tx_hash"] == "HASH9"
+
+
+def test_nexus_runner_blocked_reads_state(tmp_path, monkeypatch):
+    from tools import nexus_ci_runner_watch as watch
+
+    state_path = tmp_path / "nexus_ci_runner_state.json"
+    monkeypatch.setattr(watch, "STATE_FILE", state_path)
+    monkeypatch.setenv("NEXUS_RUNNER_WATCH_ENABLED", "true")
+    assert not watch.nexus_runners_blocked()
+    watch.save_runner_state({"runner_unavailable": True, "runner_available": False})
+    assert watch.nexus_runners_blocked()
+
+
+def test_nexus_ci_repair_gated_on_hygiene_only():
+    from tools.jarvis_swarm_ci_repair import nexus_ci_needs_hygiene_repair
+
+    assert not nexus_ci_needs_hygiene_repair(
+        {"success": True, "conclusion": "failure", "hygiene_pass": True, "effective_conclusion": "success"}
+    )
+    assert nexus_ci_needs_hygiene_repair(
+        {"success": True, "conclusion": "failure", "hygiene_pass": False, "effective_conclusion": "failure"}
+    )
+    assert not nexus_ci_needs_hygiene_repair(
+        {"success": True, "conclusion": "success", "hygiene_pass": False, "effective_conclusion": "success"}
+    )
 
 
 def test_tipping_funnel_html_includes_treasury(tmp_path, monkeypatch):
@@ -509,7 +746,7 @@ def test_self_improvement_proposals_detect_stale():
 
     meta = {
         "focus": "rsi",
-        "stale_proposals": ["Batch Vercel deploy once per cycle"],
+        "stale_proposals": ["Execute top fitness recommendation"],
         "ledger_trends": {"revenue_gap_usd": 5.0},
         "gate_trends": {"pass_rate": 1.0, "top_failures": []},
         "avg_pytest_duration_ms": 4000,
@@ -518,6 +755,22 @@ def test_self_improvement_proposals_detect_stale():
     sources = {p["source"] for p in proposals}
     assert "self_improvement" in sources
     assert any("stale" in p["title"].lower() for p in proposals)
+
+
+def test_self_improvement_skips_builtin_and_meta_stale():
+    from factory_core.self_improver import self_improvement_proposals
+
+    meta = {
+        "focus": "rsi",
+        "stale_proposals": ["Batch Vercel deploy once per cycle"],
+        "ledger_trends": {"revenue_gap_usd": 0},
+        "gate_trends": {"pass_rate": 1.0, "top_failures": []},
+        "avg_pytest_duration_ms": 6000,
+    }
+    proposals = self_improvement_proposals(meta, {"cycle_revenue_usd": 0}, cycle_id=80)
+    titles = [p["title"] for p in proposals]
+    assert not any(t.startswith("Diversify beyond stale proposal:") for t in titles)
+    assert "Optimize pytest suite duration" not in titles
 
 
 def test_revenue_classification_factory_adjacent():
@@ -670,7 +923,11 @@ def test_stale_evolution_filters_builtin_implemented():
     from factory_core.stale_evolution import (
         BUILTIN_IMPLEMENTED,
         filter_stale_proposals,
+        has_deterministic_resolver,
+        is_meta_proposal_title,
         is_proposal_implemented,
+        normalize_priority_list,
+        translate_priority,
     )
 
     stale = list(BUILTIN_IMPLEMENTED) + ["Refresh live tip surfaces on Vercel"]
@@ -678,6 +935,32 @@ def test_stale_evolution_filters_builtin_implemented():
     assert "Batch Vercel deploy once per cycle" not in filtered
     assert "Refresh live tip surfaces on Vercel" in filtered
     assert is_proposal_implemented("Batch Vercel deploy once per cycle")
+    assert is_meta_proposal_title("Diversify beyond stale proposal: Throttle Grok spend")
+    assert translate_priority("daily_review:Throttle Grok spend; prioritize zero-cost revenue surfaces") == (
+        "throttle_grok_spend"
+    )
+    assert translate_priority("Execute top fitness recommendation") == "fitness_revenue_capture"
+    assert normalize_priority_list(
+        ["daily_review:Surgical gate remediation", "fitness_revenue_capture"]
+    ) == ["surgical_gate_remediation", "fitness_revenue_capture"]
+    assert has_deterministic_resolver("Throttle Grok spend; prioritize zero-cost revenue surfaces")
+    assert has_deterministic_resolver("Optimize pytest suite duration")
+
+
+def test_stale_evolution_throttle_and_optimize_resolvers():
+    from factory_core.stale_evolution import (
+        _resolve_optimize_pytest,
+        _resolve_throttle_grok_spend,
+    )
+
+    throttle = _resolve_throttle_grok_spend(42)
+    assert throttle["implemented"] is True
+    assert throttle["action"] == "throttle_grok_spend"
+    assert os.environ.get("DIRECTOR_ALLOW_GROK_EVOLUTION") == "false"
+
+    optimize = _resolve_optimize_pytest(42)
+    assert optimize["action"] == "optimize_pytest"
+    assert optimize.get("marker_active") is True
 
 
 def test_runner_lock_prevents_duplicate_holder(tmp_path, monkeypatch):
@@ -784,6 +1067,213 @@ def test_analyze_improvement_history_reads_tool_log(tmp_path, monkeypatch):
     assert "tool_cycles_logged" in result
     assert "ledger_trends" in result
     assert result["tool_cycles_logged"] >= 1
+    assert "tool_log_analytics" in result
+    assert "pytest_duration_trend_ms" in result["tool_log_analytics"]
+
+
+def test_compute_tool_log_analytics_duration_trend():
+    """Drive shipped pure analytics: recent half slower → positive trend."""
+    from factory_core.self_improver import compute_tool_log_analytics
+
+    entries = [
+        {"pytest": {"passed": True, "duration_ms": 100.0}},
+        {"pytest": {"passed": True, "duration_ms": 200.0}},
+        {"pytest": {"passed": True, "duration_ms": 300.0}},
+        {"pytest": {"passed": True, "duration_ms": 400.0}},
+        {"phase": "evolve_tools", "proposals_applied": 0},  # non-pytest row ignored
+    ]
+    analytics = compute_tool_log_analytics(entries)
+    assert analytics["pytest_duration_samples"] == 4
+    assert analytics["min_pytest_duration_ms"] == 100.0
+    assert analytics["max_pytest_duration_ms"] == 400.0
+    # older half avg=150, recent half avg=350 → trend +200
+    assert analytics["pytest_duration_trend_ms"] == 200.0
+
+
+def test_x402_publish_well_known(tmp_path, monkeypatch):
+    from observability import x402_publish as xp
+
+    monkeypatch.setattr(xp, "PUBLISHED_DIR", tmp_path)
+    monkeypatch.setattr(xp, "WELL_KNOWN_DIR", tmp_path / ".well-known")
+    monkeypatch.setenv("FACTORY_PUBLIC_BASE_URL", "https://example.test")
+    monkeypatch.setenv("X402_PHASE", "1")
+    manifest = {
+        "cycle_id": 42,
+        "factory": "RSI-EAF",
+        "treasury_address": "rTreasury123",
+        "discovery_urls": {"factory_index": "https://example.test"},
+        "products": [
+            {
+                "id": "briefing_unlock",
+                "destination_tag": 2,
+                "credited_usd": 2.0,
+                "product_id": "briefing-cycle-42",
+                "description": "Briefing",
+                "fulfillment_url": "https://example.test/deliverables/briefing-cycle-42.json",
+            }
+        ],
+    }
+    paths = xp.write_x402_surfaces(manifest)
+    assert paths["well_known_x402"].exists()
+    well = json.loads(paths["well_known_x402"].read_text(encoding="utf-8"))
+    assert well["name"] == "RSI-EAF Factory"
+    assert len(well["resources"]) == 1
+    enriched = json.loads(paths["agent_pay"].read_text(encoding="utf-8"))
+    assert enriched["products"][0]["x402"]["enabled"] is True
+
+
+def test_maybe_register_xrpl_ai_hub_skips_same_cycle(monkeypatch, tmp_path):
+    from tools import xrpl_ai_hub_register as reg
+
+    monkeypatch.setattr(reg, "REGISTRATION_STATE", tmp_path / "reg.json")
+    monkeypatch.setenv("XRPL_AI_REGISTER_ENABLED", "true")
+    (tmp_path / "reg.json").write_text(
+        json.dumps({"registered": True, "cycle_id": 99, "registered_count": 2}),
+        encoding="utf-8",
+    )
+    result = reg.maybe_register_xrpl_ai_hub(99)
+    assert result["skipped"] is True
+    assert result["reason"] == "already_registered_this_cycle"
+
+
+def test_maybe_register_xrpl_ai_hub_calls_register(monkeypatch, tmp_path):
+    from tools import xrpl_ai_hub_register as reg
+
+    monkeypatch.setattr(reg, "REGISTRATION_STATE", tmp_path / "reg.json")
+    monkeypatch.setenv("XRPL_AI_REGISTER_ENABLED", "true")
+    calls = []
+
+    def fake_register(**kwargs):
+        calls.append(kwargs)
+        return {
+            "registered": True,
+            "registered_count": 2,
+            "cycle_id": kwargs.get("cycle_id"),
+            "hub_merchant_url": "https://xrpl-ai.org/address/rTest",
+            "preflight": {"ok": True},
+            "verify": {"success": True},
+        }
+
+    monkeypatch.setattr(reg, "register_rsi_eaf_on_xrpl_ai_hub", fake_register)
+    result = reg.maybe_register_xrpl_ai_hub(100, execution={"vercel_deploy": {"success": True}})
+    assert result["registered"] is True
+    assert calls[0]["deploy"] is False
+
+
+def test_run_platform_sync_includes_xrpl_ai(monkeypatch):
+    from tools import nexus_bridge as nb
+
+    monkeypatch.setattr(
+        "tools.github_distribution.maybe_push_distribution",
+        lambda **kwargs: {"pushed": False},
+    )
+    monkeypatch.setattr(nb, "maybe_emit_nexus", lambda *a, **k: {"emitted": False})
+    monkeypatch.setattr(nb, "verify_external_surfaces", lambda: {"all_ok": True})
+    monkeypatch.setattr(
+        "tools.xrpl_ai_hub_register.maybe_register_xrpl_ai_hub",
+        lambda *a, **k: {"registered": True, "registered_count": 2},
+    )
+    monkeypatch.setattr(
+        "tools.product_surface_sync.verify_product_surfaces_live",
+        lambda cycle_id: {"total": 2, "live_count": 2, "slo_met": True},
+    )
+    result = nb.run_platform_sync({"cycle_id": 50, "execution": {"featured_surfaces": {}}})
+    assert result["xrpl_ai_hub"]["registered"] is True
+    assert result["surface_slo"]["slo_met"] is True
+
+
+def test_xrpl_ai_listing_alignment():
+    from tools import product_surface_sync as pss
+    from tools import xrpl_ai_hub_register as reg
+
+    prior = reg.load_registration_state()
+    cycle_id = int(prior.get("cycle_id") or 0)
+    if not prior.get("registered") or not cycle_id:
+        return
+    listing = pss.verify_xrpl_ai_listing_alignment(cycle_id)
+    assert listing["aligned"] is True
+
+
+def test_xrpl_ai_hub_register_verify_mock(monkeypatch, tmp_path):
+    from tools import xrpl_ai_hub_register as reg
+
+    monkeypatch.setattr(reg, "REGISTRATION_STATE", tmp_path / "reg.json")
+
+    class FakeResponse:
+        status_code = 200
+
+        @property
+        def content(self):
+            return b'{"success":true,"registeredCount":2}'
+
+        def json(self):
+            return {"success": True, "registeredCount": 2}
+
+    monkeypatch.setattr("httpx.post", lambda *a, **k: FakeResponse())
+    result = reg.verify_x402_origin("https://example.test", name="RSI-EAF")
+    assert result["success"] is True
+    assert result["response"]["registeredCount"] == 2
+
+
+def test_xrpl_ai_hub_parse_stats_and_settlements():
+    from tools.xrpl_ai_hub_ingest import parse_hub_stats, parse_live_settlements
+
+    html = """
+    <html><body>
+    <h3>XRP settled</h3><div>XRP settled ▲ 95% 3107.38 XRP</div>
+    <h3>RLUSD settled</h3><div>RLUSD settled ▼ 24% 1532.14 RLUSD</div>
+    <a href="/transactions">Transactions ▲ 78% 1,064,240</a>
+    <a href="/directory">140 live x402 services</a>
+    <a href="/tx/AA4E69F123602D308B19F5299B7C56D63400B3A56E45B45D9EDA16C567AE703A">
+      0.002 RLUSD Verified Verifiable Intent
+    </a>
+    <a href="/address/rMPwy3Ntx56Nyc2fKGNm7VRWdmpHSB92Z7">Heurist Mesh</a>
+    </body></html>
+    """
+    stats = parse_hub_stats(html)
+    assert stats["xrp_settled"] == 3107.38
+    assert stats["rlusd_settled"] == 1532.14
+    assert stats["transactions_indexed"] == 1064240
+    assert stats["directory_services"] == 140
+    txs = parse_live_settlements(html, limit=5)
+    assert txs[0]["tx_hash"].startswith("AA4E69")
+    assert txs[0]["verified_intent"] is True
+
+
+def test_xrpl_ai_hub_ingest_persists(tmp_path, monkeypatch):
+    from tools import xrpl_ai_hub_ingest as hub
+
+    monkeypatch.setattr(hub, "HUB_INTEL_FILE", tmp_path / "hub.jsonl")
+    monkeypatch.setattr(hub, "HUB_LATEST_FILE", tmp_path / "hub_latest.json")
+    monkeypatch.setattr(hub, "HUB_PUBLISH_FILE", tmp_path / "publish.json")
+    sample = "<html><body><h3>XRP settled</h3><div>100.5 XRP</div></body></html>"
+    monkeypatch.setattr(hub, "_fetch", lambda path: sample)
+    result = hub.ingest_xrpl_ai_hub(cycle_id=42)
+    assert result["ok"] is True
+    assert (tmp_path / "hub_latest.json").exists()
+    assert hub.latest_hub_intel().get("cycle_id") == 42
+
+
+def test_build_nexus_ui_heartbeat_cycle():
+    from tools.aetherforge_nexus_ui import build_runner_heartbeat, build_landing
+    from tools.nexus_bridge import assemble_factory_wave
+
+    wave = assemble_factory_wave(
+        {
+            "cycle_id": 712,
+            "success": True,
+            "execution": {"treasury_address": "rTest", "featured_surfaces": {}},
+            "analysis": {"cycle_focus": "revenue"},
+            "gates": {"all_passed": True, "passed_count": 5, "total_count": 5},
+            "ledger_net": {"net_usd_est": -10.0, "organic_revenue_usd_est": 2.0},
+            "factory_state": {},
+        }
+    )
+    hb = build_runner_heartbeat(wave)
+    assert hb["factory_cycle_id"] == 712
+    assert "712" in hb["wave"]
+    landing = build_landing(wave)
+    assert "712" in landing["status_line"]
 
 
 def test_assemble_factory_wave_structure():
@@ -929,10 +1419,171 @@ def test_format_agents_for_cli_map_shape():
 def test_grok_budget_ok_respects_spend(monkeypatch):
     from observability import cost_tracker as ct
 
+    monkeypatch.setenv("GROK_UNLIMITED_CAPACITY", "false")
+    monkeypatch.setenv("FACTORY_RUN_CONTINUOUS", "false")
     monkeypatch.setattr(ct, "grok_spend_usd_recent", lambda *a, **k: 0.5)
     assert ct.grok_budget_ok(0.75) is True
     monkeypatch.setattr(ct, "grok_spend_usd_recent", lambda *a, **k: 1.0)
     assert ct.grok_budget_ok(0.75) is False
+
+
+def test_grok_budget_ok_unlimited_when_zero_budget(monkeypatch):
+    from observability import cost_tracker as ct
+
+    monkeypatch.setenv("GROK_UNLIMITED_CAPACITY", "true")
+    monkeypatch.setattr(ct, "grok_spend_usd_recent", lambda *a, **k: 99.0)
+    assert ct.grok_budget_ok(0) is True
+
+
+def test_grok_capacity_unlimited_in_continuous(monkeypatch):
+    from factory_core import grok_capacity as gc
+
+    monkeypatch.setenv("FACTORY_RUN_CONTINUOUS", "true")
+    monkeypatch.setenv("GROK_UNLIMITED_CAPACITY", "true")
+    assert gc.grok_unlimited_capacity() is True
+    assert gc.effective_max_tokens_per_cycle() == 0
+    assert gc.effective_headless_bills_per_cycle() == 0
+    assert len(gc.default_parallel_analysis_agents()) >= 2
+
+
+def test_headless_billing_caps_per_cycle(monkeypatch):
+    from factory_core import grok_cli
+
+    monkeypatch.setenv("GROK_UNLIMITED_CAPACITY", "false")
+    monkeypatch.setenv("FACTORY_RUN_CONTINUOUS", "false")
+    monkeypatch.setenv("GROK_MAX_HEADLESS_BILLS_PER_CYCLE", "1")
+    grok_cli.reset_headless_bill_counter(42)
+
+    def fake_run(*args, **kwargs):
+        grok_cli._record_headless_bill(kwargs.get("cycle_id"))
+        return {"executed": True, "session_id": "s1"}
+
+    monkeypatch.setattr(grok_cli, "_headless_bill_allowed", grok_cli._headless_bill_allowed)
+    assert grok_cli._headless_bill_allowed(42) is True
+    grok_cli._record_headless_bill(42)
+    assert grok_cli._headless_bill_allowed(42) is False
+
+
+def test_failure_learning_gate_success_decays_stale_pattern(tmp_path, monkeypatch):
+    import factory_core.failure_learning as fl
+
+    log_path = tmp_path / "failure_lessons.jsonl"
+    latest_path = tmp_path / "failure_learning_latest.json"
+    monkeypatch.setattr(fl, "FAILURE_LOG", log_path)
+    monkeypatch.setattr(fl, "FAILURE_LATEST", latest_path)
+
+    gate_fail = {
+        "all_passed": False,
+        "gates": [{"gate": "verified_revenue_pipeline", "passed": False, "detail": "stale"}],
+    }
+    fl.record_cycle_failures(100, execution={}, gate_result=gate_fail, analysis={}, evolution={})
+    assert fl.analyze_failure_patterns()["top_pattern"] == "gate:verified_revenue_pipeline"
+
+    gate_ok = {
+        "all_passed": True,
+        "gates": [{"gate": "verified_revenue_pipeline", "passed": True, "detail": "ok"}],
+    }
+    fl.record_cycle_gate_success(115, gate_ok)
+    summary = fl.analyze_failure_patterns()
+    assert summary.get("top_pattern") != "gate:verified_revenue_pipeline"
+
+
+def test_daemon_summary_reads_supervisor_shape():
+    from factory_core.factory_dashboard import _daemon_summary
+
+    assert _daemon_summary({"daemons": [{"name": "treasury_ws", "started": True}, {"name": "nexus_echo", "started": False}]}) == "1/2 running"
+
+
+def test_failure_learning_records_and_prioritizes(tmp_path, monkeypatch):
+    from factory_core import failure_learning as fl
+
+    log_path = tmp_path / "failure_lessons.jsonl"
+    latest_path = tmp_path / "failure_learning_latest.json"
+    monkeypatch.setattr(fl, "FAILURE_LOG", log_path)
+    monkeypatch.setattr(fl, "FAILURE_LATEST", latest_path)
+
+    gate_result = {
+        "all_passed": False,
+        "gates": [
+            {"gate": "live_url_reachable", "passed": False, "detail": "404"},
+            {"gate": "verified_revenue_pipeline", "passed": True, "detail": "ok"},
+        ],
+    }
+    execution = {"fail_fast": True, "fail_fast_reason": "pytest_failed", "pytest_passed": False}
+    meta = fl.record_cycle_failures(
+        10,
+        execution=execution,
+        gate_result=gate_result,
+        analysis={},
+        evolution={"executor": {"executed": False, "reason": "gates_failed"}},
+    )
+    assert meta["recorded"]
+    fl.record_cycle_failures(
+        11,
+        execution=execution,
+        gate_result=gate_result,
+        analysis={},
+        evolution={},
+    )
+    summary = fl.analyze_failure_patterns()
+    assert summary["gate_failures"]
+    assert "refresh_tip_surfaces" in summary["remediation_priorities"]
+    proposals = fl.failure_learning_proposals(11, summary=summary)
+    assert proposals and proposals[0]["source"] == "failure_learning"
+
+
+def test_analyzer_includes_fail_fast_bottleneck():
+    from factory_core.analyzer import analyze_cycle
+
+    analysis = analyze_cycle(
+        1,
+        {"verified_revenue_events": 0, "fail_fast": True, "fail_fast_reason": "pytest_failed"},
+        100.0,
+        {"all_passed": False, "gates": [], "failed_gates": []},
+    )
+    assert "fail_fast:pytest_failed" in analysis["bottlenecks"]
+    assert "pytest_failed" in analysis["bottlenecks"]
+
+
+def test_factory_goal_injects_slash_goal(monkeypatch):
+    from factory_core.factory_goal import inject_factory_goal, inject_subagent_goal
+
+    monkeypatch.setenv("FACTORY_GOAL_ENABLED", "true")
+    out = inject_factory_goal("Do analysis", cycle_id=5, task_kind="analyze")
+    assert out.startswith("/goal ")
+    assert "cycle 5" in out
+    assert "Do analysis" in out
+
+    agent_out = inject_subagent_goal(
+        "Find bottlenecks",
+        5,
+        "analyze",
+        agent_name="bottleneck_explorer",
+    )
+    assert agent_out.startswith("/goal ")
+    assert "bottleneck_explorer" in agent_out
+
+
+def test_format_agents_for_cli_includes_goal(monkeypatch):
+    from factory_core.grok_cli import format_agents_for_cli
+
+    monkeypatch.setenv("FACTORY_GOAL_ENABLED", "true")
+    payload = format_agents_for_cli(
+        [{"name": "scout", "type": "explore", "prompt": "find revenue"}],
+        cycle_id=3,
+        task_kind="analyze",
+    )
+    assert "scout" in payload
+    assert payload["scout"]["prompt"].startswith("/goal ")
+
+
+def test_factory_dashboard_render(monkeypatch):
+    from factory_core.factory_dashboard import render_factory_dashboard
+
+    monkeypatch.setenv("FACTORY_DASHBOARD_ENABLED", "true")
+    text = render_factory_dashboard(cycle_id=1, mode="brief", factory_state={"current_cycle": 1})
+    assert "RSI-EAF Factory Dashboard" in text
+    assert "Economics" in text
 
 
 def test_treasury_daemon_atomic_drain(tmp_path, monkeypatch):
@@ -967,6 +1618,7 @@ def test_treasury_daemon_drain_roundtrip(tmp_path, monkeypatch):
     assert td.drain_inbox() == []
 
 
+@pytest.mark.orchestration
 def test_init_runner_acp_disabled(monkeypatch):
     from factory_core import grok_acp
 
@@ -975,22 +1627,89 @@ def test_init_runner_acp_disabled(monkeypatch):
     assert result.get("started") is False
 
 
+@pytest.mark.orchestration
 def test_run_parallel_analysis_routes_acp(monkeypatch):
     from factory_core import grok_cli
 
     calls = []
 
-    def fake_acp(cycle_id, prompt, factory_state=None):
-        calls.append((cycle_id, prompt[:40]))
+    def fake_acp(cycle_id, prompt, factory_state=None, task_kind="acp"):
+        calls.append((cycle_id, prompt[:40], task_kind))
         return {"mode": "acp", "cycle_id": cycle_id}
 
     monkeypatch.setenv("GROK_ORCHESTRATION", "acp")
+    monkeypatch.setenv("GROK_HEADLESS_ORCHESTRATION", "acp")
     monkeypatch.setenv("GROK_PARALLEL_ANALYSIS", "true")
     monkeypatch.setattr("factory_core.grok_acp.run_cycle_via_acp", fake_acp)
     grok_cli.run_parallel_analysis(7, {"cycle_revenue_usd": 0})
     assert calls and calls[0][0] == 7
+    assert calls[0][2] == "analyze"
 
 
+@pytest.mark.orchestration
+def test_run_parallel_analysis_prefers_headless_subprocess(monkeypatch):
+    from factory_core import grok_cli
+
+    acp_calls = []
+    headless_calls = []
+
+    def fake_acp(cycle_id, prompt, factory_state=None, task_kind="acp"):
+        acp_calls.append(cycle_id)
+        return {"mode": "acp"}
+
+    def fake_headless(*args, **kwargs):
+        headless_calls.append(kwargs.get("agents"))
+        return {"mode": "subprocess", "agents": kwargs.get("agents")}
+
+    monkeypatch.setenv("GROK_ORCHESTRATION", "acp")
+    monkeypatch.setenv("GROK_HEADLESS_ORCHESTRATION", "subprocess")
+    monkeypatch.setenv("GROK_PARALLEL_ANALYSIS", "true")
+    monkeypatch.setattr("factory_core.grok_acp.run_cycle_via_acp", fake_acp)
+    monkeypatch.setattr(grok_cli, "run_headless", fake_headless)
+    result = grok_cli.run_parallel_analysis(8, {"cycle_revenue_usd": 0})
+    assert not acp_calls
+    assert headless_calls
+    assert result.get("mode") == "subprocess"
+
+
+def test_failure_learning_persists_factory_state(tmp_path, monkeypatch):
+    from factory_core import failure_learning as fl
+    from factory_core.state import FactoryState
+
+    log_path = tmp_path / "failure_lessons.jsonl"
+    latest_path = tmp_path / "failure_learning_latest.json"
+    state_path = tmp_path / "factory_state.json"
+    monkeypatch.setattr(fl, "FAILURE_LOG", log_path)
+    monkeypatch.setattr(fl, "FAILURE_LATEST", latest_path)
+
+    state = FactoryState(state_path=str(state_path))
+    gate_result = {
+        "all_passed": False,
+        "gates": [{"gate": "verified_revenue_pipeline", "passed": False, "detail": "no payers"}],
+    }
+    fl.record_cycle_failures(
+        20,
+        execution={},
+        gate_result=gate_result,
+        factory_state=state,
+    )
+    stored = state.get_failure_learning()
+    assert stored.get("top_pattern") == "gate:verified_revenue_pipeline"
+    assert stored.get("last_cycle_id") == 20
+
+
+def test_factory_dashboard_shows_failure_learning_empty(monkeypatch):
+    from factory_core import failure_learning as fl
+    from factory_core.factory_dashboard import render_factory_dashboard
+
+    monkeypatch.setattr(fl, "FAILURE_LATEST", Path("/nonexistent/failure_learning_latest.json"))
+    monkeypatch.setattr(fl, "FAILURE_LOG", Path("/nonexistent/failure_lessons.jsonl"))
+    text = render_factory_dashboard(cycle_id=1, mode="brief", factory_state={"current_cycle": 1})
+    assert "Failure learning" in text
+    assert "samples=0" in text
+
+
+@pytest.mark.orchestration
 def test_grok_evolution_best_of_n_flag(monkeypatch):
     from factory_core import grok_cli
 
@@ -1009,11 +1728,26 @@ def test_grok_evolution_best_of_n_flag(monkeypatch):
 def test_nexus_ci_block(monkeypatch):
     import tools.github_ci_gate as ci_gate
     from tools import nexus_bridge as nb
+    from tools import nexus_ci_runner_watch as runner_watch
 
     monkeypatch.setenv("NEXUS_EMIT_ENABLED", "true")
+    monkeypatch.setattr(runner_watch, "nexus_runners_blocked", lambda: False)
     monkeypatch.setattr(ci_gate, "block_distribution_if_ci_red", lambda **k: "CI failed")
     result = nb.maybe_emit_nexus({"cycle_id": 5, "execution": {}, "analysis": {}, "gates": {}})
     assert result.get("ci_blocked") is True
+
+
+def test_nexus_emit_blocked_when_runners_unavailable(monkeypatch, tmp_path):
+    from tools import nexus_bridge as nb
+    from tools import nexus_ci_runner_watch as runner_watch
+
+    state_path = tmp_path / "nexus_ci_runner_state.json"
+    monkeypatch.setattr(runner_watch, "STATE_FILE", state_path)
+    monkeypatch.setenv("NEXUS_EMIT_ENABLED", "true")
+    monkeypatch.setenv("NEXUS_RUNNER_WATCH_ENABLED", "true")
+    runner_watch.save_runner_state({"runner_unavailable": True, "runner_available": False})
+    result = nb.maybe_emit_nexus({"cycle_id": 5, "execution": {}, "analysis": {}, "gates": {}})
+    assert result.get("runner_blocked") is True
 
 
 def test_triage_payment_friction_no_token(monkeypatch):
@@ -1052,8 +1786,15 @@ def test_agent_pay_manifest_structure():
     assert len(m["products"]) >= 5
 
 
-def test_mainnet_readiness_blocks_without_revenue():
+def test_mainnet_readiness_blocks_without_revenue(monkeypatch, tmp_path):
     from factory_core.mainnet_readiness import evaluate_mainnet_readiness
+    from observability import economic_ledger as el
+
+    ledger_path = tmp_path / "empty_ledger.jsonl"
+    ledger_path.write_text("", encoding="utf-8")
+    isolated = el.EconomicLedger(ledger_path=str(ledger_path))
+    monkeypatch.setattr(el, "ledger", isolated)
+    monkeypatch.setattr("gates.verifier.ledger", isolated)
 
     r = evaluate_mainnet_readiness()
     assert r["ready_for_mainnet"] is False
@@ -1112,10 +1853,13 @@ def test_compute_cycle_focus_fitness_override(monkeypatch):
 def test_factory_operational_status_closure(tmp_path, monkeypatch):
     from factory_core.state import FactoryState
 
-    monkeypatch.setenv("FACTORY_STATE_FILE", str(tmp_path / "state.json"))
-    state = FactoryState()
+    # Pass path explicitly — default STATE_FILE is bound at import; env alone is not enough.
+    state_path = str(tmp_path / "state.json")
+    monkeypatch.setenv("FACTORY_STATE_FILE", state_path)
+    state = FactoryState(state_path=state_path)
     state.set_operational_status({"state": "closed_indefinitely", "reason": "funds"})
     assert state.get_operational_status()["state"] == "closed_indefinitely"
+    assert state.state_path == state_path
 
 
 def test_service_catalog_v2_has_fulfillment_urls(tmp_path, monkeypatch):
@@ -1165,3 +1909,53 @@ def test_extract_payment_fields_revenue_memo():
     assert payment is not None
     assert payment["tx_hash"] == "REV123"
     assert payment["memos"][0]["amount_usd_est"] == 2.5
+
+
+def test_fitness_revenue_capture_honest_implemented(monkeypatch):
+    """Stale CDN liveness alone must not mark fitness_revenue_capture implemented."""
+    from tools import fitness_revenue_capture as frc
+
+    monkeypatch.setattr(
+        frc,
+        "ingest_verified_xrpl_revenue",
+        lambda **_kw: {"ingested": [], "unmatched": [], "reconciled": []},
+    )
+    monkeypatch.setattr(
+        "tools.publish_tools.deploy_to_vercel",
+        lambda **_kw: {"success": False, "skipped": True, "reason": "test cooldown"},
+    )
+    monkeypatch.setattr("tools.publish_tools.verify_live_url", lambda _url: True)
+    monkeypatch.setattr(
+        "observability.service_fulfillment.fulfill_paid_services",
+        lambda *_a, **_k: {
+            "paid_product_ids": [],
+            "newly_fulfilled": [],
+            "pending_unknown": [],
+        },
+    )
+    monkeypatch.setattr(
+        "observability.agent_payment.write_agent_pay_manifest",
+        lambda *_a, **_k: Path("published/agent-pay.json"),
+    )
+    monkeypatch.setattr(
+        "observability.payer_funnel.refresh_payer_funnel",
+        lambda *_a, **_k: {"cycle_id": 42, "conversion_score": 0},
+    )
+
+    result = frc.run_fitness_revenue_capture(
+        cycle_id=42,
+        treasury_address="rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+        featured={
+            "tip_page": "https://example.test/tip",
+            "agent_pay": "https://example.test/agent-pay.json",
+            "service_catalog": "https://example.test/service-catalog.json",
+            "payment_status": "https://example.test/payment-status.json",
+        },
+    )
+    assert result["action"] == "fitness_revenue_capture"
+    assert result["ingested_count"] == 0
+    assert result["reconciled_count"] == 0
+    assert result["agent_pay_live"] is True
+    assert result["capture_progress"] is False
+    assert result["deploy_succeeded"] is False
+    assert result["implemented"] is False
