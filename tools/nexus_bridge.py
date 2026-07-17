@@ -167,6 +167,14 @@ def assemble_factory_wave(cycle_result: Dict[str, Any]) -> Dict[str, Any]:
     github_dist = execution.get("github_distribution", {})
     featured = execution.get("featured_surfaces", {})
     director = _latest_director_decision(cycle_id)
+    xrpl_ai_reg = factory_state.get("xrpl_ai_registration") or {}
+    if not xrpl_ai_reg:
+        try:
+            from tools.xrpl_ai_hub_register import load_registration_state
+
+            xrpl_ai_reg = load_registration_state()
+        except Exception:
+            xrpl_ai_reg = {}
 
     phase_traces = _recent_cycle_traces(cycle_id)
     dist_urls = distribution_urls(cycle_id)
@@ -240,6 +248,13 @@ def assemble_factory_wave(cycle_result: Dict[str, Any]) -> Dict[str, Any]:
         "factory_state_snapshot": factory_state,
         "revenue_cta": revenue_cta,
         "integration_manifest": integration_manifest(cycle_id=cycle_id, featured=featured),
+        "xrpl_ai_hub": {
+            "registered": xrpl_ai_reg.get("registered"),
+            "registered_count": xrpl_ai_reg.get("registered_count"),
+            "cycle_id": xrpl_ai_reg.get("cycle_id"),
+            "hub_merchant_url": xrpl_ai_reg.get("hub_merchant_url"),
+            "origin": xrpl_ai_reg.get("origin") or FACTORY_PUBLIC_BASE_URL,
+        },
     }
 
     return {
@@ -275,6 +290,8 @@ def assemble_factory_wave(cycle_result: Dict[str, Any]) -> Dict[str, Any]:
             "factory_vercel": FACTORY_PUBLIC_BASE_URL,
             "github_rsi_eaf": dist_urls.get("github_repo"),
             "github_jarvis_swarm": f"https://github.com/{NEXUS_OWNER}/{NEXUS_REPO}",
+            "xrpl_ai_hub": xrpl_ai_reg.get("hub_merchant_url")
+            or f"https://xrpl-ai.org/address/{execution.get('treasury_address', '')}",
         },
         "version": "rsi-eaf-nexus-v1",
     }
@@ -328,29 +345,46 @@ def merge_control_state(existing: Optional[Dict[str, Any]], wave: Dict[str, Any]
 
 def write_local_nexus_files(wave: Dict[str, Any]) -> Dict[str, Path]:
     """Persist wave locally for inspection and offline push."""
+    from observability.json_safe import sanitize_for_json
+
     LOCAL_NEXUS_DIR.mkdir(parents=True, exist_ok=True)
     paths = {}
     factory_path = LOCAL_NEXUS_DIR / "rsi-eaf-factory.json"
-    factory_path.write_text(json.dumps(wave, indent=2), encoding="utf-8")
+    factory_path.write_text(
+        json.dumps(sanitize_for_json(wave), indent=2, default=str), encoding="utf-8"
+    )
     paths["rsi_eaf_factory"] = factory_path
 
     nexus_existing = _fetch_repo_json("nexus_data.json")
     merged_nexus = merge_nexus_data(nexus_existing, wave)
     nexus_path = LOCAL_NEXUS_DIR / "nexus_data.json"
-    nexus_path.write_text(json.dumps(merged_nexus, indent=2), encoding="utf-8")
+    nexus_path.write_text(
+        json.dumps(sanitize_for_json(merged_nexus), indent=2, default=str), encoding="utf-8"
+    )
     paths["nexus_data"] = nexus_path
 
     control_existing = _fetch_repo_json("control-state.json")
     merged_control = merge_control_state(control_existing, wave)
     control_path = LOCAL_NEXUS_DIR / "control-state.json"
-    control_path.write_text(json.dumps(merged_control, indent=2), encoding="utf-8")
+    control_path.write_text(
+        json.dumps(sanitize_for_json(merged_control), indent=2, default=str), encoding="utf-8"
+    )
     paths["control_state"] = control_path
 
     integration = wave.get("rsi_eaf_factory", {}).get("integration_manifest")
     if integration:
         integration_path = LOCAL_NEXUS_DIR / "rsi-eaf-integration.json"
-        integration_path.write_text(json.dumps(integration, indent=2), encoding="utf-8")
+        integration_path.write_text(
+            json.dumps(sanitize_for_json(integration), indent=2, default=str), encoding="utf-8"
+        )
         paths["integration"] = integration_path
+
+    from tools.aetherforge_nexus_ui import write_nexus_ui_files
+
+    ui_paths = write_nexus_ui_files(wave, fetch_json=_fetch_repo_json)
+    for name, path in ui_paths.items():
+        key = name.replace("-", "_").replace(".json", "").replace(".html", "_html")
+        paths[key] = path
     return paths
 
 
@@ -390,6 +424,18 @@ def push_nexus_wave(cycle_id: int, wave: Dict[str, Any]) -> Dict[str, Any]:
                 "content": local["integration"].read_text(encoding="utf-8"),
             }
         )
+    for ui_name in (
+        "last-runner-heartbeat.json",
+        "swarm-orchestration-pulse.json",
+        "agent-coordination.json",
+        "rsi-eaf-catalog.json",
+        "rsi-eaf-landing.json",
+        "index.html",
+    ):
+        ui_key = ui_name.replace("-", "_").replace(".json", "").replace(".html", "_html")
+        ui_path = local.get(ui_key)
+        if ui_path and Path(ui_path).exists():
+            files.append({"path": ui_name, "content": Path(ui_path).read_text(encoding="utf-8")})
     batch = push_files(NEXUS_OWNER, NEXUS_REPO, files, message, NEXUS_BRANCH)
     if batch.get("success"):
         results = [batch]
@@ -401,13 +447,30 @@ def push_nexus_wave(cycle_id: int, wave: Dict[str, Any]) -> Dict[str, Any]:
         ]
         pushed = [r for r in results if r.get("success")]
     verification = verify_external_surfaces()
+    local_paths = {k: str(v) for k, v in local.items()}
+    aetherforge_publish: Dict[str, Any] = {}
+    if len(pushed) > 0:
+        try:
+            from tools.aetherforge_publish import publish_aetherforge
+
+            aetherforge_publish = publish_aetherforge(
+                cycle_id,
+                local_paths=local_paths,
+                git_push_ok=True,
+            )
+            if aetherforge_publish.get("freshness"):
+                verification["aetherforge_freshness"] = aetherforge_publish["freshness"]
+        except Exception as exc:
+            aetherforge_publish = {"error": str(exc)}
+
     return {
         "emitted": len(pushed) > 0,
         "files_attempted": len(results),
         "files_pushed": len(pushed),
         "results": results,
-        "local_paths": {k: str(v) for k, v in local.items()},
+        "local_paths": local_paths,
         "verification": verification,
+        "aetherforge_publish": aetherforge_publish,
         "aetherforge_url": AETHERFORGE_URL,
         "jarvis_swarm_repo": f"https://github.com/{NEXUS_OWNER}/{NEXUS_REPO}",
     }
@@ -425,6 +488,16 @@ def maybe_emit_nexus(
     """
     if not _nexus_emit_enabled():
         return {"emitted": False, "skipped": True, "reason": "NEXUS_EMIT_DISABLED"}
+
+    from tools.nexus_ci_runner_watch import nexus_runners_blocked
+
+    if nexus_runners_blocked() and not force:
+        return {
+            "emitted": False,
+            "skipped": True,
+            "reason": "nexus_ci_runners_unavailable",
+            "runner_blocked": True,
+        }
 
     from tools.github_ci_gate import block_distribution_if_ci_red
 
@@ -539,16 +612,41 @@ def run_platform_sync(
         force=force_nexus or force_github,
         factory_state=factory_state,
     )
+    xrpl_ai_result: Dict[str, Any] = {}
+    try:
+        from tools.xrpl_ai_hub_register import maybe_register_xrpl_ai_hub
+
+        xrpl_ai_result = maybe_register_xrpl_ai_hub(
+            cycle_id,
+            treasury_address=treasury,
+            featured=featured,
+            execution=execution,
+            force=force_github or force_nexus,
+            factory_state=factory_state,
+        )
+    except Exception as exc:
+        xrpl_ai_result = {"registered": False, "error": str(exc)}
+
     vercel_status = {
         "cooldown": deploy_cooldown_status(),
         "live_url": execution.get("live_url") or FACTORY_PUBLIC_BASE_URL,
         "live_verified": execution.get("live_verified"),
     }
+    surface_slo: Dict[str, Any] = {}
+    try:
+        from tools.product_surface_sync import verify_product_surfaces_live
+
+        surface_slo = verify_product_surfaces_live(cycle_id)
+    except Exception as exc:
+        surface_slo = {"error": str(exc)}
+
     return {
         "cycle_id": cycle_id,
         "github": github_result,
         "jarvis_ci_repair": jarvis_ci_repair,
         "nexus": nexus_result,
+        "xrpl_ai_hub": xrpl_ai_result,
         "vercel": vercel_status,
         "surfaces": verify_external_surfaces(),
+        "surface_slo": surface_slo,
     }
