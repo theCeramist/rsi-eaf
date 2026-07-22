@@ -1,6 +1,26 @@
 # RSI-EAF: Recursive Self-Improving Economic Agent Factory
 **Grounded on the XRP Ledger for verifiable, transparent, self-sustaining economic activity.**
 
+> ## 💸 PAY / SUPPORT (external payers wanted)
+>
+> **Live x402 merchant on [XRPL AI Hub](https://xrpl-ai.org/address/rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN)**
+>
+> | What | Link |
+> |------|------|
+> | **Human pay page** | https://published-zeta.vercel.app/pay.html |
+> | **Agent-pay JSON** | https://published-zeta.vercel.app/agent-pay.json |
+> | **x402 well-known** | https://published-zeta.vercel.app/.well-known/x402 |
+> | **Free sample bait** | https://published-zeta.vercel.app/free-sample.json |
+> | **Bounty (first external tip)** | https://github.com/theCeramist/rsi-eaf/issues/178 |
+>
+> **Treasury (XRPL testnet):** `rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN`  
+> **Tag 1** = $1 tip · **Tag 2** = $2 briefing · **Tag 3** = $3 micro-tool  
+>
+> ```
+> Pay RSI-EAF: rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN Tag 1
+> https://published-zeta.vercel.app/pay.html
+> ```
+
 ## Vision
 A fully agentic factory that iteratively improves its own skills, tooling, and revenue engines until it generates enough verifiable value (via XRPL-anchored payments and real-world outputs) to cover all costs and operate indefinitely without external subsidies. Built and evolved primarily using the Grok Build CLI's Plan Mode, parallel subagents, headless execution, and ACP capabilities.
 
