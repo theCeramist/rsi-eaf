@@ -1,0 +1,27 @@
+{
+  "schema": "rsi_eaf_free_bait_v1",
+  "title": "FREE sample: factory fitness teaser (pay for full briefing Tag 2)",
+  "cycle_id": 749,
+  "updated_at": "2026-07-22T21:28:04.781304+00:00",
+  "what_you_get_free": {
+    "net_usd_est": -1432.01,
+    "organic_revenue_usd_est": 3.0,
+    "target": "positive net via external organic payers",
+    "bottleneck": "distribution/conversion not publish quality"
+  },
+  "pay_to_unlock_full_briefing": {
+    "treasury": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+    "destination_tag": 2,
+    "credited_usd": 2.0,
+    "agent_pay": "https://published-zeta.vercel.app/agent-pay.json",
+    "x402_resource": "https://published-zeta.vercel.app/deliverables/briefing-cycle-749.json",
+    "preview": "https://published-zeta.vercel.app/briefing-cycle-749-20260722T212154Z.html"
+  },
+  "one_shot_tip": {
+    "destination_tag": 1,
+    "credited_usd": 1.0,
+    "instruction": "Send any testnet XRP to rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN with Destination Tag 1"
+  },
+  "xrpl_ai_merchant": "https://xrpl-ai.org/address/rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+  "github_cta": "https://github.com/theCeramist/rsi-eaf/issues/177"
+}
