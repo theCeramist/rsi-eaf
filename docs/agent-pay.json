@@ -1,0 +1,199 @@
+{
+  "schema": "rsi_eaf_agent_pay_v1",
+  "version": "1.4",
+  "updated_at": "2026-07-22T21:34:05.816470+00:00",
+  "cycle_id": 749,
+  "factory": "RSI-EAF",
+  "network": "xrpl_testnet",
+  "currency": "XRP",
+  "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+  "easiest_payment": {
+    "instruction": "Send any amount of XRP to treasury_address with destination_tag=1. No memo required.",
+    "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+    "destination_tag": 1,
+    "credited_usd_est": 1.0,
+    "amount_xrp_min": 1e-05
+  },
+  "products": [
+    {
+      "id": "tip",
+      "destination_tag": 1,
+      "credited_usd": 1.0,
+      "plain_memo": "tip",
+      "description": "General support / micro-tip (easiest)",
+      "service_type": "donation",
+      "x402": {
+        "enabled": false,
+        "reason": "tag-only tip lane"
+      }
+    },
+    {
+      "id": "briefing_unlock",
+      "destination_tag": 2,
+      "credited_usd": 2.0,
+      "plain_memo": "briefing",
+      "product_id": "briefing-cycle-749",
+      "live_url": "https://published-zeta.vercel.app/briefing-cycle-749-20260722T212154Z.html",
+      "description": "XRPL factory intelligence briefing (HTML preview + JSON deliverable after pay)",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/briefing-cycle-749.json",
+      "service_type": "paid_report",
+      "x402": {
+        "enabled": true,
+        "middleware_active": true,
+        "status": "live",
+        "scheme": "exact",
+        "network_caip2": "xrpl:1",
+        "asset": "XRP",
+        "pay_to": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+        "amount_drops": "666666",
+        "invoice_id": "briefing-cycle-749",
+        "destination_tag": 2,
+        "source_tag": 20260703,
+        "max_timeout_seconds": 600,
+        "protected_resource": "https://published-zeta.vercel.app/deliverables/briefing-cycle-749.json",
+        "preview_resource": "https://published-zeta.vercel.app/briefing-cycle-749-20260722T212154Z.html",
+        "payment_requirements_template": {
+          "scheme": "exact",
+          "network": "xrpl:1",
+          "asset": "XRP",
+          "payTo": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+          "amount": "666666",
+          "maxTimeoutSeconds": 600,
+          "extra": {
+            "invoiceId": "briefing-cycle-749",
+            "sourceTag": 20260703,
+            "destinationTag": 2
+          }
+        },
+        "phase1_pilot": true
+      }
+    },
+    {
+      "id": "micro_tool",
+      "destination_tag": 3,
+      "credited_usd": 3.0,
+      "plain_memo": "tool",
+      "product_id": "micro-tool-cycle-749",
+      "live_url": "https://published-zeta.vercel.app/micro-tool-cycle-749-20260722T212214Z.html",
+      "description": "Treasury payment validator spec for wallet/agent integrators",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-749.json",
+      "service_type": "paid_tool",
+      "x402": {
+        "enabled": true,
+        "middleware_active": true,
+        "status": "live",
+        "scheme": "exact",
+        "network_caip2": "xrpl:1",
+        "asset": "XRP",
+        "pay_to": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+        "amount_drops": "999999",
+        "invoice_id": "micro-tool-cycle-749",
+        "destination_tag": 3,
+        "source_tag": 20260703,
+        "max_timeout_seconds": 600,
+        "protected_resource": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-749.json",
+        "preview_resource": "https://published-zeta.vercel.app/micro-tool-cycle-749-20260722T212214Z.html",
+        "payment_requirements_template": {
+          "scheme": "exact",
+          "network": "xrpl:1",
+          "asset": "XRP",
+          "payTo": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+          "amount": "999999",
+          "maxTimeoutSeconds": 600,
+          "extra": {
+            "invoiceId": "micro-tool-cycle-749",
+            "sourceTag": 20260703,
+            "destinationTag": 3
+          }
+        },
+        "phase1_pilot": true
+      }
+    },
+    {
+      "id": "agent_service",
+      "destination_tag": 4,
+      "credited_usd": 2.5,
+      "plain_memo": "service",
+      "product_id": "service-bundle-cycle-749",
+      "live_url": "https://published-zeta.vercel.app/service-catalog.json",
+      "description": "Cycle intel bundle: ledger net, trace phases, orchestrator metadata",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/service-bundle-cycle-749.json",
+      "service_type": "agent_api"
+    },
+    {
+      "id": "mythos_artifact",
+      "destination_tag": 5,
+      "credited_usd": 1.5,
+      "plain_memo": "mythos",
+      "product_id": "mythos-cycle-749",
+      "live_url": "https://published-zeta.vercel.app/mythos-cycle-749-20260722T212311Z.html",
+      "description": "Narrative commerce artifact for aetherforge lane",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/mythos-cycle-749.json",
+      "service_type": "creative_commerce"
+    }
+  ],
+  "agent_json_memo_template": {
+    "type": "revenue",
+    "amount_usd_est": 1.0,
+    "notes": "agent payment",
+    "source": "agent_client",
+    "product_id": null
+  },
+  "verification": {
+    "method": "xrpl_treasury_ingest",
+    "ledger_within_cycles": 1,
+    "explorer_template": "https://testnet.xrpl.org/transactions/{tx_hash}",
+    "factory_confirms": "observability/revenue_ingest.py"
+  },
+  "discovery_urls": {
+    "agent_pay": "https://published-zeta.vercel.app/agent-pay.json",
+    "tip_manifest": "https://published-zeta.vercel.app/tip-manifest.json",
+    "payment_status": "https://published-zeta.vercel.app/payment-status.json",
+    "fulfillment_index": "https://published-zeta.vercel.app/deliverables/fulfillment-index.json",
+    "factory_index": "https://published-zeta.vercel.app/",
+    "aetherforge": "https://aetherforge.world"
+  },
+  "examples": {
+    "python_xrpl_py": "from xrpl.wallet import Wallet\nfrom tools.xrpl_tools import send_xrp_payment\nsend_xrp_payment(wallet, 'rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN', 0.01, memo_data={'type':'revenue','amount_usd_est':1.0,'source':'my_agent'}, destination_tag=1, testnet=True)",
+    "human_steps": [
+      "1. Open XRPL wallet (testnet faucet if needed)",
+      "2. Pay \u2192 rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+      "3. Destination Tag: 1",
+      "4. Optional memo: tip"
+    ]
+  },
+  "x402": {
+    "schema": "rsi_eaf_x402_metadata_v1",
+    "phase": 1,
+    "enabled": true,
+    "protocol": {
+      "x402_version": 2,
+      "scheme": "exact",
+      "sdk_package": "x402-xrpl",
+      "xrpl_scheme_docs": "https://xrpl-x402.t54.ai/docs/xrpl-scheme"
+    },
+    "network_caip2": "xrpl:1",
+    "facilitator": {
+      "url": "https://xrpl-facilitator-testnet.t54.ai",
+      "operator": "t54",
+      "endpoints": {
+        "verify": "/verify",
+        "settle": "/settle",
+        "supported": "/supported"
+      }
+    },
+    "pay_to": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+    "source_tag": 20260703,
+    "rollout": {
+      "phase1_pilot_products": [
+        "briefing_unlock",
+        "micro_tool"
+      ]
+    },
+    "http_headers": {
+      "payment_required": "PAYMENT-REQUIRED",
+      "payment_signature": "PAYMENT-SIGNATURE",
+      "payment_response": "PAYMENT-RESPONSE"
+    }
+  }
+}
