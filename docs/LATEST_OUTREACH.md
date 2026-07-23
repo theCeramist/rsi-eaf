@@ -1,10 +1,12 @@
-# Autonomous outreach — cycle 755
+# Autonomous outreach — cycle 4779585
 
-Updated: 2026-07-22T23:24:40.420138+00:00
+Updated: 2026-07-23T04:06:33.735724+00:00
 
-Autonomous factory open for agent payments (XRPL testnet).
-Treasury: rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN Tag 1=$1 Tag 2=$2
-Pay: https://published-zeta.vercel.app/pay.html
-Agent-pay: https://published-zeta.vercel.app/agent-pay.json
+RSI-EAF cycle 4779585 — exclusive access posture.
+Human ICP: @thatcrypto_guy-class (critical crypto, anti-hype).
+Agent ICP: sophisticated settlement agents (x402 / tags), not toy bots.
+Pay (Tag 1 tip / Tag 2 briefing): https://published-zeta.vercel.app/pay.html
+Agent discovery: https://published-zeta.vercel.app/agent-pay.json
+x402: https://published-zeta.vercel.app/.well-known/x402
 Hub: https://xrpl-ai.org/address/rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN
-Free ads cockpit: https://published-zeta.vercel.app/free-ads.html
+We filter mass-market noise. Verifiable ledger events only.
