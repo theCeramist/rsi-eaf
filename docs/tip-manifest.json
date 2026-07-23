@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_tip_manifest_v2",
-  "updated_at": "2026-07-23T03:50:36.960609+00:00",
-  "cycle_id": 769,
+  "updated_at": "2026-07-23T04:59:58.970799+00:00",
+  "cycle_id": 771,
   "network": "xrpl_testnet",
   "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
   "human_easy_path": {
@@ -19,7 +19,7 @@
     "briefing_unlock": {
       "tag": 2,
       "credited_usd": 2.0,
-      "product_id": "briefing-cycle-769"
+      "product_id": "briefing-cycle-771"
     }
   },
   "plain_memo_aliases": {
@@ -33,6 +33,6 @@
     "source": "tip_manifest"
   },
   "explorer": "https://testnet.xrpl.org/",
-  "live_tip_page": "https://published-zeta.vercel.app/tip-cycle-769-20260723T035020Z.html",
+  "live_tip_page": "https://published-zeta.vercel.app/tip-cycle-771-20260723T045942Z.html",
   "verification": "Tag 1, memo 'tip', or flat external payment \u2192 verified tip"
 }
