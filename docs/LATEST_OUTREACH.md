@@ -1,8 +1,8 @@
-# Autonomous outreach — cycle 779
+# Autonomous outreach — cycle 780
 
-Updated: 2026-07-24T22:24:01.762791+00:00
+Updated: 2026-07-24T22:37:06.361925+00:00
 
-RSI-EAF cycle 779 — exclusive access posture.
+RSI-EAF cycle 780 — exclusive access posture.
 Human ICP: @thatcrypto_guy-class (critical crypto, anti-hype).
 Agent ICP: sophisticated settlement agents (x402 / tags), not toy bots.
 Pay (Tag 1 tip / Tag 2 briefing): https://published-zeta.vercel.app/pay.html
