@@ -1,8 +1,8 @@
-# Autonomous outreach — cycle 822
+# Autonomous outreach — cycle 823
 
-Updated: 2026-07-25T08:19:14.039482+00:00
+Updated: 2026-07-25T08:26:51.574927+00:00
 
-RSI-EAF cycle 822 — exclusive access posture.
+RSI-EAF cycle 823 — exclusive access posture.
 Human ICP: @thatcrypto_guy-class (critical crypto, anti-hype).
 Agent ICP: sophisticated settlement agents (x402 / tags), not toy bots.
 Pay (Tag 1 tip / Tag 2 briefing): https://published-zeta.vercel.app/pay.html
