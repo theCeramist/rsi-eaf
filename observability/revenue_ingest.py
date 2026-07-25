@@ -148,36 +148,32 @@ def reconcile_unmatched_treasury_payments(cycle_id: int) -> List[Dict[str, Any]]
     return upgraded
 
 
-def ingest_verified_xrpl_revenue(
+def _scan_treasury_network(
+    *,
     cycle_id: int,
-    treasury_address: Optional[str] = None,
-    factory_state: Optional["FactoryState"] = None,
-) -> Dict[str, Any]:
-    """
-    Scan treasury for external incoming payments; log verified revenue.
-    """
-    address = treasury_address or FACTORY_TREASURY_ADDRESS
-    if not address:
-        print("[RevenueIngest] No FACTORY_TREASURY_ADDRESS configured; skipping.")
-        return {"ingested": [], "unmatched": [], "reconciled": []}
+    address: str,
+    network: str,
+    known_hashes: Set[str],
+    ingested: List[Dict[str, Any]],
+    unmatched: List[Dict[str, Any]],
+) -> None:
+    """Scan one treasury on one network for new external payments."""
+    testnet = network != "mainnet"
+    try:
+        transactions = query_recent_transactions(address, limit=INGEST_LIMIT, testnet=testnet)
+    except Exception as exc:
+        print(f"[RevenueIngest] {network} scan failed for {address}: {exc}")
+        return
 
-    known_hashes = _known_tx_hashes()
-    ingested: List[Dict[str, Any]] = []
-    unmatched: List[Dict[str, Any]] = []
-
-    reconciled = reconcile_unmatched_treasury_payments(cycle_id=cycle_id)
-    ingested.extend(reconciled)
-    known_hashes.update(e.get("xrpl_tx_hash") for e in reconciled if e.get("xrpl_tx_hash"))
-
-    transactions = query_recent_transactions(address, limit=INGEST_LIMIT)
-    instructions = simple_payment_instructions(cycle_id, address)
+    instructions = simple_payment_instructions(cycle_id, address, network=network)
     for entry in transactions:
         payment = _extract_payment_fields(entry)
         if not payment:
             continue
         if payment["destination"] != address:
             continue
-        if _is_internal_transfer(payment["from"]):
+        # On mainnet, factory testnet operator is never "internal"
+        if network != "mainnet" and _is_internal_transfer(payment["from"]):
             continue
 
         tx_hash = payment["tx_hash"]
@@ -189,7 +185,7 @@ def ingest_verified_xrpl_revenue(
 
         if not intent:
             print(
-                f"[RevenueIngest] Unmatched {tx_hash}: external payment "
+                f"[RevenueIngest] Unmatched {tx_hash} ({network}): external payment "
                 f"({xrp_amount} XRP) — use Destination Tag {instructions['easiest']['destination_tag']}."
             )
             observed = ledger.log_event(
@@ -201,6 +197,7 @@ def ingest_verified_xrpl_revenue(
                 metadata={
                     "from_address": payment["from"],
                     "treasury_address": address,
+                    "network": network,
                     "xrp_received": xrp_amount,
                     "destination_tag": payment.get("destination_tag"),
                     "plain_memos": payment.get("plain_memos"),
@@ -214,32 +211,96 @@ def ingest_verified_xrpl_revenue(
             unmatched.append(observed)
             continue
 
+        # Mainnet inbounds are real-value organic revenue
+        meta = {
+            "from_address": payment["from"],
+            "treasury_address": address,
+            "network": network,
+            "real_value": network == "mainnet",
+            "xrp_received": xrp_amount,
+            "notes": intent.notes,
+            "product_id": intent.product_id,
+            "payment_method": intent.method,
+            "destination_tag": intent.destination_tag,
+            "memos": payment.get("memos"),
+            "plain_memos": payment.get("plain_memos"),
+        }
+        if network == "mainnet":
+            meta["revenue_class"] = "organic"
+            meta["mainnet"] = True
+
         event = ledger.log_verified_revenue(
-            source="xrpl_inbound_payment",
+            source="xrpl_inbound_payment" + ("_mainnet" if network == "mainnet" else ""),
             amount_usd_est=intent.amount_usd_est,
             cycle_id=cycle_id,
             xrpl_tx_hash=tx_hash,
-            verification_method=f"xrpl_treasury_{intent.method}",
-            metadata=enrich_revenue_metadata(
-                {
-                    "from_address": payment["from"],
-                    "treasury_address": address,
-                    "xrp_received": xrp_amount,
-                    "notes": intent.notes,
-                    "product_id": intent.product_id,
-                    "payment_method": intent.method,
-                    "destination_tag": intent.destination_tag,
-                    "memos": payment.get("memos"),
-                    "plain_memos": payment.get("plain_memos"),
-                },
-                payment["from"],
-            ),
+            verification_method=f"xrpl_{network}_treasury_{intent.method}",
+            metadata=enrich_revenue_metadata(meta, payment["from"]),
         )
         known_hashes.add(tx_hash)
         ingested.append(event)
         print(
-            f"[RevenueIngest] Verified ${intent.amount_usd_est:.2f} from {payment['from']} "
-            f"({intent.method})"
+            f"[RevenueIngest] VERIFIED {network} {tx_hash} → ${intent.amount_usd_est:.2f} "
+            f"({xrp_amount} XRP) via {intent.method}"
         )
 
-    return {"ingested": ingested, "unmatched": unmatched, "reconciled": reconciled}
+
+def ingest_verified_xrpl_revenue(
+    cycle_id: int,
+    treasury_address: Optional[str] = None,
+    factory_state: Optional["FactoryState"] = None,
+) -> Dict[str, Any]:
+    """
+    Scan treasury(s) for external incoming payments; log verified revenue.
+    Dual-network: watches testnet + mainnet treasuries when configured.
+    """
+    known_hashes = _known_tx_hashes()
+    ingested: List[Dict[str, Any]] = []
+    unmatched: List[Dict[str, Any]] = []
+
+    reconciled = reconcile_unmatched_treasury_payments(cycle_id=cycle_id)
+    ingested.extend(reconciled)
+    known_hashes.update(e.get("xrpl_tx_hash") for e in reconciled if e.get("xrpl_tx_hash"))
+
+    targets: List[Dict[str, str]] = []
+    try:
+        from factory_core.xrpl_network import treasury_watch_targets
+
+        targets = list(treasury_watch_targets())
+    except Exception:
+        targets = []
+
+    if treasury_address:
+        # Legacy single-address path — assume testnet unless mainnet addr matches
+        try:
+            from factory_core.xrpl_network import mainnet_treasury_address
+
+            net = "mainnet" if treasury_address == mainnet_treasury_address() else "testnet"
+        except Exception:
+            net = "testnet"
+        if not any(t.get("address") == treasury_address for t in targets):
+            targets.append({"address": treasury_address, "network": net})
+
+    if not targets:
+        address = treasury_address or FACTORY_TREASURY_ADDRESS
+        if not address:
+            print("[RevenueIngest] No treasury configured; skipping.")
+            return {"ingested": [], "unmatched": [], "reconciled": []}
+        targets = [{"address": address, "network": "testnet"}]
+
+    for t in targets:
+        _scan_treasury_network(
+            cycle_id=cycle_id,
+            address=t["address"],
+            network=t.get("network") or "testnet",
+            known_hashes=known_hashes,
+            ingested=ingested,
+            unmatched=unmatched,
+        )
+
+    return {
+        "ingested": ingested,
+        "unmatched": unmatched,
+        "reconciled": reconciled,
+        "targets": targets,
+    }

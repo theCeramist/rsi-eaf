@@ -88,20 +88,37 @@ def drain_inbox(limit: int = 100) -> list[Dict[str, Any]]:
     return entries
 
 
-def _daemon_loop(treasury_address: str) -> None:
+def _daemon_loop(targets: list) -> None:
+    """targets: list of {address, network} where network is testnet|mainnet."""
     from tools.xrpl_tools import monitor_incoming_payments
 
-    print(f"[TreasuryDaemon] Listening on {treasury_address} (chunk {POLL_CHUNK_SEC}s)")
+    desc = ", ".join(f"{t.get('network')}:{t.get('address')}" for t in targets)
+    print(f"[TreasuryDaemon] Listening on [{desc}] (chunk {POLL_CHUNK_SEC}s)")
     while not _daemon_stop.is_set():
-        try:
-            monitor_incoming_payments(
-                address=treasury_address,
-                callback=_append_inbox,
-                testnet=True,
-                timeout_seconds=int(POLL_CHUNK_SEC),
-            )
-        except Exception as exc:
-            print(f"[TreasuryDaemon] Error: {exc}")
+        for t in targets:
+            if _daemon_stop.is_set():
+                break
+            address = t.get("address")
+            network = t.get("network") or "testnet"
+            if not address:
+                continue
+
+            def _cb(payment: Dict[str, Any], _net: str = network, _addr: str = address) -> None:
+                payment = dict(payment)
+                payment.setdefault("network", _net)
+                payment.setdefault("treasury_address", _addr)
+                payment.setdefault("revenue_class_hint", "organic" if _net == "mainnet" else None)
+                _append_inbox(payment)
+
+            try:
+                monitor_incoming_payments(
+                    address=address,
+                    callback=_cb,
+                    testnet=(network != "mainnet"),
+                    timeout_seconds=max(5, int(POLL_CHUNK_SEC // max(1, len(targets)))),
+                )
+            except Exception as exc:
+                print(f"[TreasuryDaemon] Error {_net if False else network}/{address}: {exc}")
         if _daemon_stop.wait(2.0):
             break
 
@@ -111,30 +128,58 @@ def is_treasury_daemon_running() -> bool:
 
 
 def start_treasury_daemon(treasury_address: Optional[str] = None) -> Dict[str, Any]:
-    """Start background WS listener if not already running."""
+    """Start background WS listener(s) for testnet + mainnet treasuries."""
     global _daemon_thread
     if not DAEMON_ENABLED:
         return {"started": False, "reason": "TREASURY_DAEMON_DISABLED"}
 
     from tools.xrpl_tools import FACTORY_XRPL_ADDRESS
 
-    address = treasury_address or os.getenv("FACTORY_TREASURY_ADDRESS") or FACTORY_XRPL_ADDRESS
-    if not address:
-        return {"started": False, "reason": "no_treasury_address"}
+    targets: list = []
+    try:
+        from factory_core.xrpl_network import treasury_watch_targets
+
+        for t in treasury_watch_targets():
+            targets.append({"address": t["address"], "network": t["network"]})
+    except Exception:
+        pass
+
+    # Explicit single-address override (legacy)
+    if treasury_address:
+        # Prefer mainnet if env says so, else testnet
+        net = "mainnet" if os.getenv("XRPL_REVENUE_NETWORK", "").lower() == "mainnet" else "testnet"
+        if not any(t["address"] == treasury_address for t in targets):
+            targets.append({"address": treasury_address, "network": net})
+
+    if not targets:
+        address = os.getenv("FACTORY_TREASURY_ADDRESS") or FACTORY_XRPL_ADDRESS
+        if not address:
+            return {"started": False, "reason": "no_treasury_address"}
+        targets = [{"address": address, "network": "testnet"}]
 
     if is_treasury_daemon_running():
-        return {"started": False, "reason": "already_running", "treasury_address": address}
+        return {
+            "started": False,
+            "reason": "already_running",
+            "targets": targets,
+            "treasury_address": targets[0]["address"],
+        }
 
     _load_dedupe()
     _daemon_stop.clear()
     _daemon_thread = threading.Thread(
         target=_daemon_loop,
-        args=(address,),
+        args=(targets,),
         name="treasury-ws-daemon",
         daemon=True,
     )
     _daemon_thread.start()
-    return {"started": True, "treasury_address": address, "chunk_sec": POLL_CHUNK_SEC}
+    return {
+        "started": True,
+        "targets": targets,
+        "treasury_address": targets[0]["address"],
+        "chunk_sec": POLL_CHUNK_SEC,
+    }
 
 
 def daemon_health() -> Dict[str, Any]:

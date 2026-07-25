@@ -30,9 +30,14 @@ PUBLISHED_DIR = Path(os.getenv("PUBLISHED_DIR", "published"))
 
 
 def _network_label() -> str:
-    if os.getenv("XRPL_NETWORK", "testnet").lower() == "mainnet":
-        return "xrpl_mainnet"
-    return "xrpl_testnet"
+    try:
+        from factory_core.xrpl_network import network_label, revenue_network
+
+        return network_label(revenue_network())
+    except Exception:
+        if os.getenv("XRPL_NETWORK", "testnet").lower() == "mainnet":
+            return "xrpl_mainnet"
+        return "xrpl_testnet"
 
 
 def _explorer_base() -> str:
@@ -51,9 +56,32 @@ def build_agent_pay_manifest(
 
     base = (FACTORY_PUBLIC_BASE_URL or "").rstrip("/")
     featured = featured or {}
-    network = _network_label()
+    # Prefer public revenue treasury (mainnet when ready)
+    try:
+        from factory_core.xrpl_network import (
+            explorer_account_url,
+            mainnet_treasury_address,
+            network_label,
+            resolve_public_treasury,
+            testnet_treasury_address,
+        )
 
-    base = (FACTORY_PUBLIC_BASE_URL or "").rstrip("/")
+        pub_addr, pub_net = resolve_public_treasury()
+        if pub_addr:
+            treasury_address = pub_addr
+        network = network_label(pub_net)
+        is_mainnet = pub_net == "mainnet"
+        dual = {
+            "mainnet": mainnet_treasury_address() or None,
+            "testnet": testnet_treasury_address() or None,
+            "primary_network": pub_net,
+            "primary_explorer": explorer_account_url(treasury_address, pub_net),
+        }
+    except Exception:
+        network = _network_label()
+        is_mainnet = network == "xrpl_mainnet"
+        dual = {}
+
     deliverable_base = f"{base}/deliverables" if base else "published/deliverables"
     products = [
         {
@@ -110,21 +138,28 @@ def build_agent_pay_manifest(
         },
     ]
 
+    min_xrp = float(os.getenv("AGENT_PAY_MIN_XRP", "0.00001" if not is_mainnet else "0.01"))
     return {
         "schema": "rsi_eaf_agent_pay_v1",
-        "version": "1.0",
+        "version": "1.1",
         "updated_at": datetime.now(timezone.utc).isoformat(),
         "cycle_id": cycle_id,
         "factory": "RSI-EAF",
         "network": network,
         "currency": "XRP",
+        "real_value": bool(is_mainnet),
         "treasury_address": treasury_address,
+        "treasury_map": dual or None,
         "easiest_payment": {
-            "instruction": "Send any amount of XRP to treasury_address with destination_tag=1. No memo required.",
+            "instruction": (
+                f"Send XRP on {network} to treasury_address with destination_tag=1. No memo required."
+                + (" This is MAINNET — real XRP." if is_mainnet else " Testnet XRP only.")
+            ),
             "treasury_address": treasury_address,
             "destination_tag": TIP_TAG,
             "credited_usd_est": TIP_USD,
-            "amount_xrp_min": float(os.getenv("AGENT_PAY_MIN_XRP", "0.00001")),
+            "amount_xrp_min": min_xrp,
+            "network": network,
         },
         "products": products,
         "agent_json_memo_template": {
@@ -143,19 +178,21 @@ def build_agent_pay_manifest(
         "discovery_urls": {
             "agent_pay": f"{base}/agent-pay.json" if base else "published/agent-pay.json",
             "tip_manifest": f"{base}/tip-manifest.json" if base else "published/tip-manifest.json",
+            "payment_status": f"{base}/payment-status.json" if base else "published/payment-status.json",
+            "fulfillment_index": f"{base}/deliverables/fulfillment-index.json" if base else "published/deliverables/fulfillment-index.json",
             "factory_index": f"{base}/" if base else None,
             "aetherforge": AETHERFORGE_URL,
         },
         "examples": {
             "python_xrpl_py": (
-                "from xrpl.wallet import Wallet\n"
                 "from tools.xrpl_tools import send_xrp_payment\n"
                 f"send_xrp_payment(wallet, '{treasury_address}', 0.01, "
                 f"memo_data={{'type':'revenue','amount_usd_est':1.0,'source':'my_agent'}}, "
-                f"destination_tag=1, testnet=True)"
+                f"destination_tag=1, testnet={str(not is_mainnet)})"
             ),
             "human_steps": [
-                f"1. Open XRPL wallet (testnet faucet if needed)",
+                f"1. Open XRPL wallet on {network}"
+                + (" (real XRP)" if is_mainnet else " (testnet faucet OK)"),
                 f"2. Pay → {treasury_address}",
                 f"3. Destination Tag: {TIP_TAG}",
                 "4. Optional memo: tip",
@@ -171,6 +208,14 @@ def write_agent_pay_manifest(
 ) -> Path:
     PUBLISHED_DIR.mkdir(parents=True, exist_ok=True)
     manifest = build_agent_pay_manifest(cycle_id, treasury_address, featured)
+    if os.getenv("X402_PUBLISH_ENABLED", "true").lower() in {"1", "true", "yes"}:
+        try:
+            from observability.x402_publish import write_x402_surfaces
+
+            paths = write_x402_surfaces(manifest)
+            return paths["agent_pay"]
+        except Exception:
+            pass
     path = PUBLISHED_DIR / "agent-pay.json"
     path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
     return path

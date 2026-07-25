@@ -57,7 +57,8 @@ def poll_treasury_payments(
 
         if SKIP_INLINE_WS and _daemon_active():
             poll_mode = "daemon_inbox_only"
-            print("[TreasuryMonitor] Daemon active — skipping inline WS (inbox drain only)")
+            if os.getenv("XRPL_WS_QUIET", "true").lower() not in {"1", "true", "yes"}:
+                print("[TreasuryMonitor] Daemon active — skipping inline WS (inbox drain only)")
         else:
             poll_mode = "daemon_plus_inline"
 
@@ -71,10 +72,21 @@ def poll_treasury_payments(
 
         from tools.xrpl_tools import monitor_incoming_payments
 
+        # Prefer public revenue network for inline poll; default testnet for ops
+        try:
+            from factory_core.xrpl_network import resolve_public_treasury, revenue_network
+
+            pub_addr, pub_net = resolve_public_treasury()
+            poll_addr = pub_addr or address
+            poll_testnet = pub_net != "mainnet"
+        except Exception:
+            poll_addr = address
+            poll_testnet = True
+
         ws_observed = monitor_incoming_payments(
-            address=address,
+            address=poll_addr,
             callback=_callback,
-            testnet=True,
+            testnet=poll_testnet,
             timeout_seconds=MONITOR_TIMEOUT,
         )
 

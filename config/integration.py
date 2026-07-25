@@ -26,7 +26,7 @@ NEXUS_REPO_URL = f"https://github.com/{NEXUS_OWNER}/{NEXUS_REPO}"
 # jarvis-swarm-memory is NOT part of factory integration (archived competing cron).
 MEMORY_REPO_EXCLUDED = "jarvis-swarm-memory"
 NEXUS_CI_HYGIENE_GATE = os.getenv("NEXUS_CI_HYGIENE_GATE", "true").lower() in {"1", "true", "yes"}
-JARVIS_CI_AUTO_REPAIR = os.getenv("JARVIS_CI_AUTO_REPAIR", "true").lower() in {"1", "true", "yes"}
+JARVIS_CI_AUTO_REPAIR = os.getenv("JARVIS_CI_AUTO_REPAIR", "false").lower() in {"1", "true", "yes"}
 
 # --- Vercel: factory static site ---
 FACTORY_PUBLIC_BASE_URL = os.getenv(
@@ -43,12 +43,22 @@ GIST_PUBLISH_EVERY_N_CYCLES = int(os.getenv("GIST_PUBLISH_EVERY_N_CYCLES", "3"))
 GITHUB_RELEASE_EVERY_N_CYCLES = int(os.getenv("GITHUB_RELEASE_EVERY_N_CYCLES", "5"))
 NEXUS_EMIT_EVERY_N_CYCLES = int(os.getenv("NEXUS_EMIT_EVERY_N_CYCLES", "1"))
 
-# --- XRPL ---
+# --- XRPL (dual-network ready) ---
 XRPL_TESTNET_EXPLORER = "https://testnet.xrpl.org/"
+XRPL_MAINNET_EXPLORER = "https://xrpl.org/"
 XRPL_TESTNET_WS = os.getenv("XRPL_TESTNET_WS", "wss://s.altnet.rippletest.net:51233")
+XRPL_MAINNET_WS = os.getenv("XRPL_MAINNET_WS_URL", "wss://xrplcluster.com/")
 
 # --- Revenue engines ---
 REVENUE_TOP3_ENABLED = os.getenv("REVENUE_TOP3_ENABLED", "true").lower() in {"1", "true", "yes"}
+
+# --- HUM DREAMS (slow cognition; never overrides economic gates) ---
+DREAMS_ENABLED = os.getenv("DREAMS_ENABLED", "true").lower() in {"1", "true", "yes"}
+DREAMS_DIR = os.getenv("DREAMS_DIR", "observability/dreams")
+DREAMS_UPSTREAM = "https://github.com/nobulart/hum"
+DREAMS_SURFACE_EVERY_N_CYCLES = int(os.getenv("DREAMS_SURFACE_EVERY_N_CYCLES", "3"))
+DREAMS_MAX_PER_CYCLE = int(os.getenv("DREAMS_MAX_PER_CYCLE", "3"))
+DREAMS_DIRECTOR_FEED = os.getenv("DREAMS_DIRECTOR_FEED", "true").lower() in {"1", "true", "yes"}
 
 # --- Control-state goals (jarvis / aetherforge alignment) ---
 THE_FOUR_CONTROL_STATE_GOALS = [
@@ -65,6 +75,41 @@ ASI_TIER_1 = (
 )
 
 
+def _xrpl_manifest_block() -> Dict[str, Any]:
+    """Dual-network XRPL block for integration manifest."""
+    try:
+        from factory_core.xrpl_network import (
+            explorer_account_url,
+            mainnet_treasury_address,
+            network_mode,
+            ops_network,
+            resolve_public_treasury,
+            testnet_treasury_address,
+            ws_url,
+        )
+
+        pub_addr, pub_net = resolve_public_treasury()
+        return {
+            "mode": network_mode(),
+            "revenue_network": pub_net,
+            "ops_network": ops_network(),
+            "network": pub_net,
+            "explorer": XRPL_MAINNET_EXPLORER if pub_net == "mainnet" else XRPL_TESTNET_EXPLORER,
+            "ws": ws_url(pub_net),
+            "treasury_address": pub_addr,
+            "treasury_explorer": explorer_account_url(pub_addr, pub_net) if pub_addr else None,
+            "testnet_treasury": testnet_treasury_address() or None,
+            "mainnet_treasury": mainnet_treasury_address() or None,
+            "real_value": pub_net == "mainnet",
+        }
+    except Exception:
+        return {
+            "network": "testnet",
+            "explorer": XRPL_TESTNET_EXPLORER,
+            "ws": XRPL_TESTNET_WS,
+        }
+
+
 def github_targets() -> Dict[str, Any]:
     return {
         "factory": {"owner": GITHUB_OWNER, "repo": GITHUB_REPO, "branch": GITHUB_BRANCH, "url": GITHUB_REPO_URL},
@@ -73,10 +118,22 @@ def github_targets() -> Dict[str, Any]:
 
 
 def vercel_targets() -> Dict[str, str]:
+    base = (FACTORY_PUBLIC_BASE_URL or "").rstrip("/")
     return {
         "factory_site": FACTORY_PUBLIC_BASE_URL,
         "aetherforge": AETHERFORGE_URL,
+        "aetherforge_mirror": f"{base}/aetherforge-mirror" if base else "",
         "published_dir": PUBLISHED_DIR,
+    }
+
+
+def aetherforge_publish_config() -> Dict[str, Any]:
+    """How the factory populates aetherforge.world (git push + deploy hook by default)."""
+    return {
+        "mode": os.getenv("AETHERFORGE_PUBLISH_MODE", "hook"),
+        "deploy_hook_configured": bool(os.getenv("AETHERFORGE_DEPLOY_HOOK_URL", "").strip()),
+        "nexus_ci_gate": os.getenv("NEXUS_CI_GATE_ENABLED", "false").lower() in {"1", "true", "yes"},
+        "mirror_enabled": os.getenv("AETHERFORGE_MIRROR_ENABLED", "true").lower() in {"1", "true", "yes"},
     }
 
 
@@ -113,7 +170,7 @@ def integration_manifest(cycle_id: int = 0, featured: Dict[str, str] | None = No
         "cycle_id": cycle_id,
         "github": github_targets(),
         "vercel": vercel_targets(),
-        "xrpl": {"network": "testnet", "explorer": XRPL_TESTNET_EXPLORER, "ws": XRPL_TESTNET_WS},
+        "xrpl": _xrpl_manifest_block(),
         "revenue_surfaces": revenue_surface_rows(featured, cycle_id),
         "revenue_engines": {
             "top3_enabled": REVENUE_TOP3_ENABLED,
@@ -157,5 +214,16 @@ def integration_manifest(cycle_id: int = 0, featured: Dict[str, str] | None = No
                 "best_of_n_evolve",
             ],
             "runner_lanes": ["hybrid", "revenue", "tools"],
+        },
+        "dreams": {
+            "enabled": DREAMS_ENABLED,
+            "dir": DREAMS_DIR,
+            "upstream": DREAMS_UPSTREAM,
+            "surface_every_n_cycles": DREAMS_SURFACE_EVERY_N_CYCLES,
+            "max_per_cycle": DREAMS_MAX_PER_CYCLE,
+            "director_feed": DREAMS_DIRECTOR_FEED,
+            "package": "tools.hum",
+            "skill": ".grok/skills/dreams-capture",
+            "note": "Soft cognition only — never overrides AGENTS.md, gates, or treasury",
         },
     }

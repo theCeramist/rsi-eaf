@@ -19,6 +19,7 @@ def start_all_parallel_infrastructure(treasury_address: Optional[str] = None) ->
         ("xrpl_intel", "XRPL_INTEL_DAEMON_ENABLED", "observability.xrpl_intel_daemon", "start_xrpl_intel_daemon"),
         ("nexus_echo", "NEXUS_ECHO_DAEMON_ENABLED", "observability.nexus_echo_daemon", "start_nexus_echo_daemon"),
         ("ci_babysitter", "CI_BABYSITTER_ENABLED", "observability.ci_babysitter_daemon", "start_ci_babysitter_daemon"),
+        ("x_agent", "X_AGENT_DAEMON_ENABLED", "observability.x_daemon", "start_x_daemon"),
     ]
     for name, env_key, module, fn_name in daemon_specs:
         if os.getenv(env_key, "true").lower() not in {"1", "true", "yes"}:
@@ -66,6 +67,57 @@ def run_post_analyze_lanes(
             pass
         lanes["micro_saas_scout"] = run_micro_saas_scout(cycle_id, intel)
 
+    # Social learning: X interactions → structured lessons → analysis/directives
+    if os.getenv("SOCIAL_LEARNING_LANE", "true").lower() in {"1", "true", "yes"}:
+        try:
+            from factory_core.social_learning import run_social_learning_cycle
+
+            lanes["social_learning"] = run_social_learning_cycle(cycle_id, analysis)
+        except Exception as exc:
+            lanes["social_learning"] = {"error": str(exc)[:200]}
+
+    # Marketplace plugins (exa/firecrawl/vercel/stripe/sentry/chrome/axiom/superpowers)
+    if os.getenv("PLUGIN_STACK_ENABLED", "true").lower() in {"1", "true", "yes"}:
+        try:
+            from tools.plugin_stack import run_plugin_stack
+
+            lanes["plugin_stack"] = run_plugin_stack(cycle_id, analysis=analysis)
+            if isinstance(analysis, dict) and lanes["plugin_stack"]:
+                analysis["plugin_stack"] = lanes["plugin_stack"].get("summary")
+        except Exception as exc:
+            lanes["plugin_stack"] = {"error": str(exc)[:200]}
+
+    # Mainnet revenue readiness — keep pay surfaces on real XRPL path
+    if os.getenv("MAINNET_REVENUE_LANE", "true").lower() in {"1", "true", "yes"}:
+        try:
+            from factory_core.xrpl_network import write_readiness_artifacts
+            from tools.mainnet_pay_surface import write_mainnet_pay_surface
+            from observability.agent_payment import write_agent_pay_manifest
+            from tools.distribution_tools import write_tip_manifest
+            from revenue_engines.base_engine import resolve_treasury
+
+            surface = write_mainnet_pay_surface(cycle_id)
+            treasury = resolve_treasury()
+            write_agent_pay_manifest(cycle_id, treasury, featured or {})
+            write_tip_manifest(
+                treasury_address=treasury,
+                cycle_id=cycle_id,
+                live_tip_url=(featured or {}).get("canonical_tip_page")
+                or (featured or {}).get("tip_page"),
+            )
+            readiness = write_readiness_artifacts(cycle_id)
+            lanes["mainnet_revenue"] = {
+                "success": True,
+                "treasury": surface.get("treasury"),
+                "network": surface.get("network"),
+                "ready": surface.get("readiness"),
+                "strict_activated": readiness.get("ready_strict_activated", {}).get("ready"),
+            }
+            if isinstance(analysis, dict):
+                analysis["mainnet_revenue"] = lanes["mainnet_revenue"]
+        except Exception as exc:
+            lanes["mainnet_revenue"] = {"success": False, "error": str(exc)[:240]}
+
     return lanes
 
 
@@ -97,6 +149,39 @@ def run_post_evolve_lanes(
             break
 
     return lanes
+
+
+def run_post_sync_outreach(cycle_id: int, force: bool = False) -> Dict[str, Any]:
+    """Ensure conversion surfaces + distribution/autonomous outreach fire even if daemon is stale."""
+    out: Dict[str, Any] = {}
+    # Never CTA into a 404 pay.html
+    try:
+        from tools.conversion_surfaces import ensure_conversion_surfaces
+
+        out["conversion_surfaces"] = ensure_conversion_surfaces(force_deploy=False)
+    except Exception as exc:
+        out["conversion_surfaces"] = {"success": False, "error": str(exc)[:200]}
+    # Plugin chrome/firecrawl QA after surfaces (uses live URLs)
+    if os.getenv("PLUGIN_STACK_OUTREACH", "true").lower() in {"1", "true", "yes"}:
+        try:
+            from tools.plugin_stack import (
+                run_chrome_devtools_plugin,
+                run_firecrawl_plugin,
+            )
+
+            out["plugin_chrome_qa"] = run_chrome_devtools_plugin(int(cycle_id))
+            out["plugin_firecrawl"] = run_firecrawl_plugin(int(cycle_id))
+        except Exception as exc:
+            out["plugin_stack_error"] = str(exc)[:200]
+    try:
+        from tools.autonomous_outreach import run_autonomous_outreach
+
+        out["outreach"] = run_autonomous_outreach(int(cycle_id), force=force)
+        out["success"] = bool(out["outreach"].get("success"))
+    except Exception as exc:
+        out["success"] = False
+        out["error"] = str(exc)
+    return out
 
 
 def dispatch_post_cycle_async(

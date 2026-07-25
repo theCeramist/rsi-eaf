@@ -30,13 +30,40 @@ def write_tip_manifest(
 ) -> Path:
     """Agent-readable payment request for XRPL treasury tipping."""
     PUBLISHED_DIR.mkdir(parents=True, exist_ok=True)
-    instructions = simple_payment_instructions(cycle_id, treasury_address)
+    try:
+        from factory_core.xrpl_network import (
+            explorer_account_url,
+            network_label,
+            resolve_public_treasury,
+        )
+
+        pub_addr, pub_net = resolve_public_treasury()
+        if pub_addr:
+            treasury_address = pub_addr
+        net_label = network_label(pub_net)
+        explorer = (
+            "https://xrpl.org/"
+            if pub_net == "mainnet"
+            else "https://testnet.xrpl.org/"
+        )
+        account_explorer = explorer_account_url(treasury_address, pub_net)
+        real_value = pub_net == "mainnet"
+    except Exception:
+        net_label = "xrpl_testnet"
+        explorer = "https://testnet.xrpl.org/"
+        account_explorer = f"{explorer}accounts/{treasury_address}"
+        real_value = False
+        pub_net = "testnet"
+
+    instructions = simple_payment_instructions(cycle_id, treasury_address, network=pub_net)
     manifest = {
-        "schema": "rsi_eaf_tip_manifest_v2",
+        "schema": "rsi_eaf_tip_manifest_v3",
         "updated_at": datetime.now(timezone.utc).isoformat(),
         "cycle_id": cycle_id,
-        "network": "xrpl_testnet",
+        "network": net_label,
+        "real_value": real_value,
         "treasury_address": treasury_address,
+        "treasury_explorer": account_explorer,
         "human_easy_path": instructions["easiest"],
         "destination_tags": {
             "tip": {"tag": TIP_TAG, "credited_usd": TIP_USD},
@@ -53,7 +80,7 @@ def write_tip_manifest(
             "notes": "supporter tip",
             "source": "tip_manifest",
         },
-        "explorer": "https://testnet.xrpl.org/",
+        "explorer": explorer,
         "live_tip_page": live_tip_url,
         "verification": "Tag 1, memo 'tip', or flat external payment → verified tip",
     }

@@ -49,7 +49,12 @@ def _xrpl_log(message: str, *, force: bool = False) -> None:
 
 def get_client(testnet: bool = True) -> JsonRpcClient:
     """Return a JSON-RPC client for Testnet or Mainnet."""
-    url = XRPL_TESTNET_URL if testnet else XRPL_MAINNET_URL
+    try:
+        from factory_core.xrpl_network import rpc_url
+
+        url = rpc_url("testnet" if testnet else "mainnet")
+    except Exception:
+        url = XRPL_TESTNET_URL if testnet else XRPL_MAINNET_URL
     return JsonRpcClient(url)
 
 
@@ -144,6 +149,30 @@ def send_xrp_payment(
         "notes": "niche: ai-tools-for-devs"
     }
     """
+    # Mainnet spend safety — refuse unless explicitly enabled + under cap
+    if not testnet:
+        try:
+            from factory_core.xrpl_network import mainnet_outbound_allowed
+
+            gate = mainnet_outbound_allowed(float(amount_xrp))
+            if not gate.get("allowed"):
+                return {
+                    "success": False,
+                    "error": "mainnet_outbound_blocked",
+                    "detail": gate.get("reason"),
+                    "tx_hash": None,
+                    "explorer_url": None,
+                    "memo_data": memo_data,
+                }
+        except Exception as exc:
+            return {
+                "success": False,
+                "error": "mainnet_safety_check_failed",
+                "detail": str(exc)[:200],
+                "tx_hash": None,
+                "memo_data": memo_data,
+            }
+
     client = get_client(testnet)
     if isinstance(amount_xrp, str):
         amount_xrp = Decimal(amount_xrp)
@@ -184,7 +213,12 @@ def send_xrp_payment(
         "success": response.is_successful(),
         "tx_hash": tx_hash,
         "ledger_index": validated_ledger,
-        "explorer_url": f"https://{'testnet.' if testnet else ''}xrpl.org/transactions/{tx_hash}",
+        "explorer_url": (
+            f"https://xrpl.org/transactions/{tx_hash}"
+            if not testnet
+            else f"https://testnet.xrpl.org/transactions/{tx_hash}"
+        ),
+        "network": "mainnet" if not testnet else "testnet",
         "memo_data": memo_data,
         "raw_response": response.result if verbose else None,
     }
@@ -258,9 +292,17 @@ def monitor_incoming_payments(
     Calls callback(dict) for each relevant transaction.
     Returns count of payments observed during the poll window (hard wall-clock cap).
     """
-    url = XRPL_TESTNET_WS_URL if testnet else XRPL_MAINNET_WS_URL
+    try:
+        from factory_core.xrpl_network import ws_url as _ws_url
+
+        url = _ws_url("testnet" if testnet else "mainnet")
+    except Exception:
+        url = XRPL_TESTNET_WS_URL if testnet else XRPL_MAINNET_WS_URL
     poll_timeout = float(timeout_seconds or 3)
-    _xrpl_log(f"[XRPL] Starting WebSocket monitor for incoming payments to {address}...")
+    _xrpl_log(
+        f"[XRPL] Starting WebSocket monitor for incoming payments to {address} "
+        f"({'testnet' if testnet else 'mainnet'})..."
+    )
 
     state: Dict[str, Any] = {"observed": 0}
 
@@ -289,17 +331,14 @@ def monitor_incoming_payments(
                     force=True,
                 )
         except Exception as exc:
-            _xrpl_log(f"[XRPL] Monitor error: {exc}", force=True)
+            _xrpl_log(f"[XRPL] Monitor error: {exc}")
             state["error"] = str(exc)
 
     worker = threading.Thread(target=_poll_loop, name="xrpl-ws-poll", daemon=True)
     worker.start()
     worker.join(timeout=poll_timeout + 3.0)
     if worker.is_alive():
-        _xrpl_log(
-            f"[XRPL] Monitor hard-timeout after {poll_timeout:.0f}s — continuing cycle",
-            force=True,
-        )
+        _xrpl_log(f"[XRPL] Monitor hard-timeout after {poll_timeout:.0f}s — continuing cycle")
     return int(state["observed"])
 
 

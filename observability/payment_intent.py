@@ -187,17 +187,30 @@ def resolve_payment_intent(
     return None
 
 
-def simple_payment_instructions(cycle_id: int, treasury: str) -> Dict[str, Any]:
+def simple_payment_instructions(
+    cycle_id: int,
+    treasury: str,
+    network: str = "testnet",
+) -> Dict[str, Any]:
     """Copy-paste fields for published tip pages."""
+    try:
+        from factory_core.xrpl_network import network_label, resolve_public_treasury
+
+        if not treasury:
+            treasury, network = resolve_public_treasury()
+        label = network_label(network)
+    except Exception:
+        label = "xrpl_mainnet" if network == "mainnet" else "xrpl_testnet"
     return {
         "treasury_address": treasury,
-        "network": "xrpl_testnet",
+        "network": label,
         "easiest": {
-            "step_1": f"Send XRP to {treasury}",
+            "step_1": f"Send XRP on {label} to {treasury}",
             "step_2": f"Set Destination Tag to {TIP_TAG}",
             "step_3": "Leave memo blank (optional)",
             "destination_tag": TIP_TAG,
             "credited_usd": TIP_USD,
+            "real_value": network == "mainnet",
         },
         "briefing_unlock": {
             "destination_tag": BRIEFING_TAG,

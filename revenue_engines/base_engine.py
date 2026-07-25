@@ -21,10 +21,32 @@ FACTORY_TREASURY_ADDRESS = os.getenv("FACTORY_TREASURY_ADDRESS", "")
 
 
 def resolve_treasury() -> str:
-    treasury = FACTORY_TREASURY_ADDRESS
+    """Public revenue treasury (mainnet when dual/mainnet ready)."""
+    try:
+        from factory_core.xrpl_network import resolve_public_treasury
+
+        addr, _net = resolve_public_treasury()
+        if addr:
+            return addr
+    except Exception:
+        pass
+    treasury = FACTORY_TREASURY_ADDRESS or os.getenv("FACTORY_TREASURY_ADDRESS", "")
     if treasury:
         return treasury
     return get_revenue_destination(load_factory_wallet(testnet=True))
+
+
+def resolve_ops_treasury() -> str:
+    """Internal anchor destination (usually testnet)."""
+    try:
+        from factory_core.xrpl_network import resolve_ops_treasury as _ops
+
+        addr, _net = _ops()
+        if addr:
+            return addr
+    except Exception:
+        pass
+    return FACTORY_TREASURY_ADDRESS or resolve_treasury()
 
 
 def anchor_engine_event(
@@ -36,8 +58,17 @@ def anchor_engine_event(
     live_url: str = "",
     extra_memo: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
-    wallet = load_factory_wallet(testnet=True)
-    destination = get_revenue_destination(wallet)
+    # Ops anchors stay on ops network (default testnet) — never burn real XRP by accident
+    try:
+        from factory_core.xrpl_network import ops_network
+
+        use_testnet = ops_network() != "mainnet"
+    except Exception:
+        use_testnet = True
+    wallet = load_factory_wallet(testnet=use_testnet)
+    destination = resolve_ops_treasury()
+    if not destination or destination == wallet.classic_address:
+        destination = get_revenue_destination(wallet)
     memo_data = {
         "cycle_id": cycle_id,
         "source": source,
@@ -46,6 +77,7 @@ def anchor_engine_event(
         "notes": notes,
         "published_asset": str(published_path.as_posix()),
         "live_url": live_url or None,
+        "ops_network": "testnet" if use_testnet else "mainnet",
         **(extra_memo or {}),
     }
     payment = send_xrp_payment(
@@ -54,6 +86,7 @@ def anchor_engine_event(
         amount_xrp=ANCHOR_AMOUNT_XRP,
         memo_data=memo_data,
         verbose=True,
+        testnet=use_testnet,
     )
     if not payment.get("success"):
         raise RuntimeError(f"XRPL anchoring failed for {source}: {payment}")
