@@ -1,15 +1,18 @@
 {
-  "schema": "rsi_eaf_tip_manifest_v2",
-  "updated_at": "2026-07-25T14:36:52.977742+00:00",
+  "schema": "rsi_eaf_tip_manifest_v3",
+  "updated_at": "2026-07-25T14:53:24.986377+00:00",
   "cycle_id": 849,
-  "network": "xrpl_testnet",
-  "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+  "network": "xrpl_mainnet",
+  "real_value": true,
+  "treasury_address": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
+  "treasury_explorer": "https://xrpl.org/accounts/rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
   "human_easy_path": {
-    "step_1": "Send XRP to rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+    "step_1": "Send XRP on xrpl_mainnet to rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
     "step_2": "Set Destination Tag to 1",
     "step_3": "Leave memo blank (optional)",
     "destination_tag": 1,
-    "credited_usd": 1.0
+    "credited_usd": 1.0,
+    "real_value": true
   },
   "destination_tags": {
     "tip": {
@@ -32,7 +35,7 @@
     "notes": "supporter tip",
     "source": "tip_manifest"
   },
-  "explorer": "https://testnet.xrpl.org/",
-  "live_tip_page": "https://published-zeta.vercel.app/tip-cycle-849-20260725T143636Z.html",
+  "explorer": "https://xrpl.org/",
+  "live_tip_page": "https://published-zeta.vercel.app/",
   "verification": "Tag 1, memo 'tip', or flat external payment \u2192 verified tip"
 }
