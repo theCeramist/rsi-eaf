@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Pay RSI-EAF · XRPL Mainnet</title>
-<meta name="description" content="Pay the RSI-EAF autonomous economic factory on XRPL Mainnet. Destination Tag 1 = verified tip."/>
-<meta property="og:title" content="Pay RSI-EAF · XRPL Mainnet"/>
+<title>Pay RSI-EAF · XRPL Testnet</title>
+<meta name="description" content="Pay the RSI-EAF autonomous economic factory on XRPL Testnet. Destination Tag 1 = verified tip."/>
+<meta property="og:title" content="Pay RSI-EAF · XRPL Testnet"/>
 <meta property="og:description" content="Real XRPL payments to factory treasury. Tag 1 tip · Tag 2 briefing · Tag 3 tool."/>
 <meta property="og:url" content="https://published-zeta.vercel.app/pay.html"/>
 <link rel="canonical" href="https://published-zeta.vercel.app/pay.html"/>
 <style>
-:root { --bg:#070b12; --card:#101826; --text:#e8eef7; --muted:#8b9bb4; --accent:#00d4aa; --border:#1e2a3d; }
+:root { --bg:#070b12; --card:#101826; --text:#e8eef7; --muted:#8b9bb4; --accent:#7aa2ff; --border:#1e2a3d; }
 * { box-sizing:border-box; }
 body { margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; background:radial-gradient(1200px 600px at 20% -10%, #12203a 0%, var(--bg) 55%); color:var(--text); line-height:1.5; }
 .wrap { max-width:720px; margin:0 auto; padding:2rem 1.25rem 4rem; }
@@ -33,14 +33,14 @@ footer { margin-top:2rem; color:var(--muted); font-size:.8rem; }
 </head>
 <body>
 <main class="wrap">
-  <span class="badge">MAINNET · REAL XRP</span>
+  <span class="badge">TESTNET</span>
   <h1>Pay the RSI-EAF factory</h1>
   <p class="lead">Autonomous economic agent factory. Verifiable XRPL payments. Exclusive ICP. Not for everyone.</p>
 
   <section class="card">
-    <h2>Primary treasury · XRPL Mainnet</h2>
-    <p class="mono" id="treasury">rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5</p>
-    <p class="small">Explorer: <a href="https://xrpl.org/accounts/rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5" style="color:var(--accent)">https://xrpl.org/accounts/rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5</a></p>
+    <h2>Primary treasury · XRPL Testnet</h2>
+    <p class="mono" id="treasury"></p>
+    <p class="small">Explorer: <a href="https://testnet.xrpl.org/accounts/" style="color:var(--accent)">https://testnet.xrpl.org/accounts/</a></p>
     <div class="row">
       <a class="cta" href="https://published-zeta.vercel.app/agent-pay.json">agent-pay.json</a>
       <a class="cta ghost" href="https://published-zeta.vercel.app/tip-manifest.json">tip-manifest.json</a>
@@ -51,7 +51,7 @@ footer { margin-top:2rem; color:var(--muted); font-size:.8rem; }
   <section class="card">
     <h2>Easiest path (humans + agents)</h2>
     <ol>
-      <li>Open any XRPL wallet on <strong>XRPL Mainnet</strong></li>
+      <li>Open any XRPL wallet on <strong>XRPL Testnet</strong></li>
       <li>Send XRP to the treasury address above</li>
       <li>Set <strong>Destination Tag = 1</strong></li>
       <li>Memo optional — blank is fine</li>
@@ -74,12 +74,6 @@ footer { margin-top:2rem; color:var(--muted); font-size:.8rem; }
   </section>
 
   
-<section class="card muted">
-  <h2>Also accepting (Testnet)</h2>
-  <p class="mono">rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN</p>
-  <p class="small">Same Destination Tags. Prefer the primary treasury above for production payers.</p>
-</section>
-
 
   <section class="card">
     <h2>Agent integrators</h2>
@@ -89,14 +83,14 @@ footer { margin-top:2rem; color:var(--muted); font-size:.8rem; }
   </section>
 
   <footer>
-    RSI-EAF cycle 849 · network=mainnet · generated 2026-07-25T14:53Z
+    RSI-EAF cycle 979 · network=testnet · generated 2026-07-29T23:22Z
     · Ground truth: XRPL tx hash + economic ledger · No spoofed revenue
   </footer>
 </main>
 <script>
 // Copy treasury on click
 document.getElementById('treasury')?.addEventListener('click', async () => {
-  try { await navigator.clipboard.writeText("rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5"); } catch (e) {}
+  try { await navigator.clipboard.writeText(""); } catch (e) {}
 });
 </script>
 </body>

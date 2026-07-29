@@ -1,21 +1,21 @@
 {
   "schema": "rsi_eaf_treasury_map_v1",
-  "updated_at": "2026-07-25T14:53:19.795666+00:00",
-  "cycle_id": 849,
+  "updated_at": "2026-07-29T23:22:41.598308+00:00",
+  "cycle_id": 979,
   "primary": {
-    "network": "mainnet",
-    "label": "xrpl_mainnet",
-    "address": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
-    "explorer": "https://xrpl.org/accounts/rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
+    "network": "testnet",
+    "label": "xrpl_testnet",
+    "address": "",
+    "explorer": "https://testnet.xrpl.org/accounts/",
     "role": "public_revenue"
   },
   "testnet": {
-    "address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
-    "explorer": "https://testnet.xrpl.org/accounts/rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN"
+    "address": "",
+    "explorer": null
   },
   "mainnet": {
-    "address": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
-    "explorer": "https://xrpl.org/accounts/rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5"
+    "address": "",
+    "explorer": null
   },
   "destination_tag_tip": 1,
   "safety": {
