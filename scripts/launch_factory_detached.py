@@ -79,7 +79,27 @@ def main() -> int:
             start_new_session=(sys.platform != "win32"),
         )
 
-    # Outer keep-alive: re-launch supervisor if it dies (no human babysitting)
+    # Outer keep-alive: re-launch supervisor if it dies (no human babysitting).
+    # Default ON; set SUPERVISOR_KEEPER=false if wmic races cause double stacks.
+    if os.getenv("SUPERVISOR_KEEPER", "true").lower() not in {"1", "true", "yes"}:
+        meta = {
+            "schema": "rsi_eaf_detached_launch_v1",
+            "launched_at": datetime.now(timezone.utc).isoformat(),
+            "supervisor_pid": p.pid,
+            "keeper_pid": None,
+            "monitor_cmd": "python -u scripts/monitor_factory_cli.py",
+            "logs": {
+                "supervisor": str(RUNTIME / "factory_cli_supervisor.log"),
+                "tee": str(log),
+                "hybrid": str(RUNTIME / "factory_runner_stdout.log"),
+            },
+        }
+        STATE.write_text(json.dumps(meta, indent=2), encoding="utf-8")
+        print(f"launched pid={p.pid} (no keeper)")
+        print(f"monitor: python -u scripts/monitor_factory_cli.py")
+        print(f"state: {STATE}")
+        return 0
+
     keeper_log = RUNTIME / "factory_supervisor_keeper.log"
     keeper_script = RUNTIME / "_supervisor_keeper.py"
     keeper_script.write_text(
@@ -141,13 +161,23 @@ def launch():
 
 def main():
     LOG.parent.mkdir(parents=True, exist_ok=True)
+    # Give concurrent launch() time to register before first check (avoid double supervisor)
+    time.sleep(min(45, INTERVAL // 2 or 20))
     while True:
         try:
             pid = find_supervisor()
-            if not pid or not alive(pid):
-                newp = launch()
-                with LOG.open("a", encoding="utf-8") as fh:
-                    fh.write(f"{{time.strftime('%Y-%m-%dT%H:%M:%SZ')}} relaunched supervisor pid={{newp}}\\n")
+            if pid and alive(pid):
+                time.sleep(INTERVAL)
+                continue
+            # Double-check after short wait (race with sibling launch)
+            time.sleep(5)
+            pid2 = find_supervisor()
+            if pid2 and alive(pid2):
+                time.sleep(INTERVAL)
+                continue
+            newp = launch()
+            with LOG.open("a", encoding="utf-8") as fh:
+                fh.write(f"{{time.strftime('%Y-%m-%dT%H:%M:%SZ')}} relaunched supervisor pid={{newp}}\\n")
             time.sleep(INTERVAL)
         except Exception as exc:
             with LOG.open("a", encoding="utf-8") as fh:
