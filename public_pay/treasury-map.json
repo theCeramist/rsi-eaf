@@ -1,26 +1,18 @@
 {
   "schema": "rsi_eaf_treasury_map_v1",
-  "updated_at": "2026-07-29T23:22:41.598308+00:00",
-  "cycle_id": 979,
+  "updated_at": "2026-07-30T00:17:38.612584+00:00",
   "primary": {
     "network": "testnet",
-    "label": "xrpl_testnet",
     "address": "",
-    "explorer": "https://testnet.xrpl.org/accounts/",
     "role": "public_revenue"
   },
-  "testnet": {
+  "ops": {
+    "network": "testnet",
     "address": "",
-    "explorer": null
+    "role": "cycle_anchors_only"
   },
   "mainnet": {
     "address": "",
-    "explorer": null
-  },
-  "destination_tag_tip": 1,
-  "safety": {
-    "mainnet_outbound_enabled": false,
-    "mainnet_max_outbound_xrp": 0.05,
-    "ops_network": "testnet"
+    "role": "real_xrp_inbound"
   }
 }

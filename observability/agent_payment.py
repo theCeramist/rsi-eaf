@@ -139,27 +139,124 @@ def build_agent_pay_manifest(
     ]
 
     min_xrp = float(os.getenv("AGENT_PAY_MIN_XRP", "0.00001" if not is_mainnet else "0.01"))
+    xrp_usd = float(os.getenv("XRP_USD_EST", "1.07"))
+    try:
+        import httpx
+
+        pr = httpx.get(
+            "https://api.coingecko.com/api/v3/simple/price",
+            params={"ids": "ripple", "vs_currencies": "usd"},
+            timeout=6,
+        )
+        if pr.status_code == 200:
+            xrp_usd = float((pr.json().get("ripple") or {}).get("usd") or xrp_usd)
+    except Exception:
+        pass
+
+    def _xrp(usd: float) -> float:
+        if xrp_usd <= 0:
+            return float(usd)
+        return round(max(usd / xrp_usd, min_xrp) * 1.02, 6)
+
+    # Unfunded mainnet accounts need ≥1 XRP base reserve on first inbound
+    activated = True
+    if is_mainnet:
+        try:
+            ready_p = Path(os.getenv("OBSERVABILITY_DIR", "observability")) / "mainnet_readiness.json"
+            if ready_p.exists():
+                ready = json.loads(ready_p.read_text(encoding="utf-8"))
+                activated = bool(
+                    (ready.get("ready_accept_unfunded") or {})
+                    .get("checks", {})
+                    .get("account_activated", True)
+                )
+        except Exception:
+            activated = False
+    tip_xrp = max(_xrp(TIP_USD), 1.0 if (is_mainnet and not activated) else _xrp(TIP_USD))
+
+    # Enrich products with mainnet XRP amounts + wallet deep links
+    try:
+        from tools.mainnet_pay_surface import xaman_pay_url, xrpl_uri
+    except Exception:
+        xaman_pay_url = xrpl_uri = None  # type: ignore
+
+    for p in products:
+        usd = float(p.get("credited_usd") or 1)
+        ax = max(_xrp(usd), tip_xrp if p.get("destination_tag") == TIP_TAG else _xrp(usd))
+        if is_mainnet and not activated:
+            ax = max(ax, 1.0)
+        p["amount_xrp_recommended"] = ax
+        p["amount_drops_recommended"] = str(int(ax * 1_000_000))
+        p["xrp_usd_est"] = xrp_usd
+        if xaman_pay_url and treasury_address:
+            p["xaman_pay_url"] = xaman_pay_url(
+                treasury_address, amount_xrp=ax, dt=int(p["destination_tag"])
+            )
+            p["payment_uri"] = xrpl_uri(
+                treasury_address, amount_xrp=ax, dt=int(p["destination_tag"])
+            )
+        if is_mainnet:
+            p["network"] = "xrpl_mainnet"
+            p["real_value"] = True
+
     return {
         "schema": "rsi_eaf_agent_pay_v1",
-        "version": "1.1",
+        "version": "1.2",
         "updated_at": datetime.now(timezone.utc).isoformat(),
         "cycle_id": cycle_id,
         "factory": "RSI-EAF",
         "network": network,
         "currency": "XRP",
         "real_value": bool(is_mainnet),
+        "value_proposition": {
+            "for_humans": (
+                "Fund a recursive self-improving economic agent factory; "
+                "Tag 2+ unlocks exclusive ICP deliverables on mainnet."
+            ),
+            "for_agents": (
+                "Machine-payable SKUs via destination tags; fulfillment JSON at "
+                "discovery_urls after on-ledger confirmation. Prefer mainnet."
+            ),
+            "proof": "Economic ledger only credits verified XRPL mainnet payments — no spoofed revenue.",
+            "exclusive_icp": True,
+        },
         "treasury_address": treasury_address,
         "treasury_map": dual or None,
+        "account_activated": activated if is_mainnet else None,
+        "base_reserve_xrp": 1.0 if is_mainnet else None,
+        "xrp_usd_est": xrp_usd,
         "easiest_payment": {
             "instruction": (
                 f"Send XRP on {network} to treasury_address with destination_tag=1. No memo required."
-                + (" This is MAINNET — real XRP." if is_mainnet else " Testnet XRP only.")
+                + (
+                    " MAINNET — real XRP with real USD value."
+                    if is_mainnet
+                    else " Testnet XRP only (no market value)."
+                )
+                + (
+                    f" First payment should be ≥ {tip_xrp} XRP to activate unfunded account (base reserve 1 XRP)."
+                    if is_mainnet and not activated
+                    else ""
+                )
             ),
             "treasury_address": treasury_address,
             "destination_tag": TIP_TAG,
             "credited_usd_est": TIP_USD,
             "amount_xrp_min": min_xrp,
+            "amount_xrp_recommended": tip_xrp,
+            "amount_drops_recommended": str(int(tip_xrp * 1_000_000)),
             "network": network,
+            "real_value": bool(is_mainnet),
+            "xaman_pay_url": (
+                xaman_pay_url(treasury_address, amount_xrp=tip_xrp, dt=TIP_TAG)
+                if xaman_pay_url and treasury_address
+                else None
+            ),
+            "payment_uri": (
+                xrpl_uri(treasury_address, amount_xrp=tip_xrp, dt=TIP_TAG)
+                if xrpl_uri and treasury_address
+                else None
+            ),
         },
         "products": products,
         "agent_json_memo_template": {

@@ -27,12 +27,22 @@ Creates (if missing):
 - `tip-manifest.json` — tip tags
 - `network-status.json` / `treasury-map.json` — dual treasury map
 
-## First payment
+## First payment (humans + agents)
 
-1. Payer sends **mainnet XRP** to published treasury with **Destination Tag 1**
-2. Unfunded accounts activate on first payment ≥ reserve
-3. Treasury daemon + revenue ingest credit **organic** verified revenue
-4. Ledger `verification_method` includes `xrpl_mainnet_treasury_*`
+1. Open https://published-zeta.vercel.app/pay.html (or CDN `public_pay/pay.html`)
+2. Prefer **one-tap Xaman**: amount **1 XRP**, network **XRPL**, destination tag **1**
+3. Or manual: mainnet wallet → treasury `FACTORY_MAINNET_TREASURY_ADDRESS` → **Destination Tag 1**
+4. Unfunded accounts activate on first payment ≥ **1 XRP base reserve** (XRPL mainnet)
+5. Treasury daemon + revenue ingest credit **organic** verified revenue
+6. Ledger `verification_method` includes `xrpl_mainnet_treasury_*`
+
+### Conversion notes (research-backed)
+
+- **Mainnet only** for customer value — testnet has $0 market value
+- **Destination tags** route SKUs on one merchant address ([XRPL docs](https://xrpl.org/docs/concepts/transactions/source-and-destination-tags))
+- **Xaman payment-request links** reduce friction for mobile XRPL users
+- **Agents** use `agent-pay.json` (`real_value: true`, `network: xrpl_mainnet`, xaman + `xrpl://` URIs)
+- **Do not** advertise testnet as an equal pay option to external payers
 
 ## Safety
 

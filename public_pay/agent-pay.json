@@ -1,12 +1,18 @@
 {
   "schema": "rsi_eaf_agent_pay_v1",
   "version": "1.4",
-  "updated_at": "2026-07-29T23:22:48.039403+00:00",
-  "cycle_id": 979,
+  "updated_at": "2026-07-30T00:17:48.053395+00:00",
+  "cycle_id": 982,
   "factory": "RSI-EAF",
   "network": "xrpl_mainnet",
   "currency": "XRP",
   "real_value": true,
+  "value_proposition": {
+    "for_humans": "Fund a recursive self-improving economic agent factory; Tag 2+ unlocks exclusive ICP deliverables on mainnet.",
+    "for_agents": "Machine-payable SKUs via destination tags; fulfillment JSON at discovery_urls after on-ledger confirmation. Prefer mainnet.",
+    "proof": "Economic ledger only credits verified XRPL mainnet payments \u2014 no spoofed revenue.",
+    "exclusive_icp": true
+  },
   "treasury_address": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
   "treasury_map": {
     "mainnet": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
@@ -14,13 +20,21 @@
     "primary_network": "mainnet",
     "primary_explorer": "https://xrpl.org/accounts/rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5"
   },
+  "account_activated": true,
+  "base_reserve_xrp": 1.0,
+  "xrp_usd_est": 1.074,
   "easiest_payment": {
-    "instruction": "Send XRP on xrpl_mainnet to treasury_address with destination_tag=1. No memo required. This is MAINNET \u2014 real XRP.",
+    "instruction": "Send XRP on xrpl_mainnet to treasury_address with destination_tag=1. No memo required. MAINNET \u2014 real XRP with real USD value.",
     "treasury_address": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
     "destination_tag": 1,
     "credited_usd_est": 1.0,
     "amount_xrp_min": 0.01,
-    "network": "xrpl_mainnet"
+    "amount_xrp_recommended": 0.949721,
+    "amount_drops_recommended": "949721",
+    "network": "xrpl_mainnet",
+    "real_value": true,
+    "xaman_pay_url": "https://xaman.app/detect/request:rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5?amount=0.949721&network=XRPL&dt=1",
+    "payment_uri": "xrpl://rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5?amount=0.949721&network=XRPL&dt=1"
   },
   "products": [
     {
@@ -30,6 +44,13 @@
       "plain_memo": "tip",
       "description": "General support / micro-tip (easiest)",
       "service_type": "donation",
+      "amount_xrp_recommended": 0.949721,
+      "amount_drops_recommended": "949721",
+      "xrp_usd_est": 1.074,
+      "xaman_pay_url": "https://xaman.app/detect/request:rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5?amount=0.949721&network=XRPL&dt=1",
+      "payment_uri": "xrpl://rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5?amount=0.949721&network=XRPL&dt=1",
+      "network": "xrpl_mainnet",
+      "real_value": true,
       "x402": {
         "enabled": false,
         "reason": "tag-only tip lane"
@@ -40,11 +61,18 @@
       "destination_tag": 2,
       "credited_usd": 2.0,
       "plain_memo": "briefing",
-      "product_id": "briefing-cycle-979",
-      "live_url": "https://published-zeta.vercel.app/briefing-cycle-979-20260729T175240Z.html",
+      "product_id": "briefing-cycle-982",
+      "live_url": "https://published-zeta.vercel.app/briefing-cycle-982-20260730T000022Z.html",
       "description": "XRPL factory intelligence briefing (HTML preview + JSON deliverable after pay)",
-      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/briefing-cycle-979.json",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/briefing-cycle-982.json",
       "service_type": "paid_report",
+      "amount_xrp_recommended": 1.899441,
+      "amount_drops_recommended": "1899441",
+      "xrp_usd_est": 1.074,
+      "xaman_pay_url": "https://xaman.app/detect/request:rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5?amount=1.899441&network=XRPL&dt=2",
+      "payment_uri": "xrpl://rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5?amount=1.899441&network=XRPL&dt=2",
+      "network": "xrpl_mainnet",
+      "real_value": true,
       "x402": {
         "enabled": true,
         "middleware_active": true,
@@ -54,12 +82,12 @@
         "asset": "XRP",
         "pay_to": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
         "amount_drops": "666666",
-        "invoice_id": "briefing-cycle-979",
+        "invoice_id": "briefing-cycle-982",
         "destination_tag": 2,
         "source_tag": 20260703,
         "max_timeout_seconds": 600,
-        "protected_resource": "https://published-zeta.vercel.app/deliverables/briefing-cycle-979.json",
-        "preview_resource": "https://published-zeta.vercel.app/briefing-cycle-979-20260729T175240Z.html",
+        "protected_resource": "https://published-zeta.vercel.app/deliverables/briefing-cycle-982.json",
+        "preview_resource": "https://published-zeta.vercel.app/briefing-cycle-982-20260730T000022Z.html",
         "payment_requirements_template": {
           "scheme": "exact",
           "network": "xrpl:1",
@@ -68,7 +96,7 @@
           "amount": "666666",
           "maxTimeoutSeconds": 600,
           "extra": {
-            "invoiceId": "briefing-cycle-979",
+            "invoiceId": "briefing-cycle-982",
             "sourceTag": 20260703,
             "destinationTag": 2
           }
@@ -81,11 +109,18 @@
       "destination_tag": 3,
       "credited_usd": 3.0,
       "plain_memo": "tool",
-      "product_id": "micro-tool-cycle-979",
-      "live_url": "https://published-zeta.vercel.app/micro-tool-cycle-979-20260729T175308Z.html",
+      "product_id": "micro-tool-cycle-982",
+      "live_url": "https://published-zeta.vercel.app/micro-tool-cycle-982-20260730T000041Z.html",
       "description": "Treasury payment validator spec for wallet/agent integrators",
-      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-979.json",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-982.json",
       "service_type": "paid_tool",
+      "amount_xrp_recommended": 2.849162,
+      "amount_drops_recommended": "2849162",
+      "xrp_usd_est": 1.074,
+      "xaman_pay_url": "https://xaman.app/detect/request:rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5?amount=2.849162&network=XRPL&dt=3",
+      "payment_uri": "xrpl://rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5?amount=2.849162&network=XRPL&dt=3",
+      "network": "xrpl_mainnet",
+      "real_value": true,
       "x402": {
         "enabled": true,
         "middleware_active": true,
@@ -95,12 +130,12 @@
         "asset": "XRP",
         "pay_to": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
         "amount_drops": "999999",
-        "invoice_id": "micro-tool-cycle-979",
+        "invoice_id": "micro-tool-cycle-982",
         "destination_tag": 3,
         "source_tag": 20260703,
         "max_timeout_seconds": 600,
-        "protected_resource": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-979.json",
-        "preview_resource": "https://published-zeta.vercel.app/micro-tool-cycle-979-20260729T175308Z.html",
+        "protected_resource": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-982.json",
+        "preview_resource": "https://published-zeta.vercel.app/micro-tool-cycle-982-20260730T000041Z.html",
         "payment_requirements_template": {
           "scheme": "exact",
           "network": "xrpl:1",
@@ -109,7 +144,7 @@
           "amount": "999999",
           "maxTimeoutSeconds": 600,
           "extra": {
-            "invoiceId": "micro-tool-cycle-979",
+            "invoiceId": "micro-tool-cycle-982",
             "sourceTag": 20260703,
             "destinationTag": 3
           }
@@ -122,22 +157,36 @@
       "destination_tag": 4,
       "credited_usd": 2.5,
       "plain_memo": "service",
-      "product_id": "service-bundle-cycle-979",
+      "product_id": "service-bundle-cycle-982",
       "live_url": "https://published-zeta.vercel.app/service-catalog.json",
       "description": "Cycle intel bundle: ledger net, trace phases, orchestrator metadata",
-      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/service-bundle-cycle-979.json",
-      "service_type": "agent_api"
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/service-bundle-cycle-982.json",
+      "service_type": "agent_api",
+      "amount_xrp_recommended": 2.374302,
+      "amount_drops_recommended": "2374302",
+      "xrp_usd_est": 1.074,
+      "xaman_pay_url": "https://xaman.app/detect/request:rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5?amount=2.374302&network=XRPL&dt=4",
+      "payment_uri": "xrpl://rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5?amount=2.374302&network=XRPL&dt=4",
+      "network": "xrpl_mainnet",
+      "real_value": true
     },
     {
       "id": "mythos_artifact",
       "destination_tag": 5,
       "credited_usd": 1.5,
       "plain_memo": "mythos",
-      "product_id": "mythos-cycle-979",
-      "live_url": "https://published-zeta.vercel.app/mythos-cycle-979-20260729T175402Z.html",
+      "product_id": "mythos-cycle-982",
+      "live_url": "https://published-zeta.vercel.app/mythos-cycle-982-20260730T000105Z.html",
       "description": "Narrative commerce artifact for aetherforge lane",
-      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/mythos-cycle-979.json",
-      "service_type": "creative_commerce"
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/mythos-cycle-982.json",
+      "service_type": "creative_commerce",
+      "amount_xrp_recommended": 1.424581,
+      "amount_drops_recommended": "1424581",
+      "xrp_usd_est": 1.074,
+      "xaman_pay_url": "https://xaman.app/detect/request:rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5?amount=1.424581&network=XRPL&dt=5",
+      "payment_uri": "xrpl://rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5?amount=1.424581&network=XRPL&dt=5",
+      "network": "xrpl_mainnet",
+      "real_value": true
     }
   ],
   "agent_json_memo_template": {
