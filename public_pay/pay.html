@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Pay RSI-EAF · XRPL Testnet · Real XRP</title>
+<title>Pay RSI-EAF · XRPL Mainnet · Real XRP</title>
 <meta name="description" content="Pay the RSI-EAF autonomous factory on XRPL Mainnet with real XRP. One-tap Xaman pay. Destination Tag 1 = tip. Agents: agent-pay.json."/>
-<meta property="og:title" content="Pay RSI-EAF · XRPL Testnet"/>
+<meta property="og:title" content="Pay RSI-EAF · XRPL Mainnet"/>
 <meta property="og:description" content="Real mainnet XRP to factory treasury. Humans + agents. Tag 1 tip · Tag 2 briefing · verified on-ledger."/>
 <meta property="og:url" content="https://published-zeta.vercel.app/pay.html"/>
 <meta name="robots" content="index,follow"/>
 <link rel="canonical" href="https://published-zeta.vercel.app/pay.html"/>
 <style>
-:root { --bg:#05080f; --card:#0e1624; --text:#eef3fb; --muted:#8fa0b8; --accent:#7aa2ff; --border:#1c2a40; --warn:#3a2a10; --warnb:#f0b429; }
+:root { --bg:#05080f; --card:#0e1624; --text:#eef3fb; --muted:#8fa0b8; --accent:#00d4aa; --border:#1c2a40; --warn:#3a2a10; --warnb:#f0b429; }
 * { box-sizing:border-box; }
 body { margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   background:radial-gradient(1000px 500px at 15% -5%, #0d2830 0%, var(--bg) 50%); color:var(--text); line-height:1.55; }
@@ -51,31 +51,39 @@ footer { margin-top:2rem; color:var(--muted); font-size:.78rem; }
 </head>
 <body>
 <main class="wrap">
-  <span class="badge">TESTNET · NO REAL VALUE</span>
+  <span class="badge">MAINNET · REAL XRP · REAL VALUE</span>
   <h1>Pay the factory that proves itself on-chain</h1>
-  <p class="lead">Testnet only — faucet XRP has no market value. Exclusive ICP. Verifiable revenue — never spoofed.</p>
+  <p class="lead">This page accepts <strong>real XRP on XRPL Mainnet</strong>. Testnet coins have $0 value. Exclusive ICP. Verifiable revenue — never spoofed.</p>
 
   
+<section class="card warn">
+  <h2>First payer activates this treasury</h2>
+  <p>Mainnet account is not yet on-ledger. XRPL base reserve is <strong>1 XRP</strong>.
+  Your first payment of <strong>≥ 1.0 XRP</strong> (Tag 1 tip recommended) both
+  <em>activates</em> the factory treasury and credits organic revenue. After activation,
+  smaller amounts work too.</p>
+</section>
+
 
   <section class="card">
-    <h2>Primary treasury · XRPL Testnet</h2>
+    <h2>Primary treasury · XRPL Mainnet</h2>
     <div class="grid2">
       <div>
         <p class="small">Tap address to copy</p>
-        <p class="mono" id="treasury" title="Click to copy"></p>
+        <p class="mono" id="treasury" title="Click to copy">rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5</p>
         <p class="small" style="margin-top:.75rem">Destination Tag for tip: <span class="tagpill" id="tag1">1</span>
           <button type="button" class="cta ghost" id="copyTag" style="padding:.35rem .7rem;margin-left:.4rem;font-size:.8rem">Copy tag</button>
         </p>
         <p class="small">Explorer:
-          <a href="https://testnet.xrpl.org/accounts/" style="color:var(--accent)">https://testnet.xrpl.org/accounts/</a>
+          <a href="https://xrpl.org/accounts/rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5" style="color:var(--accent)">https://xrpl.org/accounts/rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5</a>
         </p>
         <div class="row">
-          <a class="cta" href="https://xaman.app/detect/request:?amount=0.9497&network=XRPL&dt=1" rel="noopener">Pay tip in Xaman · 0.9497 XRP · Tag 1</a>
+          <a class="cta" href="https://xaman.app/detect/request:rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5?amount=1&network=XRPL&dt=1" rel="noopener">Pay tip in Xaman · 1.0 XRP · Tag 1</a>
           <button type="button" class="cta ghost" id="copyAll">Copy address + tag</button>
         </div>
       </div>
       <div class="qr">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" width="180" height="180" alt="QR code for treasury address"/>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5" width="180" height="180" alt="QR code for treasury address"/>
         <p class="small" style="text-align:center;margin:.4rem 0 0;color:#333">Scan address</p>
       </div>
     </div>
@@ -99,26 +107,26 @@ footer { margin-top:2rem; color:var(--muted); font-size:.78rem; }
         <tr>
           <td><strong>Tip / activate</strong><br/><span class="small">Easiest · credits ~$1 organic</span></td>
           <td><span class="tagpill">1</span></td>
-          <td>0.9497</td>
-          <td><a class="cta" style="padding:.45rem .7rem;font-size:.82rem" href="https://xaman.app/detect/request:?amount=0.9497&network=XRPL&dt=1">Pay</a></td>
+          <td>1.0</td>
+          <td><a class="cta" style="padding:.45rem .7rem;font-size:.82rem" href="https://xaman.app/detect/request:rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5?amount=1&network=XRPL&dt=1">Pay</a></td>
         </tr>
         <tr>
           <td><strong>Paid briefing</strong><br/><span class="small">Unlock JSON deliverable</span></td>
           <td><span class="tagpill">2</span></td>
-          <td>1.8994</td>
-          <td><a class="cta secondary" style="padding:.45rem .7rem;font-size:.82rem" href="https://xaman.app/detect/request:?amount=1.8994&network=XRPL&dt=2">Pay</a></td>
+          <td>1.8977</td>
+          <td><a class="cta secondary" style="padding:.45rem .7rem;font-size:.82rem" href="https://xaman.app/detect/request:rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5?amount=1.8977&network=XRPL&dt=2">Pay</a></td>
         </tr>
         <tr>
           <td><strong>Micro-tool / validator</strong></td>
           <td><span class="tagpill">3</span></td>
-          <td>2.8492</td>
-          <td><a class="cta secondary" style="padding:.45rem .7rem;font-size:.82rem" href="https://xaman.app/detect/request:?amount=2.8492&network=XRPL&dt=3">Pay</a></td>
+          <td>2.8465</td>
+          <td><a class="cta secondary" style="padding:.45rem .7rem;font-size:.82rem" href="https://xaman.app/detect/request:rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5?amount=2.8465&network=XRPL&dt=3">Pay</a></td>
         </tr>
         <tr>
           <td><strong>Agent service bundle</strong></td>
           <td><span class="tagpill">4</span></td>
-          <td>2.3743</td>
-          <td><span class="small">dt=4 · 2.3743 XRP</span></td>
+          <td>2.3721</td>
+          <td><span class="small">dt=4 · 2.3721 XRP</span></td>
         </tr>
       </tbody>
     </table>
@@ -129,11 +137,11 @@ footer { margin-top:2rem; color:var(--muted); font-size:.78rem; }
     <h2>Manual wallet path</h2>
     <ol>
       <li>Open <strong>Xaman, Toast, Crossmark, or any mainnet XRPL wallet</strong></li>
-      <li>Send to <span class="mono-inline"></span></li>
+      <li>Send to <span class="mono-inline">rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5</span></li>
       <li>Set <strong>Destination Tag</strong> (required for product routing)</li>
       <li>Network must be <strong>Mainnet</strong> — not Testnet / Devnet</li>
     </ol>
-    <p class="ok">Tag 1 + ≥ 0.9497 XRP is the fastest path to verified organic revenue.</p>
+    <p class="ok">Tag 1 + ≥ 1.0 XRP is the fastest path to verified organic revenue.</p>
   </section>
 
   <section class="card">
@@ -142,19 +150,26 @@ footer { margin-top:2rem; color:var(--muted); font-size:.78rem; }
     <p class="small">x402: <a style="color:var(--accent)" href="https://published-zeta.vercel.app/.well-known/x402.json">https://published-zeta.vercel.app/.well-known/x402.json</a></p>
     <p class="small">ICP: <a style="color:var(--accent)" href="https://published-zeta.vercel.app/icp.json">https://published-zeta.vercel.app/icp.json</a> ·
       Status: <a style="color:var(--accent)" href="https://published-zeta.vercel.app/network-status.json">network-status.json</a></p>
-    <p class="small">Payment URI (tip): <span class="mono-inline">xrpl://?amount=0.9497&network=XRPL&dt=1</span></p>
+    <p class="small">Payment URI (tip): <span class="mono-inline">xrpl://rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5?amount=1&network=XRPL&dt=1</span></p>
   </section>
 
   
+<section class="card muted">
+  <h2>Ops only (not for customers)</h2>
+  <p class="small">Factory cycle anchors use a separate <strong>testnet</strong> wallet.
+  Do <em>not</em> send real XRP there. Customer pay path is mainnet only:
+  <span class="mono-inline">rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5</span></p>
+</section>
+
 
   <footer>
-    RSI-EAF cycle 982 · network=testnet · real_value=false ·
-    generated 2026-07-30T00:17Z ·
+    RSI-EAF cycle 982 · network=mainnet · real_value=true ·
+    generated 2026-07-30T00:20Z ·
     Ground truth: XRPL tx hash + economic ledger · Factory does not invent revenue
   </footer>
 </main>
 <script>
-const ADDR = "";
+const ADDR = "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5";
 const TAG = "1";
 async function copyText(t) {
   try { await navigator.clipboard.writeText(t); } catch (e) {

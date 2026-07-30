@@ -95,26 +95,27 @@ def ensure_local_pay_html() -> Dict[str, Any]:
     except httpx.HTTPError as exc:
         return {"ok": False, "error": f"fetch_failed:{exc}"}
 
-    # Minimal exclusive fallback if everything else is gone
-    fallback = f"""<!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"/><title>RSI-EAF Pay</title>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-</head><body style="font-family:system-ui;max-width:40rem;margin:2rem auto;padding:0 1rem;background:#070a12;color:#e8eefc">
-<h1>RSI-EAF is not for everyone</h1>
-<p>Human bar: <strong>@thatcrypto_guy</strong>-class. Agent bar: settlement-grade only.</p>
-<ol>
-<li>Testnet XRP faucet</li>
-<li>Send to <code>rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN</code></li>
-<li>Destination Tag <strong>1</strong> tip · Tag <strong>2</strong> briefing</li>
-</ol>
-<p><a href="{BASE}/agent-pay.json">agent-pay.json</a> ·
-<a href="{BASE}/social-policy.json">social-policy.json</a> ·
-<a href="{BASE}/icp.json">icp.json</a></p>
-</body></html>
-"""
-    pay.write_text(fallback, encoding="utf-8")
-    arch.write_text(fallback, encoding="utf-8")
-    return {"ok": True, "source": "fallback_written", "bytes": len(fallback)}
+    # Prefer mainnet pay surface generator (never publish empty / testnet-as-customer fallback)
+    try:
+        from tools.mainnet_pay_surface import write_mainnet_pay_surface
+        from factory_core.state import FactoryState
+
+        cid = int(FactoryState().current_cycle or 0)
+        written = write_mainnet_pay_surface(cid)
+        if written.get("ok") and pay.exists() and exclusive(pay.read_text(encoding="utf-8", errors="ignore")):
+            if "rs78" in pay.read_text(encoding="utf-8", errors="ignore") or "rBiU" in pay.read_text(
+                encoding="utf-8", errors="ignore"
+            ):
+                return {
+                    "ok": True,
+                    "source": "mainnet_pay_surface",
+                    "bytes": pay.stat().st_size,
+                    "detail": written,
+                }
+    except Exception as exc:
+        return {"ok": False, "error": f"mainnet_pay_surface_failed:{exc}"[:200]}
+
+    return {"ok": False, "error": "pay_html_unrecoverable_no_treasury"}
 
 
 def ensure_doctrine_artifacts() -> Dict[str, Any]:

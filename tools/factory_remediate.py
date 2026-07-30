@@ -63,30 +63,39 @@ def _cycle_id() -> int:
 
 def regenerate_all_local_surfaces(cycle_id: Optional[int] = None) -> Dict[str, Any]:
     """Rewrite every conversion / doctrine / discovery artifact on disk."""
+    try:
+        from dotenv import load_dotenv
+
+        load_dotenv()
+    except Exception:
+        pass
+
     cid = cycle_id if cycle_id is not None else _cycle_id()
     PUB.mkdir(parents=True, exist_ok=True)
     (PUB / ".well-known").mkdir(parents=True, exist_ok=True)
     (PUB / "archive").mkdir(parents=True, exist_ok=True)
     done: Dict[str, Any] = {"cycle_id": cid, "files": []}
 
-    # Mainnet pay pack
+    # Doctrine first (does not own pay.html content)
     try:
-        from tools.mainnet_pay_surface import write_mainnet_pay_surface
+        from tools.conversion_surfaces import ensure_doctrine_artifacts
 
-        done["mainnet_pay"] = write_mainnet_pay_surface(cid)
-        done["files"].append("pay.html")
-    except Exception as exc:
-        done["mainnet_pay_error"] = str(exc)[:200]
-
-    # Doctrine
-    try:
-        from tools.conversion_surfaces import ensure_doctrine_artifacts, ensure_local_pay_html
-
-        done["pay_restore"] = ensure_local_pay_html()
         done["doctrine"] = ensure_doctrine_artifacts()
         done["files"] += ["icp.json", "social-policy.json", "social-learning.json"]
     except Exception as exc:
         done["doctrine_error"] = str(exc)[:200]
+
+    # Mainnet pay pack LAST so ensure_local_pay / archive never clobbers real treasury
+    try:
+        from tools.mainnet_pay_surface import write_mainnet_pay_surface
+
+        done["mainnet_pay"] = write_mainnet_pay_surface(cid)
+        if done["mainnet_pay"].get("ok"):
+            done["files"].append("pay.html")
+        else:
+            done["mainnet_pay_error"] = done["mainnet_pay"].get("error")
+    except Exception as exc:
+        done["mainnet_pay_error"] = str(exc)[:200]
 
     # Agent pay + tip manifest
     try:

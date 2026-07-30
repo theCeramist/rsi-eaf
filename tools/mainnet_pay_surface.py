@@ -310,6 +310,14 @@ document.getElementById("copyAll")?.addEventListener("click", () => copyText(ADD
 
 
 def write_mainnet_pay_surface(cycle_id: int = 0) -> Dict[str, Any]:
+    # Critical: load .env so mainnet treasury is never blank in headless/remediate paths
+    try:
+        from dotenv import load_dotenv
+
+        load_dotenv()
+    except Exception:
+        pass
+
     from factory_core.xrpl_network import (
         explorer_account_url,
         mainnet_treasury_address,
@@ -319,6 +327,12 @@ def write_mainnet_pay_surface(cycle_id: int = 0) -> Dict[str, Any]:
     )
 
     pub_addr, pub_net = resolve_public_treasury()
+    if not pub_addr:
+        # Hard fail closed: never publish empty treasury HTML
+        pub_addr = mainnet_treasury_address() or testnet_treasury_address()
+        pub_net = "mainnet" if mainnet_treasury_address() else "testnet"
+    if not pub_addr:
+        return {"ok": False, "error": "no_treasury_configured_load_dotenv"}
     explorer = explorer_account_url(pub_addr, pub_net)
     activated: Optional[bool] = None
     try:

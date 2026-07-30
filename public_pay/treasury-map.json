@@ -1,18 +1,18 @@
 {
   "schema": "rsi_eaf_treasury_map_v1",
-  "updated_at": "2026-07-30T00:17:38.612584+00:00",
+  "updated_at": "2026-07-30T00:20:46.851493+00:00",
   "primary": {
-    "network": "testnet",
-    "address": "",
+    "network": "mainnet",
+    "address": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
     "role": "public_revenue"
   },
   "ops": {
     "network": "testnet",
-    "address": "",
+    "address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
     "role": "cycle_anchors_only"
   },
   "mainnet": {
-    "address": "",
+    "address": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
     "role": "real_xrp_inbound"
   }
 }
