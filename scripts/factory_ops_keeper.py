@@ -35,7 +35,7 @@ import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 ROOT = Path(__file__).resolve().parents[1]
 RUNTIME = ROOT / "runtime"
@@ -157,11 +157,17 @@ def _list_python_cmdlines() -> List[Tuple[int, str]]:
 
 def _find_pids(markers: Tuple[str, ...], procs: Optional[List[Tuple[int, str]]] = None) -> List[int]:
     procs = procs if procs is not None else _list_python_cmdlines()
+    looking_for_keeper = any(
+        any(km.lower() in m.lower() for km in KEEPER_MARKERS) for m in markers
+    )
     out: List[int] = []
     for pid, cmd in procs:
         low = (cmd or "").lower()
-        # Don't count this keeper process as supervisor/monitor
-        if any(m.lower() in low for m in KEEPER_MARKERS):
+        # Don't count the ops keeper as supervisor/monitor/hybrid
+        if not looking_for_keeper and any(m.lower() in low for m in KEEPER_MARKERS):
+            continue
+        # Don't count launch_ops_keeper wrapper as the loop keeper
+        if looking_for_keeper and "launch_ops_keeper" in low:
             continue
         if any(m.lower() in low for m in markers):
             out.append(pid)
@@ -169,10 +175,36 @@ def _find_pids(markers: Tuple[str, ...], procs: Optional[List[Tuple[int, str]]] 
 
 
 def _win_flags() -> int:
+    # Prefer breakaway-capable flags without DETACHED_PROCESS when it causes
+    # instant child death under some Job Objects. CREATE_NO_WINDOW keeps UI clean.
     CREATE_NEW_PROCESS_GROUP = 0x00000200
-    DETACHED_PROCESS = 0x00000008
     CREATE_NO_WINDOW = 0x08000000
-    return CREATE_NEW_PROCESS_GROUP | DETACHED_PROCESS | CREATE_NO_WINDOW
+    CREATE_BREAKAWAY_FROM_JOB = 0x01000000
+    DETACHED_PROCESS = 0x00000008
+    # Try breakaway first; caller may fall back
+    return CREATE_NEW_PROCESS_GROUP | CREATE_NO_WINDOW | CREATE_BREAKAWAY_FROM_JOB
+
+
+def _pid_alive(pid: int) -> bool:
+    if not pid or int(pid) <= 0:
+        return False
+    if sys.platform == "win32":
+        try:
+            import ctypes
+
+            k = ctypes.windll.kernel32
+            h = k.OpenProcess(0x1000, False, int(pid))  # PROCESS_QUERY_LIMITED_INFORMATION
+            if h:
+                k.CloseHandle(h)
+                return True
+            return False
+        except Exception:
+            return False
+    try:
+        os.kill(int(pid), 0)
+        return True
+    except Exception:
+        return False
 
 
 def _child_env() -> Dict[str, str]:
@@ -200,26 +232,64 @@ def _child_env() -> Dict[str, str]:
 
 
 def _spawn(name: str, args: List[str], log_path: Path) -> int:
+    """
+    Spawn durable child. Verify still alive after a short settle.
+    Returns pid or 0 if process died immediately.
+    """
     RUNTIME.mkdir(parents=True, exist_ok=True)
     log_path.parent.mkdir(parents=True, exist_ok=True)
-    with log_path.open("a", encoding="utf-8") as fh:
-        fh.write(f"\n--- {_now()} ops_keeper spawn {name} ---\n")
-        fh.flush()
-        kwargs = {
-            "cwd": str(ROOT),
-            "env": _child_env(),
-            "stdout": fh,
-            "stderr": subprocess.STDOUT,
-            "stdin": subprocess.DEVNULL,
-        }
-        if sys.platform == "win32":
-            kwargs["creationflags"] = _win_flags()
-            kwargs["close_fds"] = True
-        else:
-            kwargs["start_new_session"] = True
-            kwargs["close_fds"] = True
-        p = subprocess.Popen([sys.executable, "-u", *args], **kwargs)
-    return int(p.pid)
+    env = _child_env()
+    cmd = [sys.executable, "-u", *args]
+
+    def _popen(flags: Optional[int]) -> int:
+        with log_path.open("a", encoding="utf-8") as fh:
+            fh.write(f"\n--- {_now()} ops_keeper spawn {name} flags={flags} ---\n")
+            fh.flush()
+            kwargs: Dict[str, Any] = {
+                "cwd": str(ROOT),
+                "env": env,
+                "stdout": fh,
+                "stderr": subprocess.STDOUT,
+                "stdin": subprocess.DEVNULL,
+            }
+            if sys.platform == "win32":
+                if flags is not None:
+                    kwargs["creationflags"] = flags
+                kwargs["close_fds"] = True
+            else:
+                kwargs["start_new_session"] = True
+                kwargs["close_fds"] = True
+            p = subprocess.Popen(cmd, **kwargs)
+            return int(p.pid)
+
+    if sys.platform != "win32":
+        pid = _popen(None)
+        time.sleep(1.5)
+        return pid if _pid_alive(pid) else 0
+
+    CREATE_NEW_PROCESS_GROUP = 0x00000200
+    CREATE_NO_WINDOW = 0x08000000
+    CREATE_BREAKAWAY_FROM_JOB = 0x01000000
+    DETACHED_PROCESS = 0x00000008
+    flag_sets = [
+        CREATE_NEW_PROCESS_GROUP | CREATE_NO_WINDOW | CREATE_BREAKAWAY_FROM_JOB,
+        CREATE_NEW_PROCESS_GROUP | CREATE_NO_WINDOW | CREATE_BREAKAWAY_FROM_JOB | DETACHED_PROCESS,
+        CREATE_NEW_PROCESS_GROUP | CREATE_NO_WINDOW,
+        CREATE_NEW_PROCESS_GROUP | CREATE_NO_WINDOW | DETACHED_PROCESS,
+        0,
+    ]
+    for flags in flag_sets:
+        try:
+            pid = _popen(flags)
+        except OSError as exc:
+            _log(f"spawn {name} flags=0x{flags:x} failed: {exc}")
+            continue
+        time.sleep(2.0)
+        if _pid_alive(pid):
+            _log(f"spawn {name} ok pid={pid} flags=0x{flags:x}")
+            return pid
+        _log(f"spawn {name} died immediately pid={pid} flags=0x{flags:x}")
+    return 0
 
 
 def _cooldown_ok(state: dict, role: str, cooldown_sec: float) -> bool:
@@ -281,23 +351,28 @@ def ensure_once(
         elif len(sup) == 1:
             actions.append({"role": "supervisor", "action": "ok", "pid": sup[0]})
         else:
-            if not _cooldown_ok(state, "supervisor", cooldown_sec):
+            last_pid = int((state.get("pids") or {}).get("supervisor") or 0)
+            # Waive cooldown if last launch PID is dead (failed spawn must not block recovery)
+            waive = bool(last_pid and not _pid_alive(last_pid))
+            if not _cooldown_ok(state, "supervisor", cooldown_sec) and not waive:
                 actions.append({"role": "supervisor", "action": "cooldown"})
                 _log("supervisor down but cooldown active")
             else:
-                # Prefer launch_factory_detached with keeper disabled
+                if waive and not _cooldown_ok(state, "supervisor", cooldown_sec):
+                    _log(f"supervisor cooldown waived — last pid {last_pid} dead")
                 pid = _spawn(
                     "supervisor",
-                    [
-                        str(ROOT / "scripts" / "factory_cli_supervisor.py"),
-                    ],
+                    [str(ROOT / "scripts" / "factory_cli_supervisor.py")],
                     RUNTIME / "factory_cli_supervisor_tee.log",
                 )
-                _mark_launch(state, "supervisor", pid)
-                actions.append({"role": "supervisor", "action": "launched", "pid": pid})
-                _log(f"launched supervisor pid={pid}")
-                time.sleep(3)
-                # refresh
+                if pid and _pid_alive(pid):
+                    _mark_launch(state, "supervisor", pid)
+                    actions.append({"role": "supervisor", "action": "launched", "pid": pid})
+                    _log(f"launched supervisor pid={pid}")
+                else:
+                    actions.append({"role": "supervisor", "action": "spawn_failed", "pid": pid})
+                    _log("supervisor spawn failed or died immediately")
+                time.sleep(2)
                 procs = _list_python_cmdlines()
                 sup = _find_pids(SUPERVISOR_MARKERS, procs)
 
@@ -306,10 +381,14 @@ def ensure_once(
         if len(mon) >= 1:
             actions.append({"role": "monitor", "action": "ok", "pids": mon})
         else:
-            if not _cooldown_ok(state, "monitor", cooldown_sec):
+            last_pid = int((state.get("pids") or {}).get("monitor") or 0)
+            waive = bool(last_pid and not _pid_alive(last_pid))
+            if not _cooldown_ok(state, "monitor", cooldown_sec) and not waive:
                 actions.append({"role": "monitor", "action": "cooldown"})
                 _log("monitor down but cooldown active")
             else:
+                if waive and not _cooldown_ok(state, "monitor", cooldown_sec):
+                    _log(f"monitor cooldown waived — last pid {last_pid} dead")
                 pid = _spawn(
                     "monitor",
                     [
@@ -324,9 +403,13 @@ def ensure_once(
                     ],
                     RUNTIME / "factory_ops_monitor_tee.log",
                 )
-                _mark_launch(state, "monitor", pid)
-                actions.append({"role": "monitor", "action": "launched", "pid": pid})
-                _log(f"launched monitor pid={pid}")
+                if pid and _pid_alive(pid):
+                    _mark_launch(state, "monitor", pid)
+                    actions.append({"role": "monitor", "action": "launched", "pid": pid})
+                    _log(f"launched monitor pid={pid}")
+                else:
+                    actions.append({"role": "monitor", "action": "spawn_failed", "pid": pid})
+                    _log("monitor spawn failed or died immediately")
                 time.sleep(1)
                 procs = _list_python_cmdlines()
                 mon = _find_pids(MONITOR_MARKERS, procs)
