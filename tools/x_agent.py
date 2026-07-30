@@ -1123,6 +1123,28 @@ def _run_outbound_scout(
 # ---------- main tick ----------
 
 
+def _reload_x_env_from_dotenv() -> None:
+    """
+    Re-read X_/SOCIAL_ safety knobs from .env each tick so a long-lived daemon
+    does not keep pre-lock aggressive rates after .env is hardened.
+    """
+    env_path = Path(".env")
+    if not env_path.is_file():
+        return
+    prefixes = ("X_AGENT_", "SOCIAL_MAX_", "SOCIAL_MIN_", "X_API_", "X_USER_")
+    try:
+        for line in env_path.read_text(encoding="utf-8", errors="ignore").splitlines():
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            k, v = line.split("=", 1)
+            k, v = k.strip(), v.strip().strip('"').strip("'")
+            if any(k.startswith(p) for p in prefixes):
+                os.environ[k] = v
+    except OSError:
+        pass
+
+
 def run_x_agent_tick(*, force_broadcast: bool = False) -> Dict[str, Any]:
     """
     One full operator cycle:
@@ -1133,7 +1155,10 @@ def run_x_agent_tick(*, force_broadcast: bool = False) -> Dict[str, Any]:
       5) outbound high-intent scout
       6) optional broadcast CTA
       7) analyze critical path + persist
+
+    Discipline: scarce writes, circuit-breaker on lock/rules 403, mainnet CTAs only.
     """
+    _reload_x_env_from_dotenv()
     if not x_posting_ready():
         return {"success": False, "error": "x_oauth_not_ready"}
 
