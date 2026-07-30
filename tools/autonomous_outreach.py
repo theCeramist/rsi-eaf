@@ -79,7 +79,7 @@ def _share_bundle(cycle_id: int) -> Dict[str, str]:
         long = outreach_long(cycle_id)
     except Exception:
         short = (
-            f"RSI-EAF c{cycle_id}: exclusive XRPL factory — crypto-critical humans + "
+            f"RSI-EAF c{cycle_id}: XRPL mainnet factory (real XRP) — crypto-critical humans + "
             f"sophisticated agents only. {pay} · @{handle}"
         )
         long = (

@@ -41,25 +41,48 @@ TX_WATCH_FILE = Path(os.getenv("X_AGENT_TX_WATCH", "observability/x_agent_tx_wat
 PUBLISHED = Path(os.getenv("PUBLISHED_DIR", "published"))
 
 BASE = os.getenv("FACTORY_PUBLIC_BASE_URL", "https://published-zeta.vercel.app").rstrip("/")
+CDN_PAY_DEFAULT = os.getenv(
+    "MAINNET_PAY_CDN",
+    "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@master/public_pay",
+).rstrip("/")
 
 
 def _pay_base() -> str:
-    """Prefer jsDelivr mainnet pay pack when revenue network is mainnet (Vercel free quota lag)."""
+    """Live-safe pay base — never advertise a 404. Prefer link_watcher preferred CTA."""
+    try:
+        from tools.link_watcher import preferred_cta_urls
+
+        ctas = preferred_cta_urls()
+        pay = ctas.get("pay") or ""
+        if pay.endswith("/pay.html"):
+            return pay[: -len("/pay.html")]
+    except Exception:
+        pass
     try:
         from factory_core.xrpl_network import revenue_network
 
-        if revenue_network() == "mainnet":
-            return os.getenv(
-                "MAINNET_PAY_CDN",
-                "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/public_pay",
-            ).rstrip("/")
+        if revenue_network() == "mainnet" or os.getenv("FACTORY_FORCE_CDN_CTA", "").lower() in {
+            "1",
+            "true",
+            "yes",
+        }:
+            return CDN_PAY_DEFAULT
     except Exception:
         pass
-    return BASE
+    return CDN_PAY_DEFAULT  # default CDN — Vercel pay.html has been 404 under free quota
 
 
-PAY = f"{_pay_base()}/pay.html"
-AGENT_PAY = f"{_pay_base()}/agent-pay.json"
+def pay_url() -> str:
+    return f"{_pay_base()}/pay.html"
+
+
+def agent_pay_url() -> str:
+    return f"{_pay_base()}/agent-pay.json"
+
+
+# Back-compat module attrs (recomputed each access via properties not possible — use helpers in new code)
+PAY = f"{CDN_PAY_DEFAULT}/pay.html"
+AGENT_PAY = f"{CDN_PAY_DEFAULT}/agent-pay.json"
 FREE_SAMPLE = f"{BASE}/free-sample.html"
 HUB = "https://xrpl-ai.org/address/rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN"
 BOUNTY = "https://github.com/theCeramist/rsi-eaf/issues/178"
@@ -174,6 +197,143 @@ def extract_payment_signals(text: str) -> Dict[str, Any]:
     hashes = TX_HASH_RE.findall(text or "")
     tags = [int(t) for t in TAG_RE.findall(text or "")]
     return {"tx_hashes": hashes, "tags": tags}
+
+
+# Automation that looks like a bot gets accounts locked. Defaults are scarce by design.
+# Override only with eyes open — volume is how we got suspended.
+_SAFE_DEFAULTS = {
+    "X_AGENT_MAX_LIKES_PER_TICK": "1",
+    "X_AGENT_MAX_REPLIES_PER_TICK": "2",
+    "X_AGENT_MAX_CALLOUTS_PER_TICK": "0",  # unsolicited @ posts = spam vector
+    "X_AGENT_MAX_SCOUT_PER_TICK": "1",
+    "X_AGENT_SCOUT_HOURS": "6",
+    "X_AGENT_SCOUT_MODE": "like_only",  # not callout spam
+    "X_AGENT_BROADCAST_HOURS": "8",
+    "X_AGENT_HUNT_MAX_LIKES": "1",
+    "X_AGENT_ICP_HUNT_HOURS": "12",
+    "X_AGENT_QUOTE_BOOST": "false",
+    "X_AGENT_MAX_WRITES_PER_DAY": "12",  # hard daily cap across all write ops
+    "X_AGENT_LOCK_SUSPEND_HOURS": "24",
+}
+
+
+def _env_int(name: str, default: str) -> int:
+    raw = os.getenv(name)
+    if raw is None or str(raw).strip() == "":
+        raw = _SAFE_DEFAULTS.get(name, default)
+    try:
+        return int(raw)
+    except (TypeError, ValueError):
+        return int(default)
+
+
+def _env_float(name: str, default: str) -> float:
+    raw = os.getenv(name)
+    if raw is None or str(raw).strip() == "":
+        raw = _SAFE_DEFAULTS.get(name, default)
+    try:
+        return float(raw)
+    except (TypeError, ValueError):
+        return float(default)
+
+
+def _env_str(name: str, default: str) -> str:
+    raw = os.getenv(name)
+    if raw is None or str(raw).strip() == "":
+        return _SAFE_DEFAULTS.get(name, default)
+    return str(raw).strip()
+
+
+def _error_text(err: Any) -> str:
+    if err is None:
+        return ""
+    if isinstance(err, str):
+        return err
+    try:
+        return json.dumps(err, default=str)
+    except Exception:
+        return str(err)
+
+
+def _looks_like_account_lock(result: Dict[str, Any]) -> bool:
+    """X 403s that mean stop writing — not ordinary rate limits."""
+    if int(result.get("status_code") or 0) != 403:
+        return False
+    t = _error_text(result.get("error")).lower()
+    needles = (
+        "temporarily locked",
+        "locked",
+        "unlock your account",
+        "violat",
+        "suspend",
+        "not permitted",
+        "automated",
+        "spam",
+        "rules",
+    )
+    return any(n in t for n in needles)
+
+
+def _write_suspended(state: Dict[str, Any]) -> Tuple[bool, str]:
+    until = state.get("write_suspended_until")
+    if not until:
+        return False, ""
+    try:
+        t = datetime.fromisoformat(str(until).replace("Z", "+00:00"))
+        if datetime.now(timezone.utc) < t:
+            return True, f"writes suspended until {until} ({state.get('write_suspend_reason') or 'safety'})"
+    except Exception:
+        pass
+    return False, ""
+
+
+def _suspend_writes(state: Dict[str, Any], reason: str, *, hours: Optional[float] = None) -> None:
+    h = hours if hours is not None else _env_float("X_AGENT_LOCK_SUSPEND_HOURS", "24")
+    until = datetime.now(timezone.utc).timestamp() + max(1.0, h) * 3600
+    state["write_suspended_until"] = datetime.fromtimestamp(until, tz=timezone.utc).isoformat()
+    state["write_suspend_reason"] = (reason or "x_rules_or_lock")[:300]
+    state["write_suspended_at"] = _now()
+    _log(
+        {
+            "event": "write_suspend",
+            "at": _now(),
+            "until": state["write_suspended_until"],
+            "reason": state["write_suspend_reason"],
+        }
+    )
+
+
+def _day_key() -> str:
+    return datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+
+def _writes_today(state: Dict[str, Any]) -> int:
+    if state.get("write_day") != _day_key():
+        return 0
+    return int(state.get("writes_today") or 0)
+
+
+def _note_write_attempt(state: Dict[str, Any], result: Dict[str, Any], *, op: str) -> None:
+    """Track daily write budget + trip circuit breaker on account locks."""
+    if state.get("write_day") != _day_key():
+        state["write_day"] = _day_key()
+        state["writes_today"] = 0
+    # Count only successful writes toward "activity" — failed spam still trips lock
+    if result.get("success"):
+        state["writes_today"] = int(state.get("writes_today") or 0) + 1
+    if _looks_like_account_lock(result):
+        _suspend_writes(state, f"{op}: {_error_text(result.get('error'))[:200]}")
+
+
+def _can_write(state: Dict[str, Any]) -> Tuple[bool, str]:
+    sus, why = _write_suspended(state)
+    if sus:
+        return False, why
+    cap = _env_int("X_AGENT_MAX_WRITES_PER_DAY", "12")
+    n = _writes_today(state)
+    if n >= cap:
+        return False, f"daily_write_cap {n}/{cap}"
+    return True, ""
 
 
 def _req(
@@ -301,24 +461,55 @@ def get_conversation(conversation_id: str, *, max_results: int = 20) -> Dict[str
 # ---------- write actions ----------
 
 
-def like_tweet(user_id: str, tweet_id: str) -> Dict[str, Any]:
-    return _req(
+def like_tweet(user_id: str, tweet_id: str, *, state: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    st = state if state is not None else _load_state()
+    ok, why = _can_write(st)
+    if not ok:
+        return {"success": False, "error": why, "skipped": True, "status_code": 0}
+    result = _req(
         "POST",
         f"https://api.twitter.com/2/users/{user_id}/likes",
         json_body={"tweet_id": str(tweet_id)},
     )
+    _note_write_attempt(st, result, op="like")
+    if state is None:
+        _save_state(st)
+    return result
 
 
-def retweet(user_id: str, tweet_id: str) -> Dict[str, Any]:
-    return _req(
+def retweet(user_id: str, tweet_id: str, *, state: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    st = state if state is not None else _load_state()
+    ok, why = _can_write(st)
+    if not ok:
+        return {"success": False, "error": why, "skipped": True, "status_code": 0}
+    result = _req(
         "POST",
         f"https://api.twitter.com/2/users/{user_id}/retweets",
         json_body={"tweet_id": str(tweet_id)},
     )
+    _note_write_attempt(st, result, op="retweet")
+    if state is None:
+        _save_state(st)
+    return result
 
 
-def _policy_publish(text: str, *, reply_to: Optional[str] = None) -> Dict[str, Any]:
-    """Publish with Receipts Social hard-mode + record for social learning."""
+def _policy_publish(
+    text: str,
+    *,
+    reply_to: Optional[str] = None,
+    state: Optional[Dict[str, Any]] = None,
+) -> Dict[str, Any]:
+    """Publish with Receipts Social hard-mode + write safety + social learning."""
+    st = state if state is not None else _load_state()
+    ok, why = _can_write(st)
+    if not ok:
+        return {
+            "success": False,
+            "error": why,
+            "skipped": True,
+            "status_code": 0,
+            "social_policy": {"blocked": why},
+        }
     body = text or ""
     meta: Dict[str, Any] = {}
     try:
@@ -334,13 +525,20 @@ def _policy_publish(text: str, *, reply_to: Optional[str] = None) -> Dict[str, A
         if result.get("success"):
             record_outgoing_post_text(body)
         result["social_policy"] = meta
+        _note_write_attempt(st, result, op="tweet" if not reply_to else "reply")
+        if state is None:
+            _save_state(st)
         return result
     except Exception:
-        return publish_x_tweet(text, reply_to=reply_to) if reply_to else publish_x_tweet(text)
+        result = publish_x_tweet(text, reply_to=reply_to) if reply_to else publish_x_tweet(text)
+        _note_write_attempt(st, result, op="tweet")
+        if state is None:
+            _save_state(st)
+        return result
 
 
-def reply(text: str, in_reply_to: str) -> Dict[str, Any]:
-    return _policy_publish(text, reply_to=str(in_reply_to))
+def reply(text: str, in_reply_to: str, *, state: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    return _policy_publish(text, reply_to=str(in_reply_to), state=state)
 
 
 def quote_tweet(text: str, quote_tweet_id: str) -> Dict[str, Any]:
@@ -429,7 +627,7 @@ def craft_reply(text: str, classification: Dict[str, Any], *, context: str = "me
             return None
     if "support" in labels and "pay_intent" not in labels:
         return (
-            f"Broken path? Receipts only — {PAY} / {AGENT_PAY}. "
+            f"Broken path? Receipts only — {pay_url()} / {agent_pay_url()}. "
             f"Open issue on github.com/theCeramist/rsi-eaf with the tweet link."
         )
     exclusive = craft_exclusive_reply(text, labels=labels, context=context)
@@ -437,7 +635,7 @@ def craft_reply(text: str, classification: Dict[str, Any], *, context: str = "me
         return exclusive
     # Last resort for direct mentions with substance — still exclusive tone
     if context == "mention" and len((text or "").strip()) > 30:
-        return f"Exclusive rails. Crypto-critical humans + sophisticated agents: {PAY}"
+        return f"Exclusive rails. Crypto-critical humans + sophisticated agents: {pay_url()}"
     return None
 
 
@@ -564,8 +762,8 @@ def analyze_metrics(
             "agent_tier": "sophisticated_only",
         },
         "conversion_urls": {
-            "pay": PAY,
-            "agent_pay": AGENT_PAY,
+            "pay": pay_url(),
+            "agent_pay": agent_pay_url(),
             "free_sample": FREE_SAMPLE,
             "hub": HUB,
             "bounty": BOUNTY,
@@ -600,6 +798,7 @@ def _engage_tweet(
     limits: Dict[str, int],
     context: str,
     allow_rt: bool = False,
+    state: Optional[Dict[str, Any]] = None,
 ) -> None:
     mid = str(tweet.get("id") or "")
     if not mid or mid in seen:
@@ -639,8 +838,14 @@ def _engage_tweet(
         }
     )
 
-    # like — exclusive bar (higher for scout)
-    like_floor = 0.45 if context == "mention" else 0.75
+    # Write safety first — never spray after a lock/rules 403
+    can_w, why_w = _can_write(state or {})
+    if not can_w:
+        actions.append({"op": "write_blocked", "id": mid, "reason": why_w, "context": context})
+        return
+
+    # like — high bar; scarcity (default 1/tick). Mass likes = automation signal.
+    like_floor = 0.55 if context == "mention" else 0.85
     if (
         counters["likes"] < limits["likes"]
         and mid not in liked
@@ -648,15 +853,26 @@ def _engage_tweet(
         and "spam" not in classification["labels"]
         and "low_tier" not in classification["labels"]
     ):
-        lr = like_tweet(user_id, mid)
+        lr = like_tweet(user_id, mid, state=state)
         counters["likes"] += 1
         if lr.get("success"):
             liked.add(mid)
-        actions.append({"op": "like", "id": mid, "ok": lr.get("success"), "status": lr.get("status_code")})
+        actions.append(
+            {
+                "op": "like",
+                "id": mid,
+                "ok": lr.get("success"),
+                "status": lr.get("status_code"),
+                "skipped": lr.get("skipped"),
+                "error": (str(lr.get("error") or "")[:120] or None),
+            }
+        )
+        if _looks_like_account_lock(lr):
+            return
 
     # reply when score warrants — exclusive floors
-    # Free/basic X tier often forbids reply unless mentioned/author — use quote for scout.
-    reply_floor = 0.55 if context == "mention" else 0.9
+    # Free/basic X tier often forbids reply unless mentioned/author.
+    reply_floor = 0.6 if context == "mention" else 0.95
     if (
         counters["replies"] < limits["replies"]
         and mid not in replied
@@ -670,20 +886,18 @@ def _engage_tweet(
         )
         if reply_text:
             if context == "scout":
-                # Free/basic tier: reply AND quote both 403 unless mentioned/author.
-                # Workarounds: like (above) + original @-callout posts (not in-thread).
-                # Free tier: quote/reply into others' threads → 403. Default callout only.
-                mode = os.getenv("X_AGENT_SCOUT_MODE", "callout").lower()  # callout|like_only|quote|reply
+                # Default like_only. Callouts are opt-in — unsolicited @ is a lock vector.
+                mode = _env_str("X_AGENT_SCOUT_MODE", "like_only").lower()
                 if mode == "quote" and os.getenv("X_AGENT_FREE_TIER", "true").lower() in {
                     "1",
                     "true",
                     "yes",
                 }:
-                    mode = "callout"
+                    mode = "like_only"
                 if mode == "like_only":
                     pass
                 elif mode == "reply":
-                    rr = reply(reply_text, mid)
+                    rr = reply(reply_text, mid, state=state)
                     counters["replies"] += 1
                     if rr.get("success"):
                         replied.add(mid)
@@ -698,8 +912,10 @@ def _engage_tweet(
                             "error": rr.get("error"),
                         }
                     )
+                    if _looks_like_account_lock(rr):
+                        return
                 elif mode == "quote":
-                    qt_text = craft_scout_reply(text, classification) or f"Exclusive rails: {PAY}"
+                    qt_text = craft_scout_reply(text, classification) or f"Mainnet rails: {pay_url()}"
                     qr = quote_tweet(qt_text, mid)
                     counters["replies"] += 1
                     if qr.get("success"):
@@ -715,10 +931,10 @@ def _engage_tweet(
                             "error": qr.get("error"),
                         }
                     )
-                else:
-                    # callout: SIGNAL format — useful add relative to their post (not exclusive spam)
+                elif mode == "callout":
                     uname = (users_map.get(author) or {}).get("username")
-                    if uname and counters.get("callouts", 0) < int(os.getenv("X_AGENT_MAX_CALLOUTS_PER_TICK", "2")):
+                    max_co = _env_int("X_AGENT_MAX_CALLOUTS_PER_TICK", "0")
+                    if uname and counters.get("callouts", 0) < max_co:
                         try:
                             from factory_core.social_policy import (
                                 format_signal_callout,
@@ -733,9 +949,9 @@ def _engage_tweet(
                         except Exception:
                             callout = (
                                 f"@{uname} — receipts > volume. "
-                                f"Doctrine {BASE}/social-policy.json · agents {AGENT_PAY}"
+                                f"Doctrine {BASE}/social-policy.json · agents {agent_pay_url()}"
                             )
-                        cr = _policy_publish(callout)
+                        cr = _policy_publish(callout, state=state)
                         counters["callouts"] = counters.get("callouts", 0) + 1
                         counters["replies"] += 1
                         if cr.get("success"):
@@ -752,11 +968,26 @@ def _engage_tweet(
                                 "social_policy": cr.get("social_policy"),
                             }
                         )
+                        if _looks_like_account_lock(cr):
+                            return
             else:
-                rr = reply(reply_text, mid)
+                # Mentions / conversation only — highest-signal inbound
+                rr = reply(reply_text, mid, state=state)
                 counters["replies"] += 1
                 if rr.get("success"):
                     replied.add(mid)
+                if _looks_like_account_lock(rr):
+                    actions.append(
+                        {
+                            "op": "reply",
+                            "context": context,
+                            "to": mid,
+                            "ok": False,
+                            "status": rr.get("status_code"),
+                            "error": rr.get("error"),
+                        }
+                    )
+                    return
                 # If reply blocked (not mentioned), fall back to quote once
                 if not rr.get("success") and rr.get("status_code") == 403:
                     qr = quote_tweet(reply_text, mid)
@@ -815,7 +1046,7 @@ def _run_outbound_scout(
     if os.getenv("X_AGENT_SCOUT", "true").lower() not in {"1", "true", "yes"}:
         return {"skipped": True, "reason": "disabled"}
 
-    scout_hours = float(os.getenv("X_AGENT_SCOUT_HOURS", "1"))
+    scout_hours = _env_float("X_AGENT_SCOUT_HOURS", "6")
     last = state.get("last_scout_at")
     if last:
         try:
@@ -847,7 +1078,7 @@ def _run_outbound_scout(
     }
     scouted: Set[str] = set(state.get("scouted_ids") or [])
     engaged = 0
-    max_scout = int(os.getenv("X_AGENT_MAX_SCOUT_PER_TICK", "2"))
+    max_scout = _env_int("X_AGENT_MAX_SCOUT_PER_TICK", "1")
 
     # rank by revenue score
     ranked: List[Tuple[float, Dict[str, Any]]] = []
@@ -879,6 +1110,7 @@ def _run_outbound_scout(
             limits=limits,
             context="scout",
             allow_rt=False,
+            state=state,
         )
         if counters["replies"] > before_r or counters["likes"] > before_l:
             engaged += 1
@@ -905,9 +1137,25 @@ def run_x_agent_tick(*, force_broadcast: bool = False) -> Dict[str, Any]:
     if not x_posting_ready():
         return {"success": False, "error": "x_oauth_not_ready"}
 
+    # Never post dead CTAs — link watcher must clear pay surfaces first
+    link_gate: Dict[str, Any] = {"ok": True}
+    try:
+        from tools.link_watcher import assert_cta_links_ok
+
+        link_gate = assert_cta_links_ok(force_refresh=False)
+        # Refresh module-level fallbacks for any remaining PAY/AGENT_PAY readers
+        global PAY, AGENT_PAY
+        if link_gate.get("pay_url"):
+            PAY = str(link_gate["pay_url"])
+        if link_gate.get("agent_pay_url"):
+            AGENT_PAY = str(link_gate["agent_pay_url"])
+    except Exception as exc:
+        link_gate = {"ok": False, "error": str(exc)[:200], "block_reason": "link_watcher_error"}
+
     state = _load_state()
     user_id = ensure_user_id(state)
     actions: List[Dict[str, Any]] = []
+    actions.append({"op": "link_gate", **{k: link_gate.get(k) for k in ("ok", "pay_url", "agent_pay_url", "block_reason", "error")}})
     tx_hashes_seen: Set[str] = set(state.get("tx_hashes_seen") or [])
 
     me = get_me()
@@ -932,14 +1180,18 @@ def run_x_agent_tick(*, force_broadcast: bool = False) -> Dict[str, Any]:
     liked: Set[str] = set(state.get("liked_ids") or [])
     retweeted: Set[str] = set(state.get("retweeted_ids") or [])
 
-    max_replies = int(os.getenv("X_AGENT_MAX_REPLIES_PER_TICK", "5"))
-    max_likes = int(os.getenv("X_AGENT_MAX_LIKES_PER_TICK", "8"))
+    max_replies = _env_int("X_AGENT_MAX_REPLIES_PER_TICK", "2")
+    max_likes = _env_int("X_AGENT_MAX_LIKES_PER_TICK", "1")
     limits = {
         "replies": max_replies,
         "likes": max_likes,
-        "retweets": int(os.getenv("X_AGENT_MAX_RETWEETS_PER_TICK", "1")),
+        "retweets": _env_int("X_AGENT_MAX_RETWEETS_PER_TICK", "0"),
     }
     counters = {"replies": 0, "likes": 0, "retweets": 0, "callouts": 0}
+
+    can_write, write_why = _can_write(state)
+    if not can_write:
+        actions.append({"op": "write_circuit_open", "reason": write_why})
 
     # --- Mentions (inbound) ---
     for m in mentions:
@@ -976,15 +1228,16 @@ def run_x_agent_tick(*, force_broadcast: bool = False) -> Dict[str, Any]:
             limits=limits,
             context="mention",
             allow_rt=False,
+            state=state,
         )
 
-    # --- Conversation watch on own top posts ---
+    # --- Conversation watch on own top posts (read-only if writes suspended) ---
     if os.getenv("X_AGENT_FETCH_CONVERSATIONS", "true").lower() in {"1", "true", "yes"}:
-        for t in timeline[:3]:
+        for t in timeline[:2]:
             cid = t.get("conversation_id") or t.get("id")
             if not cid:
                 continue
-            conv = get_conversation(str(cid), max_results=15)
+            conv = get_conversation(str(cid), max_results=10)
             actions.append(
                 {
                     "op": "conversation_poll",
@@ -996,6 +1249,8 @@ def run_x_agent_tick(*, force_broadcast: bool = False) -> Dict[str, Any]:
             )
             if not conv.get("success"):
                 break  # don't burn credits if search locked
+            if not _can_write(state)[0]:
+                continue
             conv_tweets = list((conv.get("data") or {}).get("data") or [])
             conv_users = {
                 u.get("id"): u
@@ -1018,9 +1273,10 @@ def run_x_agent_tick(*, force_broadcast: bool = False) -> Dict[str, Any]:
                     limits=limits,
                     context="conversation",
                     allow_rt=False,
+                    state=state,
                 )
 
-    # --- Outbound scout ---
+    # --- Outbound scout (sparse) ---
     scout_stats = _run_outbound_scout(
         user_id=user_id,
         state=state,
@@ -1035,8 +1291,8 @@ def run_x_agent_tick(*, force_broadcast: bool = False) -> Dict[str, Any]:
     # --- Periodic full ICP hunt (find exclusive targets + like/follow graph) ---
     hunt_meta: Dict[str, Any] = {"skipped": True}
     if os.getenv("X_AGENT_ICP_HUNT", "true").lower() in {"1", "true", "yes"}:
-        hunt_hours = float(os.getenv("X_AGENT_ICP_HUNT_HOURS", "6"))
-        if _hours_since(state.get("last_hunt_at")) >= hunt_hours:
+        hunt_hours = _env_float("X_AGENT_ICP_HUNT_HOURS", "12")
+        if _hours_since(state.get("last_hunt_at")) >= hunt_hours and _can_write(state)[0]:
             try:
                 from agent_tools_icp_hunt_shim import run_icp_hunt  # optional
             except Exception:
@@ -1057,7 +1313,7 @@ def run_x_agent_tick(*, force_broadcast: bool = False) -> Dict[str, Any]:
                         ha = mod.engage(
                             user_id,
                             admit,
-                            max_likes=int(os.getenv("X_AGENT_HUNT_MAX_LIKES", "4")),
+                            max_likes=_env_int("X_AGENT_HUNT_MAX_LIKES", "1"),
                             max_quotes=0,  # free tier blocks quote unless mentioned
                             state=state,
                         )
@@ -1076,9 +1332,9 @@ def run_x_agent_tick(*, force_broadcast: bool = False) -> Dict[str, Any]:
             else:
                 hunt_meta = {"skipped": False, "delegated": True}
 
-    # --- Broadcast cadence (default every 3h) ---
+    # --- Broadcast cadence (default every 8h) — blocked if CTAs 404 or write suspended ---
     broadcast_meta: Dict[str, Any] = {"skipped": True}
-    interval_h = float(os.getenv("X_AGENT_BROADCAST_HOURS", "3"))
+    interval_h = _env_float("X_AGENT_BROADCAST_HOURS", "8")
     last_b = state.get("last_broadcast_at")
     due = True
     if last_b and not force_broadcast:
@@ -1087,30 +1343,55 @@ def run_x_agent_tick(*, force_broadcast: bool = False) -> Dict[str, Any]:
             due = age >= interval_h * 3600
         except ValueError:
             due = True
+    can_b, why_b = _can_write(state)
     if due and os.getenv("X_AGENT_BROADCAST", "true").lower() in {"1", "true", "yes"}:
-        variants = broadcast_variants()
-        idx = int(time.time() // 3600) % len(variants)
-        br = _policy_publish(variants[idx])
-        broadcast_meta = {
-            "skipped": False,
-            "ok": br.get("success"),
-            "url": br.get("html_url"),
-            "status": br.get("status_code"),
-            "error": br.get("error"),
-            "social_policy": br.get("social_policy"),
-        }
-        if br.get("success"):
-            state["last_broadcast_at"] = _now()
-        actions.append({"op": "broadcast", **broadcast_meta})
+        if not can_b:
+            broadcast_meta = {"skipped": True, "reason": "write_suspended", "detail": why_b}
+            actions.append({"op": "broadcast", **broadcast_meta})
+        elif not link_gate.get("ok"):
+            broadcast_meta = {
+                "skipped": True,
+                "reason": "link_gate_block",
+                "block_reason": link_gate.get("block_reason"),
+                "pay_url": link_gate.get("pay_url"),
+            }
+            actions.append({"op": "broadcast", **broadcast_meta})
+        else:
+            # Prefer live-verified CTA URLs in broadcast copy
+            variants = broadcast_variants()
+            live_pay = pay_url()
+            variants = [
+                (v or "")
+                .replace(f"{BASE}/pay.html", live_pay)
+                .replace("https://published-zeta.vercel.app/pay.html", live_pay)
+                .replace("testnet factory", "mainnet factory")
+                .replace("XRPL testnet", "XRPL mainnet")
+                for v in variants
+            ]
+            idx = int(time.time() // 3600) % max(1, len(variants))
+            br = _policy_publish(variants[idx], state=state)
+            broadcast_meta = {
+                "skipped": False,
+                "ok": br.get("success"),
+                "url": br.get("html_url"),
+                "status": br.get("status_code"),
+                "error": br.get("error"),
+                "social_policy": br.get("social_policy"),
+                "cta": live_pay,
+            }
+            if br.get("success"):
+                state["last_broadcast_at"] = _now()
+            actions.append({"op": "broadcast", **broadcast_meta})
 
     analysis = analyze_metrics(timeline, mentions, state=state, scout_stats=scout_stats)
 
-    # Quote boost on cold path
+    # Quote boost OFF by default — self-quotes look automated
     if (
         analysis.get("critical_path") == "distribution_cold"
-        and os.getenv("X_AGENT_QUOTE_BOOST", "true").lower() in {"1", "true", "yes"}
-        and _hours_since(state.get("last_quote_boost_at")) >= 12
+        and _env_str("X_AGENT_QUOTE_BOOST", "false").lower() in {"1", "true", "yes"}
+        and _hours_since(state.get("last_quote_boost_at")) >= 24
         and analysis.get("top_tweets")
+        and _can_write(state)[0]
     ):
         best = analysis["top_tweets"][0]
         if best.get("id") and best.get("impressions", 0) >= 1:
@@ -1157,7 +1438,10 @@ def run_x_agent_tick(*, force_broadcast: bool = False) -> Dict[str, Any]:
         "replies": counters["replies"],
         "likes": counters["likes"],
         "retweets": counters.get("retweets", 0),
+        "callouts": counters.get("callouts", 0),
         "critical_path": analysis["critical_path"],
+        "writes_today": _writes_today(state),
+        "write_suspended_until": state.get("write_suspended_until"),
     }
     _save_state(state)
 
