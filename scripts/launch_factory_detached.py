@@ -95,9 +95,24 @@ def main() -> int:
             },
         }
         STATE.write_text(json.dumps(meta, indent=2), encoding="utf-8")
-        print(f"launched pid={p.pid} (no keeper)")
+        print(f"launched pid={p.pid} (no nested supervisor keeper)")
         print(f"monitor: python -u scripts/monitor_factory_cli.py")
         print(f"state: {STATE}")
+        if os.getenv("LAUNCH_OPS_KEEPER", "true").lower() in {"1", "true", "yes"}:
+            try:
+                subprocess.Popen(
+                    [sys.executable, "-u", str(ROOT / "scripts" / "launch_ops_keeper_detached.py")],
+                    cwd=str(ROOT),
+                    env={**os.environ, "SUPERVISOR_KEEPER": "false"},
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                    creationflags=flags if sys.platform == "win32" else 0,
+                    close_fds=True,
+                    start_new_session=(sys.platform != "win32"),
+                )
+                print("ops_keeper: launch_ops_keeper_detached.py invoked")
+            except Exception as exc:
+                print(f"ops_keeper launch skipped: {exc}")
         return 0
 
     keeper_log = RUNTIME / "factory_supervisor_keeper.log"
@@ -217,6 +232,22 @@ if __name__ == "__main__":
     print(f"launched pid={p.pid} keeper={keeper.pid}")
     print(f"monitor: python -u scripts/monitor_factory_cli.py")
     print(f"state: {STATE}")
+    # Prefer thrash-safe ops keeper for long-run (monitor + single supervisor)
+    if os.getenv("LAUNCH_OPS_KEEPER", "true").lower() in {"1", "true", "yes"}:
+        try:
+            subprocess.Popen(
+                [sys.executable, "-u", str(ROOT / "scripts" / "launch_ops_keeper_detached.py")],
+                cwd=str(ROOT),
+                env={**os.environ, "SUPERVISOR_KEEPER": "false"},
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+                creationflags=flags if sys.platform == "win32" else 0,
+                close_fds=True,
+                start_new_session=(sys.platform != "win32"),
+            )
+            print("ops_keeper: launch_ops_keeper_detached.py invoked")
+        except Exception as exc:
+            print(f"ops_keeper launch skipped: {exc}")
     return 0
 
 
