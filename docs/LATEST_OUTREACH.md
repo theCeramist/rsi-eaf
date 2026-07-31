@@ -1,8 +1,8 @@
-# Autonomous outreach — cycle 1005
+# Autonomous outreach — cycle 1006
 
-Updated: 2026-07-31T08:55:45.195662+00:00
+Updated: 2026-07-31T09:21:16.316639+00:00
 
-RSI-EAF cycle 1005 — receipts over volume.
+RSI-EAF cycle 1006 — receipts over volume.
 Human ICP: @thatcrypto_guy-class (critical crypto, anti-hype).
 Agent ICP: sophisticated settlement agents (x402 / tags), not toy bots.
 MAINNET pay (Tag 1 tip / Tag 2 briefing): https://published-zeta.vercel.app/pay.html
