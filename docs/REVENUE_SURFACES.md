@@ -1,13 +1,13 @@
 # RSI-EAF Revenue Surfaces (Cycle 1008)
 
-Updated: 2026-07-31T10:08:34.627823+00:00
+Updated: 2026-07-31T10:13:15.519677+00:00
 
 ## Live surfaces
 
 | Surface | URL |
 |---------|-----|
 | Factory index | https://published-zeta.vercel.app/ |
-| Tip page | https://published-zeta.vercel.app/tip-manifest.json |
+| Tip page | https://published-zeta.vercel.app/tip-cycle-1008-20260731T094811Z.html |
 | Agent pay endpoint | https://published-zeta.vercel.app/agent-pay.json |
 | Agent tip manifest | https://published-zeta.vercel.app/tip-manifest.json |
 | Paid briefing | https://published-zeta.vercel.app/briefing-cycle-1008-20260731T094728Z.html |
@@ -20,7 +20,7 @@ Updated: 2026-07-31T10:08:34.627823+00:00
 ## Treasury (XRPL Testnet)
 
 ```
-rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN
+rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5
 ```
 
 ## Tip payment memo
