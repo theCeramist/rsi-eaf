@@ -256,22 +256,59 @@ def _error_text(err: Any) -> str:
 
 
 def _looks_like_account_lock(result: Dict[str, Any]) -> bool:
-    """X 403s that mean stop writing — not ordinary rate limits."""
+    """
+    True only for account-level lock/suspend signals from the official API.
+    Does NOT treat free-tier "not permitted to reply" as a full lock.
+    We never bypass browser challenges — those are human verification (X rules).
+    """
     if int(result.get("status_code") or 0) != 403:
         return False
     t = _error_text(result.get("error")).lower()
-    needles = (
+    hard = (
         "temporarily locked",
-        "locked",
         "unlock your account",
-        "violat",
-        "suspend",
-        "not permitted",
-        "automated",
-        "spam",
-        "rules",
+        "account is locked",
+        "account has been locked",
+        "your account is suspended",
+        "account is suspended",
     )
-    return any(n in t for n in needles)
+    return any(n in t for n in hard)
+
+
+def _in_probation(state: Dict[str, Any]) -> Tuple[bool, str]:
+    until = state.get("write_probation_until")
+    if not until:
+        return False, ""
+    try:
+        t = datetime.fromisoformat(str(until).replace("Z", "+00:00"))
+        if datetime.now(timezone.utc) < t:
+            return True, f"probation until {until}"
+    except Exception:
+        pass
+    return False, ""
+
+
+def _start_probation(state: Dict[str, Any], reason: str) -> None:
+    """Scarce, rules-safe write mode after unlock — no outbound spray."""
+    hours = _env_float("X_AGENT_PROBATION_HOURS", "48")
+    until = datetime.now(timezone.utc).timestamp() + max(1.0, hours) * 3600
+    state["write_probation_until"] = datetime.fromtimestamp(until, tz=timezone.utc).isoformat()
+    state["write_probation_reason"] = (reason or "post_lock_probation")[:300]
+    state["write_probation_at"] = _now()
+    # Hard caps during probation (still overridable only via env after probation ends)
+    state["probation_max_likes_per_tick"] = 0
+    state["probation_max_replies_per_tick"] = 1
+    state["probation_broadcast"] = False
+    state["probation_scout"] = False
+    state["probation_hunt"] = False
+    _log(
+        {
+            "event": "write_probation",
+            "at": _now(),
+            "until": state["write_probation_until"],
+            "reason": state["write_probation_reason"],
+        }
+    )
 
 
 def _write_suspended(state: Dict[str, Any]) -> Tuple[bool, str]:
@@ -293,6 +330,8 @@ def _suspend_writes(state: Dict[str, Any], reason: str, *, hours: Optional[float
     state["write_suspended_until"] = datetime.fromtimestamp(until, tz=timezone.utc).isoformat()
     state["write_suspend_reason"] = (reason or "x_rules_or_lock")[:300]
     state["write_suspended_at"] = _now()
+    # Also start long probation so after suspend lifts we still don't spray
+    _start_probation(state, f"after_lock:{reason[:80]}")
     _log(
         {
             "event": "write_suspend",
@@ -301,6 +340,52 @@ def _suspend_writes(state: Dict[str, Any], reason: str, *, hours: Optional[float
             "reason": state["write_suspend_reason"],
         }
     )
+
+
+def _maybe_soft_resume_after_browser_ok(state: Dict[str, Any], *, me_ok: bool) -> Dict[str, Any]:
+    """
+    If API reads work (get_me 200) after a lock suspend, lift hard suspend into
+    probation. This is NOT a captcha bypass — official API read proves session is
+    usable; writes stay scarce and inbound-first per X automation rules.
+    """
+    out: Dict[str, Any] = {"resumed": False}
+    if not me_ok:
+        return out
+    sus, _ = _write_suspended(state)
+    if not sus:
+        # Still enter probation if we recently saw a lock and aren't in one
+        if state.get("write_suspend_reason") and not _in_probation(state)[0]:
+            if "lock" in (state.get("write_suspend_reason") or "").lower():
+                # expired suspend — ensure probation
+                if not state.get("write_probation_until"):
+                    _start_probation(state, "post_suspend_expired")
+                    out["probation"] = True
+        return out
+    reason = (state.get("write_suspend_reason") or "").lower()
+    if "lock" not in reason and "unlock" not in reason and "suspend" not in reason:
+        return out
+    # Soft resume: clear hard block, keep probation (no broadcast/scout)
+    force = os.getenv("X_AGENT_FORCE_RESUME", "").lower() in {"1", "true", "yes"}
+    min_age_min = _env_float("X_AGENT_RESUME_MIN_MINUTES", "15")
+    age_ok = True
+    try:
+        at = state.get("write_suspended_at")
+        if at:
+            t = datetime.fromisoformat(str(at).replace("Z", "+00:00"))
+            age_ok = (datetime.now(timezone.utc) - t).total_seconds() >= min_age_min * 60
+    except Exception:
+        age_ok = True
+    if not force and not age_ok:
+        out["wait_resume"] = True
+        return out
+    state.pop("write_suspended_until", None)
+    state["write_suspend_cleared_at"] = _now()
+    state["write_suspend_cleared_reason"] = "get_me_ok_soft_resume_probation"
+    _start_probation(state, "browser_or_api_unlocked_soft_resume")
+    out["resumed"] = True
+    out["probation"] = True
+    _log({"event": "write_soft_resume", "at": _now(), **out})
+    return out
 
 
 def _day_key() -> str:
@@ -329,10 +414,36 @@ def _can_write(state: Dict[str, Any]) -> Tuple[bool, str]:
     sus, why = _write_suspended(state)
     if sus:
         return False, why
+    # Probation allows limited inbound writes only (checked by callers for op type)
     cap = _env_int("X_AGENT_MAX_WRITES_PER_DAY", "12")
+    prob, _ = _in_probation(state)
+    if prob:
+        cap = min(cap, _env_int("X_AGENT_PROBATION_MAX_WRITES_PER_DAY", "4"))
     n = _writes_today(state)
     if n >= cap:
         return False, f"daily_write_cap {n}/{cap}"
+    return True, ""
+
+
+def _can_broadcast(state: Dict[str, Any]) -> Tuple[bool, str]:
+    ok, why = _can_write(state)
+    if not ok:
+        return False, why
+    prob, pwhy = _in_probation(state)
+    if prob:
+        return False, f"no_broadcast_during_probation ({pwhy})"
+    if state.get("probation_broadcast") is False:
+        return False, "probation_broadcast_disabled"
+    return True, ""
+
+
+def _can_scout(state: Dict[str, Any]) -> Tuple[bool, str]:
+    ok, why = _can_write(state)
+    if not ok:
+        return False, why
+    prob, pwhy = _in_probation(state)
+    if prob or state.get("probation_scout") is False:
+        return False, f"no_scout_during_probation ({pwhy or 'flag'})"
     return True, ""
 
 
@@ -1185,6 +1296,11 @@ def run_x_agent_tick(*, force_broadcast: bool = False) -> Dict[str, Any]:
 
     me = get_me()
     actions.append({"op": "get_me", "ok": me.get("success"), "status": me.get("status_code")})
+    # Soft resume: browser challenges are human-side; if API read works, lift hard
+    # suspend into probation (no captcha bypass, no spray).
+    resume_meta = _maybe_soft_resume_after_browser_ok(state, me_ok=bool(me.get("success")))
+    if resume_meta.get("resumed") or resume_meta.get("probation"):
+        actions.append({"op": "write_soft_resume", **resume_meta})
 
     mentions_r = get_mentions(user_id, max_results=25, since_id=state.get("last_mention_id"))
     timeline_r = get_timeline(user_id, max_results=20)
@@ -1207,6 +1323,9 @@ def run_x_agent_tick(*, force_broadcast: bool = False) -> Dict[str, Any]:
 
     max_replies = _env_int("X_AGENT_MAX_REPLIES_PER_TICK", "2")
     max_likes = _env_int("X_AGENT_MAX_LIKES_PER_TICK", "1")
+    if _in_probation(state)[0]:
+        max_replies = min(max_replies, int(state.get("probation_max_replies_per_tick") or 1))
+        max_likes = min(max_likes, int(state.get("probation_max_likes_per_tick") or 0))
     limits = {
         "replies": max_replies,
         "likes": max_likes,
@@ -1217,6 +1336,15 @@ def run_x_agent_tick(*, force_broadcast: bool = False) -> Dict[str, Any]:
     can_write, write_why = _can_write(state)
     if not can_write:
         actions.append({"op": "write_circuit_open", "reason": write_why})
+    elif _in_probation(state)[0]:
+        actions.append(
+            {
+                "op": "write_probation",
+                "until": state.get("write_probation_until"),
+                "reason": state.get("write_probation_reason"),
+                "limits": limits,
+            }
+        )
 
     # --- Mentions (inbound) ---
     for m in mentions:
@@ -1301,23 +1429,32 @@ def run_x_agent_tick(*, force_broadcast: bool = False) -> Dict[str, Any]:
                     state=state,
                 )
 
-    # --- Outbound scout (sparse) ---
-    scout_stats = _run_outbound_scout(
-        user_id=user_id,
-        state=state,
-        actions=actions,
-        liked=liked,
-        replied=replied,
-        retweeted=retweeted,
-        counters=counters,
-        limits=limits,
-    )
+    # --- Outbound scout (sparse; off during probation) ---
+    can_sc, why_sc = _can_scout(state)
+    if not can_sc:
+        scout_stats = {"skipped": True, "reason": why_sc}
+        actions.append({"op": "scout", **scout_stats})
+    else:
+        scout_stats = _run_outbound_scout(
+            user_id=user_id,
+            state=state,
+            actions=actions,
+            liked=liked,
+            replied=replied,
+            retweeted=retweeted,
+            counters=counters,
+            limits=limits,
+        )
 
     # --- Periodic full ICP hunt (find exclusive targets + like/follow graph) ---
     hunt_meta: Dict[str, Any] = {"skipped": True}
     if os.getenv("X_AGENT_ICP_HUNT", "true").lower() in {"1", "true", "yes"}:
         hunt_hours = _env_float("X_AGENT_ICP_HUNT_HOURS", "12")
-        if _hours_since(state.get("last_hunt_at")) >= hunt_hours and _can_write(state)[0]:
+        if (
+            _hours_since(state.get("last_hunt_at")) >= hunt_hours
+            and _can_scout(state)[0]
+            and state.get("probation_hunt") is not False
+        ):
             try:
                 from agent_tools_icp_hunt_shim import run_icp_hunt  # optional
             except Exception:
@@ -1368,10 +1505,10 @@ def run_x_agent_tick(*, force_broadcast: bool = False) -> Dict[str, Any]:
             due = age >= interval_h * 3600
         except ValueError:
             due = True
-    can_b, why_b = _can_write(state)
+    can_b, why_b = _can_broadcast(state)
     if due and os.getenv("X_AGENT_BROADCAST", "true").lower() in {"1", "true", "yes"}:
         if not can_b:
-            broadcast_meta = {"skipped": True, "reason": "write_suspended", "detail": why_b}
+            broadcast_meta = {"skipped": True, "reason": "broadcast_blocked", "detail": why_b}
             actions.append({"op": "broadcast", **broadcast_meta})
         elif not link_gate.get("ok"):
             broadcast_meta = {
@@ -1467,6 +1604,7 @@ def run_x_agent_tick(*, force_broadcast: bool = False) -> Dict[str, Any]:
         "critical_path": analysis["critical_path"],
         "writes_today": _writes_today(state),
         "write_suspended_until": state.get("write_suspended_until"),
+        "write_probation_until": state.get("write_probation_until"),
     }
     _save_state(state)
 
