@@ -174,15 +174,91 @@ def _find_pids(markers: Tuple[str, ...], procs: Optional[List[Tuple[int, str]]] 
     return out
 
 
-def _win_flags() -> int:
-    # Prefer breakaway-capable flags without DETACHED_PROCESS when it causes
-    # instant child death under some Job Objects. CREATE_NO_WINDOW keeps UI clean.
-    CREATE_NEW_PROCESS_GROUP = 0x00000200
-    CREATE_NO_WINDOW = 0x08000000
-    CREATE_BREAKAWAY_FROM_JOB = 0x01000000
-    DETACHED_PROCESS = 0x00000008
-    # Try breakaway first; caller may fall back
-    return CREATE_NEW_PROCESS_GROUP | CREATE_NO_WINDOW | CREATE_BREAKAWAY_FROM_JOB
+# Windows process creation flags
+CREATE_NEW_PROCESS_GROUP = 0x00000200
+DETACHED_PROCESS = 0x00000008
+CREATE_NO_WINDOW = 0x08000000
+CREATE_BREAKAWAY_FROM_JOB = 0x01000000
+
+# Proven-good default on this host: NEW_GROUP|NO_WINDOW (0x8000200).
+# CREATE_BREAKAWAY_FROM_JOB raises WinError 5 Access Denied under normal user
+# tokens / restricted Job Objects — do not lead with it.
+_SPAWN_FLAGS_CACHE = RUNTIME / "ops_spawn_flags.json"
+_KNOWN_GOOD_FLAGS: Optional[int] = None
+_DENIED_FLAGS: set = set()
+
+
+def _win_flags_candidates() -> List[int]:
+    """
+    Ordered spawn flags for Windows.
+
+    Access Denied (WinError 5) on BREAKAWAY is expected without SeTcbPrivilege /
+    Job breakaway rights. Prefer working flags first; never spam denied combos.
+    """
+    global _KNOWN_GOOD_FLAGS
+    if _KNOWN_GOOD_FLAGS is None and _SPAWN_FLAGS_CACHE.exists():
+        try:
+            raw = json.loads(_SPAWN_FLAGS_CACHE.read_text(encoding="utf-8"))
+            if isinstance(raw.get("flags"), int):
+                _KNOWN_GOOD_FLAGS = int(raw["flags"])
+        except (json.JSONDecodeError, OSError, TypeError, ValueError):
+            pass
+
+    base_ok = CREATE_NEW_PROCESS_GROUP | CREATE_NO_WINDOW  # 0x8000200 — works here
+    candidates: List[int] = []
+    if _KNOWN_GOOD_FLAGS is not None:
+        candidates.append(_KNOWN_GOOD_FLAGS)
+
+    # Primary path (no breakaway)
+    candidates.extend(
+        [
+            base_ok,
+            base_ok | DETACHED_PROCESS,
+            CREATE_NEW_PROCESS_GROUP,
+            DETACHED_PROCESS | CREATE_NO_WINDOW,
+            0,
+        ]
+    )
+
+    # Optional: try breakaway only if explicitly enabled (usually Access Denied)
+    if os.getenv("OPS_SPAWN_TRY_BREAKAWAY", "").lower() in {"1", "true", "yes"}:
+        candidates.extend(
+            [
+                base_ok | CREATE_BREAKAWAY_FROM_JOB,
+                base_ok | CREATE_BREAKAWAY_FROM_JOB | DETACHED_PROCESS,
+            ]
+        )
+
+    # De-dupe, skip permanently denied
+    seen: set = set()
+    out: List[int] = []
+    for f in candidates:
+        if f in seen or f in _DENIED_FLAGS:
+            continue
+        seen.add(f)
+        out.append(f)
+    return out
+
+
+def _remember_good_flags(flags: int) -> None:
+    global _KNOWN_GOOD_FLAGS
+    _KNOWN_GOOD_FLAGS = int(flags)
+    try:
+        RUNTIME.mkdir(parents=True, exist_ok=True)
+        _SPAWN_FLAGS_CACHE.write_text(
+            json.dumps(
+                {
+                    "flags": int(flags),
+                    "flags_hex": f"0x{int(flags):x}",
+                    "updated_at": _now(),
+                    "note": "Cached Windows CreateProcess flags that spawn without Access Denied",
+                },
+                indent=2,
+            ),
+            encoding="utf-8",
+        )
+    except OSError:
+        pass
 
 
 def _pid_alive(pid: int) -> bool:
@@ -235,6 +311,9 @@ def _spawn(name: str, args: List[str], log_path: Path) -> int:
     """
     Spawn durable child. Verify still alive after a short settle.
     Returns pid or 0 if process died immediately.
+
+    Windows: never lead with CREATE_BREAKAWAY_FROM_JOB (WinError 5 Access Denied
+    for normal user sessions). Cache the first successful flags combo.
     """
     RUNTIME.mkdir(parents=True, exist_ok=True)
     log_path.parent.mkdir(parents=True, exist_ok=True)
@@ -242,8 +321,9 @@ def _spawn(name: str, args: List[str], log_path: Path) -> int:
     cmd = [sys.executable, "-u", *args]
 
     def _popen(flags: Optional[int]) -> int:
+        # Open log append per attempt so a failed CreateProcess cannot poison handle
         with log_path.open("a", encoding="utf-8") as fh:
-            fh.write(f"\n--- {_now()} ops_keeper spawn {name} flags={flags} ---\n")
+            fh.write(f"\n--- {_now()} ops_keeper spawn {name} flags={flags!r} ---\n")
             fh.flush()
             kwargs: Dict[str, Any] = {
                 "cwd": str(ROOT),
@@ -254,7 +334,7 @@ def _spawn(name: str, args: List[str], log_path: Path) -> int:
             }
             if sys.platform == "win32":
                 if flags is not None:
-                    kwargs["creationflags"] = flags
+                    kwargs["creationflags"] = int(flags)
                 kwargs["close_fds"] = True
             else:
                 kwargs["start_new_session"] = True
@@ -267,28 +347,24 @@ def _spawn(name: str, args: List[str], log_path: Path) -> int:
         time.sleep(1.5)
         return pid if _pid_alive(pid) else 0
 
-    CREATE_NEW_PROCESS_GROUP = 0x00000200
-    CREATE_NO_WINDOW = 0x08000000
-    CREATE_BREAKAWAY_FROM_JOB = 0x01000000
-    DETACHED_PROCESS = 0x00000008
-    flag_sets = [
-        CREATE_NEW_PROCESS_GROUP | CREATE_NO_WINDOW | CREATE_BREAKAWAY_FROM_JOB,
-        CREATE_NEW_PROCESS_GROUP | CREATE_NO_WINDOW | CREATE_BREAKAWAY_FROM_JOB | DETACHED_PROCESS,
-        CREATE_NEW_PROCESS_GROUP | CREATE_NO_WINDOW,
-        CREATE_NEW_PROCESS_GROUP | CREATE_NO_WINDOW | DETACHED_PROCESS,
-        0,
-    ]
-    for flags in flag_sets:
+    for flags in _win_flags_candidates():
         try:
             pid = _popen(flags)
         except OSError as exc:
-            _log(f"spawn {name} flags=0x{flags:x} failed: {exc}")
+            # WinError 5 = Access Denied (typical for BREAKAWAY without rights)
+            winerr = getattr(exc, "winerror", None)
+            if winerr == 5 or "access is denied" in str(exc).lower():
+                _DENIED_FLAGS.add(int(flags))
+                _log(f"spawn {name} flags=0x{int(flags):x} Access Denied — blacklisting combo")
+            else:
+                _log(f"spawn {name} flags=0x{int(flags):x} failed: {exc}")
             continue
-        time.sleep(2.0)
+        time.sleep(1.5)
         if _pid_alive(pid):
-            _log(f"spawn {name} ok pid={pid} flags=0x{flags:x}")
+            _remember_good_flags(int(flags))
+            _log(f"spawn {name} ok pid={pid} flags=0x{int(flags):x}")
             return pid
-        _log(f"spawn {name} died immediately pid={pid} flags=0x{flags:x}")
+        _log(f"spawn {name} died immediately pid={pid} flags=0x{int(flags):x}")
     return 0
 
 

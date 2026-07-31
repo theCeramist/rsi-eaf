@@ -69,32 +69,62 @@ def main() -> int:
     except Exception:
         pass
 
-    flags = 0
-    if sys.platform == "win32":
-        flags = 0x00000200 | 0x00000008 | 0x08000000  # new group + detached + no window
+    # Prefer proven flags: NEW_GROUP|NO_WINDOW. Avoid BREAKAWAY (Access Denied).
+    # DETACHED optional — can help outlive console; try with then without.
+    CREATE_NEW_PROCESS_GROUP = 0x00000200
+    DETACHED_PROCESS = 0x00000008
+    CREATE_NO_WINDOW = 0x08000000
+    flag_try = [
+        CREATE_NEW_PROCESS_GROUP | CREATE_NO_WINDOW,
+        CREATE_NEW_PROCESS_GROUP | CREATE_NO_WINDOW | DETACHED_PROCESS,
+        CREATE_NEW_PROCESS_GROUP,
+        0,
+    ]
+    # Reuse cache from ops keeper if present
+    cache = RUNTIME / "ops_spawn_flags.json"
+    if cache.is_file():
+        try:
+            cached = int(json.loads(cache.read_text(encoding="utf-8")).get("flags"))
+            flag_try = [cached] + [f for f in flag_try if f != cached]
+        except Exception:
+            pass
 
-    with log.open("a", encoding="utf-8") as fh:
-        fh.write(f"\n--- launch ops keeper {datetime.now(timezone.utc).isoformat()} ---\n")
-        fh.flush()
-        p = subprocess.Popen(
-            [
-                sys.executable,
-                "-u",
-                str(ROOT / "scripts" / "factory_ops_keeper.py"),
-                "--interval",
-                os.getenv("OPS_KEEPER_INTERVAL_SEC", "90"),
-                "--cooldown",
-                os.getenv("OPS_KEEPER_COOLDOWN_SEC", "120"),
-            ],
-            cwd=str(ROOT),
-            env=os.environ.copy(),
-            stdout=fh,
-            stderr=subprocess.STDOUT,
-            stdin=subprocess.DEVNULL,
-            creationflags=flags if sys.platform == "win32" else 0,
-            close_fds=True,
-            start_new_session=(sys.platform != "win32"),
-        )
+    p = None
+    last_err: Exception | None = None
+    for flags in flag_try:
+        try:
+            with log.open("a", encoding="utf-8") as fh:
+                fh.write(
+                    f"\n--- launch ops keeper {datetime.now(timezone.utc).isoformat()} "
+                    f"flags=0x{flags:x} ---\n"
+                )
+                fh.flush()
+                p = subprocess.Popen(
+                    [
+                        sys.executable,
+                        "-u",
+                        str(ROOT / "scripts" / "factory_ops_keeper.py"),
+                        "--interval",
+                        os.getenv("OPS_KEEPER_INTERVAL_SEC", "90"),
+                        "--cooldown",
+                        os.getenv("OPS_KEEPER_COOLDOWN_SEC", "120"),
+                    ],
+                    cwd=str(ROOT),
+                    env=os.environ.copy(),
+                    stdout=fh,
+                    stderr=subprocess.STDOUT,
+                    stdin=subprocess.DEVNULL,
+                    creationflags=flags if sys.platform == "win32" else 0,
+                    close_fds=True,
+                    start_new_session=(sys.platform != "win32"),
+                )
+            break
+        except OSError as exc:
+            last_err = exc
+            # Access Denied — try next flag set
+            continue
+    if p is None:
+        raise SystemExit(f"failed to launch ops_keeper: {last_err}")
 
     meta = {
         "schema": "rsi_eaf_ops_keeper_launch_v1",

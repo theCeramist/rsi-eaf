@@ -60,24 +60,52 @@ def main() -> int:
     RUNTIME.mkdir(parents=True, exist_ok=True)
     log = RUNTIME / "factory_cli_supervisor_tee.log"
 
+    # Windows: CREATE_BREAKAWAY_FROM_JOB → WinError 5 Access Denied for normal users.
+    # Prefer NEW_GROUP|NO_WINDOW (proven); DETACHED optional.
     CREATE_NEW_PROCESS_GROUP = 0x00000200
     DETACHED_PROCESS = 0x00000008
     CREATE_NO_WINDOW = 0x08000000
-    flags = CREATE_NEW_PROCESS_GROUP | DETACHED_PROCESS | CREATE_NO_WINDOW
+    flag_try = [
+        CREATE_NEW_PROCESS_GROUP | CREATE_NO_WINDOW,
+        CREATE_NEW_PROCESS_GROUP | CREATE_NO_WINDOW | DETACHED_PROCESS,
+        CREATE_NEW_PROCESS_GROUP,
+        0,
+    ]
+    cache = RUNTIME / "ops_spawn_flags.json"
+    if cache.is_file():
+        try:
+            cached = int(json.loads(cache.read_text(encoding="utf-8")).get("flags"))
+            flag_try = [cached] + [f for f in flag_try if f != cached]
+        except Exception:
+            pass
 
-    with log.open("a", encoding="utf-8") as fh:
-        fh.write(f"\n--- detached launch {datetime.now(timezone.utc).isoformat()} ---\n")
-        fh.flush()
-        p = subprocess.Popen(
-            [sys.executable, "-u", str(ROOT / "scripts" / "factory_cli_supervisor.py")],
-            cwd=str(ROOT),
-            env=os.environ.copy(),
-            stdout=fh,
-            stderr=subprocess.STDOUT,
-            creationflags=flags if sys.platform == "win32" else 0,
-            close_fds=True,
-            start_new_session=(sys.platform != "win32"),
-        )
+    p = None
+    last_err: Exception | None = None
+    flags = flag_try[0]
+    for flags in flag_try:
+        try:
+            with log.open("a", encoding="utf-8") as fh:
+                fh.write(
+                    f"\n--- detached launch {datetime.now(timezone.utc).isoformat()} "
+                    f"flags=0x{flags:x} ---\n"
+                )
+                fh.flush()
+                p = subprocess.Popen(
+                    [sys.executable, "-u", str(ROOT / "scripts" / "factory_cli_supervisor.py")],
+                    cwd=str(ROOT),
+                    env=os.environ.copy(),
+                    stdout=fh,
+                    stderr=subprocess.STDOUT,
+                    creationflags=flags if sys.platform == "win32" else 0,
+                    close_fds=True,
+                    start_new_session=(sys.platform != "win32"),
+                )
+            break
+        except OSError as exc:
+            last_err = exc
+            continue
+    if p is None:
+        raise SystemExit(f"failed to launch supervisor: {last_err}")
 
     # Outer keep-alive: re-launch supervisor if it dies (no human babysitting).
     # Default ON; set SUPERVISOR_KEEPER=false if wmic races cause double stacks.
