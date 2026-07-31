@@ -1,6 +1,6 @@
 # Autonomous outreach — cycle 1014
 
-Updated: 2026-07-31T11:47:59.888058+00:00
+Updated: 2026-07-31T11:55:36.834544+00:00
 
 RSI-EAF cycle 1014 — receipts over volume.
 Human ICP: @thatcrypto_guy-class (critical crypto, anti-hype).
