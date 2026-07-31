@@ -512,12 +512,56 @@ def detect_register_daemon_deadlock_code() -> Optional[Dict[str, Any]]:
 # ---------- remediation ----------
 
 
+def detect_ops_problems_open() -> Optional[Dict[str, Any]]:
+    """Surface OPEN ops problems (Access Denied spawn, supervisor_down, etc.) — never hide."""
+    path = OBS / "ops_problems.json"
+    if not path.exists():
+        return None
+    try:
+        board = json.loads(path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return None
+    open_list = board.get("open") or []
+    if not open_list:
+        return None
+    kinds = [x.get("kind") for x in open_list]
+    return _blocker(
+        "ops_problems_open",
+        severity="P1",
+        title=f"Ops problems OPEN: {', '.join(str(k) for k in kinds[:5])}",
+        evidence={"open": open_list[:8], "open_count": len(open_list)},
+        impact="Factory durability compromised — spawn/process failures must be remediating",
+        remediation="scripts.factory_ops_keeper.ensure_once (full spawn ladder); Task Scheduler RSI-EAF-OpsEnsure",
+        auto_fixable=True,
+    )
+
+
 def remediate(blocker: Dict[str, Any], *, hybrid_restart: Optional[Callable[[], None]] = None) -> Dict[str, Any]:
     bid = blocker.get("id")
     action = {"blocker_id": bid, "at": _now(), "attempted": True, "success": False}
 
     try:
-        if bid in {
+        if bid == "ops_problems_open":
+            # Head-on: re-run ops ensure with full spawn ladder
+            from scripts.factory_ops_keeper import ensure_once
+
+            snap = ensure_once(want_supervisor=True, want_monitor=True, cooldown_sec=30.0)
+            still = Path("observability/ops_problems.json")
+            open_n = 0
+            if still.exists():
+                try:
+                    open_n = int(json.loads(still.read_text(encoding="utf-8")).get("open_count") or 0)
+                except Exception:
+                    open_n = 0
+            action["result"] = {
+                "ensure_actions": snap.get("actions"),
+                "sup": snap.get("supervisor_pids"),
+                "mon": snap.get("monitor_pids"),
+                "open_after": open_n,
+            }
+            action["success"] = open_n == 0 and bool(snap.get("supervisor_pids"))
+
+        elif bid in {
             "conversion_surfaces_down",
             "conversion_doctrine_partial",
             "conversion_verify_error",
@@ -656,6 +700,7 @@ def scan_blockers(
     detectors = [
         detect_conversion_down,
         detect_link_watcher_failures,
+        detect_ops_problems_open,
         detect_business_red,
         detect_pay_cta_vs_live_mismatch,
         detect_register_daemon_deadlock_code,

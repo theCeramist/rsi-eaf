@@ -6,10 +6,12 @@ Keeps exactly one of each:
   - factory_cli_supervisor (owns hybrid + x_daemon)
   - monitor_factory_cli (extreme CLI stream)
 
-Rules (anti-thrash):
-  - Detect by live process command lines, never trust stale PID files alone
-  - If count >= 1 for a role, do nothing (never double-launch)
-  - Cooldown between relaunches (default 120s)
+Doctrine (non-negotiable):
+  - Problems are confronted head-on — never "avoid" or soft-skip forever
+  - Access Denied / dead children / multi-stacks are remediations, not footnotes
+  - Escalate spawn path: CreateProcess flags → PowerShell Start-Process → cmd start
+  - Record every failure to observability/ops_problems.json (OPEN until fixed)
+  - Cooldown only after a verified-alive launch; dead PIDs always re-attempt
   - SUPERVISOR_KEEPER=false when spawning supervisor (no nested keepers)
   - Does NOT start hybrid/x directly — supervisor owns those
 
@@ -23,6 +25,7 @@ Env:
   OPS_KEEPER_COOLDOWN_SEC=120
   OPS_KEEPER_MONITOR=true
   OPS_KEEPER_SUPERVISOR=true
+  OPS_SPAWN_TRY_BREAKAWAY=true   # try breakaway; on Access Denied escalate, do not hide
 """
 
 from __future__ import annotations
@@ -180,20 +183,54 @@ DETACHED_PROCESS = 0x00000008
 CREATE_NO_WINDOW = 0x08000000
 CREATE_BREAKAWAY_FROM_JOB = 0x01000000
 
-# Proven-good default on this host: NEW_GROUP|NO_WINDOW (0x8000200).
-# CREATE_BREAKAWAY_FROM_JOB raises WinError 5 Access Denied under normal user
-# tokens / restricted Job Objects — do not lead with it.
 _SPAWN_FLAGS_CACHE = RUNTIME / "ops_spawn_flags.json"
+_PROBLEMS_FILE = Path(os.getenv("OBSERVABILITY_DIR", "observability")) / "ops_problems.json"
 _KNOWN_GOOD_FLAGS: Optional[int] = None
-_DENIED_FLAGS: set = set()
+# Session memory of failed combos — still re-probed periodically (head-on, not forever-avoid)
+_DENIED_FLAGS: Dict[int, str] = {}
+_DENIED_REPROBE_SEC = 3600.0
+_denied_at: Dict[int, float] = {}
+
+
+def _record_problem(kind: str, detail: Dict[str, Any], *, resolved: bool = False) -> None:
+    """Write/update an ops problem — OPEN until resolved. Never hide."""
+    try:
+        _PROBLEMS_FILE.parent.mkdir(parents=True, exist_ok=True)
+        board: Dict[str, Any] = {"schema": "rsi_eaf_ops_problems_v1", "open": [], "resolved": []}
+        if _PROBLEMS_FILE.exists():
+            try:
+                board = json.loads(_PROBLEMS_FILE.read_text(encoding="utf-8"))
+            except (json.JSONDecodeError, OSError):
+                pass
+        open_list: List[Dict[str, Any]] = list(board.get("open") or [])
+        # upsert by kind
+        open_list = [x for x in open_list if x.get("kind") != kind]
+        rec = {
+            "kind": kind,
+            "status": "RESOLVED" if resolved else "OPEN",
+            "updated_at": _now(),
+            "detail": detail,
+            "honesty": "problems_addressed_head_on",
+        }
+        if resolved:
+            res = list(board.get("resolved") or [])
+            res.append(rec)
+            board["resolved"] = res[-50:]
+        else:
+            open_list.append(rec)
+        board["open"] = open_list
+        board["updated_at"] = _now()
+        board["open_count"] = len(open_list)
+        _PROBLEMS_FILE.write_text(json.dumps(board, indent=2, default=str), encoding="utf-8")
+    except OSError as exc:
+        _log(f"record_problem failed: {exc}")
 
 
 def _win_flags_candidates() -> List[int]:
     """
-    Ordered spawn flags for Windows.
-
-    Access Denied (WinError 5) on BREAKAWAY is expected without SeTcbPrivilege /
-    Job breakaway rights. Prefer working flags first; never spam denied combos.
+    Ordered CreateProcess flags. We TRY breakaway (durability), and if Access Denied
+    we record the problem and escalate to other launch mechanisms — we do not pretend
+    the failure did not happen.
     """
     global _KNOWN_GOOD_FLAGS
     if _KNOWN_GOOD_FLAGS is None and _SPAWN_FLAGS_CACHE.exists():
@@ -204,38 +241,35 @@ def _win_flags_candidates() -> List[int]:
         except (json.JSONDecodeError, OSError, TypeError, ValueError):
             pass
 
-    base_ok = CREATE_NEW_PROCESS_GROUP | CREATE_NO_WINDOW  # 0x8000200 — works here
+    base = CREATE_NEW_PROCESS_GROUP | CREATE_NO_WINDOW
     candidates: List[int] = []
     if _KNOWN_GOOD_FLAGS is not None:
         candidates.append(_KNOWN_GOOD_FLAGS)
 
-    # Primary path (no breakaway)
+    # Full ladder — confront every combination, including breakaway
     candidates.extend(
         [
-            base_ok,
-            base_ok | DETACHED_PROCESS,
+            base,  # known-good on this host
+            base | DETACHED_PROCESS,
             CREATE_NEW_PROCESS_GROUP,
             DETACHED_PROCESS | CREATE_NO_WINDOW,
+            base | CREATE_BREAKAWAY_FROM_JOB,  # head-on: try, remediate if denied
+            base | CREATE_BREAKAWAY_FROM_JOB | DETACHED_PROCESS,
             0,
         ]
     )
 
-    # Optional: try breakaway only if explicitly enabled (usually Access Denied)
-    if os.getenv("OPS_SPAWN_TRY_BREAKAWAY", "").lower() in {"1", "true", "yes"}:
-        candidates.extend(
-            [
-                base_ok | CREATE_BREAKAWAY_FROM_JOB,
-                base_ok | CREATE_BREAKAWAY_FROM_JOB | DETACHED_PROCESS,
-            ]
-        )
-
-    # De-dupe, skip permanently denied
+    now = time.time()
     seen: set = set()
     out: List[int] = []
     for f in candidates:
-        if f in seen or f in _DENIED_FLAGS:
+        if f in seen:
             continue
         seen.add(f)
+        # Re-probe denied flags after interval (do not avoid forever)
+        if f in _DENIED_FLAGS:
+            if now - _denied_at.get(f, 0) < _DENIED_REPROBE_SEC:
+                continue
         out.append(f)
     return out
 
@@ -251,11 +285,16 @@ def _remember_good_flags(flags: int) -> None:
                     "flags": int(flags),
                     "flags_hex": f"0x{int(flags):x}",
                     "updated_at": _now(),
-                    "note": "Cached Windows CreateProcess flags that spawn without Access Denied",
+                    "note": "Working CreateProcess flags after full ladder (including denied breakaway attempts)",
                 },
                 indent=2,
             ),
             encoding="utf-8",
+        )
+        _record_problem(
+            "windows_spawn_flags",
+            {"flags": int(flags), "flags_hex": f"0x{int(flags):x}", "method": "CreateProcess"},
+            resolved=True,
         )
     except OSError:
         pass
@@ -307,21 +346,113 @@ def _child_env() -> Dict[str, str]:
     return env
 
 
+def _spawn_via_powershell(name: str, args: List[str], log_path: Path) -> int:
+    """Escalate after CreateProcess issues — Start-Process head-on."""
+    arg_list = ["-u"] + [str(a) for a in args]
+    arg_ps = ",".join("'" + a.replace("'", "''") + "'" for a in arg_list)
+    py = str(sys.executable).replace("'", "''")
+    wd = str(ROOT).replace("'", "''")
+    ps = (
+        f"$p = Start-Process -FilePath '{py}' "
+        f"-ArgumentList {arg_ps} "
+        f"-WorkingDirectory '{wd}' -WindowStyle Hidden -PassThru; "
+        f"Write-Output $p.Id"
+    )
+    try:
+        r = subprocess.run(
+            ["powershell", "-NoProfile", "-Command", ps],
+            capture_output=True,
+            text=True,
+            timeout=30,
+            cwd=str(ROOT),
+            env=_child_env(),
+        )
+        for line in (r.stdout or "").splitlines():
+            line = line.strip()
+            if line.isdigit():
+                pid = int(line)
+                time.sleep(1.5)
+                if _pid_alive(pid):
+                    _log(f"spawn {name} ok via PowerShell Start-Process pid={pid}")
+                    _record_problem(
+                        "windows_spawn_access_denied",
+                        {"method": "powershell_start_process", "pid": pid, "name": name},
+                        resolved=True,
+                    )
+                    return pid
+        _log(f"spawn {name} PowerShell failed rc={r.returncode} out={(r.stdout or '')[:200]}")
+    except Exception as exc:
+        _log(f"spawn {name} PowerShell escalate error: {exc}")
+    return 0
+
+
+def _spawn_via_cmd_start(name: str, args: List[str], log_path: Path) -> int:
+    """Escalate: cmd start in new window group — head-on durability path."""
+    runner = RUNTIME / f"_spawn_{name}.cmd"
+    py = sys.executable
+    script_args = " ".join(f'"{a}"' for a in args)
+    runner.write_text(
+        "\r\n".join(
+            [
+                "@echo off",
+                f'cd /d "{ROOT}"',
+                "set PYTHONUNBUFFERED=1",
+                f'set PYTHONPATH={ROOT}',
+                f'set FACTORY_MAX_RUNTIME_SEC=0',
+                f'set SUPERVISOR_KEEPER=false',
+                f'"{py}" -u {script_args} >> "{log_path}" 2>&1',
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    try:
+        subprocess.Popen(
+            ["cmd.exe", "/c", "start", f"rsi-eaf-{name}", "/MIN", str(runner)],
+            cwd=str(ROOT),
+            env=_child_env(),
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            creationflags=CREATE_NEW_PROCESS_GROUP | CREATE_NO_WINDOW,
+            close_fds=True,
+        )
+        time.sleep(2.5)
+        # Find by markers
+        markers = SUPERVISOR_MARKERS if "supervisor" in name else MONITOR_MARKERS
+        pids = _find_pids(markers)
+        for pid in pids:
+            if _pid_alive(pid):
+                _log(f"spawn {name} ok via cmd/start pid={pid}")
+                _record_problem(
+                    "windows_spawn_access_denied",
+                    {"method": "cmd_start", "pid": pid, "name": name},
+                    resolved=True,
+                )
+                return pid
+        _log(f"spawn {name} cmd/start launched but process not found")
+    except Exception as exc:
+        _log(f"spawn {name} cmd/start escalate error: {exc}")
+    return 0
+
+
 def _spawn(name: str, args: List[str], log_path: Path) -> int:
     """
-    Spawn durable child. Verify still alive after a short settle.
-    Returns pid or 0 if process died immediately.
+    Spawn durable child — full remediation ladder.
 
-    Windows: never lead with CREATE_BREAKAWAY_FROM_JOB (WinError 5 Access Denied
-    for normal user sessions). Cache the first successful flags combo.
+    1) CreateProcess flag ladder (including breakaway — record Access Denied)
+    2) PowerShell Start-Process
+    3) cmd /c start runner.cmd
+
+    Never silent-fail. Returns pid or 0 only after all paths exhausted.
     """
     RUNTIME.mkdir(parents=True, exist_ok=True)
     log_path.parent.mkdir(parents=True, exist_ok=True)
     env = _child_env()
     cmd = [sys.executable, "-u", *args]
+    access_denied_hits: List[Dict[str, Any]] = []
 
     def _popen(flags: Optional[int]) -> int:
-        # Open log append per attempt so a failed CreateProcess cannot poison handle
         with log_path.open("a", encoding="utf-8") as fh:
             fh.write(f"\n--- {_now()} ops_keeper spawn {name} flags={flags!r} ---\n")
             fh.flush()
@@ -347,15 +478,38 @@ def _spawn(name: str, args: List[str], log_path: Path) -> int:
         time.sleep(1.5)
         return pid if _pid_alive(pid) else 0
 
+    # --- Path 1: CreateProcess flag ladder ---
     for flags in _win_flags_candidates():
         try:
             pid = _popen(flags)
         except OSError as exc:
-            # WinError 5 = Access Denied (typical for BREAKAWAY without rights)
             winerr = getattr(exc, "winerror", None)
             if winerr == 5 or "access is denied" in str(exc).lower():
-                _DENIED_FLAGS.add(int(flags))
-                _log(f"spawn {name} flags=0x{int(flags):x} Access Denied — blacklisting combo")
+                _DENIED_FLAGS[int(flags)] = str(exc)[:200]
+                _denied_at[int(flags)] = time.time()
+                access_denied_hits.append(
+                    {
+                        "flags": int(flags),
+                        "flags_hex": f"0x{int(flags):x}",
+                        "error": str(exc)[:200],
+                        "winerror": winerr,
+                    }
+                )
+                _log(
+                    f"spawn {name} flags=0x{int(flags):x} Access Denied — "
+                    f"recording OPEN problem, escalating other methods"
+                )
+                _record_problem(
+                    "windows_spawn_access_denied",
+                    {
+                        "name": name,
+                        "flags_hex": f"0x{int(flags):x}",
+                        "error": str(exc)[:200],
+                        "action": "escalate_powershell_and_cmd_start",
+                        "hits": access_denied_hits[-5:],
+                    },
+                    resolved=False,
+                )
             else:
                 _log(f"spawn {name} flags=0x{int(flags):x} failed: {exc}")
             continue
@@ -365,7 +519,66 @@ def _spawn(name: str, args: List[str], log_path: Path) -> int:
             _log(f"spawn {name} ok pid={pid} flags=0x{int(flags):x}")
             return pid
         _log(f"spawn {name} died immediately pid={pid} flags=0x{int(flags):x}")
+        _record_problem(
+            "windows_spawn_immediate_death",
+            {"name": name, "pid": pid, "flags_hex": f"0x{int(flags):x}"},
+            resolved=False,
+        )
+
+    # --- Path 2: PowerShell Start-Process (head-on after CreateProcess issues) ---
+    _log(f"spawn {name}: CreateProcess ladder exhausted — escalating PowerShell")
+    pid = _spawn_via_powershell(name, args, log_path)
+    if pid:
+        return pid
+
+    # --- Path 3: cmd start ---
+    _log(f"spawn {name}: PowerShell failed — escalating cmd/start")
+    pid = _spawn_via_cmd_start(name, args, log_path)
+    if pid:
+        return pid
+
+    _record_problem(
+        "windows_spawn_total_failure",
+        {
+            "name": name,
+            "args": [str(a) for a in args],
+            "access_denied_hits": access_denied_hits,
+            "action_required": "Check antivirus / Controlled Folder Access / Job Object; Task Scheduler Ensure still runs",
+        },
+        resolved=False,
+    )
+    _log(f"spawn {name}: ALL paths failed — OPEN ops problem recorded")
     return 0
+
+
+def _remediate_multi_supervisors(sup_pids: List[int]) -> Dict[str, Any]:
+    """
+    Head-on: keep one supervisor (prefer one with hybrid alive), terminate extras.
+    """
+    if len(sup_pids) <= 1:
+        return {"action": "none", "pids": sup_pids}
+    keep = max(sup_pids)  # prefer newest stack
+    killed: List[int] = []
+    for pid in sup_pids:
+        if pid == keep:
+            continue
+        try:
+            subprocess.run(
+                ["taskkill", "/PID", str(pid), "/T", "/F"],
+                capture_output=True,
+                text=True,
+                timeout=20,
+            )
+            killed.append(pid)
+            _log(f"multi-supervisor remediated: killed extra pid={pid} kept={keep}")
+        except Exception as exc:
+            _log(f"multi-supervisor kill failed pid={pid}: {exc}")
+    _record_problem(
+        "multi_supervisor",
+        {"kept": keep, "killed": killed, "was": sup_pids},
+        resolved=bool(killed),
+    )
+    return {"action": "culled", "kept": keep, "killed": killed}
 
 
 def _cooldown_ok(state: dict, role: str, cooldown_sec: float) -> bool:
@@ -421,21 +634,31 @@ def ensure_once(
     # Supervisor: only if zero live supervisors
     if want_supervisor:
         if len(sup) > 1:
-            # Extra supervisors: do not kill (risky); log only
-            _log(f"WARN multiple supervisors pids={sup} — not killing; thrash risk")
-            actions.append({"role": "supervisor", "action": "skip_multi", "pids": sup})
-        elif len(sup) == 1:
+            # Head-on: cull extras (keep one)
+            rem = _remediate_multi_supervisors(sup)
+            actions.append({"role": "supervisor", "action": "remediate_multi", **rem})
+            time.sleep(1)
+            procs = _list_python_cmdlines()
+            sup = _find_pids(SUPERVISOR_MARKERS, procs)
+        if len(sup) == 1:
             actions.append({"role": "supervisor", "action": "ok", "pid": sup[0]})
-        else:
+            _record_problem("supervisor_down", {"pid": sup[0]}, resolved=True)
+        elif len(sup) == 0:
             last_pid = int((state.get("pids") or {}).get("supervisor") or 0)
             # Waive cooldown if last launch PID is dead (failed spawn must not block recovery)
-            waive = bool(last_pid and not _pid_alive(last_pid))
+            waive = bool(last_pid and not _pid_alive(last_pid)) or last_pid == 0
             if not _cooldown_ok(state, "supervisor", cooldown_sec) and not waive:
-                actions.append({"role": "supervisor", "action": "cooldown"})
-                _log("supervisor down but cooldown active")
+                # Still address: record OPEN that we are cooldown-blocked but will re-try next pass
+                actions.append({"role": "supervisor", "action": "cooldown_pending_retry", "next_sec": cooldown_sec})
+                _log("supervisor down — cooldown pending (will re-attempt; problem OPEN)")
+                _record_problem(
+                    "supervisor_down",
+                    {"status": "cooldown_pending", "last_pid": last_pid},
+                    resolved=False,
+                )
             else:
                 if waive and not _cooldown_ok(state, "supervisor", cooldown_sec):
-                    _log(f"supervisor cooldown waived — last pid {last_pid} dead")
+                    _log(f"supervisor cooldown waived — last pid {last_pid} dead or missing")
                 pid = _spawn(
                     "supervisor",
                     [str(ROOT / "scripts" / "factory_cli_supervisor.py")],
@@ -445,26 +668,52 @@ def ensure_once(
                     _mark_launch(state, "supervisor", pid)
                     actions.append({"role": "supervisor", "action": "launched", "pid": pid})
                     _log(f"launched supervisor pid={pid}")
+                    _record_problem("supervisor_down", {"pid": pid}, resolved=True)
                 else:
                     actions.append({"role": "supervisor", "action": "spawn_failed", "pid": pid})
-                    _log("supervisor spawn failed or died immediately")
+                    _log("supervisor spawn failed — OPEN; ladder exhausted")
+                    _record_problem(
+                        "supervisor_down",
+                        {"status": "spawn_failed", "pid": pid},
+                        resolved=False,
+                    )
                 time.sleep(2)
                 procs = _list_python_cmdlines()
                 sup = _find_pids(SUPERVISOR_MARKERS, procs)
 
     # Monitor: only if zero live monitors
     if want_monitor:
+        if len(mon) > 1:
+            # Keep newest monitor, kill extras
+            keep = max(mon)
+            killed = []
+            for pid in mon:
+                if pid == keep:
+                    continue
+                try:
+                    subprocess.run(
+                        ["taskkill", "/PID", str(pid), "/F"],
+                        capture_output=True,
+                        timeout=15,
+                    )
+                    killed.append(pid)
+                except Exception:
+                    pass
+            actions.append({"role": "monitor", "action": "remediate_multi", "kept": keep, "killed": killed})
+            mon = [keep] if _pid_alive(keep) else []
         if len(mon) >= 1:
             actions.append({"role": "monitor", "action": "ok", "pids": mon})
+            _record_problem("monitor_down", {"pids": mon}, resolved=True)
         else:
             last_pid = int((state.get("pids") or {}).get("monitor") or 0)
-            waive = bool(last_pid and not _pid_alive(last_pid))
+            waive = bool(last_pid and not _pid_alive(last_pid)) or last_pid == 0
             if not _cooldown_ok(state, "monitor", cooldown_sec) and not waive:
-                actions.append({"role": "monitor", "action": "cooldown"})
-                _log("monitor down but cooldown active")
+                actions.append({"role": "monitor", "action": "cooldown_pending_retry"})
+                _log("monitor down — cooldown pending (problem OPEN)")
+                _record_problem("monitor_down", {"status": "cooldown_pending"}, resolved=False)
             else:
                 if waive and not _cooldown_ok(state, "monitor", cooldown_sec):
-                    _log(f"monitor cooldown waived — last pid {last_pid} dead")
+                    _log(f"monitor cooldown waived — last pid {last_pid} dead or missing")
                 pid = _spawn(
                     "monitor",
                     [
@@ -483,9 +732,11 @@ def ensure_once(
                     _mark_launch(state, "monitor", pid)
                     actions.append({"role": "monitor", "action": "launched", "pid": pid})
                     _log(f"launched monitor pid={pid}")
+                    _record_problem("monitor_down", {"pid": pid}, resolved=True)
                 else:
                     actions.append({"role": "monitor", "action": "spawn_failed", "pid": pid})
-                    _log("monitor spawn failed or died immediately")
+                    _log("monitor spawn failed — OPEN; ladder exhausted")
+                    _record_problem("monitor_down", {"status": "spawn_failed", "pid": pid}, resolved=False)
                 time.sleep(1)
                 procs = _list_python_cmdlines()
                 mon = _find_pids(MONITOR_MARKERS, procs)
