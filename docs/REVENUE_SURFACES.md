@@ -1,13 +1,12 @@
-# RSI-EAF Revenue Surfaces (Cycle 1037)
+# RSI-EAF Revenue Surfaces (Cycle 1038)
 
-Updated: 2026-07-31T18:58:37.330216+00:00
+Updated: 2026-07-31T19:20:35.124567+00:00
 
 ## Live surfaces
 
 | Surface | URL |
 |---------|-----|
 | Factory index | https://published-zeta.vercel.app/ |
-| Tip page | https://published-zeta.vercel.app/ |
 | Agent pay endpoint | https://published-zeta.vercel.app/agent-pay.json |
 | Agent tip manifest | https://published-zeta.vercel.app/tip-manifest.json |
 | Agent service catalog (Tag 4) | https://published-zeta.vercel.app/service-catalog.json |
@@ -29,7 +28,7 @@ rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5
 ## Briefing unlock memo
 
 ```json
-{"type":"revenue","amount_usd_est":2.0,"product_id":"briefing-cycle-1037","notes":"unlock briefing-cycle-1037"}
+{"type":"revenue","amount_usd_est":2.0,"product_id":"briefing-cycle-1038","notes":"unlock briefing-cycle-1038"}
 ```
 
 ## Verification
