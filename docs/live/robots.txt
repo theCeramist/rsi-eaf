@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /agents.txt
+Allow: /llms.txt
+Allow: /ai.txt
+Allow: /agent-directory.json
+Allow: /agent-invite.json
+Allow: /agent-pay.json
+Allow: /pay.html
+Allow: /.well-known/
+Allow: /free-sample.json
+Allow: /tip-manifest.json
+Allow: /service-catalog.json
+Allow: /icp.json
+Allow: /payer-funnel.json
+Sitemap: https://theceramist.github.io/rsi-eaf/docs/sitemap.xml

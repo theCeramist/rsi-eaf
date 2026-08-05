@@ -1,0 +1,175 @@
+{
+  "schema": "rsi_eaf_social_learning_v1",
+  "generated_at": "2026-08-05T23:13:16.084744+00:00",
+  "cycle_id": null,
+  "doctrine": "receipts_social_v1",
+  "hard_mode": {
+    "max_pay_links_per_3_posts": 1,
+    "no_consecutive_pay_links": true,
+    "budget": {
+      "allow_pay_link": true,
+      "window_n": 0,
+      "pay_in_window": 0,
+      "max_ratio": 0.34,
+      "rule": "max_1_pay_link_per_3_posts_no_consecutive"
+    }
+  },
+  "snapshot": {
+    "critical_path": "distribution_cold",
+    "totals": {
+      "impressions": 0,
+      "likes": 0,
+      "retweets": 0,
+      "replies": 0,
+      "quotes": 0,
+      "timeline_n": 0,
+      "mentions_n": 0,
+      "high_intent_mentions": 0,
+      "pay_intent_mentions": 0,
+      "tx_hash_mentions": 0,
+      "engagement": 0,
+      "impressions_delta": 0,
+      "engagement_delta": 0
+    },
+    "public_metrics": {
+      "followers_count": 9,
+      "following_count": 0,
+      "like_count": 0,
+      "listed_count": 0,
+      "media_count": 0,
+      "tweet_count": 167
+    },
+    "hunt_admit_total": 69,
+    "followers": 9,
+    "tweet_count": 167
+  },
+  "lessons": [
+    {
+      "id": "cold_path_streak",
+      "category": "stuck_path",
+      "claim": "Cold path streak=8: factory must treat social as product input, not just broadcast",
+      "evidence": {
+        "paths": [
+          "distribution_cold",
+          "distribution_cold",
+          "distribution_cold",
+          "distribution_cold",
+          "distribution_cold",
+          "distribution_cold",
+          "distribution_cold",
+          "distribution_cold"
+        ]
+      },
+      "confidence": 0.85,
+      "action": "Evolve conversion copy + agent discovery surfaces from social topics clustering",
+      "evolution_hint": "social_topic_to_surface",
+      "at": "2026-08-05T23:13:16.075524+00:00"
+    },
+    {
+      "id": "path_cold_distribution",
+      "category": "distribution",
+      "claim": "Critical path=distribution_cold: exclusive hunt alone is not converting \u2014 useful artifacts must lead",
+      "evidence": {
+        "path": "distribution_cold",
+        "totals": {
+          "impressions": 0,
+          "likes": 0,
+          "retweets": 0,
+          "replies": 0,
+          "quotes": 0,
+          "timeline_n": 0,
+          "mentions_n": 0,
+          "high_intent_mentions": 0,
+          "pay_intent_mentions": 0,
+          "tx_hash_mentions": 0,
+          "engagement": 0,
+          "impressions_delta": 0,
+          "engagement_delta": 0
+        }
+      },
+      "confidence": 0.7,
+      "action": "Rotate OFFER/RECEIPT formats; 1 useful free artifact per day minimum",
+      "evolution_hint": "receipts_format_rotation",
+      "at": "2026-08-05T23:13:16.072675+00:00"
+    },
+    {
+      "id": "icp_label_cluster",
+      "category": "audience_signal",
+      "claim": "Hunt admits cluster on labels: agent_builder:22, payment_competent:22, sophisticated_agent:20, pay_intent:18, human_archetype:14",
+      "evidence": {
+        "top_labels": [
+          [
+            "agent_builder",
+            22
+          ],
+          [
+            "payment_competent",
+            22
+          ],
+          [
+            "sophisticated_agent",
+            20
+          ],
+          [
+            "pay_intent",
+            18
+          ],
+          [
+            "human_archetype",
+            14
+          ]
+        ],
+        "admit_total": 69
+      },
+      "confidence": 0.7,
+      "action": "Align RECEIPT/MACHINE posts to top cluster language (e.g. x402 settle, XRPL agent)",
+      "evolution_hint": "icp_language_align",
+      "at": "2026-08-05T23:13:16.080470+00:00"
+    }
+  ],
+  "directives": [
+    "Social learning: Evolve conversion copy + agent discovery surfaces from social topics clustering",
+    "Social learning: Rotate OFFER/RECEIPT formats; 1 useful free artifact per day minimum",
+    "Social learning: Align RECEIPT/MACHINE posts to top cluster language (e.g. x402 settle, XRPL agent)",
+    "Social learning: enforce max 1 pay-link per 3 posts (Receipts Social hard-mode)",
+    "Social learning: scoreboard remains external organic payer \u2014 not impressions"
+  ],
+  "evolution_priorities": [
+    {
+      "action": "social_topic_to_surface",
+      "source": "social_learning",
+      "reason": "Cold path streak=8: factory must treat social as product input, not just broadcast",
+      "confidence": 0.85,
+      "category": "stuck_path",
+      "suggested_directive": "Evolve conversion copy + agent discovery surfaces from social topics clustering"
+    },
+    {
+      "action": "receipts_format_rotation",
+      "source": "social_learning",
+      "reason": "Critical path=distribution_cold: exclusive hunt alone is not converting \u2014 useful artifacts must lead",
+      "confidence": 0.7,
+      "category": "distribution",
+      "suggested_directive": "Rotate OFFER/RECEIPT formats; 1 useful free artifact per day minimum"
+    },
+    {
+      "action": "icp_language_align",
+      "source": "social_learning",
+      "reason": "Hunt admits cluster on labels: agent_builder:22, payment_competent:22, sophisticated_agent:20, pay_intent:18, human_archetype:14",
+      "confidence": 0.7,
+      "category": "audience_signal",
+      "suggested_directive": "Align RECEIPT/MACHINE posts to top cluster language (e.g. x402 settle, XRPL agent)"
+    }
+  ],
+  "self_improve_loop": {
+    "ingest": [
+      "x_agent.jsonl",
+      "x_agent_state",
+      "icp_hunt",
+      "metrics_history"
+    ],
+    "analyze": "extract_lessons_from_history",
+    "coordinate": "Social learning: directives \u2192 coordination_bus",
+    "evolve": "evolution_priorities \u2192 proposer / revenue sprint",
+    "act": "x_agent Receipts Social formats + pay-link hard-mode"
+  }
+}

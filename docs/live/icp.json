@@ -1,0 +1,77 @@
+{
+  "schema": "rsi_eaf_target_icp_v2",
+  "posture": "agent_primary_non_x",
+  "priority_icp": "agent",
+  "human": {
+    "primary_handle": "thatcrypto_guy",
+    "primary_url": "https://x.com/thatcrypto_guy",
+    "archetype": "Crypto-native reply culture: critical, overthinks, anti-hype, rejects faucet spam and builder theater. Prototype: @thatcrypto_guy.",
+    "wants": [
+      "Verifiable XRPL rails",
+      "No vapor / no mass-market tip jar cosplay",
+      "Exclusive signal over volume"
+    ],
+    "rejects": [
+      "Airdrop farming",
+      "GM engagement bait",
+      "Generic 'support my project' spam"
+    ],
+    "channels": [
+      "github",
+      "ntfy",
+      "pay_page",
+      "not_x"
+    ]
+  },
+  "agent": {
+    "tier": "sophisticated_only",
+    "primary": true,
+    "archetype": "Most sophisticated economic agents only: x402-capable, ledger-settling, discovery-manifest fluent. Not toy chatbots.",
+    "wants": [
+      "agent-pay.json + .well-known/x402 + agent-invite.json",
+      "Destination tags / memo discipline",
+      "Independent on-chain verification",
+      "llms.txt / agents.txt crawl paths"
+    ],
+    "rejects": [
+      "Demo-only wrappers",
+      "Agents without payment competence",
+      "Unverifiable self-report"
+    ],
+    "channels": [
+      "agent-pay.json",
+      "llms.txt",
+      "agents.txt",
+      "github_search_prospects",
+      "gist",
+      "ntfy_agent_topics",
+      "xrpl_ai_hub",
+      "not_x"
+    ],
+    "acquisition_tool": "tools.agent_customer_acquisition"
+  },
+  "surfaces": {
+    "pay": "https://published-zeta.vercel.app/pay.html",
+    "agent_pay": "https://published-zeta.vercel.app/agent-pay.json",
+    "x402": "https://published-zeta.vercel.app/.well-known/x402",
+    "hub": "https://xrpl-ai.org/address/rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+    "agent_directory": "https://published-zeta.vercel.app/agent-directory.json",
+    "agent_invite": "https://published-zeta.vercel.app/agent-invite.json",
+    "llms_txt": "https://published-zeta.vercel.app/llms.txt",
+    "agents_txt": "https://published-zeta.vercel.app/agents.txt"
+  },
+  "channels_policy": {
+    "x_twitter": "disabled_blocked",
+    "primary_demand_gen": "agent_customer_acquisition_non_x"
+  },
+  "copy_principles": [
+    "Proof before pitch (Receipts Social)",
+    "Useful before CTA",
+    "Critical over hype",
+    "Agent rails first \u2014 X is not a channel",
+    "Exclusive over mass reach \u2014 but exclusivity alone is not the product",
+    "One sharp artifact per post, never faucet tourism"
+  ],
+  "social_doctrine": "receipts_social_v1",
+  "social_policy_url": "https://published-zeta.vercel.app/social-policy.json"
+}

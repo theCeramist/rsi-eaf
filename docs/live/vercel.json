@@ -1,0 +1,59 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "headers": [
+    {
+      "source": "/.well-known/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Content-Type",
+          "value": "application/json; charset=utf-8"
+        }
+      ]
+    },
+    {
+      "source": "/(agent-pay|free-sample|tip-manifest|service-catalog|backer-wall|prospect-pack-latest)\\.json",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/.well-known/x402",
+      "destination": "/.well-known/x402.json"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/deliverables/(briefing-latest|briefing-cycle-[0-9]+)\\.json",
+      "status": 402,
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+        "PAYMENT-REQUIRED": "eyJ4NDAyVmVyc2lvbiI6MSwiYWNjZXB0cyI6W3sic2NoZW1lIjoiZXhhY3QiLCJuZXR3b3JrIjoieHJwbDoxIiwibWF4QW1vdW50UmVxdWlyZWQiOiI2NjY2NjYiLCJyZXNvdXJjZSI6Imh0dHBzOi8vcHVibGlzaGVkLXpldGEudmVyY2VsLmFwcC9kZWxpdmVyYWJsZXMvYnJpZWZpbmctbGF0ZXN0Lmpzb24iLCJkZXNjcmlwdGlvbiI6IlJTSS1FQUYgYnJpZWZpbmciLCJtaW1lVHlwZSI6ImFwcGxpY2F0aW9uL2pzb24iLCJwYXlUbyI6InJCaVU3NHEyd0NQUTdyaTlZRDZKNkxyUTJZM2pGZDhwY04iLCJtYXhUaW1lb3V0U2Vjb25kcyI6NjAwLCJhc3NldCI6IlhSUCIsImV4dHJhIjp7ImRlc3RpbmF0aW9uVGFnIjoyfX1dfQ=="
+      },
+      "continue": false
+    },
+    {
+      "src": "/deliverables/(micro-tool-latest|micro-tool-cycle-[0-9]+)\\.json",
+      "status": 402,
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+        "PAYMENT-REQUIRED": "eyJ4NDAyVmVyc2lvbiI6MSwiYWNjZXB0cyI6W3sic2NoZW1lIjoiZXhhY3QiLCJuZXR3b3JrIjoieHJwbDoxIiwibWF4QW1vdW50UmVxdWlyZWQiOiI5OTk5OTkiLCJyZXNvdXJjZSI6Imh0dHBzOi8vcHVibGlzaGVkLXpldGEudmVyY2VsLmFwcC9kZWxpdmVyYWJsZXMvbWljcm8tdG9vbC1sYXRlc3QuanNvbiIsImRlc2NyaXB0aW9uIjoiUlNJLUVBRiBtaWNyby10b29sIiwibWltZVR5cGUiOiJhcHBsaWNhdGlvbi9qc29uIiwicGF5VG8iOiJyQmlVNzRxMndDUFE3cmk5WUQ2SjZMclEyWTNqRmQ4cGNOIiwibWF4VGltZW91dFNlY29uZHMiOjYwMCwiYXNzZXQiOiJYUlAiLCJleHRyYSI6eyJkZXN0aW5hdGlvblRhZyI6M319XX0="
+      },
+      "continue": false
+    },
+    {
+      "handle": "filesystem"
+    }
+  ]
+}

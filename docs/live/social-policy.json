@@ -1,0 +1,82 @@
+{
+  "schema": "rsi_eaf_social_policy_v1",
+  "version": "receipts_social_v1",
+  "name": "Receipts Social",
+  "tagline": "The feed is an instrument panel \u2014 not a carnival.",
+  "posture": "grandiose_practical_proof_first",
+  "human_icp": {
+    "handle": "thatcrypto_guy",
+    "bar": "critical crypto-native; overthinks; smells vapor; demands receipts"
+  },
+  "agent_icp": {
+    "tier": "sophisticated_only",
+    "bar": "x402 / tags / settle+verify; no toy bots"
+  },
+  "non_negotiables": [
+    "PROOF BEFORE PITCH \u2014 live metric, cycle, tag, or artifact in every post",
+    "USEFUL BEFORE CTA \u2014 free signal first; pay link second or absent",
+    "DUAL-CHANNEL \u2014 prose for humans + machine rails for agents",
+    "SCARCITY \u2014 density over volume; silence is intentional brand",
+    "REFUSAL IS CONTENT \u2014 public no to airdrop/gm/builder LARP",
+    "LEDGER IS SOCIAL \u2014 scoreboard is external organic payers only"
+  ],
+  "formats": {
+    "RECEIPT": "Live factory fact (impressions, cycle, path, hub status) + one implication",
+    "FAILURE": "Honest miss (gate, SLO, $0 organic cycle) + the fix in motion",
+    "OFFER": "One useful free artifact (policy, intel, path) then optional Tag path",
+    "REFUSAL": "Explicit reject of low-tier noise with why (brand, not cruelty)",
+    "SIGNAL": "Point at someone else's real work; add one sharper frame; no generic CTA spam",
+    "MACHINE": "Agent-only dense line: discovery URLs + tag discipline",
+    "LEARNING": "Public self-improve: what the graph taught \u2192 next factory action"
+  },
+  "forbidden": [
+    "GM / engagement bait",
+    "Airdrop / whitelist / pump language",
+    "Faucet tourism framing",
+    "'Free merchant no signup for everyone'",
+    "Raw r-address in tweets while X blocks crypto addresses",
+    "Callouts with zero useful content relative to the target",
+    "Unsolicited @-mention spam / mass callouts",
+    "Burst likes / burst follows / identical cycle spam",
+    "Advertising testnet as customer pay path (mainnet only for real value)",
+    "Impression-chasing as success metric",
+    "More than 1 pay-link post in any 3-post window (hard-mode)",
+    "Two consecutive pay-link posts",
+    "Any write after X lock/403 until cooldown elapses"
+  ],
+  "scarcity": {
+    "max_broadcasts_per_day": 2,
+    "max_callouts_per_day": 1,
+    "min_hours_between_broadcast": 8.0,
+    "max_pay_links_per_3_posts": 1,
+    "no_consecutive_pay_links": true
+  },
+  "self_improve_loop": {
+    "social_interactions": "x_agent ticks + ICP hunt",
+    "learning_engine": "factory_core.social_learning",
+    "cycle_injection": "analyze lane + coordination directives",
+    "evolution": "evolution_priorities_from_lessons \u2192 proposer",
+    "public": "https://published-zeta.vercel.app/social-learning.json"
+  },
+  "surfaces": {
+    "pay": "https://published-zeta.vercel.app/pay.html",
+    "agent_pay": "https://published-zeta.vercel.app/agent-pay.json",
+    "x402": "https://published-zeta.vercel.app/.well-known/x402",
+    "icp": "https://published-zeta.vercel.app/icp.json",
+    "policy": "https://published-zeta.vercel.app/social-policy.json",
+    "learning": "https://published-zeta.vercel.app/social-learning.json",
+    "hub": "https://xrpl.org/accounts/rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5"
+  },
+  "success": {
+    "primary": "external_organic_payer_on_ledger",
+    "secondary": [
+      "inbound_high_sophistication_mentions",
+      "agent_discovery_hits"
+    ],
+    "not_success": [
+      "impressions_alone",
+      "follow_count_alone",
+      "self_pay"
+    ]
+  }
+}

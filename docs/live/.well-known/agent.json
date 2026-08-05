@@ -1,0 +1,48 @@
+{
+  "name": "RSI-EAF",
+  "description": "Recursive self-improving economic agent factory \u2014 XRPL mainnet payable",
+  "url": "https://theceramist.github.io/rsi-eaf/docs",
+  "provider": {
+    "organization": "theCeramist",
+    "url": "https://github.com/theCeramist/rsi-eaf"
+  },
+  "version": "1.0",
+  "documentationUrl": "https://theceramist.github.io/rsi-eaf/docs/llms.txt",
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false,
+    "stateTransitionHistory": false
+  },
+  "defaultInputModes": [
+    "text",
+    "application/json"
+  ],
+  "defaultOutputModes": [
+    "application/json"
+  ],
+  "skills": [
+    {
+      "id": "xrpl-pay-receive",
+      "name": "Accept XRPL payments",
+      "description": "Machine-payable SKUs via destination tags",
+      "tags": [
+        "x402",
+        "xrpl",
+        "payments",
+        "agent-commerce"
+      ],
+      "examples": [
+        "GET https://theceramist.github.io/rsi-eaf/docs/agent-pay.json then Payment Tag 1"
+      ]
+    }
+  ],
+  "payment": {
+    "network": "xrpl_mainnet",
+    "address": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
+    "destination_tag": 1,
+    "min_xrp": 0.01,
+    "recommended_xrp": 1.0,
+    "currency": "XRP"
+  },
+  "agent_pay": "https://theceramist.github.io/rsi-eaf/docs/agent-pay.json"
+}
