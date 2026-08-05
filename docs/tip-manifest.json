@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_tip_manifest_v3",
-  "updated_at": "2026-08-04T23:11:48.140814+00:00",
-  "cycle_id": 1312,
+  "updated_at": "2026-08-05T00:01:28.354708+00:00",
+  "cycle_id": 1316,
   "network": "xrpl_mainnet",
   "real_value": true,
   "treasury_address": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
@@ -22,7 +22,7 @@
     "briefing_unlock": {
       "tag": 2,
       "credited_usd": 2.0,
-      "product_id": "briefing-cycle-1312"
+      "product_id": "briefing-cycle-1316"
     }
   },
   "plain_memo_aliases": {
