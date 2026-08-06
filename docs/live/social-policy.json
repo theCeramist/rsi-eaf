@@ -56,15 +56,15 @@
     "learning_engine": "factory_core.social_learning",
     "cycle_injection": "analyze lane + coordination directives",
     "evolution": "evolution_priorities_from_lessons \u2192 proposer",
-    "public": "https://theceramist.github.io/rsi-eaf/docs/live/social-learning.json"
+    "public": "https://published-zeta.vercel.app/social-learning.json"
   },
   "surfaces": {
-    "pay": "https://theceramist.github.io/rsi-eaf/docs/live/pay.html",
-    "agent_pay": "https://theceramist.github.io/rsi-eaf/docs/live/agent-pay.json",
-    "x402": "https://theceramist.github.io/rsi-eaf/docs/live/.well-known/x402",
-    "icp": "https://theceramist.github.io/rsi-eaf/docs/live/icp.json",
-    "policy": "https://theceramist.github.io/rsi-eaf/docs/live/social-policy.json",
-    "learning": "https://theceramist.github.io/rsi-eaf/docs/live/social-learning.json",
+    "pay": "https://published-zeta.vercel.app/pay.html",
+    "agent_pay": "https://published-zeta.vercel.app/agent-pay.json",
+    "x402": "https://published-zeta.vercel.app/.well-known/x402",
+    "icp": "https://published-zeta.vercel.app/icp.json",
+    "policy": "https://published-zeta.vercel.app/social-policy.json",
+    "learning": "https://published-zeta.vercel.app/social-learning.json",
     "hub": "https://xrpl.org/accounts/rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5"
   },
   "success": {
