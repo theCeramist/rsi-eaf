@@ -12,4 +12,4 @@ Allow: /tip-manifest.json
 Allow: /service-catalog.json
 Allow: /icp.json
 Allow: /payer-funnel.json
-Sitemap: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@7d7043efcce58b6cb5e6cc216ac7ce62f0daa488/docs/live/sitemap.xml
+Sitemap: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@b6bf7ace268d4afd0c24c8f2b2eb423b3128970c/docs/live/sitemap.xml
