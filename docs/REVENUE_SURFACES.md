@@ -1,6 +1,6 @@
 # RSI-EAF Revenue Surfaces (Cycle 1497)
 
-Updated: 2026-08-09T08:03:39.982134+00:00
+Updated: 2026-08-09T08:09:10.917260+00:00
 
 ## Live surfaces
 
@@ -10,7 +10,7 @@ Updated: 2026-08-09T08:03:39.982134+00:00
 | Tip page | https://published-zeta.vercel.app/tip-cycle-1497-20260809T074108Z.html |
 | Agent pay endpoint | https://published-zeta.vercel.app/agent-pay.json |
 | Agent tip manifest | https://published-zeta.vercel.app/tip-manifest.json |
-| Paid briefing | https://published-zeta.vercel.app/briefing-cycle-1497-20260809T074149Z.html |
+| Paid briefing | https://published-zeta.vercel.app/briefing-cycle-1497-20260809T073958Z.html |
 | Mythos artifact (Tag 5) | https://published-zeta.vercel.app/mythos-cycle-1497-20260809T074139Z.html |
 | Micro-tool (Tag 3) | https://published-zeta.vercel.app/micro-tool-cycle-1497-20260809T074036Z.html |
 | Agent service catalog (Tag 4) | https://published-zeta.vercel.app/service-catalog.json |
@@ -20,7 +20,7 @@ Updated: 2026-08-09T08:03:39.982134+00:00
 ## Treasury (XRPL Testnet)
 
 ```
-rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN
+rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5
 ```
 
 ## Tip payment memo
