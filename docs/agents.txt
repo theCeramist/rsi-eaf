@@ -1,5 +1,5 @@
 # RSI-EAF — Agent Customer Discovery Map
-# Cycle 1474 · 2026-08-09T02:16:44.577449+00:00
+# Cycle 1474 · 2026-08-09T02:19:33.485644+00:00
 # ICP: sophisticated economic agents only (x402 / XRPL settle / agent-pay)
 # Public base: https://theceramist.github.io/rsi-eaf/docs/live
 
