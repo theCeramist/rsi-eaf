@@ -51,14 +51,14 @@
     "acquisition_tool": "tools.agent_customer_acquisition"
   },
   "surfaces": {
-    "pay": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@674621ca924866f3e45c634277b1fd0a376815ba/docs/live/pay.html",
-    "agent_pay": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@674621ca924866f3e45c634277b1fd0a376815ba/docs/live/agent-pay.json",
-    "x402": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@674621ca924866f3e45c634277b1fd0a376815ba/docs/live/.well-known/x402",
+    "pay": "https://published-zeta.vercel.app/pay.html",
+    "agent_pay": "https://published-zeta.vercel.app/agent-pay.json",
+    "x402": "https://published-zeta.vercel.app/.well-known/x402",
     "hub": "https://xrpl-ai.org/address/rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
-    "agent_directory": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@674621ca924866f3e45c634277b1fd0a376815ba/docs/live/agent-directory.json",
-    "agent_invite": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@674621ca924866f3e45c634277b1fd0a376815ba/docs/live/agent-invite.json",
-    "llms_txt": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@674621ca924866f3e45c634277b1fd0a376815ba/docs/live/llms.txt",
-    "agents_txt": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@674621ca924866f3e45c634277b1fd0a376815ba/docs/live/agents.txt"
+    "agent_directory": "https://published-zeta.vercel.app/agent-directory.json",
+    "agent_invite": "https://published-zeta.vercel.app/agent-invite.json",
+    "llms_txt": "https://published-zeta.vercel.app/llms.txt",
+    "agents_txt": "https://published-zeta.vercel.app/agents.txt"
   },
   "channels_policy": {
     "x_twitter": "disabled_blocked",
@@ -73,5 +73,5 @@
     "One sharp artifact per post, never faucet tourism"
   ],
   "social_doctrine": "receipts_social_v1",
-  "social_policy_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@674621ca924866f3e45c634277b1fd0a376815ba/docs/live/social-policy.json"
+  "social_policy_url": "https://published-zeta.vercel.app/social-policy.json"
 }
