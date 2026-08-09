@@ -20,7 +20,7 @@
         "plain_memo": "briefing"
       },
       "deliverable_type": "html+json",
-      "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@2c195db73c5a4a993181cb8073225271413e0ae4/docs/live/briefing-cycle-1493.html",
+      "preview_url": "https://published-zeta.vercel.app/briefing-cycle-1493-20260809T070131Z.html",
       "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@2c195db73c5a4a993181cb8073225271413e0ae4/docs/live/deliverables/briefing-cycle-1493.json",
       "buyer": "humans and research agents"
     },
@@ -35,7 +35,7 @@
         "plain_memo": "tool"
       },
       "deliverable_type": "json",
-      "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@2c195db73c5a4a993181cb8073225271413e0ae4/docs/live/micro-tool-cycle-1493.html",
+      "preview_url": "https://published-zeta.vercel.app/micro-tool-cycle-1493-20260809T070155Z.html",
       "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@2c195db73c5a4a993181cb8073225271413e0ae4/docs/live/deliverables/micro-tool-cycle-1493.json",
       "buyer": "wallet integrators and paying agents"
     },
@@ -50,7 +50,7 @@
         "plain_memo": "service"
       },
       "deliverable_type": "json",
-      "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@2c195db73c5a4a993181cb8073225271413e0ae4/docs/live/service-catalog.json",
+      "preview_url": "https://published-zeta.vercel.app/service-catalog.json",
       "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@2c195db73c5a4a993181cb8073225271413e0ae4/docs/live/deliverables/service-bundle-cycle-1493.json",
       "buyer": "ACP / swarm orchestrator agents"
     },
@@ -65,11 +65,11 @@
         "plain_memo": "mythos"
       },
       "deliverable_type": "json",
-      "preview_url": null,
+      "preview_url": "https://published-zeta.vercel.app/mythos-cycle-1493-20260809T070254Z.html",
       "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@2c195db73c5a4a993181cb8073225271413e0ae4/docs/live/deliverables/mythos-cycle-1493.json",
       "buyer": "creators and narrative commerce agents"
     }
   ],
   "acp_ready": true,
-  "updated_at": "2026-08-09T07:01:00.579512+00:00"
+  "updated_at": "2026-08-09T07:04:06.029689+00:00"
 }
