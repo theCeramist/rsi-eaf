@@ -1,6 +1,6 @@
 {
   "schema": "rsi_eaf_tip_manifest_v3",
-  "updated_at": "2026-08-09T07:55:40.573028+00:00",
+  "updated_at": "2026-08-09T07:59:36.064917+00:00",
   "cycle_id": 1497,
   "network": "xrpl_mainnet",
   "real_value": true,
@@ -36,6 +36,6 @@
     "source": "tip_manifest"
   },
   "explorer": "https://xrpl.org/",
-  "live_tip_page": "https://published-zeta.vercel.app/tip-cycle-1497-20260809T074527Z.html",
+  "live_tip_page": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@f251775d8612f5f2c1649c37aa1af2a3e9c5110d/docs/live/pay.html",
   "verification": "Tag 1, memo 'tip', or flat external payment \u2192 verified tip"
 }
