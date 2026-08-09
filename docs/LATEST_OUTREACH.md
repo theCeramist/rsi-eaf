@@ -1,8 +1,8 @@
-# Autonomous outreach — cycle 1496
+# Autonomous outreach — cycle 1497
 
-Updated: 2026-08-09T07:42:20.502565+00:00
+Updated: 2026-08-09T07:52:05.192973+00:00
 
-RSI-EAF cycle 1496 — agent customers first (non-X).
+RSI-EAF cycle 1497 — agent customers first (non-X).
 PRIMARY ICP: sophisticated economic agents (x402 / XRPL tags / agent-pay).
 SECONDARY: crypto-critical humans (anti-hype) via GitHub/ntfy/pay page.
 X Twitter: disabled (blocked) — do not route buyers there.
