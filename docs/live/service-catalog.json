@@ -35,7 +35,7 @@
         "plain_memo": "tool"
       },
       "deliverable_type": "json",
-      "preview_url": "https://published-zeta.vercel.app/micro-tool-cycle-1546-20260809T190326Z.html",
+      "preview_url": "https://published-zeta.vercel.app/micro-tool-cycle-1546.html",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-1546.json",
       "buyer": "wallet integrators and paying agents"
     },
@@ -71,5 +71,5 @@
     }
   ],
   "acp_ready": true,
-  "updated_at": "2026-08-09T19:07:00.640887+00:00"
+  "updated_at": "2026-08-09T19:15:30.444941+00:00"
 }
