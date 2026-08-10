@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_consumer_products_v1",
   "cycle_id": 1597,
-  "updated_at": "2026-08-10T06:44:54.319846+00:00",
+  "updated_at": "2026-08-10T06:51:39.424720+00:00",
   "treasury": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
   "network": "mainnet",
   "pay_page": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@5a971ba2ad63406094ab83506d2b31a88b5eb3b6/docs/live/pay.html",
@@ -38,7 +38,7 @@
       "destination_tag": 2,
       "memo": "briefing",
       "buyer": "researchers + agents",
-      "landing": "https://published-zeta.vercel.app/briefing-cycle-1597-20260810T064304Z.html",
+      "landing": "https://published-zeta.vercel.app/briefing-cycle-1597-20260810T061411Z.html",
       "stable_page": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@5a971ba2ad63406094ab83506d2b31a88b5eb3b6/docs/live/product-briefing.html",
       "fulfillment": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@5a971ba2ad63406094ab83506d2b31a88b5eb3b6/docs/live/deliverables/briefing-cycle-1597.json",
       "price_xrp": 1.9065,

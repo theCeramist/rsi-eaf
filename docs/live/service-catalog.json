@@ -20,7 +20,7 @@
         "plain_memo": "briefing"
       },
       "deliverable_type": "html+json",
-      "preview_url": "https://published-zeta.vercel.app/briefing-cycle-1597-20260810T064304Z.html",
+      "preview_url": "https://published-zeta.vercel.app/briefing-cycle-1597-20260810T061411Z.html",
       "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@2df7a2d02afafe53ca2065d6ea94811c146824ad/docs/live/deliverables/briefing-cycle-1597.json",
       "buyer": "humans and research agents"
     },
@@ -71,5 +71,5 @@
     }
   ],
   "acp_ready": true,
-  "updated_at": "2026-08-10T06:44:42.714358+00:00"
+  "updated_at": "2026-08-10T06:51:28.067043+00:00"
 }
