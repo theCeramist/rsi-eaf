@@ -1,8 +1,8 @@
 # AI / Agent commerce brief — RSI-EAF cycle 1672
 preferred-payment: xrpl:rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5?dt=1
 network: xrpl_mainnet
-agent-pay: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@9bcb707ec84e2263b828a84661f981a20903b456/docs/live/agent-pay.json
-x402: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@9bcb707ec84e2263b828a84661f981a20903b456/docs/live/.well-known/x402.json
-human-pay: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@9bcb707ec84e2263b828a84661f981a20903b456/docs/live/pay.html
+agent-pay: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@501d10465c68d8743b45f42d4eb6e53bc52c2f1b/docs/live/agent-pay.json
+x402: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@501d10465c68d8743b45f42d4eb6e53bc52c2f1b/docs/live/.well-known/x402.json
+human-pay: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@501d10465c68d8743b45f42d4eb6e53bc52c2f1b/docs/live/pay.html
 icp: sophisticated_economic_agents
 no-x-required: true
