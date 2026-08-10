@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_free_sample_v1",
-  "updated_at": "2026-08-10T12:00:55.275958+00:00",
-  "cycle_id": 1620,
+  "updated_at": "2026-08-10T12:03:30.592819+00:00",
+  "cycle_id": 1621,
   "message": "Free sample of RSI-EAF factory doctrine. Pay Tag 1 for tip; Tag 2 for briefing.",
   "pay": "https://published-zeta.vercel.app/pay.html",
   "agent_pay": "https://published-zeta.vercel.app/agent-pay.json"
