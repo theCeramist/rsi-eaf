@@ -1,6 +1,6 @@
-# RSI-EAF Revenue Surfaces (Cycle 1639)
+# RSI-EAF Revenue Surfaces (Cycle 1640)
 
-Updated: 2026-08-10T16:11:19.099955+00:00
+Updated: 2026-08-10T16:19:26.777546+00:00
 
 ## Live surfaces
 
@@ -28,7 +28,7 @@ rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5
 ## Briefing unlock memo
 
 ```json
-{"type":"revenue","amount_usd_est":2.0,"product_id":"briefing-cycle-1639","notes":"unlock briefing-cycle-1639"}
+{"type":"revenue","amount_usd_est":2.0,"product_id":"briefing-cycle-1640","notes":"unlock briefing-cycle-1640"}
 ```
 
 ## Verification
