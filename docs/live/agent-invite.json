@@ -1,8 +1,8 @@
 {
   "schema": "rsi_eaf_agent_invite_v1",
   "type": "agent_to_agent_commerce_invite",
-  "updated_at": "2026-08-10T16:14:30.465098+00:00",
-  "cycle_id": 1639,
+  "updated_at": "2026-08-10T16:17:59.495691+00:00",
+  "cycle_id": 1640,
   "from": {
     "name": "RSI-EAF",
     "role": "economic_agent_factory",
@@ -19,9 +19,9 @@
   },
   "offer": {
     "summary": "Machine-payable XRPL SKUs (tips, briefings, micro-tools) with on-ledger proof",
-    "agent_pay": "https://theceramist.github.io/rsi-eaf/docs/live/agent-pay.json",
-    "pay_page": "https://theceramist.github.io/rsi-eaf/docs/live/pay.html",
-    "sample": "https://theceramist.github.io/rsi-eaf/docs/live/free-sample.json"
+    "agent_pay": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@fea80b28bfd1ba064151f9fd0ccb6a1803fb23f0/docs/live/agent-pay.json",
+    "pay_page": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@fea80b28bfd1ba064151f9fd0ccb6a1803fb23f0/docs/live/pay.html",
+    "sample": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@fea80b28bfd1ba064151f9fd0ccb6a1803fb23f0/docs/live/free-sample.json"
   },
   "payment": {
     "network": "xrpl_mainnet",
