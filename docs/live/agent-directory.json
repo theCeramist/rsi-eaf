@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_agent_directory_v1",
-  "updated_at": "2026-08-10T04:04:00.590250+00:00",
-  "cycle_id": 1585,
+  "updated_at": "2026-08-10T04:11:09.071351+00:00",
+  "cycle_id": 1586,
   "factory": "RSI-EAF",
   "posture": "agent_icp_primary_non_x",
   "icp": {
