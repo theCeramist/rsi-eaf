@@ -1,20 +1,20 @@
 {
   "schema": "rsi_eaf_payer_funnel_v2",
-  "cycle_id": 1667,
-  "updated_at": "2026-08-10T22:03:44.266098+00:00",
+  "cycle_id": 1666,
+  "updated_at": "2026-08-10T22:06:09.756796+00:00",
   "primary_path": {
     "icp_live": true,
     "free_sample_live": false,
     "pay_html_live": true,
     "agent_pay_live": false,
     "tip_manifest_live": false,
-    "local_pay_ok": false,
+    "local_pay_ok": true,
     "local_agent_pay_ok": true,
     "local_tip_manifest_ok": true,
     "local_free_sample_ok": true
   },
   "primary_live_ok": false,
-  "primary_local_ok": false,
+  "primary_local_ok": true,
   "y_red": true,
   "l0_met": false,
   "stages": {
@@ -32,7 +32,7 @@
     "pay": {
       "tip_manifest": false,
       "agent_pay": false,
-      "tip_deep_link": true
+      "tip_deep_link": false
     },
     "ingest": {
       "payment_status_index": true,
@@ -43,7 +43,7 @@
       "fulfillment_index": true
     }
   },
-  "conversion_score": 7,
+  "conversion_score": 6,
   "external_payer_count": 3,
   "organic_revenue_usd_est": 3.0,
   "net_usd_est": -1483.5535,
@@ -51,8 +51,8 @@
   "mesh_lanes_completed": [
     "ingest"
   ],
-  "bottleneck": "primary_local_down",
-  "evolution_directive": "Regenerate local payer pack then ship_must_live_priority",
+  "bottleneck": "primary_live_down",
+  "evolution_directive": "Ship MUST_LIVE priority pack (pay/agent-pay/tip/free-sample) when quota allows",
   "north_star": "external_organic_payer_positive_net",
   "cta": {
     "pay": "https://published-zeta.vercel.app/pay.html",
