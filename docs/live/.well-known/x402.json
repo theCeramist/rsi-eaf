@@ -18,7 +18,7 @@
       "x402Version": 2
     }
   ],
-  "updated_at": "2026-08-10T18:34:13.286083+00:00",
+  "updated_at": "2026-08-10T18:40:38.254543+00:00",
   "factory": "RSI-EAF",
   "network": "xrpl_mainnet",
   "agent_pay": "https://published-zeta.vercel.app/agent-pay.json",
