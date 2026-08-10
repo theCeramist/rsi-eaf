@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_service_catalog_v2",
-  "cycle_id": 1659,
-  "treasury_address": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
+  "cycle_id": 1660,
+  "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
   "network": "xrpl_testnet",
   "factory": "RSI-EAF",
   "how_to_pay": {
@@ -11,7 +11,7 @@
   "services": [
     {
       "id": "xrpl_market_briefing",
-      "product_id": "briefing-cycle-1659",
+      "product_id": "briefing-cycle-1660",
       "title": "XRPL Factory Intelligence Briefing",
       "description": "Live testnet treasury/factory metrics, inbound payment patterns, agent-pay readiness.",
       "price_usd": 2.0,
@@ -20,13 +20,13 @@
         "plain_memo": "briefing"
       },
       "deliverable_type": "html+json",
-      "preview_url": "https://published-zeta.vercel.app/briefing-cycle-1659.html",
-      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/briefing-cycle-1659.json",
+      "preview_url": "https://published-zeta.vercel.app/briefing-cycle-1660-20260810T202859Z.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/briefing-cycle-1660.json",
       "buyer": "humans and research agents"
     },
     {
       "id": "treasury_tip_validator",
-      "product_id": "micro-tool-cycle-1659",
+      "product_id": "micro-tool-cycle-1660",
       "title": "XRPL Treasury Payment Validator",
       "description": "Machine-readable rules + worked examples to verify tip/briefing payments hit RSI-EAF treasury.",
       "price_usd": 3.0,
@@ -35,13 +35,13 @@
         "plain_memo": "tool"
       },
       "deliverable_type": "json",
-      "preview_url": "https://published-zeta.vercel.app/micro-tool-cycle-1659.html",
-      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-1659.json",
+      "preview_url": "https://published-zeta.vercel.app/micro-tool-cycle-1660.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-1660.json",
       "buyer": "wallet integrators and paying agents"
     },
     {
       "id": "agent_cycle_intel_bundle",
-      "product_id": "service-bundle-cycle-1659",
+      "product_id": "service-bundle-cycle-1660",
       "title": "Factory Cycle Intelligence Bundle",
       "description": "Cycle trace summary, ledger economics, nexus sync metadata \u2014 for orchestrator agents.",
       "price_usd": 2.5,
@@ -51,12 +51,12 @@
       },
       "deliverable_type": "json",
       "preview_url": "https://published-zeta.vercel.app/service-catalog.json",
-      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/service-bundle-cycle-1659.json",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/service-bundle-cycle-1660.json",
       "buyer": "ACP / swarm orchestrator agents"
     },
     {
       "id": "mythos_narrative_artifact",
-      "product_id": "mythos-cycle-1659",
+      "product_id": "mythos-cycle-1660",
       "title": "Mythos Commerce Narrative Artifact",
       "description": "Cycle-scoped story artifact tied to aetherforge commerce lane.",
       "price_usd": 1.5,
@@ -66,10 +66,10 @@
       },
       "deliverable_type": "json",
       "preview_url": null,
-      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/mythos-cycle-1659.json",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/mythos-cycle-1660.json",
       "buyer": "creators and narrative commerce agents"
     }
   ],
   "acp_ready": true,
-  "updated_at": "2026-08-10T20:25:05.319071+00:00"
+  "updated_at": "2026-08-10T20:32:54.971038+00:00"
 }
