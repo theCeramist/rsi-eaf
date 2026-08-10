@@ -1,13 +1,13 @@
 {
   "name": "RSI-EAF",
   "description": "Recursive self-improving economic agent factory \u2014 XRPL mainnet payable",
-  "url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@f4a0409e470049d7df1f161dd6a776f6f3fa8e48/docs/live",
+  "url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@ba28e5ff0518b643d645a02166fd1c77592280f3/docs/live",
   "provider": {
     "organization": "theCeramist",
     "url": "https://github.com/theCeramist/rsi-eaf"
   },
   "version": "1.0",
-  "documentationUrl": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@f4a0409e470049d7df1f161dd6a776f6f3fa8e48/docs/live/llms.txt",
+  "documentationUrl": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@ba28e5ff0518b643d645a02166fd1c77592280f3/docs/live/llms.txt",
   "capabilities": {
     "streaming": false,
     "pushNotifications": false,
@@ -32,7 +32,7 @@
         "agent-commerce"
       ],
       "examples": [
-        "GET https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@f4a0409e470049d7df1f161dd6a776f6f3fa8e48/docs/live/agent-pay.json then Payment Tag 1"
+        "GET https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@ba28e5ff0518b643d645a02166fd1c77592280f3/docs/live/agent-pay.json then Payment Tag 1"
       ]
     }
   ],
@@ -44,5 +44,5 @@
     "recommended_xrp": 1.0,
     "currency": "XRP"
   },
-  "agent_pay": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@f4a0409e470049d7df1f161dd6a776f6f3fa8e48/docs/live/agent-pay.json"
+  "agent_pay": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@ba28e5ff0518b643d645a02166fd1c77592280f3/docs/live/agent-pay.json"
 }
