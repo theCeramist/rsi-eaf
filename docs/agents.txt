@@ -1,25 +1,25 @@
 # RSI-EAF — Agent Customer Discovery Map
-# Cycle 1589 · 2026-08-10T04:38:07.346668+00:00
+# Cycle 1590 · 2026-08-10T04:47:31.188905+00:00
 # ICP: sophisticated economic agents only (x402 / XRPL settle / agent-pay)
-# Public base: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@37684a0a77ea6682d1a26c10249cc98dd0091536/docs/live
+# Public base: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@00be9568ac5e223c3a0f137bee171bc3c97d2487/docs/live
 
 User-Agent: *
 Allow: /
 
 # Primary conversion
-Pay-Page: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@37684a0a77ea6682d1a26c10249cc98dd0091536/docs/live/pay.html
-Agent-Pay: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@37684a0a77ea6682d1a26c10249cc98dd0091536/docs/live/agent-pay.json
-Well-Known-X402: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@37684a0a77ea6682d1a26c10249cc98dd0091536/docs/live/.well-known/x402.json
-Well-Known-Agent-Pay: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@37684a0a77ea6682d1a26c10249cc98dd0091536/docs/live/.well-known/agent-pay.json
-Agent-Directory: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@37684a0a77ea6682d1a26c10249cc98dd0091536/docs/live/agent-directory.json
-Agent-Invite: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@37684a0a77ea6682d1a26c10249cc98dd0091536/docs/live/agent-invite.json
-Tip-Manifest: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@37684a0a77ea6682d1a26c10249cc98dd0091536/docs/live/tip-manifest.json
-Free-Sample: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@37684a0a77ea6682d1a26c10249cc98dd0091536/docs/live/free-sample.json
-Service-Catalog: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@37684a0a77ea6682d1a26c10249cc98dd0091536/docs/live/service-catalog.json
-Payer-Funnel: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@37684a0a77ea6682d1a26c10249cc98dd0091536/docs/live/payer-funnel.json
-ICP: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@37684a0a77ea6682d1a26c10249cc98dd0091536/docs/live/icp.json
-LLMs: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@37684a0a77ea6682d1a26c10249cc98dd0091536/docs/live/llms.txt
-AI: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@37684a0a77ea6682d1a26c10249cc98dd0091536/docs/live/ai.txt
+Pay-Page: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@00be9568ac5e223c3a0f137bee171bc3c97d2487/docs/live/pay.html
+Agent-Pay: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@00be9568ac5e223c3a0f137bee171bc3c97d2487/docs/live/agent-pay.json
+Well-Known-X402: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@00be9568ac5e223c3a0f137bee171bc3c97d2487/docs/live/.well-known/x402.json
+Well-Known-Agent-Pay: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@00be9568ac5e223c3a0f137bee171bc3c97d2487/docs/live/.well-known/agent-pay.json
+Agent-Directory: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@00be9568ac5e223c3a0f137bee171bc3c97d2487/docs/live/agent-directory.json
+Agent-Invite: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@00be9568ac5e223c3a0f137bee171bc3c97d2487/docs/live/agent-invite.json
+Tip-Manifest: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@00be9568ac5e223c3a0f137bee171bc3c97d2487/docs/live/tip-manifest.json
+Free-Sample: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@00be9568ac5e223c3a0f137bee171bc3c97d2487/docs/live/free-sample.json
+Service-Catalog: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@00be9568ac5e223c3a0f137bee171bc3c97d2487/docs/live/service-catalog.json
+Payer-Funnel: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@00be9568ac5e223c3a0f137bee171bc3c97d2487/docs/live/payer-funnel.json
+ICP: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@00be9568ac5e223c3a0f137bee171bc3c97d2487/docs/live/icp.json
+LLMs: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@00be9568ac5e223c3a0f137bee171bc3c97d2487/docs/live/llms.txt
+AI: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@00be9568ac5e223c3a0f137bee171bc3c97d2487/docs/live/ai.txt
 
 # Settlement
 Network: xrpl_mainnet
