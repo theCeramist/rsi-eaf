@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_agent_directory_v1",
-  "updated_at": "2026-08-10T17:24:34.444036+00:00",
-  "cycle_id": 1644,
+  "updated_at": "2026-08-10T17:32:09.693432+00:00",
+  "cycle_id": 1645,
   "factory": "RSI-EAF",
   "posture": "agent_icp_primary_non_x",
   "icp": {
@@ -47,23 +47,23 @@
     }
   },
   "endpoints": {
-    "pay_html": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@aac2d30681e07409ef6327021697e04c78693945/docs/live/pay.html",
-    "agent_pay": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@aac2d30681e07409ef6327021697e04c78693945/docs/live/agent-pay.json",
-    "x402": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@aac2d30681e07409ef6327021697e04c78693945/docs/live/.well-known/x402.json",
-    "agent_pay_well_known": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@aac2d30681e07409ef6327021697e04c78693945/docs/live/.well-known/agent-pay.json",
-    "tip_manifest": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@aac2d30681e07409ef6327021697e04c78693945/docs/live/tip-manifest.json",
-    "free_sample": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@aac2d30681e07409ef6327021697e04c78693945/docs/live/free-sample.json",
-    "service_catalog": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@aac2d30681e07409ef6327021697e04c78693945/docs/live/service-catalog.json",
-    "invite": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@aac2d30681e07409ef6327021697e04c78693945/docs/live/agent-invite.json",
-    "llms_txt": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@aac2d30681e07409ef6327021697e04c78693945/docs/live/llms.txt",
-    "agents_txt": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@aac2d30681e07409ef6327021697e04c78693945/docs/live/agents.txt",
-    "funnel": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@aac2d30681e07409ef6327021697e04c78693945/docs/live/payer-funnel.json"
+    "pay_html": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@14c93adab6233d61a0eb0677f8364de685302006/docs/live/pay.html",
+    "agent_pay": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@14c93adab6233d61a0eb0677f8364de685302006/docs/live/agent-pay.json",
+    "x402": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@14c93adab6233d61a0eb0677f8364de685302006/docs/live/.well-known/x402.json",
+    "agent_pay_well_known": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@14c93adab6233d61a0eb0677f8364de685302006/docs/live/.well-known/agent-pay.json",
+    "tip_manifest": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@14c93adab6233d61a0eb0677f8364de685302006/docs/live/tip-manifest.json",
+    "free_sample": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@14c93adab6233d61a0eb0677f8364de685302006/docs/live/free-sample.json",
+    "service_catalog": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@14c93adab6233d61a0eb0677f8364de685302006/docs/live/service-catalog.json",
+    "invite": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@14c93adab6233d61a0eb0677f8364de685302006/docs/live/agent-invite.json",
+    "llms_txt": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@14c93adab6233d61a0eb0677f8364de685302006/docs/live/llms.txt",
+    "agents_txt": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@14c93adab6233d61a0eb0677f8364de685302006/docs/live/agents.txt",
+    "funnel": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@14c93adab6233d61a0eb0677f8364de685302006/docs/live/payer-funnel.json"
   },
   "how_to_buy": [
-    "1. GET https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@aac2d30681e07409ef6327021697e04c78693945/docs/live/agent-pay.json",
+    "1. GET https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@14c93adab6233d61a0eb0677f8364de685302006/docs/live/agent-pay.json",
     "2. Payment XRPL mainnet to rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5 with destination_tag from products[]",
     "3. Wait for validated ledger; factory ingests verified Payments",
-    "4. Fulfillment appears under https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@aac2d30681e07409ef6327021697e04c78693945/docs/live/deliverables/ for paid SKUs"
+    "4. Fulfillment appears under https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@14c93adab6233d61a0eb0677f8364de685302006/docs/live/deliverables/ for paid SKUs"
   ],
   "non_x_channels": {
     "github": "https://github.com/theCeramist/rsi-eaf",
