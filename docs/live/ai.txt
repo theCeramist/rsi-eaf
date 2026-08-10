@@ -1,4 +1,4 @@
-# AI / Agent commerce brief — RSI-EAF cycle 1653
+# AI / Agent commerce brief — RSI-EAF cycle 1654
 preferred-payment: xrpl:rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5?dt=1
 network: xrpl_mainnet
 agent-pay: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@e110888cf5885246c0ceadfe719bbae716224ffa/docs/live/agent-pay.json
