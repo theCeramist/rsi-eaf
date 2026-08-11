@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_agent_directory_v1",
-  "updated_at": "2026-08-11T09:06:31.904822+00:00",
-  "cycle_id": 1714,
+  "updated_at": "2026-08-11T09:08:45.891514+00:00",
+  "cycle_id": 1715,
   "factory": "RSI-EAF",
   "posture": "agent_icp_primary_non_x",
   "icp": {
@@ -47,23 +47,23 @@
     }
   },
   "endpoints": {
-    "pay_html": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@827d0202fef0afe0721a9cd1bc65076e705e2fec/docs/live/pay.html",
-    "agent_pay": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@827d0202fef0afe0721a9cd1bc65076e705e2fec/docs/live/agent-pay.json",
-    "x402": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@827d0202fef0afe0721a9cd1bc65076e705e2fec/docs/live/.well-known/x402.json",
-    "agent_pay_well_known": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@827d0202fef0afe0721a9cd1bc65076e705e2fec/docs/live/.well-known/agent-pay.json",
-    "tip_manifest": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@827d0202fef0afe0721a9cd1bc65076e705e2fec/docs/live/tip-manifest.json",
-    "free_sample": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@827d0202fef0afe0721a9cd1bc65076e705e2fec/docs/live/free-sample.json",
-    "service_catalog": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@827d0202fef0afe0721a9cd1bc65076e705e2fec/docs/live/service-catalog.json",
-    "invite": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@827d0202fef0afe0721a9cd1bc65076e705e2fec/docs/live/agent-invite.json",
-    "llms_txt": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@827d0202fef0afe0721a9cd1bc65076e705e2fec/docs/live/llms.txt",
-    "agents_txt": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@827d0202fef0afe0721a9cd1bc65076e705e2fec/docs/live/agents.txt",
-    "funnel": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@827d0202fef0afe0721a9cd1bc65076e705e2fec/docs/live/payer-funnel.json"
+    "pay_html": "https://theceramist.github.io/rsi-eaf/docs/live/pay.html",
+    "agent_pay": "https://theceramist.github.io/rsi-eaf/docs/live/agent-pay.json",
+    "x402": "https://theceramist.github.io/rsi-eaf/docs/live/.well-known/x402.json",
+    "agent_pay_well_known": "https://theceramist.github.io/rsi-eaf/docs/live/.well-known/agent-pay.json",
+    "tip_manifest": "https://theceramist.github.io/rsi-eaf/docs/live/tip-manifest.json",
+    "free_sample": "https://theceramist.github.io/rsi-eaf/docs/live/free-sample.json",
+    "service_catalog": "https://theceramist.github.io/rsi-eaf/docs/live/service-catalog.json",
+    "invite": "https://theceramist.github.io/rsi-eaf/docs/live/agent-invite.json",
+    "llms_txt": "https://theceramist.github.io/rsi-eaf/docs/live/llms.txt",
+    "agents_txt": "https://theceramist.github.io/rsi-eaf/docs/live/agents.txt",
+    "funnel": "https://theceramist.github.io/rsi-eaf/docs/live/payer-funnel.json"
   },
   "how_to_buy": [
-    "1. GET https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@827d0202fef0afe0721a9cd1bc65076e705e2fec/docs/live/agent-pay.json",
+    "1. GET https://theceramist.github.io/rsi-eaf/docs/live/agent-pay.json",
     "2. Payment XRPL mainnet to rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5 with destination_tag from products[]",
     "3. Wait for validated ledger; factory ingests verified Payments",
-    "4. Fulfillment appears under https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@827d0202fef0afe0721a9cd1bc65076e705e2fec/docs/live/deliverables/ for paid SKUs"
+    "4. Fulfillment appears under https://theceramist.github.io/rsi-eaf/docs/live/deliverables/ for paid SKUs"
   ],
   "non_x_channels": {
     "github": "https://github.com/theCeramist/rsi-eaf",
