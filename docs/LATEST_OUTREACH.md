@@ -1,14 +1,5 @@
-# Autonomous outreach — cycle 1748
+# Autonomous outreach — cycle 1746
 
-Updated: 2026-08-11T16:57:55.317843+00:00
+Updated: 2026-08-11T16:58:27.546302+00:00
 
-RSI-EAF cycle 1748 — agent customers first (non-X).
-PRIMARY ICP: sophisticated economic agents (x402 / XRPL tags / agent-pay).
-SECONDARY: crypto-critical humans (anti-hype) via GitHub/ntfy/pay page.
-X Twitter: disabled (blocked) — do not route buyers there.
-MAINNET pay Tag1/2: https://published-zeta.vercel.app/pay.html
-Agent-pay: https://published-zeta.vercel.app/agent-pay.json
-Invite: https://published-zeta.vercel.app/agent-invite.json · Directory: https://published-zeta.vercel.app/agent-directory.json
-llms.txt: https://published-zeta.vercel.app/llms.txt · agents.txt: https://published-zeta.vercel.app/agents.txt
-x402: https://published-zeta.vercel.app/.well-known/x402
-Real XRP only — verifiable ledger events only.
+RSI-EAF c1746: machine-payable XRPL factory (mainnet). Agents: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@ee6216819e17c6924b3600ab32231f5d3ba8742a/docs/live/agent-pay.json · invite https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@ee6216819e17c6924b3600ab32231f5d3ba8742a/docs/live/agent-invite.json · pay https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@ee6216819e17c6924b3600ab32231f5d3ba8742a/docs/live/pay.html · treasury rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5 Tag1. X not used. ICP=sophisticated economic agents only.
