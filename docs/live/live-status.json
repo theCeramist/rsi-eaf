@@ -1,6 +1,6 @@
 {
   "schema": "rsi_eaf_live_pack_status_v1",
-  "updated_at": "2026-08-11T00:37:59.701388+00:00",
+  "updated_at": "2026-08-11T00:41:42.610812+00:00",
   "cycle_id": 1676,
   "files": [
     "pay.html",
@@ -20,6 +20,7 @@
     "payer-funnel.json",
     "robots.txt",
     "service-catalog.json",
+    "products.html",
     "products.json",
     ".well-known/x402.json",
     ".well-known/agent-pay.json",
