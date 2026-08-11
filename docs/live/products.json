@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_consumer_products_v1",
   "cycle_id": 1715,
-  "updated_at": "2026-08-11T09:18:29.680032+00:00",
+  "updated_at": "2026-08-11T09:27:19.062416+00:00",
   "treasury": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
   "network": "mainnet",
   "pay_page": "https://published-zeta.vercel.app/pay.html",
@@ -38,7 +38,7 @@
       "destination_tag": 2,
       "memo": "briefing",
       "buyer": "researchers + agents",
-      "landing": "https://published-zeta.vercel.app/briefing-cycle-1715-20260811T091409Z.html",
+      "landing": "https://published-zeta.vercel.app/product-briefing.html",
       "stable_page": "https://published-zeta.vercel.app/product-briefing.html",
       "fulfillment": "https://published-zeta.vercel.app/deliverables/briefing-cycle-1715.json",
       "price_xrp": 1.9065,
