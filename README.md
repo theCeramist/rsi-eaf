@@ -162,5 +162,6 @@ Public factory outputs and XRPL payment endpoints (cycle 11):
 - **Tip manifest (agents):** https://published-zeta.vercel.app/tip-manifest.json
 - **Paid briefing:** https://published-zeta.vercel.app/briefing-cycle-11-20260627T043211Z.html
 - **Docs:** [docs/REVENUE_SURFACES.md](docs/REVENUE_SURFACES.md)
+- **Topology (GGE):** [docs/FACTORY_TOPOLOGY.md](docs/FACTORY_TOPOLOGY.md) — graph engineering, operator guidance edges, Grok Bot posture, host full-use; boards via `python -u -m tools.factory_topology`
 
 Send XRPL testnet payments to the factory treasury with a `revenue` memo — see docs for templates.
