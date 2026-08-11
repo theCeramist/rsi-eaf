@@ -56,15 +56,15 @@
     "learning_engine": "factory_core.social_learning",
     "cycle_injection": "analyze lane + coordination directives",
     "evolution": "evolution_priorities_from_lessons \u2192 proposer",
-    "public": "https://theceramist.github.io/rsi-eaf/docs/live/social-learning.json"
+    "public": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@674621ca924866f3e45c634277b1fd0a376815ba/docs/live/social-learning.json"
   },
   "surfaces": {
-    "pay": "https://theceramist.github.io/rsi-eaf/docs/live/pay.html",
-    "agent_pay": "https://theceramist.github.io/rsi-eaf/docs/live/agent-pay.json",
-    "x402": "https://theceramist.github.io/rsi-eaf/docs/live/.well-known/x402",
-    "icp": "https://theceramist.github.io/rsi-eaf/docs/live/icp.json",
-    "policy": "https://theceramist.github.io/rsi-eaf/docs/live/social-policy.json",
-    "learning": "https://theceramist.github.io/rsi-eaf/docs/live/social-learning.json",
+    "pay": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@674621ca924866f3e45c634277b1fd0a376815ba/docs/live/pay.html",
+    "agent_pay": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@674621ca924866f3e45c634277b1fd0a376815ba/docs/live/agent-pay.json",
+    "x402": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@674621ca924866f3e45c634277b1fd0a376815ba/docs/live/.well-known/x402",
+    "icp": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@674621ca924866f3e45c634277b1fd0a376815ba/docs/live/icp.json",
+    "policy": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@674621ca924866f3e45c634277b1fd0a376815ba/docs/live/social-policy.json",
+    "learning": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@674621ca924866f3e45c634277b1fd0a376815ba/docs/live/social-learning.json",
     "hub": "https://xrpl.org/accounts/rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5"
   },
   "success": {
