@@ -1,26 +1,26 @@
-# RSI-EAF Revenue Surfaces (Cycle 1763)
+# RSI-EAF Revenue Surfaces (Cycle 1764)
 
-Updated: 2026-08-11T21:54:41.626276+00:00
+Updated: 2026-08-11T22:58:53.127293+00:00
 
 ## Live surfaces
 
 | Surface | URL |
 |---------|-----|
-| Factory index | https://published-zeta.vercel.app/ |
-| Tip page | https://published-zeta.vercel.app/tip-cycle-1763-20260811T210118Z.html |
-| Agent pay endpoint | https://published-zeta.vercel.app/agent-pay.json |
-| Agent tip manifest | https://published-zeta.vercel.app/tip-manifest.json |
-| Paid briefing | https://published-zeta.vercel.app/briefing-cycle-1763-20260811T205928Z.html |
-| Mythos artifact (Tag 5) | https://published-zeta.vercel.app/mythos-cycle-1763-20260811T210149Z.html |
-| Micro-tool (Tag 3) | https://published-zeta.vercel.app/micro-tool-cycle-1763-20260811T210008Z.html |
-| Agent service catalog (Tag 4) | https://published-zeta.vercel.app/service-catalog.json |
+| Factory index | https://aetherforge.world/factory/ |
+| Tip page | https://aetherforge.world/factory/tip-manifest.json |
+| Agent pay endpoint | https://aetherforge.world/factory/agent-pay.json |
+| Agent tip manifest | https://aetherforge.world/factory/tip-manifest.json |
+| Paid briefing | https://aetherforge.world/factory/briefing-cycle-1764-20260811T224112Z.html |
+| Mythos artifact (Tag 5) | https://aetherforge.world/factory/mythos-cycle-1764-20260811T224633Z.html |
+| Micro-tool (Tag 3) | https://aetherforge.world/factory/micro-tool-cycle-1764-20260811T224205Z.html |
+| Agent service catalog (Tag 4) | https://aetherforge.world/factory/service-catalog.json |
 | aetherforge nexus | https://aetherforge.world |
 | jarvis-swarm repo | https://github.com/theCeramist/jarvis-swarm |
 
 ## Treasury (XRPL Testnet)
 
 ```
-rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN
+rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5
 ```
 
 ## Tip payment memo
@@ -32,7 +32,7 @@ rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN
 ## Briefing unlock memo
 
 ```json
-{"type":"revenue","amount_usd_est":2.0,"product_id":"briefing-cycle-1763","notes":"unlock briefing-cycle-1763"}
+{"type":"revenue","amount_usd_est":2.0,"product_id":"briefing-cycle-1764","notes":"unlock briefing-cycle-1764"}
 ```
 
 ## Verification
