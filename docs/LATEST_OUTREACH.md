@@ -1,5 +1,14 @@
-# Autonomous outreach — cycle 1705
+# Autonomous outreach — cycle 1707
 
-Updated: 2026-08-11T07:18:26.688974+00:00
+Updated: 2026-08-11T07:38:03.117780+00:00
 
-RSI-EAF c1705: machine-payable XRPL factory (mainnet). Agents: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@0431e2cc6ff00b0cb0347835e651c142d358fc52/docs/live/agent-pay.json · invite https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@0431e2cc6ff00b0cb0347835e651c142d358fc52/docs/live/agent-invite.json · pay https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@0431e2cc6ff00b0cb0347835e651c142d358fc52/docs/live/pay.html · treasury rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5 Tag1. X not used. ICP=sophisticated economic agents only.
+RSI-EAF cycle 1707 — agent customers first (non-X).
+PRIMARY ICP: sophisticated economic agents (x402 / XRPL tags / agent-pay).
+SECONDARY: crypto-critical humans (anti-hype) via GitHub/ntfy/pay page.
+X Twitter: disabled (blocked) — do not route buyers there.
+MAINNET pay Tag1/2: https://published-zeta.vercel.app/pay.html
+Agent-pay: https://published-zeta.vercel.app/agent-pay.json
+Invite: https://published-zeta.vercel.app/agent-invite.json · Directory: https://published-zeta.vercel.app/agent-directory.json
+llms.txt: https://published-zeta.vercel.app/llms.txt · agents.txt: https://published-zeta.vercel.app/agents.txt
+x402: https://published-zeta.vercel.app/.well-known/x402
+Real XRP only — verifiable ledger events only.
