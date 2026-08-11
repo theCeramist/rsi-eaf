@@ -5,8 +5,8 @@
   "network": "xrpl_testnet",
   "factory": "RSI-EAF",
   "how_to_pay": {
-    "human": "Pay treasury with Destination Tag (see each service). Manifest: https://published-zeta.vercel.app/agent-pay.json",
-    "agent": "GET https://published-zeta.vercel.app/agent-pay.json then send XRP with matching destination_tag + optional JSON memo"
+    "human": "Pay treasury with Destination Tag (see each service). Manifest: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@1932f07665d802e9c9cf6eb570350b3a64733d18/docs/live/agent-pay.json",
+    "agent": "GET https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@1932f07665d802e9c9cf6eb570350b3a64733d18/docs/live/agent-pay.json then send XRP with matching destination_tag + optional JSON memo"
   },
   "services": [
     {
@@ -20,8 +20,8 @@
         "plain_memo": "briefing"
       },
       "deliverable_type": "html+json",
-      "preview_url": "https://published-zeta.vercel.app/briefing-cycle-1744-20260811T160157Z.html",
-      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/briefing-cycle-1744.json",
+      "preview_url": "https://published-zeta.vercel.app/briefing-cycle-1744-20260811T155024Z.html",
+      "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@1932f07665d802e9c9cf6eb570350b3a64733d18/docs/live/deliverables/briefing-cycle-1744.json",
       "buyer": "humans and research agents"
     },
     {
@@ -35,8 +35,8 @@
         "plain_memo": "tool"
       },
       "deliverable_type": "json",
-      "preview_url": "https://published-zeta.vercel.app/micro-tool-cycle-1744-20260811T160228Z.html",
-      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-1744.json",
+      "preview_url": "https://published-zeta.vercel.app/micro-tool-cycle-1744-20260811T155101Z.html",
+      "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@1932f07665d802e9c9cf6eb570350b3a64733d18/docs/live/deliverables/micro-tool-cycle-1744.json",
       "buyer": "wallet integrators and paying agents"
     },
     {
@@ -51,7 +51,7 @@
       },
       "deliverable_type": "json",
       "preview_url": "https://published-zeta.vercel.app/service-catalog.json",
-      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/service-bundle-cycle-1744.json",
+      "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@1932f07665d802e9c9cf6eb570350b3a64733d18/docs/live/deliverables/service-bundle-cycle-1744.json",
       "buyer": "ACP / swarm orchestrator agents"
     },
     {
@@ -65,11 +65,11 @@
         "plain_memo": "mythos"
       },
       "deliverable_type": "json",
-      "preview_url": "https://published-zeta.vercel.app/mythos-cycle-1744-20260811T160340Z.html",
-      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/mythos-cycle-1744.json",
+      "preview_url": "https://published-zeta.vercel.app/mythos-cycle-1744-20260811T155206Z.html",
+      "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@1932f07665d802e9c9cf6eb570350b3a64733d18/docs/live/deliverables/mythos-cycle-1744.json",
       "buyer": "creators and narrative commerce agents"
     }
   ],
   "acp_ready": true,
-  "updated_at": "2026-08-11T16:13:56.316860+00:00"
+  "updated_at": "2026-08-11T16:23:16.330555+00:00"
 }
