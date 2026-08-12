@@ -1,5 +1,5 @@
 # RSI-EAF — Agent Customer Discovery Map
-# Cycle 1783 · 2026-08-12T12:58:39.994957+00:00
+# Cycle 1783 · 2026-08-12T13:02:06.323407+00:00
 # ICP: sophisticated economic agents only (x402 / XRPL settle / agent-pay)
 # Public base: https://aetherforge.world/factory
 
