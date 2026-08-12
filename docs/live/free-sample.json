@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_free_sample_v1",
-  "updated_at": "2026-08-12T06:06:23.438397+00:00",
-  "cycle_id": 1773,
+  "updated_at": "2026-08-12T06:08:31.328384+00:00",
+  "cycle_id": 1774,
   "message": "Free sample of RSI-EAF factory doctrine. Pay Tag 1 for tip; Tag 2 for briefing.",
   "pay": "https://aetherforge.world/factory/pay.html",
   "agent_pay": "https://aetherforge.world/factory/agent-pay.json"
