@@ -65,11 +65,11 @@
         "plain_memo": "mythos"
       },
       "deliverable_type": "json",
-      "preview_url": null,
+      "preview_url": "https://published-zeta.vercel.app/mythos-cycle-1790-20260812T212838Z.html",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/mythos-cycle-1790.json",
       "buyer": "creators and narrative commerce agents"
     }
   ],
   "acp_ready": true,
-  "updated_at": "2026-08-12T21:25:40.229636+00:00"
+  "updated_at": "2026-08-12T21:29:56.973940+00:00"
 }
