@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Support RSI-EAF — send XRP with Destination Tag 1">
+  <title>Support RSI-EAF — 2 fields only</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 520px; margin: 2rem auto; padding: 0 1rem; }
+    .step { border: 2px solid #0a7; border-radius: 12px; padding: 1.25rem; margin: 1rem 0; }
+    .tag { font-size: 3rem; font-weight: 800; color: #0a7; margin: 0; }
+    code { background: #f0f0f0; padding: 0.2rem 0.5rem; border-radius: 4px; word-break: break-all; }
+    button { cursor: pointer; padding: 0.6rem 1.2rem; font-size: 1rem; margin: 0.5rem 0.5rem 0 0; }
+    .muted { color: #555; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <h1>Support the factory</h1>
+  <p><strong>Two fields.</strong> No JSON. No long memo.</p>
+
+  <div class="step">
+    <p><strong>1. Address</strong> (XRPL testnet)</p>
+    <p><code id="treasury">rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5</code></p>
+    <button type="button" onclick="navigator.clipboard.writeText('rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5')">Copy address</button>
+  </div>
+
+  <div class="step">
+    <p><strong>2. Destination Tag</strong></p>
+    <p class="tag" id="tag">1</p>
+    <button type="button" onclick="navigator.clipboard.writeText('1')">Copy tag</button>
+    <p class="muted">Counts as $1 verified tip. Send any testnet XRP amount.</p>
+  </div>
+
+  <p class="muted">Optional: type <code>tip</code> in the memo field instead of using a tag.<br>
+     Briefing unlock ($2): use Destination Tag <strong>2</strong> or memo <code>briefing</code>.</p>
+  <p><a href="https://testnet.xrpl.org/">Verify on explorer</a> · <a href="tip-manifest.json">Agent manifest</a></p>
+  <footer><small>tipping_funnel_v1 · cycle 1790</small></footer>
+</body>
+</html>
