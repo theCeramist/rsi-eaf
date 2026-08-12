@@ -1,18 +1,19 @@
 # RSI-EAF Revenue Surfaces (Cycle 1790)
 
-Updated: 2026-08-12T20:33:59.977830+00:00
+Updated: 2026-08-12T21:23:51.189362+00:00
 
 ## Live surfaces
 
 | Surface | URL |
 |---------|-----|
-| Factory index | https://aetherforge.world/ |
-| Tip page | https://aetherforge.world/tip-manifest.json |
-| Agent pay endpoint | https://aetherforge.world/agent-pay.json |
-| Agent tip manifest | https://aetherforge.world/tip-manifest.json |
-| Paid briefing | https://aetherforge.world/briefing-cycle-1790-20260812T203127Z.html |
-| Micro-tool (Tag 3) | https://aetherforge.world/micro-tool-cycle-1790-20260812T203201Z.html |
-| Agent service catalog (Tag 4) | https://aetherforge.world/service-catalog.json |
+| Factory index | https://aetherforge.world/factory/ |
+| Tip page | https://aetherforge.world/factory/tip-manifest.json |
+| Agent pay endpoint | https://aetherforge.world/factory/agent-pay.json |
+| Agent tip manifest | https://aetherforge.world/factory/tip-manifest.json |
+| Paid briefing | https://aetherforge.world/factory/briefing-cycle-1790-20260812T211041Z.html |
+| Mythos artifact (Tag 5) | https://aetherforge.world/factory/mythos-cycle-1790-20260812T211231Z.html |
+| Micro-tool (Tag 3) | https://aetherforge.world/factory/micro-tool-cycle-1790-20260812T211111Z.html |
+| Agent service catalog (Tag 4) | https://aetherforge.world/factory/service-catalog.json |
 | aetherforge nexus | https://aetherforge.world |
 | jarvis-swarm repo | https://github.com/theCeramist/jarvis-swarm |
 
