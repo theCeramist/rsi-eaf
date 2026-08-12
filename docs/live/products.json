@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_consumer_products_v1",
   "cycle_id": 1785,
-  "updated_at": "2026-08-12T16:16:02.398457+00:00",
+  "updated_at": "2026-08-12T16:38:28.140239+00:00",
   "treasury": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
   "network": "mainnet",
   "pay_page": "https://aetherforge.world/factory/pay.html",
@@ -95,7 +95,7 @@
       "destination_tag": 5,
       "memo": "mythos",
       "buyer": "creators + agents",
-      "landing": "https://published-zeta.vercel.app/mythos-cycle-1785-20260812T161450Z.html",
+      "landing": "https://aetherforge.world/factory/product-mythos.html",
       "stable_page": "https://aetherforge.world/factory/product-mythos.html",
       "fulfillment": "https://aetherforge.world/factory/deliverables/mythos-cycle-1785.json",
       "price_xrp": 1.4299,
