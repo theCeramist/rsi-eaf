@@ -2,7 +2,7 @@
   "schema": "rsi_eaf_service_catalog_v2",
   "cycle_id": 1792,
   "treasury_address": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
-  "network": "mainnet",
+  "network": "xrpl_testnet",
   "factory": "RSI-EAF",
   "how_to_pay": {
     "human": "Pay treasury with Destination Tag (see each service). Manifest: https://published-zeta.vercel.app/agent-pay.json",
@@ -20,7 +20,7 @@
         "plain_memo": "briefing"
       },
       "deliverable_type": "html+json",
-      "preview_url": "https://published-zeta.vercel.app/briefing-cycle-1792-20260812T224047Z.html",
+      "preview_url": "https://published-zeta.vercel.app/briefing-cycle-1792-20260812T224404Z.html",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/briefing-cycle-1792.json",
       "buyer": "humans and research agents"
     },
@@ -35,7 +35,7 @@
         "plain_memo": "tool"
       },
       "deliverable_type": "json",
-      "preview_url": "https://published-zeta.vercel.app/micro-tool-cycle-1792-20260812T224125Z.html",
+      "preview_url": "https://published-zeta.vercel.app/micro-tool-cycle-1792-20260812T224432Z.html",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-1792.json",
       "buyer": "wallet integrators and paying agents"
     },
@@ -65,13 +65,11 @@
         "plain_memo": "mythos"
       },
       "deliverable_type": "json",
-      "preview_url": "https://published-zeta.vercel.app/mythos-cycle-1792-20260812T224235Z.html",
+      "preview_url": "https://published-zeta.vercel.app/mythos-cycle-1792-20260812T224546Z.html",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/mythos-cycle-1792.json",
       "buyer": "creators and narrative commerce agents"
     }
   ],
   "acp_ready": true,
-  "updated_at": "2026-08-12T22:43:40.971729+00:00",
-  "pay_page": "https://published-zeta.vercel.app/pay.html",
-  "products_shop": "https://published-zeta.vercel.app/products.html"
+  "updated_at": "2026-08-12T22:47:23.796847+00:00"
 }
