@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_agent_pay_v1",
   "version": "1.4",
-  "updated_at": "2026-08-12T23:45:08.047145+00:00",
+  "updated_at": "2026-08-12T23:46:34.445828+00:00",
   "cycle_id": 1792,
   "factory": "RSI-EAF",
   "network": "xrpl_mainnet",
@@ -110,7 +110,7 @@
       "credited_usd": 3.0,
       "plain_memo": "tool",
       "product_id": "micro-tool-cycle-1792",
-      "live_url": null,
+      "live_url": "https://aetherforge.world/factory/micro-tool-cycle-1792-pipeline.html",
       "description": "Treasury payment validator spec for wallet/agent integrators",
       "fulfillment_url": "https://aetherforge.world/factory/deliverables/micro-tool-cycle-1792.json",
       "service_type": "paid_tool",
@@ -135,7 +135,7 @@
         "source_tag": 20260703,
         "max_timeout_seconds": 600,
         "protected_resource": "https://aetherforge.world/factory/deliverables/micro-tool-cycle-1792.json",
-        "preview_resource": "https://aetherforge.world/factory/micro-tool-cycle-1792.html",
+        "preview_resource": "https://aetherforge.world/factory/micro-tool-cycle-1792-pipeline.html",
         "payment_requirements_template": {
           "scheme": "exact",
           "network": "xrpl:1",
