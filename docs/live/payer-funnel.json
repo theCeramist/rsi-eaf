@@ -1,10 +1,10 @@
 {
   "schema": "rsi_eaf_payer_funnel_v2",
   "cycle_id": 1775,
-  "updated_at": "2026-08-12T07:21:48.145570+00:00",
+  "updated_at": "2026-08-12T07:22:29.701660+00:00",
   "primary_path": {
     "icp_live": true,
-    "free_sample_live": false,
+    "free_sample_live": true,
     "pay_html_live": true,
     "agent_pay_live": true,
     "tip_manifest_live": true,
@@ -13,14 +13,14 @@
     "local_tip_manifest_ok": true,
     "local_free_sample_ok": true
   },
-  "primary_live_ok": false,
+  "primary_live_ok": true,
   "primary_local_ok": true,
   "y_red": true,
   "l0_met": false,
   "stages": {
     "discover": {
       "icp_live": true,
-      "free_sample_live": false,
+      "free_sample_live": true,
       "agent_pay_live": true,
       "tip_live": true,
       "well_known_agent_pay": true
@@ -43,23 +43,24 @@
       "fulfillment_index": true
     }
   },
-  "conversion_score": 10,
+  "conversion_score": 11,
   "external_payer_count": 3,
   "organic_revenue_usd_est": 3.0,
   "net_usd_est": -1499.8273,
   "verified_revenue_events": 6,
   "mesh_lanes_completed": [
+    "discovery",
     "ingest",
     "conversion"
   ],
-  "bottleneck": "primary_live_down",
-  "evolution_directive": "Ship MUST_LIVE priority pack (pay/agent-pay/tip/free-sample) when quota allows",
+  "bottleneck": "quote:quote_api",
+  "evolution_directive": "Widen integrator wedge + referral chain",
   "north_star": "external_organic_payer_positive_net",
   "cta": {
-    "pay": "https://aetherforge.world/pay.html",
-    "agent_pay": "https://aetherforge.world/agent-pay.json",
-    "tip_manifest": "https://aetherforge.world/tip-manifest.json",
-    "free_sample": "https://aetherforge.world/free-sample.json",
-    "icp": "https://aetherforge.world/icp.json"
+    "pay": "https://aetherforge.world/factory/pay.html",
+    "agent_pay": "https://aetherforge.world/factory/agent-pay.json",
+    "tip_manifest": "https://aetherforge.world/factory/tip-manifest.json",
+    "free_sample": "https://aetherforge.world/factory/free-sample.json",
+    "icp": "https://aetherforge.world/factory/icp.json"
   }
 }
