@@ -1,26 +1,26 @@
 {
   "schema": "rsi_eaf_payer_funnel_v2",
   "cycle_id": 1775,
-  "updated_at": "2026-08-12T07:22:29.701660+00:00",
+  "updated_at": "2026-08-12T07:26:07.919975+00:00",
   "primary_path": {
     "icp_live": true,
-    "free_sample_live": true,
+    "free_sample_live": false,
     "pay_html_live": true,
     "agent_pay_live": true,
     "tip_manifest_live": true,
-    "local_pay_ok": true,
+    "local_pay_ok": false,
     "local_agent_pay_ok": true,
     "local_tip_manifest_ok": true,
     "local_free_sample_ok": true
   },
-  "primary_live_ok": true,
-  "primary_local_ok": true,
+  "primary_live_ok": false,
+  "primary_local_ok": false,
   "y_red": true,
   "l0_met": false,
   "stages": {
     "discover": {
       "icp_live": true,
-      "free_sample_live": true,
+      "free_sample_live": false,
       "agent_pay_live": true,
       "tip_live": true,
       "well_known_agent_pay": true
@@ -43,24 +43,23 @@
       "fulfillment_index": true
     }
   },
-  "conversion_score": 11,
+  "conversion_score": 10,
   "external_payer_count": 3,
   "organic_revenue_usd_est": 3.0,
   "net_usd_est": -1499.8273,
   "verified_revenue_events": 6,
   "mesh_lanes_completed": [
-    "discovery",
     "ingest",
     "conversion"
   ],
-  "bottleneck": "quote:quote_api",
-  "evolution_directive": "Widen integrator wedge + referral chain",
+  "bottleneck": "primary_local_down",
+  "evolution_directive": "Regenerate local payer pack then ship_must_live_priority",
   "north_star": "external_organic_payer_positive_net",
   "cta": {
-    "pay": "https://aetherforge.world/factory/pay.html",
-    "agent_pay": "https://aetherforge.world/factory/agent-pay.json",
-    "tip_manifest": "https://aetherforge.world/factory/tip-manifest.json",
-    "free_sample": "https://aetherforge.world/factory/free-sample.json",
-    "icp": "https://aetherforge.world/factory/icp.json"
+    "pay": "https://aetherforge.world/pay.html",
+    "agent_pay": "https://aetherforge.world/agent-pay.json",
+    "tip_manifest": "https://aetherforge.world/tip-manifest.json",
+    "free_sample": "https://aetherforge.world/free-sample.json",
+    "icp": "https://aetherforge.world/icp.json"
   }
 }
