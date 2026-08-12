@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_agent_pay_v1",
   "version": "1.4",
-  "updated_at": "2026-08-12T08:29:56.443738+00:00",
+  "updated_at": "2026-08-12T08:36:27.919238+00:00",
   "cycle_id": 1777,
   "factory": "RSI-EAF",
   "network": "xrpl_mainnet",
@@ -176,7 +176,7 @@
       "credited_usd": 1.5,
       "plain_memo": "mythos",
       "product_id": "mythos-cycle-1777",
-      "live_url": "https://published-zeta.vercel.app/mythos-cycle-1777-20260812T082739Z.html",
+      "live_url": "https://published-zeta.vercel.app/mythos-cycle-1777-20260812T083033Z.html",
       "description": "Narrative commerce artifact for aetherforge lane",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/mythos-cycle-1777.json",
       "service_type": "creative_commerce",
