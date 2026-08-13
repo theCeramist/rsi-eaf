@@ -1,6 +1,6 @@
 {
   "schema": "rsi_eaf_social_learning_v1",
-  "generated_at": "2026-08-13T21:53:39.134994+00:00",
+  "generated_at": "2026-08-13T22:08:05.195336+00:00",
   "cycle_id": null,
   "doctrine": "receipts_social_v1",
   "hard_mode": {
@@ -31,10 +31,17 @@
       "impressions_delta": 0,
       "engagement_delta": 0
     },
-    "public_metrics": {},
+    "public_metrics": {
+      "followers_count": 9,
+      "following_count": 0,
+      "like_count": 0,
+      "listed_count": 0,
+      "media_count": 0,
+      "tweet_count": 167
+    },
     "hunt_admit_total": 69,
-    "followers": null,
-    "tweet_count": null
+    "followers": 9,
+    "tweet_count": 167
   },
   "lessons": [
     {
@@ -56,7 +63,7 @@
       "confidence": 0.85,
       "action": "Evolve conversion copy + agent discovery surfaces from social topics clustering",
       "evolution_hint": "social_topic_to_surface",
-      "at": "2026-08-13T21:53:39.115865+00:00"
+      "at": "2026-08-13T22:08:05.189407+00:00"
     },
     {
       "id": "path_cold_distribution",
@@ -83,7 +90,7 @@
       "confidence": 0.7,
       "action": "Rotate OFFER/RECEIPT formats; 1 useful free artifact per day minimum",
       "evolution_hint": "receipts_format_rotation",
-      "at": "2026-08-13T21:53:39.112962+00:00"
+      "at": "2026-08-13T22:08:05.186638+00:00"
     },
     {
       "id": "icp_label_cluster",
@@ -117,7 +124,7 @@
       "confidence": 0.7,
       "action": "Align RECEIPT/MACHINE posts to top cluster language (e.g. x402 settle, XRPL agent)",
       "evolution_hint": "icp_language_align",
-      "at": "2026-08-13T21:53:39.119094+00:00"
+      "at": "2026-08-13T22:08:05.191156+00:00"
     }
   ],
   "directives": [
