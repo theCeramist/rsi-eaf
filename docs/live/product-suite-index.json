@@ -3,7 +3,7 @@
   "cycle_id": 1798,
   "treasury_address": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
   "network": "mainnet",
-  "updated_at": "2026-08-13T03:38:12.194196+00:00",
+  "updated_at": "2026-08-13T03:39:45.913332+00:00",
   "suite_count": 5,
   "doctrine": "continuous_make_test_ship_for_consumer_purchase",
   "discovery": {
@@ -75,7 +75,7 @@
       "price_usd": 1.5,
       "price_xrp": 1.4299,
       "destination_tag": 5,
-      "landing_url": "https://aetherforge.world/factory/product-mythos.html",
+      "landing_url": "https://aetherforge.world/factory/mythos-cycle-1798-20260813T033838Z.html",
       "stable_page": "https://aetherforge.world/factory/product-mythos.html",
       "fulfillment_url": "https://aetherforge.world/factory/deliverables/mythos-cycle-1798.json",
       "xaman_url": "https://xaman.app/detect/request:rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5?amount=1.4299&network=XRPL&dt=5",

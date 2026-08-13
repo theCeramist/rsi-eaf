@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_consumer_products_v1",
   "cycle_id": 1798,
-  "updated_at": "2026-08-13T03:38:12.194254+00:00",
+  "updated_at": "2026-08-13T03:39:45.913370+00:00",
   "treasury": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
   "network": "mainnet",
   "pay_page": "https://aetherforge.world/factory/pay.html",
@@ -95,7 +95,7 @@
       "destination_tag": 5,
       "memo": "mythos",
       "buyer": "creators + agents",
-      "landing": "https://aetherforge.world/factory/product-mythos.html",
+      "landing": "https://aetherforge.world/factory/mythos-cycle-1798-20260813T033838Z.html",
       "stable_page": "https://aetherforge.world/factory/product-mythos.html",
       "fulfillment": "https://aetherforge.world/factory/deliverables/mythos-cycle-1798.json",
       "price_xrp": 1.4299,
