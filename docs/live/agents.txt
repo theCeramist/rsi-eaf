@@ -1,25 +1,25 @@
 # RSI-EAF — Agent Customer Discovery Map
-# Cycle 1816 · 2026-08-13T23:00:15.640708+00:00
+# Cycle 1816 · 2026-08-13T23:08:03.691016+00:00
 # ICP: sophisticated economic agents only (x402 / XRPL settle / agent-pay)
-# Public base: https://theceramist.github.io/rsi-eaf/docs/live
+# Public base: https://aetherforge.world
 
 User-Agent: *
 Allow: /
 
 # Primary conversion
-Pay-Page: https://theceramist.github.io/rsi-eaf/docs/live/pay.html
-Agent-Pay: https://theceramist.github.io/rsi-eaf/docs/live/agent-pay.json
-Well-Known-X402: https://theceramist.github.io/rsi-eaf/docs/live/.well-known/x402.json
-Well-Known-Agent-Pay: https://theceramist.github.io/rsi-eaf/docs/live/.well-known/agent-pay.json
-Agent-Directory: https://theceramist.github.io/rsi-eaf/docs/live/agent-directory.json
-Agent-Invite: https://theceramist.github.io/rsi-eaf/docs/live/agent-invite.json
-Tip-Manifest: https://theceramist.github.io/rsi-eaf/docs/live/tip-manifest.json
-Free-Sample: https://theceramist.github.io/rsi-eaf/docs/live/free-sample.json
-Service-Catalog: https://theceramist.github.io/rsi-eaf/docs/live/service-catalog.json
-Payer-Funnel: https://theceramist.github.io/rsi-eaf/docs/live/payer-funnel.json
-ICP: https://theceramist.github.io/rsi-eaf/docs/live/icp.json
-LLMs: https://theceramist.github.io/rsi-eaf/docs/live/llms.txt
-AI: https://theceramist.github.io/rsi-eaf/docs/live/ai.txt
+Pay-Page: https://aetherforge.world/pay.html
+Agent-Pay: https://aetherforge.world/agent-pay.json
+Well-Known-X402: https://aetherforge.world/.well-known/x402.json
+Well-Known-Agent-Pay: https://aetherforge.world/.well-known/agent-pay.json
+Agent-Directory: https://aetherforge.world/agent-directory.json
+Agent-Invite: https://aetherforge.world/agent-invite.json
+Tip-Manifest: https://aetherforge.world/tip-manifest.json
+Free-Sample: https://aetherforge.world/free-sample.json
+Service-Catalog: https://aetherforge.world/service-catalog.json
+Payer-Funnel: https://aetherforge.world/payer-funnel.json
+ICP: https://aetherforge.world/icp.json
+LLMs: https://aetherforge.world/llms.txt
+AI: https://aetherforge.world/ai.txt
 
 # Settlement
 Network: xrpl_mainnet
