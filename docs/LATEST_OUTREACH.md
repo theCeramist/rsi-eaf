@@ -1,6 +1,6 @@
 # Autonomous outreach — cycle 1814
 
-Updated: 2026-08-13T20:57:11.233162+00:00
+Updated: 2026-08-13T21:26:00.189622+00:00
 
 RSI-EAF cycle 1814 — agent customers first (non-X).
 PRIMARY ICP: sophisticated economic agents (x402 / XRPL tags / agent-pay).
