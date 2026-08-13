@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_free_sample_v2",
-  "cycle_id": 1807,
-  "updated_at": "2026-08-13T13:20:24.119196+00:00",
+  "cycle_id": 1808,
+  "updated_at": "2026-08-13T13:37:21.507010+00:00",
   "title": "Free XRPL factory sample (no payment)",
   "value": {
     "what_you_get": [
