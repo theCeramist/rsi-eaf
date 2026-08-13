@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_free_sample_v2",
   "cycle_id": 1796,
-  "updated_at": "2026-08-13T02:15:23.181099+00:00",
+  "updated_at": "2026-08-13T02:23:40.810782+00:00",
   "title": "Free XRPL factory sample (no payment)",
   "value": {
     "what_you_get": [
@@ -19,8 +19,8 @@
       "4": "service bundle",
       "5": "mythos artifact"
     },
-    "shop": "https://aetherforge.world/products.html",
-    "pay": "https://aetherforge.world/pay.html",
+    "shop": "https://aetherforge.world/factory/products.html",
+    "pay": "https://aetherforge.world/factory/pay.html",
     "teaser": {
       "cycle_id": 1795,
       "updated_at": "2026-08-13T01:54:18.265225+00:00"
@@ -28,6 +28,6 @@
   },
   "upsell": {
     "message": "Unlock the full briefing (Tag 2) or micro-tool (Tag 3) for production use.",
-    "products": "https://aetherforge.world/products.json"
+    "products": "https://aetherforge.world/factory/products.json"
   }
 }

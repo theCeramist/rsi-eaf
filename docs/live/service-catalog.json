@@ -1,12 +1,12 @@
 {
   "schema": "rsi_eaf_service_catalog_v2",
   "cycle_id": 1796,
-  "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+  "treasury_address": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
   "network": "xrpl_testnet",
   "factory": "RSI-EAF",
   "how_to_pay": {
-    "human": "Pay treasury with Destination Tag (see each service). Manifest: https://aetherforge.world/agent-pay.json",
-    "agent": "GET https://aetherforge.world/agent-pay.json then send XRP with matching destination_tag + optional JSON memo"
+    "human": "Pay treasury with Destination Tag (see each service). Manifest: https://aetherforge.world/factory/agent-pay.json",
+    "agent": "GET https://aetherforge.world/factory/agent-pay.json then send XRP with matching destination_tag + optional JSON memo"
   },
   "services": [
     {
@@ -20,8 +20,8 @@
         "plain_memo": "briefing"
       },
       "deliverable_type": "html+json",
-      "preview_url": "https://aetherforge.world/briefing-cycle-1796-20260813T021256Z.html",
-      "fulfillment_url": "https://aetherforge.world/deliverables/briefing-cycle-1796.json",
+      "preview_url": "https://aetherforge.world/factory/briefing-cycle-1796-20260813T021256Z.html",
+      "fulfillment_url": "https://aetherforge.world/factory/deliverables/briefing-cycle-1796.json",
       "buyer": "humans and research agents"
     },
     {
@@ -35,8 +35,8 @@
         "plain_memo": "tool"
       },
       "deliverable_type": "json",
-      "preview_url": "https://aetherforge.world/micro-tool-cycle-1796.html",
-      "fulfillment_url": "https://aetherforge.world/deliverables/micro-tool-cycle-1796.json",
+      "preview_url": "https://aetherforge.world/factory/micro-tool-cycle-1796-pipeline.html",
+      "fulfillment_url": "https://aetherforge.world/factory/deliverables/micro-tool-cycle-1796.json",
       "buyer": "wallet integrators and paying agents"
     },
     {
@@ -50,8 +50,8 @@
         "plain_memo": "service"
       },
       "deliverable_type": "json",
-      "preview_url": "https://aetherforge.world/service-catalog.json",
-      "fulfillment_url": "https://aetherforge.world/deliverables/service-bundle-cycle-1796.json",
+      "preview_url": "https://aetherforge.world/factory/service-catalog.json",
+      "fulfillment_url": "https://aetherforge.world/factory/deliverables/service-bundle-cycle-1796.json",
       "buyer": "ACP / swarm orchestrator agents"
     },
     {
@@ -66,10 +66,10 @@
       },
       "deliverable_type": "json",
       "preview_url": null,
-      "fulfillment_url": "https://aetherforge.world/deliverables/mythos-cycle-1796.json",
+      "fulfillment_url": "https://aetherforge.world/factory/deliverables/mythos-cycle-1796.json",
       "buyer": "creators and narrative commerce agents"
     }
   ],
   "acp_ready": true,
-  "updated_at": "2026-08-13T02:15:43.114825+00:00"
+  "updated_at": "2026-08-13T02:23:27.291142+00:00"
 }
