@@ -1,6 +1,6 @@
 # RSI-EAF Revenue Surfaces (Cycle 1803)
 
-Updated: 2026-08-13T09:03:51.476887+00:00
+Updated: 2026-08-13T09:10:32.108102+00:00
 
 ## Live surfaces
 
@@ -11,7 +11,6 @@ Updated: 2026-08-13T09:03:51.476887+00:00
 | Agent pay endpoint | https://published-zeta.vercel.app/agent-pay.json |
 | Agent tip manifest | https://published-zeta.vercel.app/tip-manifest.json |
 | Mythos artifact (Tag 5) | https://published-zeta.vercel.app/mythos-cycle-1803-20260813T083333Z.html |
-| Micro-tool (Tag 3) | https://published-zeta.vercel.app/micro-tool-cycle-1803-pipeline.html |
 | Agent service catalog (Tag 4) | https://published-zeta.vercel.app/service-catalog.json |
 | aetherforge nexus | https://aetherforge.world |
 | jarvis-swarm repo | https://github.com/theCeramist/jarvis-swarm |
@@ -19,7 +18,7 @@ Updated: 2026-08-13T09:03:51.476887+00:00
 ## Treasury (XRPL Testnet)
 
 ```
-rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5
+rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN
 ```
 
 ## Tip payment memo
