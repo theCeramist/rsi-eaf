@@ -56,15 +56,15 @@
     "learning_engine": "factory_core.social_learning",
     "cycle_injection": "analyze lane + coordination directives",
     "evolution": "evolution_priorities_from_lessons \u2192 proposer",
-    "public": "https://aetherforge.world/social-learning.json"
+    "public": "https://aetherforge.world/factory/social-learning.json"
   },
   "surfaces": {
-    "pay": "https://aetherforge.world/pay.html",
-    "agent_pay": "https://aetherforge.world/agent-pay.json",
-    "x402": "https://aetherforge.world/.well-known/x402",
-    "icp": "https://aetherforge.world/icp.json",
-    "policy": "https://aetherforge.world/social-policy.json",
-    "learning": "https://aetherforge.world/social-learning.json",
+    "pay": "https://aetherforge.world/factory/pay.html",
+    "agent_pay": "https://aetherforge.world/factory/agent-pay.json",
+    "x402": "https://aetherforge.world/factory/.well-known/x402",
+    "icp": "https://aetherforge.world/factory/icp.json",
+    "policy": "https://aetherforge.world/factory/social-policy.json",
+    "learning": "https://aetherforge.world/factory/social-learning.json",
     "hub": "https://xrpl.org/accounts/rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5"
   },
   "success": {
