@@ -1,14 +1,16 @@
 # RSI-EAF Revenue Surfaces (Cycle 1829)
 
-Updated: 2026-08-14T13:04:22.694336+00:00
+Updated: 2026-08-14T13:42:13.362116+00:00
 
 ## Live surfaces
 
 | Surface | URL |
 |---------|-----|
 | Factory index | https://published-zeta.vercel.app/ |
+| Tip page | https://published-zeta.vercel.app/tip-cycle-1829-20260814T130030Z.html |
 | Agent pay endpoint | https://published-zeta.vercel.app/agent-pay.json |
 | Agent tip manifest | https://published-zeta.vercel.app/tip-manifest.json |
+| Mythos artifact (Tag 5) | https://published-zeta.vercel.app/mythos-cycle-1829-20260814T130059Z.html |
 | Micro-tool (Tag 3) | https://published-zeta.vercel.app/micro-tool-cycle-1829-20260814T125942Z.html |
 | Agent service catalog (Tag 4) | https://published-zeta.vercel.app/service-catalog.json |
 | aetherforge nexus | https://aetherforge.world |
@@ -17,7 +19,7 @@ Updated: 2026-08-14T13:04:22.694336+00:00
 ## Treasury (XRPL Testnet)
 
 ```
-rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5
+rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN
 ```
 
 ## Tip payment memo
