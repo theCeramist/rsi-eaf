@@ -12,4 +12,4 @@ Allow: /tip-manifest.json
 Allow: /service-catalog.json
 Allow: /icp.json
 Allow: /payer-funnel.json
-Sitemap: https://aetherforge.world/factory/sitemap.xml
+Sitemap: https://aetherforge.world/sitemap.xml
