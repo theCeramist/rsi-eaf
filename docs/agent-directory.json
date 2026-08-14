@@ -1,6 +1,6 @@
 {
   "schema": "rsi_eaf_agent_directory_v1",
-  "updated_at": "2026-08-14T09:27:24.836183+00:00",
+  "updated_at": "2026-08-14T09:36:04.521436+00:00",
   "cycle_id": 1826,
   "factory": "RSI-EAF",
   "posture": "agent_icp_primary_non_x",
@@ -47,23 +47,23 @@
     }
   },
   "endpoints": {
-    "pay_html": "https://theceramist.github.io/rsi-eaf/docs/live/pay.html",
-    "agent_pay": "https://theceramist.github.io/rsi-eaf/docs/live/agent-pay.json",
-    "x402": "https://theceramist.github.io/rsi-eaf/docs/live/.well-known/x402.json",
-    "agent_pay_well_known": "https://theceramist.github.io/rsi-eaf/docs/live/.well-known/agent-pay.json",
-    "tip_manifest": "https://theceramist.github.io/rsi-eaf/docs/live/tip-manifest.json",
-    "free_sample": "https://theceramist.github.io/rsi-eaf/docs/live/free-sample.json",
-    "service_catalog": "https://theceramist.github.io/rsi-eaf/docs/live/service-catalog.json",
-    "invite": "https://theceramist.github.io/rsi-eaf/docs/live/agent-invite.json",
-    "llms_txt": "https://theceramist.github.io/rsi-eaf/docs/live/llms.txt",
-    "agents_txt": "https://theceramist.github.io/rsi-eaf/docs/live/agents.txt",
-    "funnel": "https://theceramist.github.io/rsi-eaf/docs/live/payer-funnel.json"
+    "pay_html": "https://aetherforge.world/pay.html",
+    "agent_pay": "https://aetherforge.world/agent-pay.json",
+    "x402": "https://aetherforge.world/.well-known/x402.json",
+    "agent_pay_well_known": "https://aetherforge.world/.well-known/agent-pay.json",
+    "tip_manifest": "https://aetherforge.world/tip-manifest.json",
+    "free_sample": "https://aetherforge.world/free-sample.json",
+    "service_catalog": "https://aetherforge.world/service-catalog.json",
+    "invite": "https://aetherforge.world/agent-invite.json",
+    "llms_txt": "https://aetherforge.world/llms.txt",
+    "agents_txt": "https://aetherforge.world/agents.txt",
+    "funnel": "https://aetherforge.world/payer-funnel.json"
   },
   "how_to_buy": [
-    "1. GET https://theceramist.github.io/rsi-eaf/docs/live/agent-pay.json",
+    "1. GET https://aetherforge.world/agent-pay.json",
     "2. Payment XRPL mainnet to rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5 with destination_tag from products[]",
     "3. Wait for validated ledger; factory ingests verified Payments",
-    "4. Fulfillment appears under https://theceramist.github.io/rsi-eaf/docs/live/deliverables/ for paid SKUs"
+    "4. Fulfillment appears under https://aetherforge.world/deliverables/ for paid SKUs"
   ],
   "non_x_channels": {
     "github": "https://github.com/theCeramist/rsi-eaf",
