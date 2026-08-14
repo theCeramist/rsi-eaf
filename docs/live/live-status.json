@@ -1,6 +1,6 @@
 {
   "schema": "rsi_eaf_live_pack_status_v1",
-  "updated_at": "2026-08-14T03:26:46.301378+00:00",
+  "updated_at": "2026-08-14T03:32:58.998904+00:00",
   "cycle_id": 1820,
   "files": [
     "pay.html",
@@ -20,12 +20,18 @@
     "payer-funnel.json",
     "robots.txt",
     "service-catalog.json",
+    "products.html",
     "products.json",
     ".well-known/x402.json",
     ".well-known/agent-pay.json",
     ".well-known/agent.json",
     "vercel.json",
-    "product-suite-index.json"
+    "product-suite-index.json",
+    "product-briefing.html",
+    "product-tool.html",
+    "product-mythos.html",
+    "product-services.html",
+    "product-tip.html"
   ],
   "mirrors": {
     "github_pages": "https://theceramist.github.io/rsi-eaf/docs/live",
