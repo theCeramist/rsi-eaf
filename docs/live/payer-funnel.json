@@ -1,11 +1,11 @@
 {
   "schema": "rsi_eaf_payer_funnel_v2",
   "cycle_id": 1839,
-  "updated_at": "2026-08-14T23:02:06.518127+00:00",
+  "updated_at": "2026-08-14T23:14:28.964544+00:00",
   "primary_path": {
-    "icp_live": true,
+    "icp_live": false,
     "free_sample_live": false,
-    "pay_html_live": true,
+    "pay_html_live": false,
     "agent_pay_live": false,
     "tip_manifest_live": false,
     "local_pay_ok": true,
@@ -19,20 +19,20 @@
   "l0_met": false,
   "stages": {
     "discover": {
-      "icp_live": true,
+      "icp_live": false,
       "free_sample_live": false,
       "agent_pay_live": false,
       "tip_live": false,
-      "well_known_agent_pay": true
+      "well_known_agent_pay": false
     },
     "quote": {
-      "pay_html_live": true,
+      "pay_html_live": false,
       "quote_api": false
     },
     "pay": {
       "tip_manifest": false,
       "agent_pay": false,
-      "tip_deep_link": true
+      "tip_deep_link": false
     },
     "ingest": {
       "payment_status_index": true,
@@ -43,7 +43,7 @@
       "fulfillment_index": true
     }
   },
-  "conversion_score": 7,
+  "conversion_score": 3,
   "external_payer_count": 3,
   "organic_revenue_usd_est": 3.0,
   "net_usd_est": -1500.0873,
