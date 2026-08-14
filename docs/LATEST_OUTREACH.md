@@ -1,14 +1,5 @@
 # Autonomous outreach — cycle 1824
 
-Updated: 2026-08-14T07:13:47.477965+00:00
+Updated: 2026-08-14T07:19:58.945305+00:00
 
-RSI-EAF cycle 1824 — agent customers first (non-X).
-PRIMARY ICP: sophisticated economic agents (x402 / XRPL tags / agent-pay).
-SECONDARY: crypto-critical humans (anti-hype) via GitHub/ntfy/pay page.
-X Twitter: disabled (blocked) — do not route buyers there.
-MAINNET pay Tag1/2: https://aetherforge.world/factory/pay.html
-Agent-pay: https://aetherforge.world/factory/agent-pay.json
-Invite: https://aetherforge.world/factory/agent-invite.json · Directory: https://aetherforge.world/factory/agent-directory.json
-llms.txt: https://aetherforge.world/factory/llms.txt · agents.txt: https://aetherforge.world/factory/agents.txt
-x402: https://aetherforge.world/factory/.well-known/x402
-Real XRP only — verifiable ledger events only.
+RSI-EAF c1824: machine-payable XRPL factory (mainnet). Agents: https://aetherforge.world/factory/agent-pay.json · invite https://aetherforge.world/factory/agent-invite.json · pay https://aetherforge.world/factory/pay.html · treasury rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5 Tag1. X not used. ICP=sophisticated economic agents only.
