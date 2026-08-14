@@ -1,12 +1,12 @@
 {
   "schema": "rsi_eaf_payer_funnel_v2",
-  "cycle_id": 1828,
-  "updated_at": "2026-08-14T13:53:13.590148+00:00",
+  "cycle_id": 1830,
+  "updated_at": "2026-08-14T14:09:24.525372+00:00",
   "primary_path": {
     "icp_live": true,
     "free_sample_live": false,
     "pay_html_live": true,
-    "agent_pay_live": true,
+    "agent_pay_live": false,
     "tip_manifest_live": false,
     "local_pay_ok": true,
     "local_agent_pay_ok": true,
@@ -21,8 +21,8 @@
     "discover": {
       "icp_live": true,
       "free_sample_live": false,
-      "agent_pay_live": true,
-      "tip_live": true,
+      "agent_pay_live": false,
+      "tip_live": false,
       "well_known_agent_pay": true
     },
     "quote": {
@@ -31,8 +31,8 @@
     },
     "pay": {
       "tip_manifest": false,
-      "agent_pay": true,
-      "tip_deep_link": false
+      "agent_pay": false,
+      "tip_deep_link": true
     },
     "ingest": {
       "payment_status_index": true,
@@ -43,7 +43,7 @@
       "fulfillment_index": true
     }
   },
-  "conversion_score": 9,
+  "conversion_score": 7,
   "external_payer_count": 3,
   "organic_revenue_usd_est": 3.0,
   "net_usd_est": -1500.0873,
@@ -56,8 +56,8 @@
   "north_star": "external_organic_payer_positive_net",
   "cta": {
     "pay": "https://published-zeta.vercel.app/pay.html",
-    "agent_pay": "https://aetherforge.world/agent-pay.json",
-    "tip_manifest": "https://aetherforge.world/tip-manifest.json",
+    "agent_pay": "https://published-zeta.vercel.app/agent-pay.json",
+    "tip_manifest": "https://published-zeta.vercel.app/tip-manifest.json",
     "free_sample": "https://published-zeta.vercel.app/free-sample.json",
     "icp": "https://published-zeta.vercel.app/icp.json"
   }
