@@ -1,28 +1,28 @@
 {
   "schema": "rsi_eaf_payer_funnel_v2",
   "cycle_id": 1826,
-  "updated_at": "2026-08-14T09:44:58.069400+00:00",
+  "updated_at": "2026-08-14T09:54:58.782534+00:00",
   "primary_path": {
     "icp_live": true,
-    "free_sample_live": true,
+    "free_sample_live": false,
     "pay_html_live": true,
-    "agent_pay_live": true,
-    "tip_manifest_live": true,
+    "agent_pay_live": false,
+    "tip_manifest_live": false,
     "local_pay_ok": true,
     "local_agent_pay_ok": true,
     "local_tip_manifest_ok": true,
     "local_free_sample_ok": true
   },
-  "primary_live_ok": true,
+  "primary_live_ok": false,
   "primary_local_ok": true,
   "y_red": true,
   "l0_met": false,
   "stages": {
     "discover": {
       "icp_live": true,
-      "free_sample_live": true,
-      "agent_pay_live": true,
-      "tip_live": true,
+      "free_sample_live": false,
+      "agent_pay_live": false,
+      "tip_live": false,
       "well_known_agent_pay": true
     },
     "quote": {
@@ -30,9 +30,9 @@
       "quote_api": false
     },
     "pay": {
-      "tip_manifest": true,
-      "agent_pay": true,
-      "tip_deep_link": false
+      "tip_manifest": false,
+      "agent_pay": false,
+      "tip_deep_link": true
     },
     "ingest": {
       "payment_status_index": true,
@@ -43,24 +43,22 @@
       "fulfillment_index": true
     }
   },
-  "conversion_score": 11,
+  "conversion_score": 7,
   "external_payer_count": 3,
   "organic_revenue_usd_est": 3.0,
   "net_usd_est": -1500.0873,
   "verified_revenue_events": 6,
   "mesh_lanes_completed": [
-    "discovery",
-    "ingest",
-    "conversion"
+    "ingest"
   ],
-  "bottleneck": "quote:quote_api",
-  "evolution_directive": "Widen integrator wedge + referral chain",
+  "bottleneck": "primary_live_down",
+  "evolution_directive": "Ship MUST_LIVE priority pack (pay/agent-pay/tip/free-sample) when quota allows",
   "north_star": "external_organic_payer_positive_net",
   "cta": {
-    "pay": "https://aetherforge.world/factory/pay.html",
-    "agent_pay": "https://aetherforge.world/factory/agent-pay.json",
-    "tip_manifest": "https://aetherforge.world/factory/tip-manifest.json",
-    "free_sample": "https://aetherforge.world/factory/free-sample.json",
-    "icp": "https://aetherforge.world/factory/icp.json"
+    "pay": "https://published-zeta.vercel.app/pay.html",
+    "agent_pay": "https://published-zeta.vercel.app/agent-pay.json",
+    "tip_manifest": "https://published-zeta.vercel.app/tip-manifest.json",
+    "free_sample": "https://published-zeta.vercel.app/free-sample.json",
+    "icp": "https://published-zeta.vercel.app/icp.json"
   }
 }
