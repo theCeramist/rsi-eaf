@@ -6,19 +6,19 @@
     {
       "name": "Briefing Unlock",
       "description": "XRPL factory intelligence briefing (HTML preview + JSON deliverable after pay)",
-      "resource": "https://published-zeta.vercel.app/deliverables/briefing-cycle-1847.json",
+      "resource": "https://published-zeta.vercel.app/deliverables/briefing-cycle-1848.json",
       "type": "http",
       "x402Version": 2
     },
     {
       "name": "Micro Tool",
       "description": "Treasury payment validator spec for wallet/agent integrators",
-      "resource": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-1847.json",
+      "resource": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-1848.json",
       "type": "http",
       "x402Version": 2
     }
   ],
-  "updated_at": "2026-08-15T07:16:07.916894+00:00",
+  "updated_at": "2026-08-15T07:20:16.515937+00:00",
   "factory": "RSI-EAF",
   "network": "xrpl_mainnet",
   "agent_pay": "https://published-zeta.vercel.app/agent-pay.json",
