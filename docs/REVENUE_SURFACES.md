@@ -1,6 +1,6 @@
 # RSI-EAF Revenue Surfaces (Cycle 1853)
 
-Updated: 2026-08-15T12:28:33.537844+00:00
+Updated: 2026-08-15T13:01:00.219132+00:00
 
 ## Live surfaces
 
@@ -10,9 +10,9 @@ Updated: 2026-08-15T12:28:33.537844+00:00
 | Tip page | https://aetherforge.world/factory/tip-manifest.json |
 | Agent pay endpoint | https://aetherforge.world/factory/agent-pay.json |
 | Agent tip manifest | https://aetherforge.world/factory/tip-manifest.json |
-| Paid briefing | https://aetherforge.world/factory/briefing-cycle-1853-20260815T122540Z.html |
+| Paid briefing | https://aetherforge.world/factory/briefing-cycle-1853-20260815T122035Z.html |
 | Mythos artifact (Tag 5) | https://aetherforge.world/factory/mythos-cycle-1853-20260815T122205Z.html |
-| Micro-tool (Tag 3) | https://aetherforge.world/factory/micro-tool-cycle-1853-20260815T122607Z.html |
+| Micro-tool (Tag 3) | https://aetherforge.world/factory/micro-tool-cycle-1853-20260815T122103Z.html |
 | Agent service catalog (Tag 4) | https://aetherforge.world/factory/service-catalog.json |
 | aetherforge nexus | https://aetherforge.world |
 | jarvis-swarm repo | https://github.com/theCeramist/jarvis-swarm |
@@ -20,7 +20,7 @@ Updated: 2026-08-15T12:28:33.537844+00:00
 ## Treasury (XRPL Testnet)
 
 ```
-rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5
+rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN
 ```
 
 ## Tip payment memo
