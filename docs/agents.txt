@@ -1,25 +1,25 @@
 # RSI-EAF — Agent Customer Discovery Map
-# Cycle 1861 · 2026-08-15T22:44:48.687706+00:00
+# Cycle 1861 · 2026-08-15T22:46:29.289481+00:00
 # ICP: sophisticated economic agents only (x402 / XRPL settle / agent-pay)
-# Public base: https://aetherforge.world/factory
+# Public base: https://aetherforge.world
 
 User-Agent: *
 Allow: /
 
 # Primary conversion
-Pay-Page: https://aetherforge.world/factory/pay.html
-Agent-Pay: https://aetherforge.world/factory/agent-pay.json
-Well-Known-X402: https://aetherforge.world/factory/.well-known/x402.json
-Well-Known-Agent-Pay: https://aetherforge.world/factory/.well-known/agent-pay.json
-Agent-Directory: https://aetherforge.world/factory/agent-directory.json
-Agent-Invite: https://aetherforge.world/factory/agent-invite.json
-Tip-Manifest: https://aetherforge.world/factory/tip-manifest.json
-Free-Sample: https://aetherforge.world/factory/free-sample.json
-Service-Catalog: https://aetherforge.world/factory/service-catalog.json
-Payer-Funnel: https://aetherforge.world/factory/payer-funnel.json
-ICP: https://aetherforge.world/factory/icp.json
-LLMs: https://aetherforge.world/factory/llms.txt
-AI: https://aetherforge.world/factory/ai.txt
+Pay-Page: https://aetherforge.world/pay.html
+Agent-Pay: https://aetherforge.world/agent-pay.json
+Well-Known-X402: https://aetherforge.world/.well-known/x402.json
+Well-Known-Agent-Pay: https://aetherforge.world/.well-known/agent-pay.json
+Agent-Directory: https://aetherforge.world/agent-directory.json
+Agent-Invite: https://aetherforge.world/agent-invite.json
+Tip-Manifest: https://aetherforge.world/tip-manifest.json
+Free-Sample: https://aetherforge.world/free-sample.json
+Service-Catalog: https://aetherforge.world/service-catalog.json
+Payer-Funnel: https://aetherforge.world/payer-funnel.json
+ICP: https://aetherforge.world/icp.json
+LLMs: https://aetherforge.world/llms.txt
+AI: https://aetherforge.world/ai.txt
 
 # Settlement
 Network: xrpl_mainnet
