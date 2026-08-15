@@ -3,7 +3,7 @@
   "cycle_id": 1857,
   "treasury_address": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
   "network": "mainnet",
-  "updated_at": "2026-08-15T17:29:12.805458+00:00",
+  "updated_at": "2026-08-15T17:31:11.496425+00:00",
   "suite_count": 5,
   "doctrine": "continuous_make_test_ship_for_consumer_purchase",
   "discovery": {
@@ -75,7 +75,7 @@
       "price_usd": 1.5,
       "price_xrp": 1.4299,
       "destination_tag": 5,
-      "landing_url": "https://published-zeta.vercel.app/mythos-cycle-1857-20260815T172743Z.html",
+      "landing_url": "https://published-zeta.vercel.app/mythos-cycle-1857-20260815T172956Z.html",
       "stable_page": "https://published-zeta.vercel.app/product-mythos.html",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/mythos-cycle-1857.json",
       "xaman_url": "https://xaman.app/detect/request:rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5?amount=1.4299&network=XRPL&dt=5",
