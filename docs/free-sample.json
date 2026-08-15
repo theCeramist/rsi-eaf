@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_free_sample_v2",
-  "cycle_id": 1846,
-  "updated_at": "2026-08-15T05:32:48.121183+00:00",
+  "cycle_id": 1847,
+  "updated_at": "2026-08-15T05:48:57.212780+00:00",
   "title": "Free XRPL factory sample (no payment)",
   "value": {
     "what_you_get": [
@@ -23,7 +23,7 @@
     "pay": "https://published-zeta.vercel.app/pay.html",
     "teaser": {
       "cycle_id": 1846,
-      "updated_at": "2026-08-15T05:02:24.607479+00:00"
+      "updated_at": "2026-08-15T05:35:47.737815+00:00"
     }
   },
   "upsell": {
