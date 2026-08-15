@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_service_catalog_v2",
   "cycle_id": 1844,
-  "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+  "treasury_address": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
   "network": "xrpl_testnet",
   "factory": "RSI-EAF",
   "how_to_pay": {
@@ -35,7 +35,7 @@
         "plain_memo": "tool"
       },
       "deliverable_type": "json",
-      "preview_url": "https://aetherforge.world/factory/micro-tool-cycle-1844.html",
+      "preview_url": "https://aetherforge.world/factory/micro-tool-cycle-1844-pipeline.html",
       "fulfillment_url": "https://aetherforge.world/factory/deliverables/micro-tool-cycle-1844.json",
       "buyer": "wallet integrators and paying agents"
     },
@@ -71,5 +71,5 @@
     }
   ],
   "acp_ready": true,
-  "updated_at": "2026-08-15T01:56:36.260580+00:00"
+  "updated_at": "2026-08-15T02:04:32.282735+00:00"
 }
