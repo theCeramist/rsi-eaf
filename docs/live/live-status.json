@@ -1,6 +1,6 @@
 {
   "schema": "rsi_eaf_live_pack_status_v1",
-  "updated_at": "2026-08-15T00:18:01.502033+00:00",
+  "updated_at": "2026-08-15T00:24:11.096739+00:00",
   "cycle_id": 1841,
   "files": [
     "pay.html",
@@ -10,7 +10,6 @@
     "social-policy.json",
     "social-learning.json",
     "free-sample.json",
-    "free-ads.html",
     "index.html",
     "agents.txt",
     "llms.txt",
@@ -27,6 +26,7 @@
     ".well-known/agent.json",
     "vercel.json",
     "product-suite-index.json",
+    "product-briefing.html",
     "product-tool.html",
     "product-mythos.html",
     "product-services.html",
