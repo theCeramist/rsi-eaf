@@ -1,6 +1,6 @@
 # RSI-EAF Revenue Surfaces (Cycle 1845)
 
-Updated: 2026-08-15T03:59:32.895539+00:00
+Updated: 2026-08-15T04:06:22.328804+00:00
 
 ## Live surfaces
 
