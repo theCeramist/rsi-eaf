@@ -20,7 +20,7 @@
         "plain_memo": "briefing"
       },
       "deliverable_type": "html+json",
-      "preview_url": "https://published-zeta.vercel.app/briefing-cycle-1859.html",
+      "preview_url": "https://published-zeta.vercel.app/briefing-cycle-1859-20260815T191030Z.html",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/briefing-cycle-1859.json",
       "buyer": "humans and research agents"
     },
@@ -71,5 +71,5 @@
     }
   ],
   "acp_ready": true,
-  "updated_at": "2026-08-15T19:10:03.010378+00:00"
+  "updated_at": "2026-08-15T19:13:38.503017+00:00"
 }
