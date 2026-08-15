@@ -1,8 +1,33 @@
 {
-  "schema": "rsi_eaf_free_sample_v1",
-  "updated_at": "2026-08-15T15:22:26.872882+00:00",
-  "cycle_id": 1855,
-  "message": "Free sample of RSI-EAF factory doctrine. Pay Tag 1 for tip; Tag 2 for briefing.",
-  "pay": "https://published-zeta.vercel.app/pay.html",
-  "agent_pay": "https://published-zeta.vercel.app/agent-pay.json"
+  "schema": "rsi_eaf_free_sample_v2",
+  "cycle_id": 1856,
+  "updated_at": "2026-08-15T15:23:06.108407+00:00",
+  "title": "Free XRPL factory sample (no payment)",
+  "value": {
+    "what_you_get": [
+      "Current treasury address + network",
+      "SKU destination tags 1\u20135",
+      "Link to full product shop",
+      "One teaser metric from factory health"
+    ],
+    "treasury": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
+    "network": "mainnet",
+    "tags": {
+      "1": "tip $1",
+      "2": "briefing unlock",
+      "3": "micro-tool unlock",
+      "4": "service bundle",
+      "5": "mythos artifact"
+    },
+    "shop": "https://published-zeta.vercel.app/products.html",
+    "pay": "https://published-zeta.vercel.app/pay.html",
+    "teaser": {
+      "cycle_id": 1855,
+      "updated_at": "2026-08-15T15:00:09.724499+00:00"
+    }
+  },
+  "upsell": {
+    "message": "Unlock the full briefing (Tag 2) or micro-tool (Tag 3) for production use.",
+    "products": "https://published-zeta.vercel.app/products.json"
+  }
 }
