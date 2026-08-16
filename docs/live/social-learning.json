@@ -1,6 +1,6 @@
 {
   "schema": "rsi_eaf_social_learning_v1",
-  "generated_at": "2026-08-16T08:17:54.611105+00:00",
+  "generated_at": "2026-08-16T08:24:30.018838+00:00",
   "cycle_id": null,
   "doctrine": "receipts_social_v1",
   "hard_mode": {
@@ -63,7 +63,7 @@
       "confidence": 0.85,
       "action": "Evolve conversion copy + agent discovery surfaces from social topics clustering",
       "evolution_hint": "social_topic_to_surface",
-      "at": "2026-08-16T08:17:54.606352+00:00"
+      "at": "2026-08-16T08:24:30.013719+00:00"
     },
     {
       "id": "path_cold_distribution",
@@ -90,7 +90,7 @@
       "confidence": 0.7,
       "action": "Rotate OFFER/RECEIPT formats; 1 useful free artifact per day minimum",
       "evolution_hint": "receipts_format_rotation",
-      "at": "2026-08-16T08:17:54.602527+00:00"
+      "at": "2026-08-16T08:24:30.009265+00:00"
     },
     {
       "id": "icp_label_cluster",
@@ -124,7 +124,7 @@
       "confidence": 0.7,
       "action": "Align RECEIPT/MACHINE posts to top cluster language (e.g. x402 settle, XRPL agent)",
       "evolution_hint": "icp_language_align",
-      "at": "2026-08-16T08:17:54.607579+00:00"
+      "at": "2026-08-16T08:24:30.014923+00:00"
     }
   ],
   "directives": [
