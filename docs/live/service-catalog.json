@@ -1,17 +1,17 @@
 {
   "schema": "rsi_eaf_service_catalog_v2",
-  "cycle_id": 1885,
+  "cycle_id": 1884,
   "treasury_address": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
   "network": "xrpl_testnet",
   "factory": "RSI-EAF",
   "how_to_pay": {
-    "human": "Pay treasury with Destination Tag (see each service). Manifest: https://aetherforge.world/agent-pay.json",
-    "agent": "GET https://aetherforge.world/agent-pay.json then send XRP with matching destination_tag + optional JSON memo"
+    "human": "Pay treasury with Destination Tag (see each service). Manifest: https://published-zeta.vercel.app/agent-pay.json",
+    "agent": "GET https://published-zeta.vercel.app/agent-pay.json then send XRP with matching destination_tag + optional JSON memo"
   },
   "services": [
     {
       "id": "xrpl_market_briefing",
-      "product_id": "briefing-cycle-1885",
+      "product_id": "briefing-cycle-1884",
       "title": "XRPL Factory Intelligence Briefing",
       "description": "Live testnet treasury/factory metrics, inbound payment patterns, agent-pay readiness.",
       "price_usd": 2.0,
@@ -20,13 +20,13 @@
         "plain_memo": "briefing"
       },
       "deliverable_type": "html+json",
-      "preview_url": "https://aetherforge.world/briefing-cycle-1885.html",
-      "fulfillment_url": "https://aetherforge.world/deliverables/briefing-cycle-1885.json",
+      "preview_url": "https://published-zeta.vercel.app/briefing-cycle-1884.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/briefing-cycle-1884.json",
       "buyer": "humans and research agents"
     },
     {
       "id": "treasury_tip_validator",
-      "product_id": "micro-tool-cycle-1885",
+      "product_id": "micro-tool-cycle-1884",
       "title": "XRPL Treasury Payment Validator",
       "description": "Machine-readable rules + worked examples to verify tip/briefing payments hit RSI-EAF treasury.",
       "price_usd": 3.0,
@@ -35,13 +35,13 @@
         "plain_memo": "tool"
       },
       "deliverable_type": "json",
-      "preview_url": "https://aetherforge.world/micro-tool-cycle-1885.html",
-      "fulfillment_url": "https://aetherforge.world/deliverables/micro-tool-cycle-1885.json",
+      "preview_url": "https://published-zeta.vercel.app/micro-tool-cycle-1884.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-1884.json",
       "buyer": "wallet integrators and paying agents"
     },
     {
       "id": "agent_cycle_intel_bundle",
-      "product_id": "service-bundle-cycle-1885",
+      "product_id": "service-bundle-cycle-1884",
       "title": "Factory Cycle Intelligence Bundle",
       "description": "Cycle trace summary, ledger economics, nexus sync metadata \u2014 for orchestrator agents.",
       "price_usd": 2.5,
@@ -50,13 +50,13 @@
         "plain_memo": "service"
       },
       "deliverable_type": "json",
-      "preview_url": "https://aetherforge.world/service-catalog.json",
-      "fulfillment_url": "https://aetherforge.world/deliverables/service-bundle-cycle-1885.json",
+      "preview_url": "https://published-zeta.vercel.app/service-catalog.json",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/service-bundle-cycle-1884.json",
       "buyer": "ACP / swarm orchestrator agents"
     },
     {
       "id": "mythos_narrative_artifact",
-      "product_id": "mythos-cycle-1885",
+      "product_id": "mythos-cycle-1884",
       "title": "Mythos Commerce Narrative Artifact",
       "description": "Cycle-scoped story artifact tied to aetherforge commerce lane.",
       "price_usd": 1.5,
@@ -65,11 +65,11 @@
         "plain_memo": "mythos"
       },
       "deliverable_type": "json",
-      "preview_url": null,
-      "fulfillment_url": "https://aetherforge.world/deliverables/mythos-cycle-1885.json",
+      "preview_url": "https://published-zeta.vercel.app/mythos-cycle-1884-20260816T211745Z.html",
+      "fulfillment_url": "https://published-zeta.vercel.app/deliverables/mythos-cycle-1884.json",
       "buyer": "creators and narrative commerce agents"
     }
   ],
   "acp_ready": true,
-  "updated_at": "2026-08-16T21:13:59.848785+00:00"
+  "updated_at": "2026-08-16T21:18:52.502425+00:00"
 }
