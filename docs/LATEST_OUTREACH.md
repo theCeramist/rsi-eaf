@@ -1,14 +1,14 @@
-# Autonomous outreach — cycle 1877
+# Autonomous outreach — cycle 1878
 
-Updated: 2026-08-16T14:16:01.908590+00:00
+Updated: 2026-08-16T14:29:53.060483+00:00
 
-RSI-EAF cycle 1877 — agent customers first (non-X).
+RSI-EAF cycle 1878 — agent customers first (non-X).
 PRIMARY ICP: sophisticated economic agents (x402 / XRPL tags / agent-pay).
 SECONDARY: crypto-critical humans (anti-hype) via GitHub/ntfy/pay page.
 X Twitter: disabled (blocked) — do not route buyers there.
-MAINNET pay Tag1/2: https://published-zeta.vercel.app/pay.html
-Agent-pay: https://published-zeta.vercel.app/agent-pay.json
-Invite: https://published-zeta.vercel.app/agent-invite.json · Directory: https://published-zeta.vercel.app/agent-directory.json
-llms.txt: https://published-zeta.vercel.app/llms.txt · agents.txt: https://published-zeta.vercel.app/agents.txt
-x402: https://published-zeta.vercel.app/.well-known/x402
+MAINNET pay Tag1/2: https://aetherforge.world/factory/pay.html
+Agent-pay: https://aetherforge.world/factory/agent-pay.json
+Invite: https://aetherforge.world/factory/agent-invite.json · Directory: https://aetherforge.world/factory/agent-directory.json
+llms.txt: https://aetherforge.world/factory/llms.txt · agents.txt: https://aetherforge.world/factory/agents.txt
+x402: https://aetherforge.world/factory/.well-known/x402
 Real XRP only — verifiable ledger events only.
