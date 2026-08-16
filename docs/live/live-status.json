@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_live_pack_status_v1",
-  "updated_at": "2026-08-16T17:38:18.657215+00:00",
-  "cycle_id": 1881,
+  "updated_at": "2026-08-16T17:43:31.798827+00:00",
+  "cycle_id": 1880,
   "files": [
     "pay.html",
     "agent-pay.json",
@@ -10,6 +10,7 @@
     "social-policy.json",
     "social-learning.json",
     "free-sample.json",
+    "free-ads.html",
     "index.html",
     "agents.txt",
     "llms.txt",

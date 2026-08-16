@@ -6,22 +6,22 @@
     {
       "name": "Briefing Unlock",
       "description": "XRPL factory intelligence briefing (HTML preview + JSON deliverable after pay)",
-      "resource": "https://aetherforge.world/deliverables/briefing-cycle-1881.json",
+      "resource": "https://aetherforge.world/factory/deliverables/briefing-cycle-1880.json",
       "type": "http",
       "x402Version": 2
     },
     {
       "name": "Micro Tool",
       "description": "Treasury payment validator spec for wallet/agent integrators",
-      "resource": "https://aetherforge.world/deliverables/micro-tool-cycle-1881.json",
+      "resource": "https://aetherforge.world/factory/deliverables/micro-tool-cycle-1880.json",
       "type": "http",
       "x402Version": 2
     }
   ],
-  "updated_at": "2026-08-16T17:34:45.334014+00:00",
+  "updated_at": "2026-08-16T17:43:28.763119+00:00",
   "factory": "RSI-EAF",
   "network": "xrpl_mainnet",
-  "agent_pay": "https://aetherforge.world/agent-pay.json",
+  "agent_pay": "https://aetherforge.world/factory/agent-pay.json",
   "github": "https://github.com/theCeramist/rsi-eaf",
   "aetherforge": "https://aetherforge.world"
 }
