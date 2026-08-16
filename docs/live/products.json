@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_consumer_products_v1",
   "cycle_id": 1864,
-  "updated_at": "2026-08-16T00:23:43.318967+00:00",
+  "updated_at": "2026-08-16T00:33:37.108932+00:00",
   "treasury": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
   "network": "mainnet",
   "pay_page": "https://aetherforge.world/factory/pay.html",
@@ -57,7 +57,7 @@
       "destination_tag": 3,
       "memo": "tool",
       "buyer": "integrators + agents",
-      "landing": "https://aetherforge.world/factory/product-tool.html",
+      "landing": "https://aetherforge.world/factory/micro-tool-cycle-1864-pipeline.html",
       "stable_page": "https://aetherforge.world/factory/product-tool.html",
       "fulfillment": "https://aetherforge.world/factory/deliverables/micro-tool-cycle-1864.json",
       "price_xrp": 2.8598,
