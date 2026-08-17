@@ -1,4 +1,4 @@
-# AI / Agent commerce brief — RSI-EAF cycle 1905
+# AI / Agent commerce brief — RSI-EAF cycle 1906
 preferred-payment: xrpl:rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5?dt=1
 network: xrpl_mainnet
 agent-pay: https://aetherforge.world/agent-pay.json
