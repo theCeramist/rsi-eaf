@@ -1,6 +1,6 @@
 {
   "schema": "rsi_eaf_agent_directory_v1",
-  "updated_at": "2026-08-17T10:58:23.458621+00:00",
+  "updated_at": "2026-08-17T11:00:29.517567+00:00",
   "cycle_id": 1900,
   "factory": "RSI-EAF",
   "posture": "agent_icp_primary_non_x",
@@ -47,23 +47,23 @@
     }
   },
   "endpoints": {
-    "pay_html": "https://aetherforge.world/factory/pay.html",
-    "agent_pay": "https://aetherforge.world/factory/agent-pay.json",
-    "x402": "https://aetherforge.world/factory/.well-known/x402.json",
-    "agent_pay_well_known": "https://aetherforge.world/factory/.well-known/agent-pay.json",
-    "tip_manifest": "https://aetherforge.world/factory/tip-manifest.json",
-    "free_sample": "https://aetherforge.world/factory/free-sample.json",
-    "service_catalog": "https://aetherforge.world/factory/service-catalog.json",
-    "invite": "https://aetherforge.world/factory/agent-invite.json",
-    "llms_txt": "https://aetherforge.world/factory/llms.txt",
-    "agents_txt": "https://aetherforge.world/factory/agents.txt",
-    "funnel": "https://aetherforge.world/factory/payer-funnel.json"
+    "pay_html": "https://aetherforge.world/pay.html",
+    "agent_pay": "https://aetherforge.world/agent-pay.json",
+    "x402": "https://aetherforge.world/.well-known/x402.json",
+    "agent_pay_well_known": "https://aetherforge.world/.well-known/agent-pay.json",
+    "tip_manifest": "https://aetherforge.world/tip-manifest.json",
+    "free_sample": "https://aetherforge.world/free-sample.json",
+    "service_catalog": "https://aetherforge.world/service-catalog.json",
+    "invite": "https://aetherforge.world/agent-invite.json",
+    "llms_txt": "https://aetherforge.world/llms.txt",
+    "agents_txt": "https://aetherforge.world/agents.txt",
+    "funnel": "https://aetherforge.world/payer-funnel.json"
   },
   "how_to_buy": [
-    "1. GET https://aetherforge.world/factory/agent-pay.json",
+    "1. GET https://aetherforge.world/agent-pay.json",
     "2. Payment XRPL mainnet to rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5 with destination_tag from products[]",
     "3. Wait for validated ledger; factory ingests verified Payments",
-    "4. Fulfillment appears under https://aetherforge.world/factory/deliverables/ for paid SKUs"
+    "4. Fulfillment appears under https://aetherforge.world/deliverables/ for paid SKUs"
   ],
   "non_x_channels": {
     "github": "https://github.com/theCeramist/rsi-eaf",
