@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_service_catalog_v2",
   "cycle_id": 1901,
-  "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+  "treasury_address": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
   "network": "xrpl_testnet",
   "factory": "RSI-EAF",
   "how_to_pay": {
@@ -20,7 +20,7 @@
         "plain_memo": "briefing"
       },
       "deliverable_type": "html+json",
-      "preview_url": "https://published-zeta.vercel.app/briefing-cycle-1901-20260817T111135Z.html",
+      "preview_url": "https://published-zeta.vercel.app/briefing-cycle-1901-20260817T112635Z.html",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/briefing-cycle-1901.json",
       "buyer": "humans and research agents"
     },
@@ -35,7 +35,7 @@
         "plain_memo": "tool"
       },
       "deliverable_type": "json",
-      "preview_url": "https://published-zeta.vercel.app/micro-tool-cycle-1901-20260817T111200Z.html",
+      "preview_url": "https://published-zeta.vercel.app/micro-tool-cycle-1901-20260817T112704Z.html",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-1901.json",
       "buyer": "wallet integrators and paying agents"
     },
@@ -71,5 +71,5 @@
     }
   ],
   "acp_ready": true,
-  "updated_at": "2026-08-17T11:15:06.115890+00:00"
+  "updated_at": "2026-08-17T11:27:37.758460+00:00"
 }
