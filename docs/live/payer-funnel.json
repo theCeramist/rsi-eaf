@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_payer_funnel_v2",
-  "cycle_id": 1910,
-  "updated_at": "2026-08-17T22:19:19.049915+00:00",
+  "cycle_id": 1912,
+  "updated_at": "2026-08-17T22:24:47.885438+00:00",
   "primary_path": {
     "icp_live": true,
     "free_sample_live": false,
@@ -32,7 +32,7 @@
     "pay": {
       "tip_manifest": false,
       "agent_pay": false,
-      "tip_deep_link": false
+      "tip_deep_link": true
     },
     "ingest": {
       "payment_status_index": true,
@@ -43,7 +43,7 @@
       "fulfillment_index": true
     }
   },
-  "conversion_score": 6,
+  "conversion_score": 7,
   "external_payer_count": 3,
   "organic_revenue_usd_est": 3.0,
   "net_usd_est": -1500.0873,
