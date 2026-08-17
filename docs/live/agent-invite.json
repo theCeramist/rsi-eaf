@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_agent_invite_v1",
   "type": "agent_to_agent_commerce_invite",
-  "updated_at": "2026-08-17T22:24:50.317074+00:00",
+  "updated_at": "2026-08-17T22:32:39.786921+00:00",
   "cycle_id": 1912,
   "from": {
     "name": "RSI-EAF",
