@@ -1,20 +1,20 @@
 {
   "schema": "rsi_eaf_payer_funnel_v2",
-  "cycle_id": 1904,
-  "updated_at": "2026-08-17T14:38:30.119598+00:00",
+  "cycle_id": 1903,
+  "updated_at": "2026-08-17T14:44:53.241495+00:00",
   "primary_path": {
     "icp_live": true,
     "free_sample_live": true,
     "pay_html_live": true,
     "agent_pay_live": true,
     "tip_manifest_live": true,
-    "local_pay_ok": true,
+    "local_pay_ok": false,
     "local_agent_pay_ok": true,
     "local_tip_manifest_ok": true,
     "local_free_sample_ok": true
   },
   "primary_live_ok": true,
-  "primary_local_ok": true,
+  "primary_local_ok": false,
   "y_red": true,
   "l0_met": false,
   "stages": {
@@ -53,8 +53,8 @@
     "ingest",
     "conversion"
   ],
-  "bottleneck": "quote:quote_api",
-  "evolution_directive": "Widen integrator wedge + referral chain",
+  "bottleneck": "primary_local_down",
+  "evolution_directive": "Regenerate local payer pack then ship_must_live_priority",
   "north_star": "external_organic_payer_positive_net",
   "cta": {
     "pay": "https://aetherforge.world/factory/pay.html",
