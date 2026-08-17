@@ -1,6 +1,6 @@
 # RSI-EAF Revenue Surfaces (Cycle 1900)
 
-Updated: 2026-08-17T10:29:34.169307+00:00
+Updated: 2026-08-17T10:57:45.885601+00:00
 
 ## Live surfaces
 
@@ -20,7 +20,7 @@ Updated: 2026-08-17T10:29:34.169307+00:00
 ## Treasury (XRPL Testnet)
 
 ```
-rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5
+rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN
 ```
 
 ## Tip payment memo
