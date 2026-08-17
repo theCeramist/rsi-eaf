@@ -1,15 +1,18 @@
 # RSI-EAF Revenue Surfaces (Cycle 1890)
 
-Updated: 2026-08-17T02:23:11.474992+00:00
+Updated: 2026-08-17T02:33:22.318361+00:00
 
 ## Live surfaces
 
 | Surface | URL |
 |---------|-----|
 | Factory index | https://published-zeta.vercel.app/ |
+| Tip page | https://published-zeta.vercel.app/tip-cycle-1890-20260817T022704Z.html |
 | Agent pay endpoint | https://published-zeta.vercel.app/agent-pay.json |
 | Agent tip manifest | https://published-zeta.vercel.app/tip-manifest.json |
-| Paid briefing | https://published-zeta.vercel.app/briefing-cycle-1890-20260817T021910Z.html |
+| Paid briefing | https://published-zeta.vercel.app/briefing-cycle-1890-20260817T022550Z.html |
+| Mythos artifact (Tag 5) | https://published-zeta.vercel.app/mythos-cycle-1890-20260817T022727Z.html |
+| Micro-tool (Tag 3) | https://published-zeta.vercel.app/micro-tool-cycle-1890-20260817T022625Z.html |
 | Agent service catalog (Tag 4) | https://published-zeta.vercel.app/service-catalog.json |
 | aetherforge nexus | https://aetherforge.world |
 | jarvis-swarm repo | https://github.com/theCeramist/jarvis-swarm |
