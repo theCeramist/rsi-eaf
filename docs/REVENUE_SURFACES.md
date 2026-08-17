@@ -1,16 +1,19 @@
 # RSI-EAF Revenue Surfaces (Cycle 1888)
 
-Updated: 2026-08-17T00:59:53.405985+00:00
+Updated: 2026-08-17T01:35:02.245584+00:00
 
 ## Live surfaces
 
 | Surface | URL |
 |---------|-----|
-| Factory index | https://aetherforge.world/ |
-| Tip page | https://aetherforge.world/tip-manifest.json |
-| Agent pay endpoint | https://aetherforge.world/agent-pay.json |
-| Agent tip manifest | https://aetherforge.world/tip-manifest.json |
-| Agent service catalog (Tag 4) | https://aetherforge.world/service-catalog.json |
+| Factory index | https://published-zeta.vercel.app/ |
+| Tip page | https://published-zeta.vercel.app/tip-cycle-1888-20260817T012727Z.html |
+| Agent pay endpoint | https://published-zeta.vercel.app/agent-pay.json |
+| Agent tip manifest | https://published-zeta.vercel.app/tip-manifest.json |
+| Paid briefing | https://published-zeta.vercel.app/briefing-cycle-1888-20260817T012635Z.html |
+| Mythos artifact (Tag 5) | https://published-zeta.vercel.app/mythos-cycle-1888-20260817T012747Z.html |
+| Micro-tool (Tag 3) | https://published-zeta.vercel.app/micro-tool-cycle-1888-20260817T012657Z.html |
+| Agent service catalog (Tag 4) | https://published-zeta.vercel.app/service-catalog.json |
 | aetherforge nexus | https://aetherforge.world |
 | jarvis-swarm repo | https://github.com/theCeramist/jarvis-swarm |
 
