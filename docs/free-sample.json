@@ -1,33 +1,8 @@
 {
-  "schema": "rsi_eaf_free_sample_v2",
+  "schema": "rsi_eaf_free_sample_v1",
+  "updated_at": "2026-08-18T04:18:18.467391+00:00",
   "cycle_id": 1919,
-  "updated_at": "2026-08-18T04:15:14.891734+00:00",
-  "title": "Free XRPL factory sample (no payment)",
-  "value": {
-    "what_you_get": [
-      "Current treasury address + network",
-      "SKU destination tags 1\u20135",
-      "Link to full product shop",
-      "One teaser metric from factory health"
-    ],
-    "treasury": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
-    "network": "mainnet",
-    "tags": {
-      "1": "tip $1",
-      "2": "briefing unlock",
-      "3": "micro-tool unlock",
-      "4": "service bundle",
-      "5": "mythos artifact"
-    },
-    "shop": "https://aetherforge.world/factory/products.html",
-    "pay": "https://aetherforge.world/factory/pay.html",
-    "teaser": {
-      "cycle_id": 1919,
-      "updated_at": "2026-08-18T03:48:59.078635+00:00"
-    }
-  },
-  "upsell": {
-    "message": "Unlock the full briefing (Tag 2) or micro-tool (Tag 3) for production use.",
-    "products": "https://aetherforge.world/factory/products.json"
-  }
+  "message": "Free sample of RSI-EAF factory doctrine. Pay Tag 1 for tip; Tag 2 for briefing.",
+  "pay": "https://aetherforge.world/factory/pay.html",
+  "agent_pay": "https://aetherforge.world/factory/agent-pay.json"
 }
