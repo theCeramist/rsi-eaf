@@ -2,7 +2,7 @@
   "schema": "rsi_eaf_service_catalog_v2",
   "cycle_id": 1937,
   "treasury_address": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
-  "network": "xrpl_testnet",
+  "network": "mainnet",
   "factory": "RSI-EAF",
   "how_to_pay": {
     "human": "Pay treasury with Destination Tag (see each service). Manifest: https://published-zeta.vercel.app/agent-pay.json",
@@ -71,5 +71,7 @@
     }
   ],
   "acp_ready": true,
-  "updated_at": "2026-08-18T21:16:48.929519+00:00"
+  "updated_at": "2026-08-18T21:27:40.867793+00:00",
+  "pay_page": "https://published-zeta.vercel.app/pay.html",
+  "products_shop": "https://published-zeta.vercel.app/products.html"
 }
