@@ -1,6 +1,6 @@
 # RSI-EAF Revenue Surfaces (Cycle 1926)
 
-Updated: 2026-08-18T10:02:04.107312+00:00
+Updated: 2026-08-18T10:11:02.380712+00:00
 
 ## Live surfaces
 
@@ -10,7 +10,8 @@ Updated: 2026-08-18T10:02:04.107312+00:00
 | Tip page | https://aetherforge.world/tip-manifest.json |
 | Agent pay endpoint | https://aetherforge.world/agent-pay.json |
 | Agent tip manifest | https://aetherforge.world/tip-manifest.json |
-| Paid briefing | https://aetherforge.world/briefing-cycle-1926-20260818T095934Z.html |
+| Mythos artifact (Tag 5) | https://aetherforge.world/mythos-cycle-1926-20260818T100226Z.html |
+| Micro-tool (Tag 3) | https://aetherforge.world/micro-tool-cycle-1926-20260818T100059Z.html |
 | Agent service catalog (Tag 4) | https://aetherforge.world/service-catalog.json |
 | aetherforge nexus | https://aetherforge.world |
 | jarvis-swarm repo | https://github.com/theCeramist/jarvis-swarm |
