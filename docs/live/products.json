@@ -1,10 +1,10 @@
 {
   "schema": "rsi_eaf_consumer_products_v1",
   "cycle_id": 1925,
-  "updated_at": "2026-08-18T09:06:26.987685+00:00",
+  "updated_at": "2026-08-18T09:20:29.344231+00:00",
   "treasury": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
   "network": "mainnet",
-  "pay_page": "https://aetherforge.world/pay.html",
+  "pay_page": "https://published-zeta.vercel.app/pay.html",
   "how_to_buy": {
     "human": "Open products.html or pay.html \u2192 Xaman one-tap with Destination Tag for the SKU",
     "agent": "GET products.json or agent-pay.json \u2192 Payment with destination_tag + optional memo"
@@ -19,15 +19,15 @@
       "destination_tag": 1,
       "memo": "tip",
       "buyer": "humans + agents",
-      "landing": "https://aetherforge.world/pay.html",
-      "stable_page": "https://aetherforge.world/product-tip.html",
-      "fulfillment": "https://aetherforge.world/deliverables/tip-receipt.json",
+      "landing": "https://published-zeta.vercel.app/pay.html",
+      "stable_page": "https://published-zeta.vercel.app/product-tip.html",
+      "fulfillment": "https://published-zeta.vercel.app/deliverables/tip-receipt.json",
       "price_xrp": 0.9533,
       "network": "mainnet",
       "treasury": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
       "xaman_url": "https://xaman.app/detect/request:rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5?amount=0.9533&network=XRPL&dt=1",
-      "pay_page": "https://aetherforge.world/pay.html",
-      "free_sample": "https://aetherforge.world/free-sample.json"
+      "pay_page": "https://published-zeta.vercel.app/pay.html",
+      "free_sample": "https://published-zeta.vercel.app/free-sample.json"
     },
     {
       "sku": "briefing",
@@ -38,15 +38,15 @@
       "destination_tag": 2,
       "memo": "briefing",
       "buyer": "researchers + agents",
-      "landing": "https://aetherforge.world/briefing-cycle-1925-20260818T090535Z.html",
-      "stable_page": "https://aetherforge.world/product-briefing.html",
-      "fulfillment": "https://aetherforge.world/deliverables/briefing-cycle-1925.json",
+      "landing": "https://published-zeta.vercel.app/briefing-cycle-1925-20260818T091455Z.html",
+      "stable_page": "https://published-zeta.vercel.app/product-briefing.html",
+      "fulfillment": "https://published-zeta.vercel.app/deliverables/briefing-cycle-1925.json",
       "price_xrp": 1.9065,
       "network": "mainnet",
       "treasury": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
       "xaman_url": "https://xaman.app/detect/request:rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5?amount=1.9065&network=XRPL&dt=2",
-      "pay_page": "https://aetherforge.world/pay.html",
-      "free_sample": "https://aetherforge.world/free-sample.json"
+      "pay_page": "https://published-zeta.vercel.app/pay.html",
+      "free_sample": "https://published-zeta.vercel.app/free-sample.json"
     },
     {
       "sku": "tool",
@@ -57,15 +57,15 @@
       "destination_tag": 3,
       "memo": "tool",
       "buyer": "integrators + agents",
-      "landing": "https://aetherforge.world/micro-tool-cycle-1925-20260818T085621Z.html",
-      "stable_page": "https://aetherforge.world/product-tool.html",
-      "fulfillment": "https://aetherforge.world/deliverables/micro-tool-cycle-1925.json",
+      "landing": "https://published-zeta.vercel.app/micro-tool-cycle-1925-20260818T091519Z.html",
+      "stable_page": "https://published-zeta.vercel.app/product-tool.html",
+      "fulfillment": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-1925.json",
       "price_xrp": 2.8598,
       "network": "mainnet",
       "treasury": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
       "xaman_url": "https://xaman.app/detect/request:rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5?amount=2.8598&network=XRPL&dt=3",
-      "pay_page": "https://aetherforge.world/pay.html",
-      "free_sample": "https://aetherforge.world/free-sample.json"
+      "pay_page": "https://published-zeta.vercel.app/pay.html",
+      "free_sample": "https://published-zeta.vercel.app/free-sample.json"
     },
     {
       "sku": "service_bundle",
@@ -76,15 +76,15 @@
       "destination_tag": 4,
       "memo": "service",
       "buyer": "ACP / swarm agents",
-      "landing": "https://aetherforge.world/service-catalog.json",
-      "stable_page": "https://aetherforge.world/product-services.html",
-      "fulfillment": "https://aetherforge.world/deliverables/service-bundle-cycle-1925.json",
+      "landing": "https://published-zeta.vercel.app/service-catalog.json",
+      "stable_page": "https://published-zeta.vercel.app/product-services.html",
+      "fulfillment": "https://published-zeta.vercel.app/deliverables/service-bundle-cycle-1925.json",
       "price_xrp": 2.3832,
       "network": "mainnet",
       "treasury": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
       "xaman_url": "https://xaman.app/detect/request:rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5?amount=2.3832&network=XRPL&dt=4",
-      "pay_page": "https://aetherforge.world/pay.html",
-      "free_sample": "https://aetherforge.world/free-sample.json"
+      "pay_page": "https://published-zeta.vercel.app/pay.html",
+      "free_sample": "https://published-zeta.vercel.app/free-sample.json"
     },
     {
       "sku": "mythos",
@@ -95,15 +95,15 @@
       "destination_tag": 5,
       "memo": "mythos",
       "buyer": "creators + agents",
-      "landing": "https://aetherforge.world/mythos-cycle-1925-20260818T085724Z.html",
-      "stable_page": "https://aetherforge.world/product-mythos.html",
-      "fulfillment": "https://aetherforge.world/deliverables/mythos-cycle-1925.json",
+      "landing": "https://published-zeta.vercel.app/mythos-cycle-1925-20260818T091634Z.html",
+      "stable_page": "https://published-zeta.vercel.app/product-mythos.html",
+      "fulfillment": "https://published-zeta.vercel.app/deliverables/mythos-cycle-1925.json",
       "price_xrp": 1.4299,
       "network": "mainnet",
       "treasury": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
       "xaman_url": "https://xaman.app/detect/request:rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5?amount=1.4299&network=XRPL&dt=5",
-      "pay_page": "https://aetherforge.world/pay.html",
-      "free_sample": "https://aetherforge.world/free-sample.json"
+      "pay_page": "https://published-zeta.vercel.app/pay.html",
+      "free_sample": "https://published-zeta.vercel.app/free-sample.json"
     }
   ]
 }
