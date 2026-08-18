@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_service_catalog_v2",
   "cycle_id": 1926,
-  "treasury_address": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
+  "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
   "network": "xrpl_testnet",
   "factory": "RSI-EAF",
   "how_to_pay": {
@@ -35,7 +35,7 @@
         "plain_memo": "tool"
       },
       "deliverable_type": "json",
-      "preview_url": "https://aetherforge.world/micro-tool-cycle-1926.html",
+      "preview_url": "https://aetherforge.world/micro-tool-cycle-1926-20260818T100059Z.html",
       "fulfillment_url": "https://aetherforge.world/deliverables/micro-tool-cycle-1926.json",
       "buyer": "wallet integrators and paying agents"
     },
@@ -65,11 +65,11 @@
         "plain_memo": "mythos"
       },
       "deliverable_type": "json",
-      "preview_url": null,
+      "preview_url": "https://aetherforge.world/mythos-cycle-1926-20260818T100226Z.html",
       "fulfillment_url": "https://aetherforge.world/deliverables/mythos-cycle-1926.json",
       "buyer": "creators and narrative commerce agents"
     }
   ],
   "acp_ready": true,
-  "updated_at": "2026-08-18T09:59:02.665824+00:00"
+  "updated_at": "2026-08-18T10:04:38.797795+00:00"
 }
