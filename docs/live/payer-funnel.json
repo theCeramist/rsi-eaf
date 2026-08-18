@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_payer_funnel_v2",
-  "cycle_id": 1921,
-  "updated_at": "2026-08-18T06:32:32.830238+00:00",
+  "cycle_id": 1922,
+  "updated_at": "2026-08-18T07:06:05.697442+00:00",
   "primary_path": {
     "icp_live": true,
     "free_sample_live": false,
