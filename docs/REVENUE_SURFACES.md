@@ -1,17 +1,18 @@
-# RSI-EAF Revenue Surfaces (Cycle 1926)
+# RSI-EAF Revenue Surfaces (Cycle 1927)
 
-Updated: 2026-08-18T10:21:51.766979+00:00
+Updated: 2026-08-18T10:33:06.279813+00:00
 
 ## Live surfaces
 
 | Surface | URL |
 |---------|-----|
 | Factory index | https://published-zeta.vercel.app/ |
-| Tip page | https://published-zeta.vercel.app/tip-cycle-1926-20260818T100157Z.html |
+| Tip page | https://published-zeta.vercel.app/tip-cycle-1927-20260818T102300Z.html |
 | Agent pay endpoint | https://published-zeta.vercel.app/agent-pay.json |
 | Agent tip manifest | https://published-zeta.vercel.app/tip-manifest.json |
-| Mythos artifact (Tag 5) | https://published-zeta.vercel.app/mythos-cycle-1926-20260818T100226Z.html |
-| Micro-tool (Tag 3) | https://published-zeta.vercel.app/micro-tool-cycle-1926-20260818T100059Z.html |
+| Paid briefing | https://published-zeta.vercel.app/briefing-cycle-1927-20260818T102123Z.html |
+| Mythos artifact (Tag 5) | https://published-zeta.vercel.app/mythos-cycle-1927-20260818T102340Z.html |
+| Micro-tool (Tag 3) | https://published-zeta.vercel.app/micro-tool-cycle-1927-20260818T102200Z.html |
 | Agent service catalog (Tag 4) | https://published-zeta.vercel.app/service-catalog.json |
 | aetherforge nexus | https://aetherforge.world |
 | jarvis-swarm repo | https://github.com/theCeramist/jarvis-swarm |
@@ -31,7 +32,7 @@ rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5
 ## Briefing unlock memo
 
 ```json
-{"type":"revenue","amount_usd_est":2.0,"product_id":"briefing-cycle-1926","notes":"unlock briefing-cycle-1926"}
+{"type":"revenue","amount_usd_est":2.0,"product_id":"briefing-cycle-1927","notes":"unlock briefing-cycle-1927"}
 ```
 
 ## Verification
