@@ -1,6 +1,6 @@
-# RSI-EAF Revenue Surfaces (Cycle 1948)
+# RSI-EAF Revenue Surfaces (Cycle 1949)
 
-Updated: 2026-08-19T11:56:30.598594+00:00
+Updated: 2026-08-19T12:04:20.630888+00:00
 
 ## Live surfaces
 
@@ -10,9 +10,9 @@ Updated: 2026-08-19T11:56:30.598594+00:00
 | Tip page | https://aetherforge.world/tip-manifest.json |
 | Agent pay endpoint | https://aetherforge.world/agent-pay.json |
 | Agent tip manifest | https://aetherforge.world/tip-manifest.json |
-| Paid briefing | https://aetherforge.world/briefing-cycle-1948-20260819T114333Z.html |
-| Mythos artifact (Tag 5) | https://aetherforge.world/mythos-cycle-1948-20260819T114449Z.html |
-| Micro-tool (Tag 3) | https://aetherforge.world/micro-tool-cycle-1948-20260819T114357Z.html |
+| Paid briefing | https://aetherforge.world/briefing-cycle-1949-20260819T115703Z.html |
+| Mythos artifact (Tag 5) | https://aetherforge.world/mythos-cycle-1949-20260819T115823Z.html |
+| Micro-tool (Tag 3) | https://aetherforge.world/micro-tool-cycle-1949-20260819T115730Z.html |
 | Agent service catalog (Tag 4) | https://aetherforge.world/service-catalog.json |
 | aetherforge nexus | https://aetherforge.world |
 | jarvis-swarm repo | https://github.com/theCeramist/jarvis-swarm |
@@ -32,7 +32,7 @@ rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5
 ## Briefing unlock memo
 
 ```json
-{"type":"revenue","amount_usd_est":2.0,"product_id":"briefing-cycle-1948","notes":"unlock briefing-cycle-1948"}
+{"type":"revenue","amount_usd_est":2.0,"product_id":"briefing-cycle-1949","notes":"unlock briefing-cycle-1949"}
 ```
 
 ## Verification
