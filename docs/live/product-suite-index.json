@@ -3,7 +3,7 @@
   "cycle_id": 1945,
   "treasury_address": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
   "network": "mainnet",
-  "updated_at": "2026-08-19T08:07:59.146479+00:00",
+  "updated_at": "2026-08-19T08:26:51.541116+00:00",
   "suite_count": 5,
   "doctrine": "continuous_make_test_ship_for_consumer_purchase",
   "discovery": {
@@ -36,7 +36,7 @@
       "price_usd": 2.0,
       "price_xrp": 1.9065,
       "destination_tag": 2,
-      "landing_url": "https://published-zeta.vercel.app/briefing-cycle-1945-20260819T074614Z.html",
+      "landing_url": "https://published-zeta.vercel.app/briefing-cycle-1945-20260819T082551Z.html",
       "stable_page": "https://published-zeta.vercel.app/product-briefing.html",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/briefing-cycle-1945.json",
       "xaman_url": "https://xaman.app/detect/request:rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5?amount=1.9065&network=XRPL&dt=2",
