@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_agent_pay_v1",
   "version": "1.4",
-  "updated_at": "2026-08-20T21:41:16.171819+00:00",
+  "updated_at": "2026-08-20T21:47:01.990273+00:00",
   "cycle_id": 1977,
   "factory": "RSI-EAF",
   "network": "xrpl_mainnet",
@@ -176,7 +176,7 @@
       "credited_usd": 1.5,
       "plain_memo": "mythos",
       "product_id": "mythos-cycle-1977",
-      "live_url": null,
+      "live_url": "https://aetherforge.world/factory/mythos-cycle-1977-20260820T213813Z.html",
       "description": "Narrative commerce artifact for aetherforge lane",
       "fulfillment_url": "https://aetherforge.world/factory/deliverables/mythos-cycle-1977.json",
       "service_type": "creative_commerce",
