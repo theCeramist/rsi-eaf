@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_live_pack_status_v1",
-  "updated_at": "2026-08-20T05:44:36.878672+00:00",
-  "cycle_id": 1964,
+  "updated_at": "2026-08-20T05:57:01.028612+00:00",
+  "cycle_id": 1965,
   "files": [
     "pay.html",
     "agent-pay.json",
@@ -30,7 +30,6 @@
     "product-briefing.html",
     "product-tool.html",
     "product-mythos.html",
-    "product-services.html",
     "product-tip.html"
   ],
   "mirrors": {
