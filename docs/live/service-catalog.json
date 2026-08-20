@@ -1,8 +1,8 @@
 {
   "schema": "rsi_eaf_service_catalog_v2",
   "cycle_id": 1976,
-  "treasury_address": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
-  "network": "mainnet",
+  "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+  "network": "xrpl_testnet",
   "factory": "RSI-EAF",
   "how_to_pay": {
     "human": "Pay treasury with Destination Tag (see each service). Manifest: https://aetherforge.world/factory/agent-pay.json",
@@ -20,7 +20,7 @@
         "plain_memo": "briefing"
       },
       "deliverable_type": "html+json",
-      "preview_url": "https://aetherforge.world/factory/briefing-cycle-1976-20260820T202759Z.html",
+      "preview_url": "https://aetherforge.world/factory/briefing-cycle-1976.html",
       "fulfillment_url": "https://aetherforge.world/factory/deliverables/briefing-cycle-1976.json",
       "buyer": "humans and research agents"
     },
@@ -65,13 +65,11 @@
         "plain_memo": "mythos"
       },
       "deliverable_type": "json",
-      "preview_url": null,
+      "preview_url": "https://aetherforge.world/factory/mythos-cycle-1976-20260820T202951Z.html",
       "fulfillment_url": "https://aetherforge.world/factory/deliverables/mythos-cycle-1976.json",
       "buyer": "creators and narrative commerce agents"
     }
   ],
   "acp_ready": true,
-  "updated_at": "2026-08-20T20:28:20.905462+00:00",
-  "pay_page": "https://aetherforge.world/factory/pay.html",
-  "products_shop": "https://aetherforge.world/factory/products.html"
+  "updated_at": "2026-08-20T20:31:44.314121+00:00"
 }
