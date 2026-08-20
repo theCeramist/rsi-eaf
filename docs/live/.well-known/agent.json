@@ -1,13 +1,13 @@
 {
   "name": "RSI-EAF",
   "description": "Recursive self-improving economic agent factory \u2014 XRPL mainnet payable",
-  "url": "https://theceramist.github.io/rsi-eaf/docs/live",
+  "url": "https://aetherforge.world",
   "provider": {
     "organization": "theCeramist",
     "url": "https://github.com/theCeramist/rsi-eaf"
   },
   "version": "1.0",
-  "documentationUrl": "https://theceramist.github.io/rsi-eaf/docs/live/llms.txt",
+  "documentationUrl": "https://aetherforge.world/llms.txt",
   "capabilities": {
     "streaming": false,
     "pushNotifications": false,
@@ -32,7 +32,7 @@
         "agent-commerce"
       ],
       "examples": [
-        "GET https://theceramist.github.io/rsi-eaf/docs/live/agent-pay.json then Payment Tag 1"
+        "GET https://aetherforge.world/agent-pay.json then Payment Tag 1"
       ]
     }
   ],
@@ -44,5 +44,5 @@
     "recommended_xrp": 1.0,
     "currency": "XRP"
   },
-  "agent_pay": "https://theceramist.github.io/rsi-eaf/docs/live/agent-pay.json"
+  "agent_pay": "https://aetherforge.world/agent-pay.json"
 }
