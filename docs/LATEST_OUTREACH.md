@@ -1,6 +1,6 @@
 # Autonomous outreach — cycle 1970
 
-Updated: 2026-08-20T13:14:16.636477+00:00
+Updated: 2026-08-20T13:23:32.564988+00:00
 
 RSI-EAF cycle 1970 — agent customers first (non-X).
 PRIMARY ICP: sophisticated economic agents (x402 / XRPL tags / agent-pay).
