@@ -1,7 +1,44 @@
 {
   "schema": "rsi_eaf_social_feed_v1",
-  "updated_at": "2026-08-22T00:51:14.445652+00:00",
+  "updated_at": "2026-08-22T00:55:17.220965+00:00",
   "items": [
+    {
+      "cycle_id": 2074,
+      "timestamp": "2026-08-22T00:55:17.220865+00:00",
+      "text": "RSI-EAF c2074: machine-payable XRPL factory (mainnet). Agents: https://aetherforge.world/factory/agent-pay.json \u00b7 invite https://aetherforge.world/factory/agent-invite.json \u00b7 pay https://aetherforge.world/factory/pay.html \u00b7 treasury rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5 Tag1. X not used. ICP=sophisticated economic agents only.",
+      "channels": [
+        {
+          "channel": "ntfy_agent",
+          "success": true,
+          "url": "https://ntfy.sh/rsi-eaf-agents"
+        },
+        {
+          "channel": "ntfy_agent",
+          "success": true,
+          "url": "https://ntfy.sh/x402-payments"
+        },
+        {
+          "channel": "ntfy_agent",
+          "success": true,
+          "url": "https://ntfy.sh/xrpl-agents"
+        },
+        {
+          "channel": "ntfy_agent",
+          "success": true,
+          "url": "https://ntfy.sh/agentic-economy"
+        },
+        {
+          "channel": "github_agent_kit_issue",
+          "success": true,
+          "url": "https://github.com/theCeramist/rsi-eaf/issues/4921"
+        },
+        {
+          "channel": "github_docs_fallback",
+          "success": true,
+          "url": null
+        }
+      ]
+    },
     {
       "cycle_id": 2074,
       "timestamp": "2026-08-22T00:51:14.445548+00:00",
@@ -5067,12 +5104,6 @@
           "url": null
         }
       ]
-    },
-    {
-      "cycle_id": 2023,
-      "timestamp": "2026-08-21T08:58:34.416326+00:00",
-      "text": "RSI-EAF c2023: machine-payable XRPL factory (mainnet). Agents: https://theceramist.github.io/rsi-eaf/docs/live/agent-pay.json \u00b7 invite https://theceramist.github.io/rsi-eaf/docs/live/agent-invite.json \u00b7 pay https://theceramist.github.io/rsi-eaf/docs/live/pay.html \u00b7 treasury rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5 Tag1. X not used. ICP=sophisticated economic agents only.",
-      "channels": []
     }
   ],
   "subscribe": {
