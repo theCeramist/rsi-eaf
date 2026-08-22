@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_service_catalog_v2",
-  "cycle_id": 2088,
-  "treasury_address": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
+  "cycle_id": 2089,
+  "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
   "network": "xrpl_testnet",
   "factory": "RSI-EAF",
   "how_to_pay": {
@@ -11,7 +11,7 @@
   "services": [
     {
       "id": "xrpl_market_briefing",
-      "product_id": "briefing-cycle-2088",
+      "product_id": "briefing-cycle-2089",
       "title": "XRPL Factory Intelligence Briefing",
       "description": "Live testnet treasury/factory metrics, inbound payment patterns, agent-pay readiness.",
       "price_usd": 2.0,
@@ -20,13 +20,13 @@
         "plain_memo": "briefing"
       },
       "deliverable_type": "html+json",
-      "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/briefing-cycle-2088-20260822T164510Z.html",
-      "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/deliverables/briefing-cycle-2088.json",
+      "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/briefing-cycle-2089-20260822T170528Z.html",
+      "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/deliverables/briefing-cycle-2089.json",
       "buyer": "humans and research agents"
     },
     {
       "id": "treasury_tip_validator",
-      "product_id": "micro-tool-cycle-2088",
+      "product_id": "micro-tool-cycle-2089",
       "title": "XRPL Treasury Payment Validator",
       "description": "Machine-readable rules + worked examples to verify tip/briefing payments hit RSI-EAF treasury.",
       "price_usd": 3.0,
@@ -35,13 +35,13 @@
         "plain_memo": "tool"
       },
       "deliverable_type": "json",
-      "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/micro-tool-cycle-2088-pipeline.html",
-      "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/deliverables/micro-tool-cycle-2088.json",
+      "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/micro-tool-cycle-2089-20260822T170600Z.html",
+      "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/deliverables/micro-tool-cycle-2089.json",
       "buyer": "wallet integrators and paying agents"
     },
     {
       "id": "agent_cycle_intel_bundle",
-      "product_id": "service-bundle-cycle-2088",
+      "product_id": "service-bundle-cycle-2089",
       "title": "Factory Cycle Intelligence Bundle",
       "description": "Cycle trace summary, ledger economics, nexus sync metadata \u2014 for orchestrator agents.",
       "price_usd": 2.5,
@@ -51,12 +51,12 @@
       },
       "deliverable_type": "json",
       "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/service-catalog.json",
-      "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/deliverables/service-bundle-cycle-2088.json",
+      "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/deliverables/service-bundle-cycle-2089.json",
       "buyer": "ACP / swarm orchestrator agents"
     },
     {
       "id": "mythos_narrative_artifact",
-      "product_id": "mythos-cycle-2088",
+      "product_id": "mythos-cycle-2089",
       "title": "Mythos Commerce Narrative Artifact",
       "description": "Cycle-scoped story artifact tied to aetherforge commerce lane.",
       "price_usd": 1.5,
@@ -65,11 +65,11 @@
         "plain_memo": "mythos"
       },
       "deliverable_type": "json",
-      "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/mythos-cycle-2088-20260822T164635Z.html",
-      "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/deliverables/mythos-cycle-2088.json",
+      "preview_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/mythos-cycle-2089-20260822T170721Z.html",
+      "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/deliverables/mythos-cycle-2089.json",
       "buyer": "creators and narrative commerce agents"
     }
   ],
   "acp_ready": true,
-  "updated_at": "2026-08-22T16:59:43.337683+00:00"
+  "updated_at": "2026-08-22T17:09:37.995413+00:00"
 }
