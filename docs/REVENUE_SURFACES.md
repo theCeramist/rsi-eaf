@@ -1,13 +1,13 @@
 # RSI-EAF Revenue Surfaces (Cycle 2080)
 
-Updated: 2026-08-22T07:00:46.367270+00:00
+Updated: 2026-08-22T07:27:40.632826+00:00
 
 ## Live surfaces
 
 | Surface | URL |
 |---------|-----|
 | Factory index | https://aetherforge.world/factory/ |
-| Tip page | https://aetherforge.world/factory/tip-manifest.json |
+| Tip page | https://aetherforge.world/factory/tip-cycle-2080-20260822T065201Z.html |
 | Agent pay endpoint | https://aetherforge.world/factory/agent-pay.json |
 | Agent tip manifest | https://aetherforge.world/factory/tip-manifest.json |
 | Paid briefing | https://aetherforge.world/factory/briefing-cycle-2080-20260822T065052Z.html |
