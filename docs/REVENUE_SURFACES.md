@@ -1,19 +1,19 @@
 # RSI-EAF Revenue Surfaces (Cycle 2086)
 
-Updated: 2026-08-22T14:02:01.472896+00:00
+Updated: 2026-08-22T14:21:45.788580+00:00
 
 ## Live surfaces
 
 | Surface | URL |
 |---------|-----|
-| Factory index | https://aetherforge.world/factory/ |
-| Tip page | https://aetherforge.world/factory/tip-cycle-2086-20260822T135252Z.html |
-| Agent pay endpoint | https://aetherforge.world/factory/agent-pay.json |
-| Agent tip manifest | https://aetherforge.world/factory/tip-manifest.json |
-| Paid briefing | https://aetherforge.world/factory/briefing-cycle-2086-20260822T135119Z.html |
-| Mythos artifact (Tag 5) | https://aetherforge.world/factory/mythos-cycle-2086-20260822T135330Z.html |
-| Micro-tool (Tag 3) | https://aetherforge.world/factory/micro-tool-cycle-2086-20260822T135158Z.html |
-| Agent service catalog (Tag 4) | https://aetherforge.world/factory/service-catalog.json |
+| Factory index | https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/ |
+| Tip page | https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/tip-manifest.json |
+| Agent pay endpoint | https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-pay.json |
+| Agent tip manifest | https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/tip-manifest.json |
+| Paid briefing | https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/briefing-cycle-2086-20260822T135119Z.html |
+| Mythos artifact (Tag 5) | https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/mythos-cycle-2086-20260822T135330Z.html |
+| Micro-tool (Tag 3) | https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/micro-tool-cycle-2086-20260822T135158Z.html |
+| Agent service catalog (Tag 4) | https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/service-catalog.json |
 | aetherforge nexus | https://aetherforge.world |
 | jarvis-swarm repo | https://github.com/theCeramist/jarvis-swarm |
 
