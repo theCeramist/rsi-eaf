@@ -6,22 +6,22 @@
     {
       "name": "Briefing Unlock",
       "description": "XRPL factory intelligence briefing (HTML preview + JSON deliverable after pay)",
-      "resource": "https://published-zeta.vercel.app/deliverables/briefing-cycle-2093.json",
+      "resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/deliverables/briefing-cycle-2093.json",
       "type": "http",
       "x402Version": 2
     },
     {
       "name": "Micro Tool",
       "description": "Treasury payment validator spec for wallet/agent integrators",
-      "resource": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-2093.json",
+      "resource": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/deliverables/micro-tool-cycle-2093.json",
       "type": "http",
       "x402Version": 2
     }
   ],
-  "updated_at": "2026-08-22T23:29:45.336048+00:00",
+  "updated_at": "2026-08-22T23:39:31.174479+00:00",
   "factory": "RSI-EAF",
   "network": "xrpl_mainnet",
-  "agent_pay": "https://published-zeta.vercel.app/agent-pay.json",
+  "agent_pay": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-pay.json",
   "github": "https://github.com/theCeramist/rsi-eaf",
   "aetherforge": "https://aetherforge.world"
 }
