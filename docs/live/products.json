@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_consumer_products_v1",
   "cycle_id": 2088,
-  "updated_at": "2026-08-22T16:17:37.620620+00:00",
+  "updated_at": "2026-08-22T16:20:33.432376+00:00",
   "treasury": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
   "network": "mainnet",
   "pay_page": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/pay.html",
