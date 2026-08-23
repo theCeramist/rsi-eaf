@@ -1,6 +1,6 @@
 {
   "schema": "rsi_eaf_tip_manifest_v3",
-  "updated_at": "2026-08-23T03:14:50.365484+00:00",
+  "updated_at": "2026-08-23T03:22:55.138200+00:00",
   "cycle_id": 2095,
   "network": "xrpl_mainnet",
   "real_value": true,
@@ -36,6 +36,6 @@
     "source": "tip_manifest"
   },
   "explorer": "https://xrpl.org/",
-  "live_tip_page": "https://published-zeta.vercel.app/tip-cycle-2095-20260823T031238Z.html",
+  "live_tip_page": "https://published-zeta.vercel.app/tip-cycle-2095-20260823T015352Z.html",
   "verification": "Tag 1, memo 'tip', or flat external payment \u2192 verified tip"
 }
