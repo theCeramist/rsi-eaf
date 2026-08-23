@@ -1,6 +1,6 @@
 # RSI-EAF Revenue Surfaces (Cycle 2094)
 
-Updated: 2026-08-23T01:13:37.466607+00:00
+Updated: 2026-08-23T01:28:11.581233+00:00
 
 ## Live surfaces
 
@@ -11,6 +11,7 @@ Updated: 2026-08-23T01:13:37.466607+00:00
 | Agent pay endpoint | https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-pay.json |
 | Agent tip manifest | https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/tip-manifest.json |
 | Paid briefing | https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/briefing-cycle-2094-20260823T010758Z.html |
+| Mythos artifact (Tag 5) | https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/mythos-cycle-2094-20260823T011036Z.html |
 | Micro-tool (Tag 3) | https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/micro-tool-cycle-2094-20260823T010848Z.html |
 | Agent service catalog (Tag 4) | https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/service-catalog.json |
 | aetherforge nexus | https://aetherforge.world |
