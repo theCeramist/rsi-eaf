@@ -1,8 +1,9 @@
 {
   "schema": "rsi_eaf_live_pack_status_v1",
-  "updated_at": "2026-08-23T09:22:39.515476+00:00",
+  "updated_at": "2026-08-23T09:26:12.950409+00:00",
   "cycle_id": 2101,
   "files": [
+    "pay.html",
     "agent-pay.json",
     "tip-manifest.json",
     "icp.json",
