@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_agent_pay_v1",
   "version": "1.4",
-  "updated_at": "2026-08-23T20:39:51.652139+00:00",
+  "updated_at": "2026-08-23T20:44:46.890026+00:00",
   "cycle_id": 2108,
   "factory": "RSI-EAF",
   "network": "xrpl_mainnet",
