@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_agent_pay_v1",
   "version": "1.4",
-  "updated_at": "2026-08-23T03:06:44.238467+00:00",
+  "updated_at": "2026-08-23T03:15:12.054698+00:00",
   "cycle_id": 2095,
   "factory": "RSI-EAF",
   "network": "xrpl_mainnet",
@@ -110,7 +110,7 @@
       "credited_usd": 3.0,
       "plain_memo": "tool",
       "product_id": "micro-tool-cycle-2095",
-      "live_url": "https://published-zeta.vercel.app/micro-tool-cycle-2095-20260823T030545Z.html",
+      "live_url": "https://published-zeta.vercel.app/micro-tool-cycle-2095-20260823T023156Z.html",
       "description": "Treasury payment validator spec for wallet/agent integrators",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-2095.json",
       "service_type": "paid_tool",
@@ -135,7 +135,7 @@
         "source_tag": 20260703,
         "max_timeout_seconds": 600,
         "protected_resource": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-2095.json",
-        "preview_resource": "https://published-zeta.vercel.app/micro-tool-cycle-2095-20260823T030545Z.html",
+        "preview_resource": "https://published-zeta.vercel.app/micro-tool-cycle-2095-20260823T023156Z.html",
         "payment_requirements_template": {
           "scheme": "exact",
           "network": "xrpl:1",
