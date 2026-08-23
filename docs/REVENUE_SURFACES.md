@@ -1,6 +1,6 @@
 # RSI-EAF Revenue Surfaces (Cycle 2106)
 
-Updated: 2026-08-23T17:17:36.459620+00:00
+Updated: 2026-08-23T17:31:42.753681+00:00
 
 ## Live surfaces
 
@@ -10,7 +10,7 @@ Updated: 2026-08-23T17:17:36.459620+00:00
 | Tip page | https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/tip-manifest.json |
 | Agent pay endpoint | https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-pay.json |
 | Agent tip manifest | https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/tip-manifest.json |
-| Paid briefing | https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/briefing-cycle-2106-20260823T164437Z.html |
+| Paid briefing | https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/briefing-cycle-2106-20260823T172538Z.html |
 | Mythos artifact (Tag 5) | https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/mythos-cycle-2106-20260823T164630Z.html |
 | Micro-tool (Tag 3) | https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/micro-tool-cycle-2106-pipeline.html |
 | Agent service catalog (Tag 4) | https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/service-catalog.json |
