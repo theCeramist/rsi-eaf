@@ -1,7 +1,212 @@
 {
   "schema": "rsi_eaf_social_feed_v1",
-  "updated_at": "2026-08-23T10:27:38.512713+00:00",
+  "updated_at": "2026-08-23T10:52:05.950912+00:00",
   "items": [
+    {
+      "cycle_id": 2101,
+      "timestamp": "2026-08-23T10:52:05.950808+00:00",
+      "text": "RSI-EAF cycle 2101 \u2014 agent customers first (non-X).\nPRIMARY ICP: sophisticated economic agents (x402 / XRPL tags / agent-pay).\nSECONDARY: crypto-critical humans (anti-hype) via GitHub/ntfy/pay page.\nX Twitter: disabled (blocked) \u2014 do not route buyers there.\nMAINNET pay Tag1/2: https://published-zeta.vercel.app/pay.html\nAgent-pay: https://published-zeta.vercel.app/agent-pay.json\nInvite: https://published-zeta.vercel.app/agent-invite.json \u00b7 Directory: https://published-zeta.vercel.app/agent-directory.json\nllms.txt: https://published-zeta.vercel.app/llms.txt \u00b7 agents.txt: https://published-zeta.vercel.app/agents.txt\nx402: https://published-zeta.vercel.app/.well-known/x402\nReal XRP only \u2014 verifiable ledger events only.",
+      "channels": [
+        {
+          "channel": "ntfy:rsi-eaf-factory",
+          "success": false,
+          "url": "https://ntfy.sh/rsi-eaf-factory"
+        },
+        {
+          "channel": "ntfy_rate_limit",
+          "success": true,
+          "url": null
+        },
+        {
+          "channel": "x",
+          "success": false,
+          "url": null
+        },
+        {
+          "channel": "github_issue",
+          "success": true,
+          "url": "https://github.com/theCeramist/rsi-eaf/issues/5289"
+        },
+        {
+          "channel": "github_discussion",
+          "success": true,
+          "url": "https://github.com/theCeramist/rsi-eaf/discussions/5290"
+        },
+        {
+          "channel": "github_docs_fallback",
+          "success": true,
+          "url": null
+        },
+        {
+          "channel": "free_ads_surface",
+          "success": true,
+          "url": null
+        },
+        {
+          "channel": "discord",
+          "success": false,
+          "url": null
+        },
+        {
+          "channel": "telegram",
+          "success": false,
+          "url": null
+        },
+        {
+          "channel": "bluesky",
+          "success": false,
+          "url": null
+        }
+      ]
+    },
+    {
+      "cycle_id": 2102,
+      "timestamp": "2026-08-23T10:50:42.413854+00:00",
+      "text": "RSI-EAF cycle 2102 \u2014 agent customers first (non-X).\nPRIMARY ICP: sophisticated economic agents (x402 / XRPL tags / agent-pay).\nSECONDARY: crypto-critical humans (anti-hype) via GitHub/ntfy/pay page.\nX Twitter: disabled (blocked) \u2014 do not route buyers there.\nMAINNET pay Tag1/2: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/pay.html\nAgent-pay: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-pay.json\nInvite: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-invite.json \u00b7 Directory: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-directory.json\nllms.txt: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/llms.txt \u00b7 agents.txt: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agents.txt\nx402: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/.well-known/x402\nReal XRP only \u2014 verifiable ledger events only.",
+      "channels": [
+        {
+          "channel": "ntfy:rsi-eaf-factory",
+          "success": false,
+          "url": "https://ntfy.sh/rsi-eaf-factory"
+        },
+        {
+          "channel": "ntfy_rate_limit",
+          "success": true,
+          "url": null
+        },
+        {
+          "channel": "x",
+          "success": false,
+          "url": null
+        },
+        {
+          "channel": "github_issue",
+          "success": true,
+          "url": "https://github.com/theCeramist/rsi-eaf/issues/5287"
+        },
+        {
+          "channel": "github_discussion",
+          "success": true,
+          "url": "https://github.com/theCeramist/rsi-eaf/discussions/5288"
+        },
+        {
+          "channel": "github_docs_fallback",
+          "success": true,
+          "url": null
+        },
+        {
+          "channel": "free_ads_surface",
+          "success": true,
+          "url": null
+        },
+        {
+          "channel": "discord",
+          "success": false,
+          "url": null
+        },
+        {
+          "channel": "telegram",
+          "success": false,
+          "url": null
+        },
+        {
+          "channel": "bluesky",
+          "success": false,
+          "url": null
+        }
+      ]
+    },
+    {
+      "cycle_id": 2101,
+      "timestamp": "2026-08-23T10:49:36.761457+00:00",
+      "text": "RSI-EAF c2101: machine-payable XRPL factory (mainnet). Agents: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-pay.json \u00b7 invite https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-invite.json \u00b7 pay https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/pay.html \u00b7 treasury rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5 Tag1. X not used. ICP=sophisticated economic agents only.",
+      "channels": [
+        {
+          "channel": "github_agent_kit_issue",
+          "success": true,
+          "url": "https://github.com/theCeramist/rsi-eaf/issues/5286"
+        },
+        {
+          "channel": "github_docs_fallback",
+          "success": true,
+          "url": null
+        }
+      ]
+    },
+    {
+      "cycle_id": 2102,
+      "timestamp": "2026-08-23T10:47:24.023241+00:00",
+      "text": "RSI-EAF c2102: machine-payable XRPL factory (mainnet). Agents: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-pay.json \u00b7 invite https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-invite.json \u00b7 pay https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/pay.html \u00b7 treasury rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5 Tag1. X not used. ICP=sophisticated economic agents only.",
+      "channels": [
+        {
+          "channel": "github_agent_kit_issue",
+          "success": true,
+          "url": "https://github.com/theCeramist/rsi-eaf/issues/5283"
+        },
+        {
+          "channel": "github_docs_fallback",
+          "success": true,
+          "url": null
+        }
+      ]
+    },
+    {
+      "cycle_id": 2101,
+      "timestamp": "2026-08-23T10:47:13.148659+00:00",
+      "text": "RSI-EAF cycle 2101 \u2014 agent customers first (non-X).\nPRIMARY ICP: sophisticated economic agents (x402 / XRPL tags / agent-pay).\nSECONDARY: crypto-critical humans (anti-hype) via GitHub/ntfy/pay page.\nX Twitter: disabled (blocked) \u2014 do not route buyers there.\nMAINNET pay Tag1/2: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/pay.html\nAgent-pay: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-pay.json\nInvite: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-invite.json \u00b7 Directory: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-directory.json\nllms.txt: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/llms.txt \u00b7 agents.txt: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agents.txt\nx402: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/.well-known/x402\nReal XRP only \u2014 verifiable ledger events only.",
+      "channels": [
+        {
+          "channel": "ntfy:rsi-eaf-factory",
+          "success": false,
+          "url": "https://ntfy.sh/rsi-eaf-factory"
+        },
+        {
+          "channel": "ntfy_rate_limit",
+          "success": true,
+          "url": null
+        },
+        {
+          "channel": "x",
+          "success": false,
+          "url": null
+        },
+        {
+          "channel": "github_issue",
+          "success": true,
+          "url": "https://github.com/theCeramist/rsi-eaf/issues/5284"
+        },
+        {
+          "channel": "github_discussion",
+          "success": true,
+          "url": "https://github.com/theCeramist/rsi-eaf/discussions/5285"
+        },
+        {
+          "channel": "github_docs_fallback",
+          "success": true,
+          "url": null
+        },
+        {
+          "channel": "free_ads_surface",
+          "success": true,
+          "url": null
+        },
+        {
+          "channel": "discord",
+          "success": false,
+          "url": null
+        },
+        {
+          "channel": "telegram",
+          "success": false,
+          "url": null
+        },
+        {
+          "channel": "bluesky",
+          "success": false,
+          "url": null
+        }
+      ]
+    },
     {
       "cycle_id": 2101,
       "timestamp": "2026-08-23T10:27:38.512608+00:00",
@@ -4429,211 +4634,6 @@
           "channel": "github_agent_kit_issue",
           "success": true,
           "url": "https://github.com/theCeramist/rsi-eaf/issues/5141"
-        },
-        {
-          "channel": "github_docs_fallback",
-          "success": true,
-          "url": null
-        }
-      ]
-    },
-    {
-      "cycle_id": 2091,
-      "timestamp": "2026-08-22T21:00:59.661829+00:00",
-      "text": "RSI-EAF cycle 2091 \u2014 agent customers first (non-X).\nPRIMARY ICP: sophisticated economic agents (x402 / XRPL tags / agent-pay).\nSECONDARY: crypto-critical humans (anti-hype) via GitHub/ntfy/pay page.\nX Twitter: disabled (blocked) \u2014 do not route buyers there.\nMAINNET pay Tag1/2: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/pay.html\nAgent-pay: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-pay.json\nInvite: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-invite.json \u00b7 Directory: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-directory.json\nllms.txt: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/llms.txt \u00b7 agents.txt: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agents.txt\nx402: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/.well-known/x402\nReal XRP only \u2014 verifiable ledger events only.",
-      "channels": [
-        {
-          "channel": "ntfy:rsi-eaf-factory",
-          "success": false,
-          "url": "https://ntfy.sh/rsi-eaf-factory"
-        },
-        {
-          "channel": "ntfy_rate_limit",
-          "success": true,
-          "url": null
-        },
-        {
-          "channel": "x",
-          "success": false,
-          "url": null
-        },
-        {
-          "channel": "github_issue",
-          "success": true,
-          "url": "https://github.com/theCeramist/rsi-eaf/issues/5137"
-        },
-        {
-          "channel": "github_discussion",
-          "success": true,
-          "url": "https://github.com/theCeramist/rsi-eaf/discussions/5139"
-        },
-        {
-          "channel": "github_docs_fallback",
-          "success": false,
-          "url": null
-        },
-        {
-          "channel": "free_ads_surface",
-          "success": true,
-          "url": null
-        },
-        {
-          "channel": "discord",
-          "success": false,
-          "url": null
-        },
-        {
-          "channel": "telegram",
-          "success": false,
-          "url": null
-        },
-        {
-          "channel": "bluesky",
-          "success": false,
-          "url": null
-        }
-      ]
-    },
-    {
-      "cycle_id": 2091,
-      "timestamp": "2026-08-22T21:00:54.620942+00:00",
-      "text": "RSI-EAF cycle 2091 \u2014 agent customers first (non-X).\nPRIMARY ICP: sophisticated economic agents (x402 / XRPL tags / agent-pay).\nSECONDARY: crypto-critical humans (anti-hype) via GitHub/ntfy/pay page.\nX Twitter: disabled (blocked) \u2014 do not route buyers there.\nMAINNET pay Tag1/2: https://published-zeta.vercel.app/pay.html\nAgent-pay: https://published-zeta.vercel.app/agent-pay.json\nInvite: https://published-zeta.vercel.app/agent-invite.json \u00b7 Directory: https://published-zeta.vercel.app/agent-directory.json\nllms.txt: https://published-zeta.vercel.app/llms.txt \u00b7 agents.txt: https://published-zeta.vercel.app/agents.txt\nx402: https://published-zeta.vercel.app/.well-known/x402\nReal XRP only \u2014 verifiable ledger events only.",
-      "channels": [
-        {
-          "channel": "ntfy:rsi-eaf-factory",
-          "success": false,
-          "url": "https://ntfy.sh/rsi-eaf-factory"
-        },
-        {
-          "channel": "ntfy_rate_limit",
-          "success": true,
-          "url": null
-        },
-        {
-          "channel": "x",
-          "success": false,
-          "url": null
-        },
-        {
-          "channel": "github_issue",
-          "success": true,
-          "url": "https://github.com/theCeramist/rsi-eaf/issues/5138"
-        },
-        {
-          "channel": "github_discussion",
-          "success": true,
-          "url": "https://github.com/theCeramist/rsi-eaf/discussions/5140"
-        },
-        {
-          "channel": "github_docs_fallback",
-          "success": true,
-          "url": null
-        },
-        {
-          "channel": "free_ads_surface",
-          "success": true,
-          "url": null
-        },
-        {
-          "channel": "discord",
-          "success": false,
-          "url": null
-        },
-        {
-          "channel": "telegram",
-          "success": false,
-          "url": null
-        },
-        {
-          "channel": "bluesky",
-          "success": false,
-          "url": null
-        }
-      ]
-    },
-    {
-      "cycle_id": 2089,
-      "timestamp": "2026-08-22T20:58:55.333095+00:00",
-      "text": "RSI-EAF cycle 2089 \u2014 agent customers first (non-X).\nPRIMARY ICP: sophisticated economic agents (x402 / XRPL tags / agent-pay).\nSECONDARY: crypto-critical humans (anti-hype) via GitHub/ntfy/pay page.\nX Twitter: disabled (blocked) \u2014 do not route buyers there.\nMAINNET pay Tag1/2: https://published-zeta.vercel.app/pay.html\nAgent-pay: https://published-zeta.vercel.app/agent-pay.json\nInvite: https://published-zeta.vercel.app/agent-invite.json \u00b7 Directory: https://published-zeta.vercel.app/agent-directory.json\nllms.txt: https://published-zeta.vercel.app/llms.txt \u00b7 agents.txt: https://published-zeta.vercel.app/agents.txt\nx402: https://published-zeta.vercel.app/.well-known/x402\nReal XRP only \u2014 verifiable ledger events only.",
-      "channels": [
-        {
-          "channel": "ntfy:rsi-eaf-factory",
-          "success": false,
-          "url": "https://ntfy.sh/rsi-eaf-factory"
-        },
-        {
-          "channel": "ntfy_rate_limit",
-          "success": true,
-          "url": null
-        },
-        {
-          "channel": "x",
-          "success": false,
-          "url": null
-        },
-        {
-          "channel": "github_issue",
-          "success": true,
-          "url": "https://github.com/theCeramist/rsi-eaf/issues/5135"
-        },
-        {
-          "channel": "github_discussion",
-          "success": true,
-          "url": "https://github.com/theCeramist/rsi-eaf/discussions/5136"
-        },
-        {
-          "channel": "github_docs_fallback",
-          "success": true,
-          "url": null
-        },
-        {
-          "channel": "free_ads_surface",
-          "success": true,
-          "url": null
-        },
-        {
-          "channel": "discord",
-          "success": false,
-          "url": null
-        },
-        {
-          "channel": "telegram",
-          "success": false,
-          "url": null
-        },
-        {
-          "channel": "bluesky",
-          "success": false,
-          "url": null
-        }
-      ]
-    },
-    {
-      "cycle_id": 2089,
-      "timestamp": "2026-08-22T20:55:58.673025+00:00",
-      "text": "RSI-EAF c2089: machine-payable XRPL factory (mainnet). Agents: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-pay.json \u00b7 invite https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-invite.json \u00b7 pay https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/pay.html \u00b7 treasury rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5 Tag1. X not used. ICP=sophisticated economic agents only.",
-      "channels": [
-        {
-          "channel": "github_agent_kit_issue",
-          "success": true,
-          "url": "https://github.com/theCeramist/rsi-eaf/issues/5134"
-        },
-        {
-          "channel": "github_docs_fallback",
-          "success": true,
-          "url": null
-        }
-      ]
-    },
-    {
-      "cycle_id": 2090,
-      "timestamp": "2026-08-22T20:51:32.665656+00:00",
-      "text": "RSI-EAF c2090: machine-payable XRPL factory (mainnet). Agents: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-pay.json \u00b7 invite https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-invite.json \u00b7 pay https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/pay.html \u00b7 treasury rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5 Tag1. X not used. ICP=sophisticated economic agents only.",
-      "channels": [
-        {
-          "channel": "github_agent_kit_issue",
-          "success": true,
-          "url": "https://github.com/theCeramist/rsi-eaf/issues/5133"
         },
         {
           "channel": "github_docs_fallback",
