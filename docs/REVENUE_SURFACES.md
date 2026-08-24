@@ -1,6 +1,6 @@
-# RSI-EAF Revenue Surfaces (Cycle 2113)
+# RSI-EAF Revenue Surfaces (Cycle 2114)
 
-Updated: 2026-08-24T03:39:55.698094+00:00
+Updated: 2026-08-24T04:13:43.197821+00:00
 
 ## Live surfaces
 
@@ -10,9 +10,8 @@ Updated: 2026-08-24T03:39:55.698094+00:00
 | Tip page | https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/tip-manifest.json |
 | Agent pay endpoint | https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-pay.json |
 | Agent tip manifest | https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/tip-manifest.json |
-| Paid briefing | https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/briefing-cycle-2113-20260824T024146Z.html |
-| Mythos artifact (Tag 5) | https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/mythos-cycle-2113-20260824T024402Z.html |
-| Micro-tool (Tag 3) | https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/micro-tool-cycle-2113-20260824T024240Z.html |
+| Paid briefing | https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/briefing-cycle-2114-20260824T040734Z.html |
+| Micro-tool (Tag 3) | https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/micro-tool-cycle-2114-20260824T040843Z.html |
 | Agent service catalog (Tag 4) | https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/service-catalog.json |
 | aetherforge nexus | https://aetherforge.world |
 | jarvis-swarm repo | https://github.com/theCeramist/jarvis-swarm |
@@ -20,7 +19,7 @@ Updated: 2026-08-24T03:39:55.698094+00:00
 ## Treasury (XRPL Testnet)
 
 ```
-rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN
+rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5
 ```
 
 ## Tip payment memo
@@ -32,7 +31,7 @@ rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN
 ## Briefing unlock memo
 
 ```json
-{"type":"revenue","amount_usd_est":2.0,"product_id":"briefing-cycle-2113","notes":"unlock briefing-cycle-2113"}
+{"type":"revenue","amount_usd_est":2.0,"product_id":"briefing-cycle-2114","notes":"unlock briefing-cycle-2114"}
 ```
 
 ## Verification
