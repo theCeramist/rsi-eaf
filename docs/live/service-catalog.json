@@ -1,8 +1,8 @@
 {
   "schema": "rsi_eaf_service_catalog_v2",
   "cycle_id": 2113,
-  "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
-  "network": "xrpl_testnet",
+  "treasury_address": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
+  "network": "mainnet",
   "factory": "RSI-EAF",
   "how_to_pay": {
     "human": "Pay treasury with Destination Tag (see each service). Manifest: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-pay.json",
@@ -71,5 +71,7 @@
     }
   ],
   "acp_ready": true,
-  "updated_at": "2026-08-24T02:45:55.801423+00:00"
+  "updated_at": "2026-08-24T02:56:21.161759+00:00",
+  "pay_page": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/pay.html",
+  "products_shop": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/products.html"
 }
