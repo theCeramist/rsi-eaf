@@ -1,6 +1,6 @@
 {
   "schema": "rsi_eaf_live_pack_status_v1",
-  "updated_at": "2026-08-24T13:12:07.871978+00:00",
+  "updated_at": "2026-08-24T13:19:07.303525+00:00",
   "cycle_id": 2120,
   "files": [
     "pay.html",
@@ -24,6 +24,7 @@
     ".well-known/x402.json",
     ".well-known/agent-pay.json",
     ".well-known/agent.json",
+    "social.html",
     "social-feed.json",
     "feed.xml",
     "vercel.json",
