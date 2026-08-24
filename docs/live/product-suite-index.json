@@ -3,7 +3,7 @@
   "cycle_id": 2117,
   "treasury_address": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
   "network": "mainnet",
-  "updated_at": "2026-08-24T08:15:57.624463+00:00",
+  "updated_at": "2026-08-24T08:18:29.204210+00:00",
   "suite_count": 5,
   "doctrine": "continuous_make_test_ship_for_consumer_purchase",
   "discovery": {
@@ -75,7 +75,7 @@
       "price_usd": 1.5,
       "price_xrp": 1.4299,
       "destination_tag": 5,
-      "landing_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/product-mythos.html",
+      "landing_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/mythos-cycle-2117-20260824T081700Z.html",
       "stable_page": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/product-mythos.html",
       "fulfillment_url": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/deliverables/mythos-cycle-2117.json",
       "xaman_url": "https://xaman.app/detect/request:rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5?amount=1.4299&network=XRPL&dt=5",

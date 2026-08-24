@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_consumer_products_v1",
   "cycle_id": 2117,
-  "updated_at": "2026-08-24T08:15:57.624498+00:00",
+  "updated_at": "2026-08-24T08:18:29.206337+00:00",
   "treasury": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
   "network": "mainnet",
   "pay_page": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/pay.html",
@@ -95,7 +95,7 @@
       "destination_tag": 5,
       "memo": "mythos",
       "buyer": "creators + agents",
-      "landing": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/product-mythos.html",
+      "landing": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/mythos-cycle-2117-20260824T081700Z.html",
       "stable_page": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/product-mythos.html",
       "fulfillment": "https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/deliverables/mythos-cycle-2117.json",
       "price_xrp": 1.4299,
