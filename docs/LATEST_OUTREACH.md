@@ -1,14 +1,14 @@
-# Autonomous outreach — cycle 2113
+# Autonomous outreach — cycle 2114
 
-Updated: 2026-08-24T04:02:49.468191+00:00
+Updated: 2026-08-24T04:15:01.094733+00:00
 
-RSI-EAF cycle 2113 — agent customers first (non-X).
+RSI-EAF cycle 2114 — agent customers first (non-X).
 PRIMARY ICP: sophisticated economic agents (x402 / XRPL tags / agent-pay).
 SECONDARY: crypto-critical humans (anti-hype) via GitHub/ntfy/pay page.
 X Twitter: disabled (blocked) — do not route buyers there.
-MAINNET pay Tag1/2: https://published-zeta.vercel.app/pay.html
-Agent-pay: https://published-zeta.vercel.app/agent-pay.json
-Invite: https://published-zeta.vercel.app/agent-invite.json · Directory: https://published-zeta.vercel.app/agent-directory.json
-llms.txt: https://published-zeta.vercel.app/llms.txt · agents.txt: https://published-zeta.vercel.app/agents.txt
-x402: https://published-zeta.vercel.app/.well-known/x402
+MAINNET pay Tag1/2: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/pay.html
+Agent-pay: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-pay.json
+Invite: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-invite.json · Directory: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-directory.json
+llms.txt: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/llms.txt · agents.txt: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agents.txt
+x402: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/.well-known/x402
 Real XRP only — verifiable ledger events only.
