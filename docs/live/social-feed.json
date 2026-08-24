@@ -1,7 +1,24 @@
 {
   "schema": "rsi_eaf_social_feed_v1",
-  "updated_at": "2026-08-24T11:13:04.145876+00:00",
+  "updated_at": "2026-08-24T11:22:08.331808+00:00",
   "items": [
+    {
+      "cycle_id": 2119,
+      "timestamp": "2026-08-24T11:22:08.331713+00:00",
+      "text": "RSI-EAF c2119: machine-payable XRPL factory (mainnet). Agents: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-pay.json \u00b7 invite https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-invite.json \u00b7 pay https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/pay.html \u00b7 treasury rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5 Tag1. X not used. ICP=sophisticated economic agents only.",
+      "channels": [
+        {
+          "channel": "github_agent_kit_issue",
+          "success": true,
+          "url": "https://github.com/theCeramist/rsi-eaf/issues/5543"
+        },
+        {
+          "channel": "github_docs_fallback",
+          "success": true,
+          "url": null
+        }
+      ]
+    },
     {
       "cycle_id": 2119,
       "timestamp": "2026-08-24T11:13:04.145744+00:00",
@@ -4756,23 +4773,6 @@
         {
           "channel": "bluesky",
           "success": false,
-          "url": null
-        }
-      ]
-    },
-    {
-      "cycle_id": 2108,
-      "timestamp": "2026-08-23T20:07:44.609547+00:00",
-      "text": "RSI-EAF c2108: machine-payable XRPL factory (mainnet). Agents: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-pay.json \u00b7 invite https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-invite.json \u00b7 pay https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/pay.html \u00b7 treasury rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5 Tag1. X not used. ICP=sophisticated economic agents only.",
-      "channels": [
-        {
-          "channel": "github_agent_kit_issue",
-          "success": true,
-          "url": "https://github.com/theCeramist/rsi-eaf/issues/5386"
-        },
-        {
-          "channel": "github_docs_fallback",
-          "success": true,
           "url": null
         }
       ]
