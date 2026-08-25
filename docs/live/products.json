@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_consumer_products_v1",
   "cycle_id": 2126,
-  "updated_at": "2026-08-25T21:58:10.291341+00:00",
+  "updated_at": "2026-08-25T21:59:10.686229+00:00",
   "treasury": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
   "network": "mainnet",
   "pay_page": "https://published-zeta.vercel.app/pay.html",
@@ -95,7 +95,7 @@
       "destination_tag": 5,
       "memo": "mythos",
       "buyer": "creators + agents",
-      "landing": "https://published-zeta.vercel.app/mythos-cycle-2126-20260825T215652Z.html",
+      "landing": "https://published-zeta.vercel.app/mythos-cycle-2126-20260825T215803Z.html",
       "stable_page": "https://published-zeta.vercel.app/product-mythos.html",
       "fulfillment": "https://published-zeta.vercel.app/deliverables/mythos-cycle-2126.json",
       "price_xrp": 1.4299,
