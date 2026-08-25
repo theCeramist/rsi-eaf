@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_consumer_products_v1",
   "cycle_id": 2126,
-  "updated_at": "2026-08-25T18:13:42.838720+00:00",
+  "updated_at": "2026-08-25T18:14:13.883812+00:00",
   "treasury": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
   "network": "mainnet",
   "pay_page": "https://published-zeta.vercel.app/pay.html",
