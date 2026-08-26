@@ -1,7 +1,44 @@
 {
   "schema": "rsi_eaf_social_feed_v1",
-  "updated_at": "2026-08-26T04:09:13.934011+00:00",
+  "updated_at": "2026-08-26T04:20:06.099975+00:00",
   "items": [
+    {
+      "cycle_id": 2126,
+      "timestamp": "2026-08-26T04:20:06.099891+00:00",
+      "text": "RSI-EAF c2126: machine-payable XRPL factory (mainnet). Agents: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-pay.json \u00b7 invite https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-invite.json \u00b7 pay https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/pay.html \u00b7 treasury rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5 Tag1. X not used. ICP=sophisticated economic agents only.",
+      "channels": [
+        {
+          "channel": "ntfy_agent",
+          "success": true,
+          "url": "https://ntfy.sh/rsi-eaf-agents"
+        },
+        {
+          "channel": "ntfy_agent",
+          "success": true,
+          "url": "https://ntfy.sh/x402-payments"
+        },
+        {
+          "channel": "ntfy_agent",
+          "success": true,
+          "url": "https://ntfy.sh/xrpl-agents"
+        },
+        {
+          "channel": "ntfy_agent",
+          "success": true,
+          "url": "https://ntfy.sh/agentic-economy"
+        },
+        {
+          "channel": "github_agent_kit_issue",
+          "success": true,
+          "url": "https://github.com/theCeramist/rsi-eaf/issues/5810"
+        },
+        {
+          "channel": "github_docs_fallback",
+          "success": true,
+          "url": null
+        }
+      ]
+    },
     {
       "cycle_id": 2126,
       "timestamp": "2026-08-26T04:09:13.933898+00:00",
@@ -6291,23 +6328,6 @@
         {
           "channel": "bluesky",
           "success": false,
-          "url": null
-        }
-      ]
-    },
-    {
-      "cycle_id": 2125,
-      "timestamp": "2026-08-24T19:13:01.189419+00:00",
-      "text": "RSI-EAF c2125: machine-payable XRPL factory (mainnet). Agents: https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-pay.json \u00b7 invite https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/agent-invite.json \u00b7 pay https://cdn.jsdelivr.net/gh/theCeramist/rsi-eaf@main/docs/live/pay.html \u00b7 treasury rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5 Tag1. X not used. ICP=sophisticated economic agents only.",
-      "channels": [
-        {
-          "channel": "github_agent_kit_issue",
-          "success": true,
-          "url": "https://github.com/theCeramist/rsi-eaf/issues/5619"
-        },
-        {
-          "channel": "github_docs_fallback",
-          "success": true,
           "url": null
         }
       ]
