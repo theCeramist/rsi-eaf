@@ -20,7 +20,7 @@
         "plain_memo": "briefing"
       },
       "deliverable_type": "html+json",
-      "preview_url": "https://published-zeta.vercel.app/briefing-cycle-2126-20260827T064032Z.html",
+      "preview_url": "https://published-zeta.vercel.app/briefing-cycle-2126-20260827T065632Z.html",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/briefing-cycle-2126.json",
       "buyer": "humans and research agents"
     },
@@ -35,7 +35,7 @@
         "plain_memo": "tool"
       },
       "deliverable_type": "json",
-      "preview_url": "https://published-zeta.vercel.app/micro-tool-cycle-2126-20260827T064049Z.html",
+      "preview_url": "https://published-zeta.vercel.app/micro-tool-cycle-2126-20260827T065658Z.html",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/micro-tool-cycle-2126.json",
       "buyer": "wallet integrators and paying agents"
     },
@@ -65,11 +65,11 @@
         "plain_memo": "mythos"
       },
       "deliverable_type": "json",
-      "preview_url": "https://published-zeta.vercel.app/mythos-cycle-2126-20260827T064134Z.html",
+      "preview_url": "https://published-zeta.vercel.app/mythos-cycle-2126-20260827T065806Z.html",
       "fulfillment_url": "https://published-zeta.vercel.app/deliverables/mythos-cycle-2126.json",
       "buyer": "creators and narrative commerce agents"
     }
   ],
   "acp_ready": true,
-  "updated_at": "2026-08-27T06:42:26.435050+00:00"
+  "updated_at": "2026-08-27T06:59:08.123482+00:00"
 }
