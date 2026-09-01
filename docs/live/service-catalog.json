@@ -1,7 +1,7 @@
 {
   "schema": "rsi_eaf_service_catalog_v2",
   "cycle_id": 2214,
-  "treasury_address": "rBiU74q2wCPQ7ri9YD6J6LrQ2Y3jFd8pcN",
+  "treasury_address": "rs78v3CbqDf5pDc6n7pyqg6LYaUnweLEH5",
   "network": "xrpl_testnet",
   "factory": "RSI-EAF",
   "how_to_pay": {
@@ -71,5 +71,5 @@
     }
   ],
   "acp_ready": true,
-  "updated_at": "2026-09-01T18:18:23.383416+00:00"
+  "updated_at": "2026-09-01T18:39:19.668270+00:00"
 }
